@@ -1,6 +1,6 @@
-# Demo Scenarios
+# 데모 시나리오
 
-1. Student A and B receive same template, different seeds.
-2. A's exact solution copied by B => fails on hidden tests/trace constraints.
-3. Output-correct but trace-invalid submission => fails.
-4. Output+trace-correct submission => passes.
+1. 학생 A와 B는 같은 템플릿이지만 서로 다른 seed를 받는다.
+2. A의 정답 코드를 B가 그대로 제출하면 hidden test/trace 제약에서 실패한다.
+3. 출력은 맞지만 trace가 유효하지 않은 제출은 실패한다.
+4. 출력과 trace가 모두 올바른 제출만 통과한다.

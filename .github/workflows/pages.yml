@@ -1,4 +1,4 @@
-name: Deploy web demo to GitHub Pages
+name: 웹 데모 GitHub Pages 배포
 
 on:
   push:

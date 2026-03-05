@@ -1,40 +1,40 @@
-# Project Proposal — TraceLang + GuardLab
+# 프로젝트 제안서 — TraceLang + GuardLab
 
-## 1. Problem Statement
-Current assignment workflows are increasingly vulnerable to AI-assisted cheating and code sharing. Most grading systems only check final outputs, which makes it easy to bypass learning by submitting generated code.
+## 1. 문제 정의
+현재 과제 운영 방식은 AI 기반 부정행위와 코드 공유에 점점 더 취약해지고 있습니다. 대부분의 채점 시스템이 최종 출력만 확인하기 때문에, 생성형 도구를 통한 우회 제출이 쉬워졌습니다.
 
-## 2. Objective
-Design a small programming language and assignment environment where successful submission requires both:
-1) correct outputs, and
-2) valid execution traces consistent with language semantics and assignment constraints.
+## 2. 목표
+다음을 동시에 만족해야 제출이 성공하는 소형 프로그래밍 언어 및 과제 환경을 설계합니다.
+1) 올바른 실행 출력
+2) 언어 의미론 및 과제 제약을 만족하는 유효한 실행 trace
 
-## 3. Approach
-### TraceLang (Language)
-A compact functional language with explicit trace emission points.
+## 3. 접근 방법
+### TraceLang (언어)
+명시적 trace 이벤트를 포함하는 간결한 함수형 언어입니다.
 
-- Base constructs: integer, boolean, if, let, functions
-- Trace primitive: `emit(tag, value)`
-- Runtime emits canonical trace events (evaluation steps, branching decisions)
+- 기본 구성: 정수, 불리언, if, let, 함수
+- 추적 원시 연산: `emit(tag, value)`
+- 런타임이 표준 trace 이벤트(평가 단계, 분기 선택)를 생성
 
-### GuardLab (Environment)
-- Per-student seeded assignment instances
-- Containerized execution (Docker) for reproducibility
-- Verifier checks output correctness and trace integrity
+### GuardLab (환경)
+- 학생별 seed 기반 과제 인스턴스
+- 재현 가능한 컨테이너 실행 환경(Docker)
+- 출력 정답성과 trace 무결성을 동시에 검사하는 verifier
 
-## 4. Why It Is Cheating-Resistant
-- Seeded variation prevents direct copy reuse across students
-- Output-only mimicry fails if trace constraints are not satisfied
-- Hidden tests + trace policies reduce LLM “one-shot solve” success
+## 4. 치팅 저항성 근거
+- seed 변형으로 학생 간 직접 복사 재사용이 어려움
+- trace 제약을 만족하지 못하면 출력만 맞아도 실패
+- hidden test + trace 정책으로 LLM 원샷 통과율 감소
 
-## 5. Evaluation Plan
-Compare two grading settings on identical tasks:
-- Baseline: output-only grading
-- Proposed: output + trace-aware grading
+## 5. 평가 계획
+동일 과제에서 두 채점 설정을 비교합니다.
+- Baseline: 출력 중심 채점
+- Proposed: 출력 + trace 인지형 채점
 
-Metrics:
-- pass rate of copied/adapted submissions
-- pass rate of LLM-generated submissions
-- false rejection rate for honest solutions
+평가 지표:
+- 복사/변형 제출물 통과율
+- LLM 생성 제출물 통과율
+- 성실 제출물의 오탐(부당 실패) 비율
 
-## 6. Expected Outcome
-A practical blueprint for assignment systems that preserve learning integrity while still giving students meaningful automated feedback.
+## 6. 기대 효과
+학습 무결성을 유지하면서도, 학생에게 유의미한 자동 피드백을 제공하는 실용적 과제 운영 청사진을 제시합니다.
