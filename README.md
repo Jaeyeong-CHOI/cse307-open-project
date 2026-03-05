@@ -32,3 +32,17 @@
 - 샘플 문항: `docs/examples/nldsl-samples.md`
 
 이 초안은 "자연어 표면 + 형식 해석" 구조로, 다의 토큰의 문맥 기반 의미 결정을 핵심으로 한다.
+
+
+## NL-DSL 파서 프로토타입
+간단한 해석 로그 생성기(토이 파서)가 포함되어 있습니다.
+
+```bash
+python3 tools/nldsl_parser.py examples/nldsl-input-1.txt
+python3 tools/nldsl_parser.py examples/nldsl-input-1.txt --seed-dict examples/seed-dict-sample.json
+```
+
+출력: 토큰별 의미 결정 로그(JSON)
+- 적용된 섹션/모드
+- 토큰 의미(sense)
+- 어떤 규칙으로 결정됐는지(rule)
