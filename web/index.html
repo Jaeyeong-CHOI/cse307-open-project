@@ -3,240 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NL-DSL 학생 과제 풀이 웹</title>
+  <title>NL-PL 코딩 과제 데모</title>
   <style>
-    :root{--bg:#0f1630;--card:#152042;--line:#2a3c70;--text:#eaf0ff;--muted:#9fb0d0;--ok:#204f3b;--bad:#5a2434;--warn:#7a6330}
+    :root{--bg:#0f1630;--card:#152042;--line:#2a3c70;--text:#eaf0ff;--muted:#9fb0d0;--ok:#1f4a37;--bad:#4f2330}
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
-    .wrap{max-width:1050px;margin:24px auto;padding:0 16px}
+    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
     .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
     h1,h2,h3{margin:0 0 10px}
     p,li,label{color:var(--muted)}
-    input,textarea,button,select{font:inherit}
-    input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #3a4e88;background:#0e1733;color:var(--text);margin-top:6px}
-    button{border:0;border-radius:8px;padding:10px 14px;background:#7aa2ff;color:#09142f;font-weight:700;cursor:pointer}
+    select,textarea,button{font:inherit}
+    select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #344b87;background:#0e1733;color:var(--text)}
+    button{border:0;border-radius:8px;padding:10px 14px;background:#7aa2ff;color:#09142f;font-weight:700;cursor:pointer;margin-top:8px}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#203063;color:#c0d0ff;font-size:12px;margin-right:6px}
+    pre{white-space:pre-wrap;background:#0c1430;border:1px solid #2a3c70;border-radius:8px;padding:10px}
     .status{padding:10px;border-radius:8px;margin-top:8px}
-    .ok{background:var(--ok);color:#c8ffe1}.bad{background:var(--bad);color:#ffd0da}.warn{background:var(--warn);color:#ffedc7}
-    pre{white-space:pre-wrap;word-break:break-word;background:#0c1430;border:1px solid #2a3c70;border-radius:8px;padding:10px;color:#d8e3ff}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border-bottom:1px solid #2a3c70;padding:8px;text-align:left;font-size:14px}
+    .ok{background:var(--ok);color:#cbffe4}.bad{background:var(--bad);color:#ffd0da}
+    code{background:#0b1534;padding:2px 5px;border-radius:6px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>NL-DSL 학생 과제 풀이 페이지</h1>
-      <p>학생이 <b>문제 생성 → 해석 결과 예측 → 제출 → 자동 채점</b>까지 한 번에 수행하는 인터페이스입니다.</p>
-      <span class="pill">학생용</span><span class="pill">제출형</span><span class="pill">즉시 채점</span>
-    </div>
-
-    <div class="card">
-      <h2>1) 과제 생성</h2>
-      <div class="row">
-        <div>
-          <label>학번</label>
-          <input id="studentId" value="20260001" />
-        </div>
-        <div>
-          <label>문항 유형</label>
-          <select id="problemType">
-            <option value="sense">토큰 의미 맞추기</option>
-            <option value="count">토큰 개수 맞추기</option>
-            <option value="rule">결정 규칙 맞추기</option>
-          </select>
-        </div>
-      </div>
-      <button id="genBtn">학생용 문제 생성</button>
-      <div id="problemStatus" class="status warn">문제를 생성하세요.</div>
-      <h3 style="margin-top:12px">문제 본문</h3>
-      <pre id="problemText">(아직 없음)</pre>
-    </div>
-
-    <div class="card">
-      <h2>2) 풀이 작성 및 제출</h2>
-      <label>답안 (JSON)</label>
-      <textarea id="answerText" rows="8">{
-  "token": "그리고",
-  "sense": "CONSTRAINT_MERGE",
-  "rule": "Section>[제약]"
-}</textarea>
-      <button id="submitBtn">제출 및 채점</button>
-      <div id="gradeStatus" class="status warn">아직 제출하지 않았습니다.</div>
-    </div>
-
-    <div class="card">
-      <h2>3) 채점 결과</h2>
-      <pre id="gradeDetail">(결과 없음)</pre>
-      <div id="tableWrap"></div>
-    </div>
+<div class="wrap">
+  <div class="card">
+    <h1>자연어 프로그래밍 언어(NL-PL) 코딩 과제</h1>
+    <p>문제는 일반 코딩 문제 형식으로 주어지고, 답안 코드는 <b>자연어 문법</b>으로 작성합니다.</p>
+    <p>지원 문법(미니 버전):</p>
+    <ul>
+      <li><code>x를 3으로 둔다.</code></li>
+      <li><code>만약 a가 b와 같다면 "same"을 출력한다.</code></li>
+      <li><code>그렇지 않다면 "diff"를 출력한다.</code></li>
+      <li><code>만약 a가 b보다 크다면 ...</code> / <code>작다면</code></li>
+      <li><code>x를 1 증가시킨다.</code> / <code>x를 1 감소시킨다.</code></li>
+      <li><code>반복 3번: ...</code></li>
+    </ul>
   </div>
 
+  <div class="card">
+    <h2>1) 문제 선택</h2>
+    <select id="problemSelect"></select>
+    <pre id="problemView"></pre>
+  </div>
+
+  <div class="card row">
+    <div>
+      <h2>2) 자연어 코드 제출</h2>
+      <textarea id="codeInput" rows="16"></textarea>
+      <button id="runBtn">실행/채점</button>
+      <div id="status" class="status">대기 중</div>
+    </div>
+    <div>
+      <h2>3) 실행 결과</h2>
+      <pre id="resultView">(결과 없음)</pre>
+    </div>
+  </div>
+</div>
+
 <script>
-const DEFAULT_DICT = {
-  "그리고":"CONSTRAINT_MERGE","또는":"ALT_BRANCH","먼저":"PRIORITY_UP","가능하면":"SOFT_REQUIRE",
-  "단":"OVERRIDE_PREV","적어도":"LOWER_BOUND","제외하고":"EXCEPT_FILTER","그대로":"IDENTITY_OP",
-  "다만":"CONTEXT_SWITCH","즉":"REWRITE_RULE"
-};
-const SECTION_OVERRIDES = {"[계산]":{"그리고":"SEQ_EVAL"},"[검증]":{"그리고":"CONSTRAINT_MERGE"},"[제약]":{"그리고":"CONSTRAINT_MERGE"}};
-const MODE_OVERRIDES = {"@mode:eval":{"먼저":"PRE_STEP"},"@mode:type":{"먼저":"PRIORITY_UP"}};
-const TOKENS = Object.keys(DEFAULT_DICT).sort((a,b)=>b.length-a.length);
-
-let currentProblem = null;
-
-function fnv1a(str){
-  let h=2166136261;
-  for(let i=0;i<str.length;i++){h ^= str.charCodeAt(i); h = Math.imul(h,16777619);} 
-  return h>>>0;
-}
-
-function resolve(token, ctx, seedOverride){
-  if(ctx.section && SECTION_OVERRIDES[ctx.section]?.[token]) return [SECTION_OVERRIDES[ctx.section][token], `Section>${ctx.section}`];
-  if(ctx.mode && MODE_OVERRIDES[ctx.mode]?.[token]) return [MODE_OVERRIDES[ctx.mode][token], `Mode>${ctx.mode}`];
-  if(ctx.userDefs[token]) return [ctx.userDefs[token], 'UserDefine'];
-  if(seedOverride[token]) return [seedOverride[token], 'SeedOverride'];
-  return [DEFAULT_DICT[token] || 'UNKNOWN', 'Default'];
-}
-
-function parseText(text, seedOverride){
-  const lines = text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  const ctx = {section:null, mode:null, userDefs:{}};
-  const logs = [];
-
-  for(const line of lines){
-    if(["[계산]","[검증]","[제약]"].includes(line)){ctx.section=line; continue;}
-    if(["@mode:eval","@mode:type"].includes(line)){ctx.mode=line; continue;}
-    const def = line.match(/^define\s+token\s+(\S+)\s+as\s+(\S+)$/);
-    if(def){ctx.userDefs[def[1]] = def[2]; continue;}
-    for(const tok of TOKENS){
-      let start=0;
-      while(true){
-        const idx=line.indexOf(tok,start);
-        if(idx<0) break;
-        const [sense, rule] = resolve(tok, ctx, seedOverride);
-        logs.push({token:tok, sense, rule, line, section:ctx.section, mode:ctx.mode, span:[idx, idx+tok.length]});
-        start=idx+tok.length;
-      }
-    }
+const problems = [
+  {
+    id:'p1',
+    title:'문제 1: if (a == b)',
+    desc:'입력 a, b가 주어진다. a와 b가 같으면 "same", 다르면 "diff"를 출력하라.',
+    tests:[{a:3,b:3,out:['same']},{a:3,b:1,out:['diff']},{a:-2,b:-2,out:['same']}],
+    starter:`만약 a가 b와 같다면 "same"을 출력한다.
+그렇지 않다면 "diff"를 출력한다.`
+  },
+  {
+    id:'p2',
+    title:'문제 2: if (a > b)',
+    desc:'입력 a, b가 주어진다. a가 b보다 크면 "left", 그렇지 않으면 "right"를 출력하라.',
+    tests:[{a:5,b:2,out:['left']},{a:1,b:4,out:['right']},{a:7,b:7,out:['right']}],
+    starter:`만약 a가 b보다 크다면 "left"를 출력한다.
+그렇지 않다면 "right"를 출력한다.`
+  },
+  {
+    id:'p3',
+    title:'문제 3: 반복 + 출력',
+    desc:'입력 n이 주어진다. "ping"을 n번 출력하라.',
+    tests:[{n:1,out:['ping']},{n:3,out:['ping','ping','ping']},{n:0,out:[]}],
+    starter:`반복 n번:
+  "ping"을 출력한다.`
   }
-  return {ctx, logs};
-}
+];
 
-function generateProblem(studentId, type){
-  const seed = fnv1a(`CSE307:${studentId}:${type}`);
-  const section = ["[계산]","[검증]","[제약]"][seed % 3];
-  const mode = ["@mode:eval","@mode:type"][seed % 2];
-  const tokenPool = ["그리고","먼저","다만","단","가능하면","그대로"];
-  const targetToken = tokenPool[seed % tokenPool.length];
+const select = document.getElementById('problemSelect');
+const problemView = document.getElementById('problemView');
+const codeInput = document.getElementById('codeInput');
+const statusEl = document.getElementById('status');
+const resultView = document.getElementById('resultView');
 
-  const overrideSense = (seed % 4 === 0) ? "SEQ_EVAL" : null;
-  const defineLine = overrideSense && targetToken === "그리고" ? `define token 그리고 as ${overrideSense}` : "";
-  const body = `${section}\n${mode}\n${defineLine}\nA를 만족하고 ${targetToken} B를 적용한다. 다만 C는 그대로 둔다.`.replace(/\n\n+/g,'\n');
-
-  const seedOverride = (seed % 5 === 0) ? {"그대로":"FREEZE_ENV"} : {};
-  const parsed = parseText(body, seedOverride);
-
-  let question = "";
-  let expected = {};
-
-  const first = parsed.logs.find(x=>x.token===targetToken) || parsed.logs[0];
-
-  if(type === 'sense'){
-    question = `토큰 '${targetToken}'의 최종 의미(sense)를 쓰세요.`;
-    expected = {token: targetToken, sense: first.sense};
-  } else if(type === 'count'){
-    const count = parsed.logs.filter(x=>x.token===targetToken).length;
-    question = `토큰 '${targetToken}'는 본문에서 몇 번 해석되나요?`;
-    expected = {token: targetToken, count};
-  } else {
-    question = `토큰 '${targetToken}'의 의미가 결정된 규칙(rule)을 쓰세요.`;
-    expected = {token: targetToken, rule: first.rule};
-  }
-
-  return {seed, section, mode, targetToken, text:body, type, expected, parsed, seedOverride, question};
-}
-
-function grade(answer, problem){
-  const exp = problem.expected;
-  const details = [];
-  let score = 0;
-
-  if(answer.token === exp.token){score += 30; details.push('token 일치 (+30)');}
-  else details.push(`token 불일치 (expected=${exp.token}, got=${answer.token})`);
-
-  if(problem.type === 'sense'){
-    if(answer.sense === exp.sense){score += 70; details.push('sense 일치 (+70)');}
-    else details.push(`sense 불일치 (expected=${exp.sense}, got=${answer.sense})`);
-  } else if(problem.type === 'count'){
-    if(Number(answer.count) === Number(exp.count)){score += 70; details.push('count 일치 (+70)');}
-    else details.push(`count 불일치 (expected=${exp.count}, got=${answer.count})`);
-  } else {
-    if(answer.rule === exp.rule){score += 70; details.push('rule 일치 (+70)');}
-    else details.push(`rule 불일치 (expected=${exp.rule}, got=${answer.rule})`);
-  }
-
-  return {score, pass: score >= 80, details, expected: exp, answer};
-}
-
-function renderTable(logs){
-  const wrap = document.getElementById('tableWrap');
-  if(!logs || !logs.length){ wrap.innerHTML=''; return; }
-  const rows = logs.map((x,i)=>`<tr><td>${i+1}</td><td>${x.token}</td><td>${x.sense}</td><td>${x.rule}</td><td>${x.section||'-'}</td><td>${x.mode||'-'}</td></tr>`).join('');
-  wrap.innerHTML = `<table><thead><tr><th>#</th><th>token</th><th>sense</th><th>rule</th><th>section</th><th>mode</th></tr></thead><tbody>${rows}</tbody></table>`;
-}
-
-document.getElementById('genBtn').addEventListener('click', ()=>{
-  const sid = document.getElementById('studentId').value.trim();
-  const type = document.getElementById('problemType').value;
-  currentProblem = generateProblem(sid, type);
-
-  document.getElementById('problemText').textContent =
-`[문항]\n${currentProblem.question}\n\n[본문]\n${currentProblem.text}\n\n(학생별 seed: ${currentProblem.seed})`;
-
-  document.getElementById('problemStatus').className='status ok';
-  document.getElementById('problemStatus').textContent='문제 생성 완료. 아래 답안을 작성해서 제출하세요.';
-
-  document.getElementById('gradeStatus').className='status warn';
-  document.getElementById('gradeStatus').textContent='새 문제 생성됨. 아직 제출하지 않았습니다.';
-  document.getElementById('gradeDetail').textContent='(결과 없음)';
-  document.getElementById('tableWrap').innerHTML='';
-
-  if(type==='sense'){
-    document.getElementById('answerText').value = JSON.stringify({token: currentProblem.targetToken, sense: ""}, null, 2);
-  } else if(type==='count'){
-    document.getElementById('answerText').value = JSON.stringify({token: currentProblem.targetToken, count: 0}, null, 2);
-  } else {
-    document.getElementById('answerText').value = JSON.stringify({token: currentProblem.targetToken, rule: ""}, null, 2);
-  }
+problems.forEach((p,i)=>{
+  const o=document.createElement('option');
+  o.value=p.id;o.textContent=p.title; if(i===0) o.selected=true; select.appendChild(o);
 });
 
-document.getElementById('submitBtn').addEventListener('click', ()=>{
-  if(!currentProblem){
-    document.getElementById('gradeStatus').className='status bad';
-    document.getElementById('gradeStatus').textContent='먼저 문제를 생성하세요.';
-    return;
+function currentProblem(){ return problems.find(p=>p.id===select.value); }
+
+function refreshProblem(){
+  const p=currentProblem();
+  problemView.textContent=`${p.title}\n\n${p.desc}\n\n샘플 테스트 수: ${p.tests.length}`;
+  codeInput.value=p.starter;
+  statusEl.className='status'; statusEl.textContent='대기 중';
+  resultView.textContent='(결과 없음)';
+}
+select.addEventListener('change',refreshProblem);
+refreshProblem();
+
+function parseExpr(raw, env){
+  const s = raw.trim();
+  if(/^[-]?\d+$/.test(s)) return Number(s);
+  if(/^".*"$/.test(s)) return s.slice(1,-1);
+  if(Object.prototype.hasOwnProperty.call(env,s)) return env[s];
+  throw new Error(`알 수 없는 식: ${s}`);
+}
+
+function evalCond(line, env){
+  // 만약 a가 b와 같다면 ...
+  let m = line.match(/^만약\s+(.+?)가\s+(.+?)와\s+같다면\s*(.*)$/);
+  if(m){ return {ok: parseExpr(m[1],env)===parseExpr(m[2],env), rest:m[3]}; }
+  m = line.match(/^만약\s+(.+?)가\s+(.+?)보다\s+크다면\s*(.*)$/);
+  if(m){ return {ok: parseExpr(m[1],env)>parseExpr(m[2],env), rest:m[3]}; }
+  m = line.match(/^만약\s+(.+?)가\s+(.+?)보다\s+작다면\s*(.*)$/);
+  if(m){ return {ok: parseExpr(m[1],env)<parseExpr(m[2],env), rest:m[3]}; }
+  return null;
+}
+
+function runNLPL(code, input){
+  const env = {...input};
+  const out = [];
+  const lines = code.split(/\r?\n/).map(x=>x.replace(/\t/g,'  '));
+
+  function runBlock(blockLines){
+    for(let i=0;i<blockLines.length;i++){
+      const raw = blockLines[i].trim();
+      if(!raw) continue;
+
+      // assignment: x를 3으로 둔다.
+      let m = raw.match(/^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\s+(.+?)으로\s+둔다\.?$/);
+      if(m){ env[m[1]] = parseExpr(m[2], env); continue; }
+
+      // increase/decrease
+      m = raw.match(/^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\s+([0-9]+)\s+증가시킨다\.?$/);
+      if(m){ env[m[1]] = (env[m[1]] ?? 0) + Number(m[2]); continue; }
+      m = raw.match(/^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\s+([0-9]+)\s+감소시킨다\.?$/);
+      if(m){ env[m[1]] = (env[m[1]] ?? 0) - Number(m[2]); continue; }
+
+      // print
+      m = raw.match(/^(.+?)을\s+출력한다\.?$/);
+      if(m){ out.push(String(parseExpr(m[1], env))); continue; }
+
+      // repeat n번:
+      m = raw.match(/^반복\s+(.+?)번:\s*$/);
+      if(m){
+        const n = Number(parseExpr(m[1], env));
+        const nested = [];
+        let j=i+1;
+        while(j<blockLines.length){
+          const ln=blockLines[j];
+          if(/^\s{2,}/.test(ln)) nested.push(ln.replace(/^\s{2}/,''));
+          else break;
+          j++;
+        }
+        i = j-1;
+        for(let k=0;k<n;k++) runBlock(nested);
+        continue;
+      }
+
+      // if ... then inline action
+      const c = evalCond(raw, env);
+      if(c){
+        if(c.ok){ if(c.rest) runBlock([c.rest]); }
+        else {
+          const next = (blockLines[i+1]||'').trim();
+          const e = next.match(/^그렇지\s*않다면\s*(.*)$/);
+          if(e){
+            if(e[1]) runBlock([e[1]]);
+            i += 1;
+          }
+        }
+        continue;
+      }
+
+      // else inline only
+      if(/^그렇지\s*않다면/.test(raw)) continue;
+
+      throw new Error(`해석 불가 문장: ${raw}`);
+    }
   }
-  let answer;
-  try { answer = JSON.parse(document.getElementById('answerText').value); }
-  catch(e){
-    document.getElementById('gradeStatus').className='status bad';
-    document.getElementById('gradeStatus').textContent='답안 JSON 파싱 오류: ' + e.message;
-    return;
+
+  runBlock(lines);
+  return {output: out, env};
+}
+
+function grade(code, problem){
+  const details=[];
+  let passed=0;
+  for(const [idx,t] of problem.tests.entries()){
+    try{
+      const r = runNLPL(code,t);
+      const ok = JSON.stringify(r.output)===JSON.stringify(t.out);
+      if(ok) passed++;
+      details.push({test:idx+1,input:t,expected:t.out,got:r.output,ok,env:r.env});
+    }catch(e){
+      details.push({test:idx+1,input:t,error:String(e),ok:false});
+    }
   }
+  return {passed,total:problem.tests.length,score:Math.round((passed/problem.tests.length)*100),details};
+}
 
-  const result = grade(answer, currentProblem);
-  document.getElementById('gradeStatus').className = result.pass ? 'status ok' : 'status bad';
-  document.getElementById('gradeStatus').textContent = result.pass ? `통과 (${result.score}점)` : `실패 (${result.score}점)`;
-
-  document.getElementById('gradeDetail').textContent = JSON.stringify({
-    question: currentProblem.question,
-    expected: result.expected,
-    answer: result.answer,
-    details: result.details,
-    seedOverride: currentProblem.seedOverride
-  }, null, 2);
-
-  renderTable(currentProblem.parsed.logs);
+document.getElementById('runBtn').addEventListener('click',()=>{
+  const p=currentProblem();
+  const code=codeInput.value;
+  const g=grade(code,p);
+  const pass = g.passed===g.total;
+  statusEl.className = 'status ' + (pass?'ok':'bad');
+  statusEl.textContent = pass ? `통과 (${g.score}점, ${g.passed}/${g.total})` : `실패 (${g.score}점, ${g.passed}/${g.total})`;
+  resultView.textContent = JSON.stringify(g,null,2);
 });
 </script>
 </body>
