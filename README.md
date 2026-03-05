@@ -52,3 +52,14 @@ python3 -m http.server 8080
 The demo showcases:
 - seeded assignment variant generation
 - output + trace-aware verification logic
+
+## OCaml ↔ Web Bridge (Demo)
+Generate a sample submission JSON from OCaml stub and load it in the web UI:
+```bash
+./scripts/generate_sample_submission.sh
+# then upload demo/submission.json in the browser
+```
+
+## GitHub Pages
+A workflow is included at `.github/workflows/pages.yml`.
+After enabling Pages in repo settings, web demo will deploy from `web/`.
