@@ -46,3 +46,17 @@ python3 tools/nldsl_parser.py examples/nldsl-input-1.txt --seed-dict examples/se
 - 적용된 섹션/모드
 - 토큰 의미(sense)
 - 어떤 규칙으로 결정됐는지(rule)
+
+
+## 웹 인터페이스 (설명 + 제출 + 실행 결과)
+`web/index.html`에서 다음을 한 번에 제공합니다.
+- 파서 로직 설명
+- NL-DSL 입력 제출
+- seed override(JSON) 입력
+- 실행 결과(JSON 해석 로그) 출력
+
+로컬 실행:
+```bash
+cd web
+python3 -m http.server 8080
+```
