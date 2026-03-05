@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TraceLang + GuardLab Demo</title>
+  <style>
+    :root { --bg:#0b1020; --card:#121a33; --muted:#9fb0d0; --text:#e8efff; --ok:#2ecc71; --bad:#ff5d73; --accent:#6ea8ff; }
+    body{margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(135deg,#0a0f1d,#111b35);color:var(--text)}
+    .wrap{max-width:980px;margin:40px auto;padding:0 16px}
+    .card{background:var(--card);border:1px solid #223055;border-radius:14px;padding:18px;margin-bottom:16px}
+    h1{margin:0 0 8px} h2{margin:0 0 10px;font-size:1.1rem}
+    p,li{color:var(--muted)} code{background:#0d1530;padding:2px 6px;border-radius:6px}
+    textarea,input,button,select{font:inherit}
+    textarea,input{width:100%;background:#0d1530;color:var(--text);border:1px solid #2a3b6c;border-radius:10px;padding:10px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    button{background:var(--accent);color:#03112d;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .result{font-weight:700;padding:10px;border-radius:10px}
+    .ok{background:rgba(46,204,113,.15);color:var(--ok)} .bad{background:rgba(255,93,115,.15);color:var(--bad)}
+    .small{font-size:.9rem;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>TraceLang + GuardLab</h1>
+      <p>Cheating-resistant assignment demo for CSE307. This prototype validates both <b>output</b> and <b>trace constraints</b>.</p>
+      <p class="small">Project repo includes proposal/design docs and OCaml skeleton.</p>
+    </div>
+
+    <div class="card">
+      <h2>1) Seeded Assignment Instance</h2>
+      <div class="grid">
+        <div>
+          <label class="small">Student ID</label>
+          <input id="studentId" value="20260001" />
+        </div>
+        <div>
+          <label class="small">Assignment ID</label>
+          <input id="assignmentId" value="HWX" />
+        </div>
+      </div>
+      <button id="genBtn" style="margin-top:10px">Generate Variant</button>
+      <p id="variant" class="small"></p>
+    </div>
+
+    <div class="card">
+      <h2>2) Submission Check (Output + Trace)</h2>
+      <div class="grid">
+        <div>
+          <label class="small">Expected Output</label>
+          <input id="expected" value="42" />
+        </div>
+        <div>
+          <label class="small">Submitted Output</label>
+          <input id="actual" value="42" />
+        </div>
+      </div>
+      <label class="small" style="display:block;margin-top:10px">Trace (JSON array)</label>
+      <textarea id="trace" rows="8">[
+  {"event":"EvalStart","node":"if"},
+  {"event":"BranchTaken","node":"if","value":"then"},
+  {"event":"UserEmit","tag":"checkpoint","value":1},
+  {"event":"EvalEnd","node":"if","value":42}
+]</textarea>
+      <button id="verifyBtn" style="margin-top:10px">Verify Submission</button>
+      <div id="result" class="result" style="margin-top:10px">Ready.</div>
+      <ul class="small">
+        <li>Required events: <code>EvalStart</code>, <code>BranchTaken</code>, <code>UserEmit</code>, <code>EvalEnd</code></li>
+        <li>Order constraint: <code>EvalStart</code> must appear before <code>EvalEnd</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const req = ["EvalStart","BranchTaken","UserEmit","EvalEnd"];
+
+    function hashSeed(text){
+      let h=2166136261;
+      for(const ch of text){ h ^= ch.charCodeAt(0); h = Math.imul(h,16777619); }
+      return (h>>>0);
+    }
+
+    document.getElementById('genBtn').addEventListener('click',()=>{
+      const sid = document.getElementById('studentId').value.trim();
+      const aid = document.getElementById('assignmentId').value.trim();
+      const seed = hashSeed(`${sid}:${aid}:CSE307`);
+      const k = (seed % 7) + 3;
+      const hidden = [seed % 13, (seed>>3)%13, (seed>>6)%13].map(n => Math.abs(n));
+      document.getElementById('variant').textContent = `seed=${seed}, parameter k=${k}, hiddenCaseIDs=[${hidden.join(', ')}]`;
+    });
+
+    document.getElementById('verifyBtn').addEventListener('click',()=>{
+      const expected = document.getElementById('expected').value.trim();
+      const actual = document.getElementById('actual').value.trim();
+      const result = document.getElementById('result');
+
+      let trace;
+      try { trace = JSON.parse(document.getElementById('trace').value); }
+      catch(e){
+        result.className='result bad';
+        result.textContent='FAIL: trace JSON parse error';
+        return;
+      }
+      const events = trace.map(x=>x.event);
+      const missing = req.filter(r=>!events.includes(r));
+      const start = events.indexOf('EvalStart');
+      const end = events.lastIndexOf('EvalEnd');
+      const outOk = (expected===actual);
+      const orderOk = start !== -1 && end !== -1 && start < end;
+
+      if(!outOk){
+        result.className='result bad';
+        result.textContent='FAIL: output mismatch';
+      } else if(missing.length){
+        result.className='result bad';
+        result.textContent=`FAIL: missing required events (${missing.join(', ')})`;
+      } else if(!orderOk){
+        result.className='result bad';
+        result.textContent='FAIL: invalid event order (EvalStart must be before EvalEnd)';
+      } else {
+        result.className='result ok';
+        result.textContent='PASS: output and trace constraints satisfied';
+      }
+    });
+  </script>
+</body>
+</html>

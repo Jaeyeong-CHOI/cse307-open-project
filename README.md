@@ -38,3 +38,17 @@ This project proposes a **process-aware** grading model: students submit both ou
 2. Implement parser/interpreter skeleton in OCaml
 3. Build verifier with hidden tests + trace checks
 4. Prepare demo and evaluation results
+
+## Web Demo
+A lightweight demo UI is included in `web/index.html`.
+
+Run locally:
+```bash
+cd web
+python3 -m http.server 8080
+# then open http://localhost:8080
+```
+
+The demo showcases:
+- seeded assignment variant generation
+- output + trace-aware verification logic
