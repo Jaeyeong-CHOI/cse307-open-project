@@ -60,3 +60,14 @@ python3 tools/nldsl_parser.py examples/nldsl-input-1.txt --seed-dict examples/se
 cd web
 python3 -m http.server 8080
 ```
+
+
+## 학생 과제 풀이 웹 인터페이스
+`web/index.html`은 학생이 직접 문제를 풀고 제출/채점까지 수행하는 UI를 제공합니다.
+
+기능:
+- 학번 기반 문제 생성(seed)
+- 문항 유형 선택(의미/개수/규칙)
+- JSON 답안 제출
+- 즉시 점수/통과 여부 표시
+- 해석 로그 테이블 확인
