@@ -3,101 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TraceLang + GuardLab 데모</title>
-  <script type="module">
-    import React, { useMemo, useState } from 'https://esm.sh/react@18.3.1';
-    import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
-
-    const req = ["EvalStart","UserEmit","EvalEnd"];
-    const hashSeed = (text) => {
-      let h=2166136261;
-      for(const ch of text){ h ^= ch.charCodeAt(0); h = Math.imul(h,16777619); }
-      return (h>>>0);
-    };
-
-    function App(){
-      const [studentId,setStudentId] = useState('20260001');
-      const [assignmentId,setAssignmentId] = useState('HWX');
-      const [expected,setExpected] = useState('42');
-      const [actual,setActual] = useState('42');
-      const [traceText,setTraceText] = useState('[\n  {"event":"EvalStart","node":"expr"},\n  {"event":"UserEmit","tag":"checkpoint","value":1},\n  {"event":"EvalEnd","node":"expr","value":42}\n]');
-      const [result,setResult] = useState('준비 완료');
-      const [ok,setOk] = useState(null);
-
-      const variant = useMemo(()=>{
-        const seed = hashSeed(`${studentId}:${assignmentId}:CSE307`);
-        const k = (seed % 7) + 3;
-        const hidden = [seed % 13, (seed>>3)%13, (seed>>6)%13].map(n => Math.abs(n));
-        return `seed=${seed}, 파라미터 k=${k}, hiddenCaseIDs=[${hidden.join(', ')}]`;
-      },[studentId,assignmentId]);
-
-      const verify = () => {
-        let trace;
-        try { trace = JSON.parse(traceText); }
-        catch { setOk(false); setResult('실패: trace JSON 파싱 오류'); return; }
-        const events = trace.map(x=>x.event);
-        const missing = req.filter(r=>!events.includes(r));
-        const outOk = expected===actual;
-        const orderOk = events.indexOf('EvalStart') < events.lastIndexOf('EvalEnd');
-        if(!outOk){ setOk(false); setResult('실패: 출력값 불일치'); }
-        else if(missing.length){ setOk(false); setResult(`실패: 필수 이벤트 누락 (${missing.join(', ')})`); }
-        else if(!orderOk){ setOk(false); setResult('실패: 이벤트 순서 오류'); }
-        else { setOk(true); setResult('통과: 출력값 및 trace 제약 만족'); }
-      };
-
-      const onFile = async (e) => {
-        const file = e.target.files?.[0];
-        if(!file) return;
-        const txt = await file.text();
-        try {
-          const json = JSON.parse(txt);
-          if(json.output !== undefined) setActual(String(json.output));
-          if(Array.isArray(json.trace)) setTraceText(JSON.stringify(json.trace, null, 2));
-          setOk(null); setResult('OCaml 실행 결과 JSON을 불러왔습니다.');
-        } catch {
-          setOk(false); setResult('업로드한 JSON 파일을 파싱할 수 없습니다.');
-        }
-      };
-
-      return React.createElement('div', {className:'wrap'},
-        React.createElement('h1', null, 'TraceLang + GuardLab (웹 데모)'),
-        React.createElement('p', {className:'small'}, 'React 기반 데모 + OCaml 실행 결과 JSON 연동'),
-        React.createElement('div', {className:'card'},
-          React.createElement('h2', null, '1) Seed 기반 과제 변형'),
-          React.createElement('input', {value:studentId, onChange:e=>setStudentId(e.target.value), placeholder:'학번(Student ID)'}),
-          React.createElement('input', {value:assignmentId, onChange:e=>setAssignmentId(e.target.value), placeholder:'과제 ID'}),
-          React.createElement('p', {className:'small'}, variant)
-        ),
-        React.createElement('div', {className:'card'},
-          React.createElement('h2', null, '2) OCaml 출력 JSON 불러오기'),
-          React.createElement('input', {type:'file', accept:'application/json', onChange:onFile}),
-          React.createElement('p', {className:'small'}, 'scripts/generate_sample_submission.sh로 생성한 demo/submission.json 사용')
-        ),
-        React.createElement('div', {className:'card'},
-          React.createElement('h2', null, '3) 검증'),
-          React.createElement('input', {value:expected, onChange:e=>setExpected(e.target.value), placeholder:'기대 출력값'}),
-          React.createElement('input', {value:actual, onChange:e=>setActual(e.target.value), placeholder:'제출 출력값'}),
-          React.createElement('textarea', {rows:8, value:traceText, onChange:e=>setTraceText(e.target.value)}),
-          React.createElement('button', {onClick:verify}, '검증 실행'),
-          React.createElement('div', {className: ok===null ? 'result' : ok ? 'result ok' : 'result bad'}, result)
-        )
-      );
-    }
-
-    createRoot(document.getElementById('app')).render(React.createElement(App));
-  </script>
+  <title>CSE307 프로젝트 리셋 메모</title>
   <style>
-    body{margin:0;background:#0f1630;color:#eaf0ff;font-family:Inter,system-ui,sans-serif}
-    .wrap{max-width:900px;margin:30px auto;padding:0 16px}
-    .card{background:#152042;border:1px solid #2a3c70;border-radius:10px;padding:14px;margin:12px 0}
-    input,textarea,button{width:100%;margin:6px 0;padding:10px;border-radius:8px;border:1px solid #334c8f;background:#0e1733;color:#eaf0ff}
-    button{background:#7aa2ff;color:#09142f;font-weight:700;cursor:pointer}
-    .small{color:#9fb0d0}
-    .result{margin-top:8px;padding:10px;border-radius:8px;background:#1b274d}
-    .ok{background:#1f4a37;color:#b6ffd5}.bad{background:#4f2330;color:#ffc1cc}
+    body{margin:0;background:#0f1630;color:#eaf0ff;font-family:system-ui,sans-serif}
+    .wrap{max-width:860px;margin:40px auto;padding:0 16px}
+    .card{background:#152042;border:1px solid #2a3c70;border-radius:12px;padding:16px;margin:12px 0}
+    h1,h2{margin:0 0 10px}
+    li,p{color:#b8c6e8}
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div class="wrap">
+    <div class="card">
+      <h1>CSE307 오픈 프로젝트 (리셋)</h1>
+      <p>기존 핵심 아이디어를 잠정 제거하고, 목표/방법을 재설계 중입니다.</p>
+    </div>
+    <div class="card">
+      <h2>새 목표</h2>
+      <ul>
+        <li>AI 시대에 맞는 실질 학습 평가 구조 설계</li>
+        <li>운영 가능한 채점/검증 프로세스 구축</li>
+        <li>학생 이해도 중심의 평가 지표 설계</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>새 방법(가안)</h2>
+      <ul>
+        <li>제출물 평가 + 현장 수정 + 구두 검증 결합</li>
+        <li>학생별 과제 변형</li>
+        <li>실패 로그/설계 근거 제출</li>
+      </ul>
+    </div>
+  </div>
 </body>
 </html>
