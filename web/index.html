@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSE307 AI-FAIL-PL Shell</title>
+  <title>CSE307 AI-FAIL-PL Python Shell</title>
   <style>
     :root{--bg:#f6f8fb;--card:#fff;--text:#191f28;--sub:#6b7684;--line:#e5e8eb;--p:#3182f6;--ok:#00a15f;--bad:#d14343}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
     .container{max-width:1180px;margin:0 auto;padding:28px 20px 50px}
     .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
-    h1,h2{margin:0 0 10px}.muted{color:var(--sub)} .badge{display:inline-block;background:#e8f1ff;color:#1f6feb;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px}
-    .grid{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:1080px){.grid{grid-template-columns:1.1fr 1fr}}
-    input,textarea,select,button{font:inherit} input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
-    textarea{min-height:210px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace}
+    h1,h2{margin:0 0 10px}.muted{color:var(--sub)}
+    .badge{display:inline-block;background:#e8f1ff;color:#1f6feb;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:1080px){.grid{grid-template-columns:1fr 1fr}}
+    input,textarea,button{font:inherit} input,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
+    textarea{min-height:260px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace}
     .label{display:block;font-size:13px;color:var(--sub);margin:8px 0 6px}
     .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
     .pri{background:var(--p);color:#fff}.soft{background:#eef2f7;color:#334155}
     .status{margin-top:10px;padding:10px 12px;border-radius:10px;background:#f2f4f6;color:#4e5968;font-weight:700}
     .ok{background:#ecfff6;color:var(--ok)} .bad{background:#fff1f1;color:var(--bad)}
-    .box{white-space:pre-wrap;background:#fafbfc;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:100px}
-    .result{background:#0f1724;color:#d9e3f0;min-height:280px;overflow:auto}
-    .rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:760px){.rule-grid{grid-template-columns:1fr}}
-    .rule{border:1px dashed #d9dee5;border-radius:12px;padding:10px}
+    .box{white-space:pre-wrap;background:#fafbfc;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:120px}
+    .result{background:#0f1724;color:#d9e3f0;min-height:240px;overflow:auto}
+    .map-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:760px){.map-grid{grid-template-columns:1fr}}
+    .map-item{border:1px dashed #d9dee5;border-radius:12px;padding:10px}
     code{background:#eef2f7;padding:2px 5px;border-radius:6px}
   </style>
 </head>
@@ -30,190 +32,193 @@
 <div class="container">
   <div class="card">
     <span class="badge">CSE307 · AI-FAIL-PL</span>
-    <h1>파이썬 문법 커스텀 코딩 셸</h1>
-    <p class="muted">맞아, 키워드만 바꾸는 게 아니라 <b>문법 문장 자체</b>를 바꿀 수 있게 만들었어. 아래 규칙 템플릿을 수정하면 파서가 그 문법으로 해석해.</p>
-    <p class="muted">플레이스홀더: <code>{var}</code> <code>{expr}</code> <code>{left}</code> <code>{right}</code> <code>{stmt}</code> <code>{count}</code> <code>{num}</code></p>
+    <h1>Python 문법 유지 + 키워드 별칭 변경</h1>
+    <p class="muted">요청대로 <b>Python 문법은 그대로</b> 유지하고, <code>if</code>/<code>def</code>/<code>for</code> 같은 키워드 이름만 네가 원하는 별칭으로 바꿔 쓸 수 있게 구성했어.</p>
+    <p class="muted">실행 전에 별칭 코드를 실제 Python 코드로 치환한 뒤 Pyodide 인터프리터로 실행한다.</p>
+  </div>
+
+  <div class="card">
+    <h2>키워드 별칭 설정</h2>
+    <div id="mapGrid" class="map-grid"></div>
+    <div class="btns">
+      <button class="soft" id="resetMapBtn">기본값 복원</button>
+    </div>
+    <p class="muted">예: <code>if</code>의 별칭을 <code>만약</code>으로 바꾸면, 코드에서 <code>만약 x &gt; 0:</code> 형태로 작성 가능.</p>
   </div>
 
   <div class="grid">
-    <div>
-      <div class="card">
-        <h2>1) 문제</h2>
-        <label class="label">문제 선택</label>
-        <select id="problemSelect"></select>
-        <div id="problemView" class="box"></div>
-      </div>
+    <div class="card">
+      <h2>AI-FAIL-PL 코드 입력</h2>
+      <textarea id="codeInput">def fib(n):
+    if n <= 1:
+        return n
+    return fib(n-1) + fib(n-2)
 
-      <div class="card">
-        <h2>2) 문법 규칙 설정 (직접 변경)</h2>
-        <div class="rule-grid" id="ruleGrid"></div>
-        <div class="btns">
-          <button class="soft" id="resetGrammarBtn">기본 문법 복원</button>
-          <button class="soft" id="applyStarterBtn">현재 문법으로 스타터 재생성</button>
-        </div>
+for i in range(7):
+    print(i, fib(i))
+</textarea>
+      <div class="btns">
+        <button class="pri" id="runBtn">실행</button>
+        <button class="soft" id="clearBtn">출력 지우기</button>
       </div>
+      <div id="status" class="status">Pyodide 로딩 중...</div>
     </div>
 
-    <div>
-      <div class="card">
-        <h2>3) 코드 제출</h2>
-        <label class="label">AI-FAIL-PL 코드</label>
-        <textarea id="codeInput"></textarea>
-        <div class="btns">
-          <button class="pri" id="runBtn">실행/채점</button>
-          <button class="soft" id="resetCodeBtn">스타터 복원</button>
-        </div>
-        <div id="status" class="status">대기 중</div>
-      </div>
-      <div class="card">
-        <h2>4) 결과</h2>
-        <div id="resultView" class="box result">(결과 없음)</div>
-      </div>
+    <div class="card">
+      <h2>변환된 Python 코드</h2>
+      <div id="pyCodeView" class="box"></div>
+      <h2 style="margin-top:14px">실행 결과</h2>
+      <div id="resultView" class="box result"></div>
     </div>
   </div>
 </div>
 
-<script>
-const DEFAULT_GRAMMAR = {
-  assign: '{var}를 {expr}으로 둔다',
-  ifEq: '만약 {left}가 {right}와 같다면 {stmt}',
-  ifGt: '만약 {left}가 {right}보다 크다면 {stmt}',
-  ifLt: '만약 {left}가 {right}보다 작다면 {stmt}',
-  elseLine: '그렇지 않다면 {stmt}',
-  repeat: '반복 {count}번:',
-  print: '{expr}을 출력한다',
-  inc: '{var}를 {num} 증가시킨다',
-  dec: '{var}를 {num} 감소시킨다'
-};
-let G = {...DEFAULT_GRAMMAR};
+<script type="module">
+  import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.mjs";
 
-const RULE_META = [
-  ['assign','할당'],['ifEq','if =='],['ifGt','if >'],['ifLt','if <'],
-  ['elseLine','else'],['repeat','반복'],['print','출력'],['inc','증가'],['dec','감소']
-];
+  const DEFAULT_ALIAS = {
+    if: 'if',
+    elif: 'elif',
+    else: 'else',
+    def: 'def',
+    for: 'for',
+    while: 'while',
+    in: 'in',
+    return: 'return',
+    print: 'print',
+    range: 'range'
+  };
 
-const problems = [
-  {id:'p1',title:'if (a == b)',desc:'a,b가 같으면 same 아니면 diff 출력',tests:[{a:3,b:3,out:['same']},{a:2,b:1,out:['diff']}],starter:(g)=>`${g.ifEq.replace('{left}','a').replace('{right}','b').replace('{stmt}','"same"을 출력한다')}\n${g.elseLine.replace('{stmt}','"diff"을 출력한다')}`},
-  {id:'p2',title:'if (a > b)',desc:'a>b면 left 아니면 right 출력',tests:[{a:5,b:2,out:['left']},{a:1,b:4,out:['right']}],starter:(g)=>`${g.ifGt.replace('{left}','a').replace('{right}','b').replace('{stmt}','"left"을 출력한다')}\n${g.elseLine.replace('{stmt}','"right"을 출력한다')}`},
-  {id:'p3',title:'repeat n',desc:'n번 ping 출력',tests:[{n:1,out:['ping']},{n:3,out:['ping','ping','ping']}],starter:(g)=>`${g.repeat.replace('{count}','n')}\n  "ping"을 출력한다`}
-];
+  let alias = JSON.parse(localStorage.getItem('aifailpl_alias') || 'null') || { ...DEFAULT_ALIAS };
+  let pyodide = null;
 
-const select=document.getElementById('problemSelect');
-const problemView=document.getElementById('problemView');
-const codeInput=document.getElementById('codeInput');
-const statusEl=document.getElementById('status');
-const resultView=document.getElementById('resultView');
-const ruleGrid=document.getElementById('ruleGrid');
+  const mapGrid = document.getElementById('mapGrid');
+  const codeInput = document.getElementById('codeInput');
+  const pyCodeView = document.getElementById('pyCodeView');
+  const resultView = document.getElementById('resultView');
+  const statusEl = document.getElementById('status');
 
-problems.forEach((p,i)=>{const o=document.createElement('option');o.value=p.id;o.textContent=`문제 ${i+1}: ${p.title}`;select.appendChild(o)});
+  function saveAlias(){ localStorage.setItem('aifailpl_alias', JSON.stringify(alias)); }
 
-function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-function templateToRegex(tpl, map){
-  let p = esc(tpl.trim());
-  for(const [k,rg] of Object.entries(map)) p = p.replace(new RegExp(esc('{'+k+'}'),'g'), `(${rg})`);
-  return new RegExp(`^${p}\\.?$`);
-}
-
-function compileGrammar(g){
-  return {
-    assign: templateToRegex(g.assign,{var:'[a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*',expr:'.+?'}),
-    ifEq: templateToRegex(g.ifEq,{left:'.+?',right:'.+?',stmt:'.*'}),
-    ifGt: templateToRegex(g.ifGt,{left:'.+?',right:'.+?',stmt:'.*'}),
-    ifLt: templateToRegex(g.ifLt,{left:'.+?',right:'.+?',stmt:'.*'}),
-    elseLine: templateToRegex(g.elseLine,{stmt:'.*'}),
-    repeat: templateToRegex(g.repeat,{count:'.+?'}),
-    print: templateToRegex(g.print,{expr:'.+?'}),
-    inc: templateToRegex(g.inc,{var:'[a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*',num:'[0-9]+'}),
-    dec: templateToRegex(g.dec,{var:'[a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*',num:'[0-9]+'}),
+  function renderAliasUI(){
+    mapGrid.innerHTML = '';
+    for (const pyKw of Object.keys(DEFAULT_ALIAS)){
+      const div = document.createElement('div');
+      div.className = 'map-item';
+      div.innerHTML = `<label class="label">Python <code>${pyKw}</code> 별칭</label><input data-k="${pyKw}" value="${alias[pyKw] || pyKw}">`;
+      mapGrid.appendChild(div);
+    }
+    mapGrid.querySelectorAll('input[data-k]').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        const k = e.target.dataset.k;
+        alias[k] = e.target.value.trim() || k;
+        saveAlias();
+        previewTransform();
+      });
+    });
   }
-}
 
-function parseExpr(raw, env){
-  const s=raw.trim();
-  if(/^[-]?\d+$/.test(s)) return Number(s);
-  if(/^".*"$/.test(s)) return s.slice(1,-1);
-  if(Object.prototype.hasOwnProperty.call(env,s)) return env[s];
-  throw new Error(`알 수 없는 식: ${s}`);
-}
+  function isWordChar(ch){ return /[A-Za-z0-9_가-힣]/.test(ch); }
 
-function run(code, input, g){
-  const R=compileGrammar(g), env={...input}, out=[];
-  const lines=code.split(/\r?\n/).map(x=>x.replace(/\t/g,'  '));
+  // 문자열/주석 밖에서만 식별자 치환
+  function transformToPython(src){
+    const reverse = {};
+    for (const [pyKw, userWord] of Object.entries(alias)) reverse[userWord] = pyKw;
 
-  function runBlock(block){
-    for(let i=0;i<block.length;i++){
-      const raw=block[i].trim(); if(!raw) continue;
+    let out = '';
+    let i = 0;
+    let mode = 'normal'; // normal | s_quote | d_quote | comment
 
-      let m=raw.match(R.assign); if(m){ env[m[1]]=parseExpr(m[2],env); continue; }
-      m=raw.match(R.inc); if(m){ env[m[1]]=(env[m[1]]??0)+Number(m[2]); continue; }
-      m=raw.match(R.dec); if(m){ env[m[1]]=(env[m[1]]??0)-Number(m[2]); continue; }
-      m=raw.match(R.print); if(m){ out.push(String(parseExpr(m[1],env))); continue; }
+    while (i < src.length){
+      const ch = src[i];
 
-      m=raw.match(R.repeat);
-      if(m){
-        const n=Number(parseExpr(m[1],env)); const nested=[]; let j=i+1;
-        while(j<block.length){const ln=block[j]; if(/^\s{2,}/.test(ln)) nested.push(ln.replace(/^\s{2}/,'')); else break; j++;}
-        i=j-1; for(let k=0;k<n;k++) runBlock(nested); continue;
+      if (mode === 'comment'){
+        out += ch;
+        if (ch === '\n') mode = 'normal';
+        i++; continue;
+      }
+      if (mode === 's_quote'){
+        out += ch;
+        if (ch === "'" && src[i-1] !== '\\') mode = 'normal';
+        i++; continue;
+      }
+      if (mode === 'd_quote'){
+        out += ch;
+        if (ch === '"' && src[i-1] !== '\\') mode = 'normal';
+        i++; continue;
       }
 
-      let c=raw.match(R.ifEq); if(c){ if(parseExpr(c[1],env)===parseExpr(c[2],env)){ if(c[3]) runBlock([c[3]]);} else {
-        const n=(block[i+1]||'').trim().match(R.elseLine); if(n){ if(n[1]) runBlock([n[1]]); i++; }
-      } continue; }
-      c=raw.match(R.ifGt); if(c){ if(parseExpr(c[1],env)>parseExpr(c[2],env)){ if(c[3]) runBlock([c[3]]);} else {
-        const n=(block[i+1]||'').trim().match(R.elseLine); if(n){ if(n[1]) runBlock([n[1]]); i++; }
-      } continue; }
-      c=raw.match(R.ifLt); if(c){ if(parseExpr(c[1],env)<parseExpr(c[2],env)){ if(c[3]) runBlock([c[3]]);} else {
-        const n=(block[i+1]||'').trim().match(R.elseLine); if(n){ if(n[1]) runBlock([n[1]]); i++; }
-      } continue; }
+      if (ch === '#'){ mode = 'comment'; out += ch; i++; continue; }
+      if (ch === "'"){ mode = 's_quote'; out += ch; i++; continue; }
+      if (ch === '"'){ mode = 'd_quote'; out += ch; i++; continue; }
 
-      if(raw.match(R.elseLine)) continue;
-      throw new Error('해석 불가 문장: '+raw);
+      if (isWordChar(ch)){
+        let j = i;
+        while (j < src.length && isWordChar(src[j])) j++;
+        const token = src.slice(i, j);
+        out += (reverse[token] || token);
+        i = j;
+      } else {
+        out += ch;
+        i++;
+      }
     }
+    return out;
   }
-  runBlock(lines); return {output:out, env};
-}
 
-function grade(code,p,g){
-  let passed=0; const details=[];
-  for(const [i,t] of p.tests.entries()){
-    try{const r=run(code,t,g); const ok=JSON.stringify(r.output)===JSON.stringify(t.out); if(ok) passed++; details.push({test:i+1,input:t,expected:t.out,got:r.output,ok,env:r.env});}
-    catch(e){details.push({test:i+1,input:t,ok:false,error:String(e)});}
+  function previewTransform(){
+    pyCodeView.textContent = transformToPython(codeInput.value);
   }
-  return {score:Math.round(passed/p.tests.length*100),passed,total:p.tests.length,grammar:g,details};
-}
 
-function currentProblem(){return problems.find(p=>p.id===select.value)}
-function refreshProblem(resetCode=true){
-  const p=currentProblem();
-  problemView.textContent=`${p.title}\n\n${p.desc}\n\n테스트케이스: ${p.tests.length}개`;
-  if(resetCode) codeInput.value=p.starter(G);
-  statusEl.className='status'; statusEl.textContent='대기 중'; resultView.textContent='(결과 없음)';
-}
+  document.getElementById('resetMapBtn').addEventListener('click', () => {
+    alias = { ...DEFAULT_ALIAS };
+    saveAlias();
+    renderAliasUI();
+    previewTransform();
+  });
 
-function renderRuleUI(){
-  ruleGrid.innerHTML='';
-  for(const [k,label] of RULE_META){
-    const div=document.createElement('div'); div.className='rule';
-    div.innerHTML=`<label class="label">${label} 템플릿</label><input data-k="${k}" value="${G[k]}">`;
-    ruleGrid.appendChild(div);
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    resultView.textContent = '';
+  });
+
+  codeInput.addEventListener('input', previewTransform);
+
+  document.getElementById('runBtn').addEventListener('click', async () => {
+    if (!pyodide) return;
+    const pyCode = transformToPython(codeInput.value);
+    pyCodeView.textContent = pyCode;
+
+    statusEl.className = 'status';
+    statusEl.textContent = '실행 중...';
+
+    try {
+      const lines = [];
+      pyodide.setStdout({ batched: (s) => lines.push(s) });
+      pyodide.setStderr({ batched: (s) => lines.push('[stderr] ' + s) });
+      const val = await pyodide.runPythonAsync(pyCode);
+      if (lines.length) resultView.textContent += lines.join('\n') + '\n';
+      if (val !== undefined) resultView.textContent += String(val) + '\n';
+      statusEl.className = 'status ok';
+      statusEl.textContent = '실행 완료';
+    } catch (e) {
+      resultView.textContent += '[error] ' + e.message + '\n';
+      statusEl.className = 'status bad';
+      statusEl.textContent = '실행 실패';
+    }
+  });
+
+  renderAliasUI();
+  previewTransform();
+
+  try {
+    pyodide = await loadPyodide();
+    statusEl.className = 'status ok';
+    statusEl.textContent = '준비 완료';
+  } catch (e) {
+    statusEl.className = 'status bad';
+    statusEl.textContent = 'Pyodide 로딩 실패';
+    resultView.textContent = String(e);
   }
-  ruleGrid.querySelectorAll('input[data-k]').forEach(inp=>inp.addEventListener('input',e=>{G[e.target.dataset.k]=e.target.value;}));
-}
-
-select.addEventListener('change',()=>refreshProblem(true));
-document.getElementById('resetGrammarBtn').addEventListener('click',()=>{G={...DEFAULT_GRAMMAR}; renderRuleUI(); refreshProblem(true);});
-document.getElementById('applyStarterBtn').addEventListener('click',()=>refreshProblem(true));
-document.getElementById('resetCodeBtn').addEventListener('click',()=>{codeInput.value=currentProblem().starter(G)});
-document.getElementById('runBtn').addEventListener('click',()=>{
-  try{
-    const g=grade(codeInput.value,currentProblem(),G); const pass=g.passed===g.total;
-    statusEl.className='status '+(pass?'ok':'bad');
-    statusEl.textContent=(pass?'통과':'실패')+` (${g.score}점 · ${g.passed}/${g.total})`;
-    resultView.textContent=JSON.stringify(g,null,2);
-  }catch(e){statusEl.className='status bad'; statusEl.textContent='문법 규칙 오류'; resultView.textContent=String(e)}
-});
-
-renderRuleUI(); refreshProblem(true);
 </script>
 </body>
 </html>
