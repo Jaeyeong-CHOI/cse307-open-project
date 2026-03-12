@@ -167,9 +167,7 @@ for i in range(7):
       : '기본 설정과 동일합니다. (별칭 변경 없음)';
 
     langDescEl.textContent =
-`AI-FAIL-PL은 Python 문법을 그대로 사용합니다.
-별칭은 사용자가 직접 설정합니다.
-실행 시 흐름: (1) 입력 코드의 별칭 토큰을 랜덤 언어 토큰으로 변환 (옵션) -> (2) Python 기본 키워드로 역치환 -> (3) Pyodide 실행.
+`Python 문법을 아래의 규칙에 따라 수정합니다.
 
 현재 설정 요약:
 ${mappingLines}`;
@@ -179,11 +177,7 @@ ${mappingLines}`;
 1) fib(n) 함수를 정의하라.
 2) n <= 1 이면 n을 반환하라.
 3) 그 외에는 fib(n-1) + fib(n-2)를 반환하라.
-4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.
-
-[주의]
-- Python 문법 구조(콜론, 들여쓰기, 함수/반복/조건)는 그대로 지켜야 함.
-- 단, 키워드는 현재 별칭 설정을 사용해 작성해야 함.`;
+4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.`;
   }
 
   function isWordChar(ch){ return /[A-Za-z0-9_가-힣]/.test(ch); }
