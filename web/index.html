@@ -47,6 +47,9 @@
     <label class="label" style="margin-top:10px;">
       <input type="checkbox" id="randomizeAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 별칭 변경 시 Python 키워드와 같은 글자수의 난수로 자동 치환
     </label>
+    <label class="label" style="margin-top:4px;">
+      <input type="checkbox" id="strictAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 규칙 강제: 변경된 키워드는 원본(Python)으로 작성하면 실패
+    </label>
     <p class="muted">예: <code>def</code>를 변경하면 <code>edf</code>처럼 같은 길이의 난수 별칭으로 자동 설정됩니다.</p>
   </div>
 
@@ -111,6 +114,7 @@ for i in range(7):
   const langDescEl = document.getElementById('langDesc');
   const problemDescEl = document.getElementById('problemDesc');
   const randomizeAliasChk = document.getElementById('randomizeAliasChk');
+  const strictAliasChk = document.getElementById('strictAliasChk');
 
   function saveAlias(){ localStorage.setItem('aifailpl_alias', JSON.stringify(alias)); }
 
@@ -233,7 +237,46 @@ ${mappingLines}`;
     return out;
   }
 
+  function validateStrictAlias(src){
+    if (!strictAliasChk.checked) return null;
+
+    const changed = Object.keys(DEFAULT_ALIAS).filter(k => (alias[k] || k) !== k);
+    if (!changed.length) return null;
+
+    let i = 0;
+    let mode = 'normal';
+    while (i < src.length){
+      const ch = src[i];
+      if (mode === 'comment'){ if (ch === '\n') mode = 'normal'; i++; continue; }
+      if (mode === 's_quote'){ if (ch === "'" && src[i-1] !== '\\') mode = 'normal'; i++; continue; }
+      if (mode === 'd_quote'){ if (ch === '"' && src[i-1] !== '\\') mode = 'normal'; i++; continue; }
+      if (ch === '#'){ mode = 'comment'; i++; continue; }
+      if (ch === "'"){ mode = 's_quote'; i++; continue; }
+      if (ch === '"'){ mode = 'd_quote'; i++; continue; }
+
+      if (isWordChar(ch)){
+        let j = i;
+        while (j < src.length && isWordChar(src[j])) j++;
+        const token = src.slice(i, j);
+        for (const pyKw of changed){
+          if (token === pyKw){
+            return `규칙 위반: '${pyKw}'는 현재 별칭 '${alias[pyKw]}'로 작성해야 합니다.`;
+          }
+        }
+        i = j;
+      } else {
+        i++;
+      }
+    }
+    return null;
+  }
+
   function previewTransform(){
+    const err = validateStrictAlias(codeInput.value);
+    if (err){
+      pyCodeView.textContent = '[규칙 오류] ' + err;
+      return;
+    }
     pyCodeView.textContent = transformToPython(codeInput.value);
   }
 
@@ -259,6 +302,10 @@ ${mappingLines}`;
     renderDescriptions();
   });
 
+  strictAliasChk.addEventListener('change', () => {
+    previewTransform();
+  });
+
   document.getElementById('clearBtn').addEventListener('click', () => {
     resultView.textContent = '';
   });
@@ -267,6 +314,16 @@ ${mappingLines}`;
 
   document.getElementById('runBtn').addEventListener('click', async () => {
     if (!pyodide) return;
+
+    const strictErr = validateStrictAlias(codeInput.value);
+    if (strictErr){
+      statusEl.className = 'status bad';
+      statusEl.textContent = '실행 실패';
+      pyCodeView.textContent = '[규칙 오류] ' + strictErr;
+      resultView.textContent += '[rule-error] ' + strictErr + '\n';
+      return;
+    }
+
     const pyCode = transformToPython(codeInput.value);
     pyCodeView.textContent = pyCode;
 
