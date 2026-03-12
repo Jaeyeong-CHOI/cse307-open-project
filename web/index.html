@@ -275,7 +275,12 @@ ${mappingLines}`;
       for (const pyKw of changed){
         const userWord = alias[pyKw];
         const rand = makeRandomAliasByLen(pyKw.length); // 원본 키워드 길이 기준
+
+        // 사용자 별칭 토큰도 랜덤화
         aliasToRand[userWord] = rand;
+        // 원본 Python 키워드를 그대로 쓴 경우도 랜덤화
+        aliasToRand[pyKw] = rand;
+
         randToPy[rand] = pyKw;
       }
     }
