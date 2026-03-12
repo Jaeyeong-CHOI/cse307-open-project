@@ -42,8 +42,12 @@
     <div id="mapGrid" class="map-grid"></div>
     <div class="btns">
       <button class="soft" id="resetMapBtn">기본값 복원</button>
+      <button class="soft" id="regenRandomBtn">난수 별칭 재생성</button>
     </div>
-    <p class="muted">예: <code>if</code>의 별칭을 <code>만약</code>으로 바꾸면, 코드에서 <code>만약 x &gt; 0:</code> 형태로 작성 가능.</p>
+    <label class="label" style="margin-top:10px;">
+      <input type="checkbox" id="randomizeAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 별칭 변경 시 Python 키워드와 같은 글자수의 난수로 자동 치환
+    </label>
+    <p class="muted">예: <code>def</code>를 변경하면 <code>edf</code>처럼 같은 길이의 난수 별칭으로 자동 설정됩니다.</p>
   </div>
 
   <div class="card">
@@ -106,8 +110,29 @@ for i in range(7):
   const statusEl = document.getElementById('status');
   const langDescEl = document.getElementById('langDesc');
   const problemDescEl = document.getElementById('problemDesc');
+  const randomizeAliasChk = document.getElementById('randomizeAliasChk');
 
   function saveAlias(){ localStorage.setItem('aifailpl_alias', JSON.stringify(alias)); }
+
+  function randomWord(len){
+    const chars = 'abcdefghijklmnopqrstuvwxyz';
+    let s = '';
+    for(let i=0;i<len;i++) s += chars[Math.floor(Math.random()*chars.length)];
+    return s;
+  }
+
+  function makeRandomAlias(pyKw){
+    const len = pyKw.length;
+    let cand = randomWord(len);
+    const used = new Set(Object.values(alias));
+    const reserved = new Set(Object.keys(DEFAULT_ALIAS));
+    let guard = 0;
+    while((used.has(cand) || reserved.has(cand)) && guard < 100){
+      cand = randomWord(len);
+      guard++;
+    }
+    return cand;
+  }
 
   function renderAliasUI(){
     mapGrid.innerHTML = '';
@@ -120,7 +145,14 @@ for i in range(7):
     mapGrid.querySelectorAll('input[data-k]').forEach(inp => {
       inp.addEventListener('input', (e) => {
         const k = e.target.dataset.k;
-        alias[k] = e.target.value.trim() || k;
+        let v = e.target.value.trim() || k;
+
+        if (randomizeAliasChk.checked && v !== k){
+          v = makeRandomAlias(k); // 변경 시 같은 길이 난수로 강제
+          e.target.value = v;
+        }
+
+        alias[k] = v;
         saveAlias();
         previewTransform();
         renderDescriptions();
@@ -210,6 +242,20 @@ ${mappingLines}`;
     saveAlias();
     renderAliasUI();
     previewTransform();
+    renderDescriptions();
+  });
+
+  document.getElementById('regenRandomBtn').addEventListener('click', () => {
+    for (const k of Object.keys(alias)){
+      if (alias[k] !== k) alias[k] = makeRandomAlias(k);
+    }
+    saveAlias();
+    renderAliasUI();
+    previewTransform();
+    renderDescriptions();
+  });
+
+  randomizeAliasChk.addEventListener('change', () => {
     renderDescriptions();
   });
 
