@@ -46,6 +46,13 @@
     <p class="muted">예: <code>if</code>의 별칭을 <code>만약</code>으로 바꾸면, 코드에서 <code>만약 x &gt; 0:</code> 형태로 작성 가능.</p>
   </div>
 
+  <div class="card">
+    <h2>언어 설명</h2>
+    <div id="langDesc" class="box"></div>
+    <h2 style="margin-top:14px;">문제 설명 (조건)</h2>
+    <div id="problemDesc" class="box"></div>
+  </div>
+
   <div class="grid">
     <div class="card">
       <h2>AI-FAIL-PL 코드 입력</h2>
@@ -97,6 +104,8 @@ for i in range(7):
   const pyCodeView = document.getElementById('pyCodeView');
   const resultView = document.getElementById('resultView');
   const statusEl = document.getElementById('status');
+  const langDescEl = document.getElementById('langDesc');
+  const problemDescEl = document.getElementById('problemDesc');
 
   function saveAlias(){ localStorage.setItem('aifailpl_alias', JSON.stringify(alias)); }
 
@@ -114,8 +123,34 @@ for i in range(7):
         alias[k] = e.target.value.trim() || k;
         saveAlias();
         previewTransform();
+        renderDescriptions();
       });
     });
+  }
+
+  function renderDescriptions(){
+    const changed = Object.keys(DEFAULT_ALIAS).filter(k => (alias[k] || k) !== k);
+    const mappingLines = changed.length
+      ? changed.map(k => `${k} --> ${alias[k]}`).join('\n')
+      : '기본 설정과 동일합니다. (별칭 변경 없음)';
+
+    langDescEl.textContent =
+`AI-FAIL-PL은 Python 문법을 그대로 사용합니다.
+단, 실행 시 우리가 지정한 키워드 별칭을 Python 기본 키워드로 역치환한 뒤 인터프리터(Pyodide)에서 실행합니다.
+
+현재 설정 요약:
+${mappingLines}`;
+
+    problemDescEl.textContent =
+`[문제] 아래 동작을 만족하는 코드를 작성하시오.
+1) fib(n) 함수를 정의하라.
+2) n <= 1 이면 n을 반환하라.
+3) 그 외에는 fib(n-1) + fib(n-2)를 반환하라.
+4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.
+
+[주의]
+- Python 문법 구조(콜론, 들여쓰기, 함수/반복/조건)는 그대로 지켜야 함.
+- 단, 키워드는 현재 별칭 설정을 사용해 작성해야 함.`;
   }
 
   function isWordChar(ch){ return /[A-Za-z0-9_가-힣]/.test(ch); }
@@ -175,6 +210,7 @@ for i in range(7):
     saveAlias();
     renderAliasUI();
     previewTransform();
+    renderDescriptions();
   });
 
   document.getElementById('clearBtn').addEventListener('click', () => {
@@ -209,6 +245,7 @@ for i in range(7):
 
   renderAliasUI();
   previewTransform();
+  renderDescriptions();
 
   try {
     pyodide = await loadPyodide();
