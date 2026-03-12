@@ -5,295 +5,215 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CSE307 AI-FAIL-PL Shell</title>
   <style>
-    :root{
-      --bg:#f6f8fb;--card:#fff;--text:#191f28;--sub:#6b7684;--line:#e5e8eb;
-      --primary:#3182f6;--primary-dark:#1b64da;--ok:#00a15f;--bad:#d14343;
-      --code-bg:#0f1724;--code-fg:#d9e3f0;--shadow:0 8px 24px rgba(15,23,42,.06);--radius:20px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;line-height:1.45}
-    .container{max-width:1180px;margin:0 auto;padding:32px 20px 56px}
-    .badge{display:inline-block;background:#e8f1ff;color:#1f6feb;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;margin-bottom:10px}
-    h1{margin:0;font-size:36px;letter-spacing:-.02em;line-height:1.2}
-    .hero p{margin:12px 0 0;color:var(--sub);font-size:16px}
-    .grid{display:grid;gap:16px}
-    .main-grid{grid-template-columns:1fr}
-    @media (min-width:1080px){.main-grid{grid-template-columns:1.1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
-    .card h2{margin:0 0 12px;font-size:20px;letter-spacing:-.01em}
-    .label{display:block;font-size:13px;color:var(--sub);margin:2px 0 6px;font-weight:600}
-    select,textarea,button,input{font:inherit}
-    select,textarea,input{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;color:var(--text);outline:none;transition:border-color .15s, box-shadow .15s}
-    select:focus,textarea:focus,input:focus{border-color:#9bc2ff;box-shadow:0 0 0 4px rgba(49,130,246,.12)}
-    textarea{resize:vertical;min-height:220px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.5}
-    .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{width:auto;border:0;border-radius:12px;padding:11px 16px;font-weight:700;cursor:pointer}
-    .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark)}
-    .btn-soft{background:#eef2f7;color:#334155}.btn-soft:hover{background:#e6ebf1}
-    .status{margin-top:12px;border-radius:14px;padding:12px 14px;font-weight:700;font-size:14px;border:1px solid transparent;background:#f2f4f6;color:#4e5968}
-    .status.ok{background:#ecfff6;color:var(--ok);border-color:#b6f2d5}.status.bad{background:#fff1f1;color:var(--bad);border-color:#ffd1d1}
-    .box{border:1px solid var(--line);border-radius:14px;background:#fafbfc;padding:14px;white-space:pre-wrap;word-break:break-word;margin-top:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.55;min-height:120px}
-    .result{background:var(--code-bg);color:var(--code-fg);border-color:#1f2937;min-height:300px;overflow:auto}
-    .chips{display:flex;gap:8px;flex-wrap:wrap}.chip{font-size:12px;color:#4e5968;background:#f2f4f6;border-radius:999px;padding:5px 10px}
-    .kw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width:760px){.kw-grid{grid-template-columns:1fr}}
-    .kw-item{padding:10px;border:1px dashed #d9dee5;border-radius:12px}
-    .muted{color:var(--sub)}
+    :root{--bg:#f6f8fb;--card:#fff;--text:#191f28;--sub:#6b7684;--line:#e5e8eb;--p:#3182f6;--ok:#00a15f;--bad:#d14343}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
+    .container{max-width:1180px;margin:0 auto;padding:28px 20px 50px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+    h1,h2{margin:0 0 10px}.muted{color:var(--sub)} .badge{display:inline-block;background:#e8f1ff;color:#1f6feb;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:1080px){.grid{grid-template-columns:1.1fr 1fr}}
+    input,textarea,select,button{font:inherit} input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
+    textarea{min-height:210px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace}
+    .label{display:block;font-size:13px;color:var(--sub);margin:8px 0 6px}
+    .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .pri{background:var(--p);color:#fff}.soft{background:#eef2f7;color:#334155}
+    .status{margin-top:10px;padding:10px 12px;border-radius:10px;background:#f2f4f6;color:#4e5968;font-weight:700}
+    .ok{background:#ecfff6;color:var(--ok)} .bad{background:#fff1f1;color:var(--bad)}
+    .box{white-space:pre-wrap;background:#fafbfc;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:100px}
+    .result{background:#0f1724;color:#d9e3f0;min-height:280px;overflow:auto}
+    .rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:760px){.rule-grid{grid-template-columns:1fr}}
+    .rule{border:1px dashed #d9dee5;border-radius:12px;padding:10px}
+    code{background:#eef2f7;padding:2px 5px;border-radius:6px}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="hero card" style="margin-bottom:16px;">
-      <span class="badge">CSE307 · AI-FAIL-PL</span>
-      <h1>코딩 문제 웹 셸</h1>
-      <p>문제는 Python 기본 문법 기준으로 출제하고, AI-FAIL-PL 키워드로 풀이합니다. 아래에서 키워드를 직접 바꿀 수 있습니다.</p>
-    </div>
+<div class="container">
+  <div class="card">
+    <span class="badge">CSE307 · AI-FAIL-PL</span>
+    <h1>파이썬 문법 커스텀 코딩 셸</h1>
+    <p class="muted">맞아, 키워드만 바꾸는 게 아니라 <b>문법 문장 자체</b>를 바꿀 수 있게 만들었어. 아래 규칙 템플릿을 수정하면 파서가 그 문법으로 해석해.</p>
+    <p class="muted">플레이스홀더: <code>{var}</code> <code>{expr}</code> <code>{left}</code> <code>{right}</code> <code>{stmt}</code> <code>{count}</code> <code>{num}</code></p>
+  </div>
 
-    <div class="card" style="margin-bottom:16px;">
-      <h2>지원 문법 (Python 기준)</h2>
-      <div class="chips">
-        <span class="chip">변수 할당 (x = 3)</span>
-        <span class="chip">if / else</span>
-        <span class="chip">비교 (==, &gt;, &lt;)</span>
-        <span class="chip">for 반복 (n번)</span>
-        <span class="chip">print()</span>
-        <span class="chip">증가/감소 (+=, -=)</span>
-      </div>
-      <p class="muted" style="margin-top:8px;">아래 "키워드 설정"에서 자연어 키워드를 바꿔도 동일 문법으로 동작합니다.</p>
-    </div>
-
-    <div class="grid main-grid">
+  <div class="grid">
+    <div>
       <div class="card">
-        <h2>1) 문제 선택</h2>
-        <label class="label">코딩 문제</label>
+        <h2>1) 문제</h2>
+        <label class="label">문제 선택</label>
         <select id="problemSelect"></select>
-        <div class="box" id="problemView"></div>
+        <div id="problemView" class="box"></div>
+      </div>
 
-        <h2 style="margin-top:18px;">2) 키워드 설정 (커스텀)</h2>
-        <div class="kw-grid" id="kwGrid"></div>
-        <div class="btn-row">
-          <button class="btn btn-soft" id="resetKwBtn">기본 키워드 복원</button>
+      <div class="card">
+        <h2>2) 문법 규칙 설정 (직접 변경)</h2>
+        <div class="rule-grid" id="ruleGrid"></div>
+        <div class="btns">
+          <button class="soft" id="resetGrammarBtn">기본 문법 복원</button>
+          <button class="soft" id="applyStarterBtn">현재 문법으로 스타터 재생성</button>
         </div>
       </div>
+    </div>
 
+    <div>
       <div class="card">
-        <h2>3) 코드 제출 및 채점</h2>
+        <h2>3) 코드 제출</h2>
         <label class="label">AI-FAIL-PL 코드</label>
         <textarea id="codeInput"></textarea>
-        <div class="btn-row">
-          <button class="btn btn-primary" id="runBtn">실행/채점</button>
-          <button class="btn btn-soft" id="resetCodeBtn">스타터 코드 복원</button>
+        <div class="btns">
+          <button class="pri" id="runBtn">실행/채점</button>
+          <button class="soft" id="resetCodeBtn">스타터 복원</button>
         </div>
         <div id="status" class="status">대기 중</div>
-
-        <h2 style="margin-top:18px;">4) 실행 결과</h2>
-        <div class="box result" id="resultView">(결과 없음)</div>
+      </div>
+      <div class="card">
+        <h2>4) 결과</h2>
+        <div id="resultView" class="box result">(결과 없음)</div>
       </div>
     </div>
   </div>
+</div>
 
 <script>
-const DEFAULT_KW = {
-  assign: '으로 둔다',
-  ifEq: '와 같다면',
-  ifGt: '보다 크다면',
-  ifLt: '보다 작다면',
-  ifHead: '만약',
-  elseHead: '그렇지 않다면',
-  repeatHead: '반복',
-  repeatTail: '번:',
-  printTail: '을 출력한다',
-  incTail: '증가시킨다',
-  decTail: '감소시킨다'
+const DEFAULT_GRAMMAR = {
+  assign: '{var}를 {expr}으로 둔다',
+  ifEq: '만약 {left}가 {right}와 같다면 {stmt}',
+  ifGt: '만약 {left}가 {right}보다 크다면 {stmt}',
+  ifLt: '만약 {left}가 {right}보다 작다면 {stmt}',
+  elseLine: '그렇지 않다면 {stmt}',
+  repeat: '반복 {count}번:',
+  print: '{expr}을 출력한다',
+  inc: '{var}를 {num} 증가시킨다',
+  dec: '{var}를 {num} 감소시킨다'
 };
+let G = {...DEFAULT_GRAMMAR};
 
-let KW = {...DEFAULT_KW};
-
-const KW_META = [
-  ['assign','할당 표현 (예: x를 3으로 둔다)'],
-  ['ifHead','if 시작 키워드'],
-  ['ifEq','if == 조건 꼬리'],
-  ['ifGt','if > 조건 꼬리'],
-  ['ifLt','if < 조건 꼬리'],
-  ['elseHead','else 키워드'],
-  ['repeatHead','반복 시작 키워드'],
-  ['repeatTail','반복 꼬리 (예: 번:)'],
-  ['printTail','출력 꼬리 (예: 을 출력한다)'],
-  ['incTail','증가 꼬리'],
-  ['decTail','감소 꼬리']
+const RULE_META = [
+  ['assign','할당'],['ifEq','if =='],['ifGt','if >'],['ifLt','if <'],
+  ['elseLine','else'],['repeat','반복'],['print','출력'],['inc','증가'],['dec','감소']
 ];
 
 const problems = [
-  {
-    id:'p1',
-    title:'문제 1: if (a == b)',
-    desc:'입력 a, b가 주어진다. a와 b가 같으면 "same", 다르면 "diff"를 출력하라.',
-    tests:[{a:3,b:3,out:['same']},{a:3,b:1,out:['diff']},{a:-2,b:-2,out:['same']}],
-    starter:() => `${KW.ifHead} a가 b${KW.ifEq} "same"${KW.printTail}.\n${KW.elseHead} "diff"${KW.printTail}.`
-  },
-  {
-    id:'p2',
-    title:'문제 2: if (a > b)',
-    desc:'입력 a, b가 주어진다. a가 b보다 크면 "left", 그렇지 않으면 "right"를 출력하라.',
-    tests:[{a:5,b:2,out:['left']},{a:1,b:4,out:['right']},{a:7,b:7,out:['right']}],
-    starter:() => `${KW.ifHead} a가 b${KW.ifGt} "left"${KW.printTail}.\n${KW.elseHead} "right"${KW.printTail}.`
-  },
-  {
-    id:'p3',
-    title:'문제 3: 반복 + 출력',
-    desc:'입력 n이 주어진다. "ping"을 n번 출력하라.',
-    tests:[{n:1,out:['ping']},{n:3,out:['ping','ping','ping']},{n:0,out:[]}],
-    starter:() => `${KW.repeatHead} n${KW.repeatTail}\n  "ping"${KW.printTail}.`
-  }
+  {id:'p1',title:'if (a == b)',desc:'a,b가 같으면 same 아니면 diff 출력',tests:[{a:3,b:3,out:['same']},{a:2,b:1,out:['diff']}],starter:(g)=>`${g.ifEq.replace('{left}','a').replace('{right}','b').replace('{stmt}','"same"을 출력한다')}\n${g.elseLine.replace('{stmt}','"diff"을 출력한다')}`},
+  {id:'p2',title:'if (a > b)',desc:'a>b면 left 아니면 right 출력',tests:[{a:5,b:2,out:['left']},{a:1,b:4,out:['right']}],starter:(g)=>`${g.ifGt.replace('{left}','a').replace('{right}','b').replace('{stmt}','"left"을 출력한다')}\n${g.elseLine.replace('{stmt}','"right"을 출력한다')}`},
+  {id:'p3',title:'repeat n',desc:'n번 ping 출력',tests:[{n:1,out:['ping']},{n:3,out:['ping','ping','ping']}],starter:(g)=>`${g.repeat.replace('{count}','n')}\n  "ping"을 출력한다`}
 ];
 
-const select = document.getElementById('problemSelect');
-const problemView = document.getElementById('problemView');
-const codeInput = document.getElementById('codeInput');
-const statusEl = document.getElementById('status');
-const resultView = document.getElementById('resultView');
-const kwGrid = document.getElementById('kwGrid');
+const select=document.getElementById('problemSelect');
+const problemView=document.getElementById('problemView');
+const codeInput=document.getElementById('codeInput');
+const statusEl=document.getElementById('status');
+const resultView=document.getElementById('resultView');
+const ruleGrid=document.getElementById('ruleGrid');
 
-problems.forEach((p,i)=>{
-  const o=document.createElement('option');
-  o.value=p.id; o.textContent=p.title; if(i===0)o.selected=true; select.appendChild(o);
-});
+problems.forEach((p,i)=>{const o=document.createElement('option');o.value=p.id;o.textContent=`문제 ${i+1}: ${p.title}`;select.appendChild(o)});
 
-function esc(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-
-function buildKwUI(){
-  kwGrid.innerHTML = '';
-  for (const [key,label] of KW_META){
-    const div = document.createElement('div');
-    div.className = 'kw-item';
-    div.innerHTML = `<label class="label">${label}</label><input data-kw="${key}" value="${KW[key]}">`;
-    kwGrid.appendChild(div);
-  }
-  kwGrid.querySelectorAll('input[data-kw]').forEach(inp=>{
-    inp.addEventListener('input', e => {
-      KW[e.target.dataset.kw] = e.target.value;
-      refreshProblem(true);
-    });
-  });
+function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+function templateToRegex(tpl, map){
+  let p = esc(tpl.trim());
+  for(const [k,rg] of Object.entries(map)) p = p.replace(new RegExp(esc('{'+k+'}'),'g'), `(${rg})`);
+  return new RegExp(`^${p}\\.?$`);
 }
 
-function currentProblem(){ return problems.find(p=>p.id===select.value); }
-
-function refreshProblem(keepCode=false){
-  const p=currentProblem();
-  problemView.textContent = `${p.title}\n\n${p.desc}\n\n테스트케이스: ${p.tests.length}개`;
-  if(!keepCode) codeInput.value = p.starter();
-  statusEl.className='status'; statusEl.textContent='대기 중';
-  resultView.textContent='(결과 없음)';
+function compileGrammar(g){
+  return {
+    assign: templateToRegex(g.assign,{var:'[a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*',expr:'.+?'}),
+    ifEq: templateToRegex(g.ifEq,{left:'.+?',right:'.+?',stmt:'.*'}),
+    ifGt: templateToRegex(g.ifGt,{left:'.+?',right:'.+?',stmt:'.*'}),
+    ifLt: templateToRegex(g.ifLt,{left:'.+?',right:'.+?',stmt:'.*'}),
+    elseLine: templateToRegex(g.elseLine,{stmt:'.*'}),
+    repeat: templateToRegex(g.repeat,{count:'.+?'}),
+    print: templateToRegex(g.print,{expr:'.+?'}),
+    inc: templateToRegex(g.inc,{var:'[a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*',num:'[0-9]+'}),
+    dec: templateToRegex(g.dec,{var:'[a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*',num:'[0-9]+'}),
+  }
 }
 
 function parseExpr(raw, env){
-  const s = raw.trim();
+  const s=raw.trim();
   if(/^[-]?\d+$/.test(s)) return Number(s);
   if(/^".*"$/.test(s)) return s.slice(1,-1);
   if(Object.prototype.hasOwnProperty.call(env,s)) return env[s];
   throw new Error(`알 수 없는 식: ${s}`);
 }
 
-function evalCond(line, env){
-  const h = esc(KW.ifHead), eq = esc(KW.ifEq), gt = esc(KW.ifGt), lt = esc(KW.ifLt);
-  let m = line.match(new RegExp(`^${h}\\s+(.+?)가\\s+(.+?)${eq}\\s*(.*)$`));
-  if(m) return {ok: parseExpr(m[1],env)===parseExpr(m[2],env), rest:m[3]};
-  m = line.match(new RegExp(`^${h}\\s+(.+?)가\\s+(.+?)${gt}\\s*(.*)$`));
-  if(m) return {ok: parseExpr(m[1],env)>parseExpr(m[2],env), rest:m[3]};
-  m = line.match(new RegExp(`^${h}\\s+(.+?)가\\s+(.+?)${lt}\\s*(.*)$`));
-  if(m) return {ok: parseExpr(m[1],env)<parseExpr(m[2],env), rest:m[3]};
-  return null;
-}
+function run(code, input, g){
+  const R=compileGrammar(g), env={...input}, out=[];
+  const lines=code.split(/\r?\n/).map(x=>x.replace(/\t/g,'  '));
 
-function runAI_FAIL_PL(code, input){
-  const env = {...input};
-  const out = [];
-  const lines = code.split(/\r?\n/).map(x=>x.replace(/\t/g,'  '));
+  function runBlock(block){
+    for(let i=0;i<block.length;i++){
+      const raw=block[i].trim(); if(!raw) continue;
 
-  function runBlock(blockLines){
-    for(let i=0;i<blockLines.length;i++){
-      const raw = blockLines[i].trim();
-      if(!raw) continue;
+      let m=raw.match(R.assign); if(m){ env[m[1]]=parseExpr(m[2],env); continue; }
+      m=raw.match(R.inc); if(m){ env[m[1]]=(env[m[1]]??0)+Number(m[2]); continue; }
+      m=raw.match(R.dec); if(m){ env[m[1]]=(env[m[1]]??0)-Number(m[2]); continue; }
+      m=raw.match(R.print); if(m){ out.push(String(parseExpr(m[1],env))); continue; }
 
-      // assign: x를 3으로 둔다
-      let m = raw.match(new RegExp(`^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\\s+(.+?)${esc(KW.assign)}\\.?$`));
-      if(m){ env[m[1]] = parseExpr(m[2], env); continue; }
-
-      // inc/dec
-      m = raw.match(new RegExp(`^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\\s+([0-9]+)\\s+${esc(KW.incTail)}\\.?$`));
-      if(m){ env[m[1]] = (env[m[1]] ?? 0) + Number(m[2]); continue; }
-      m = raw.match(new RegExp(`^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\\s+([0-9]+)\\s+${esc(KW.decTail)}\\.?$`));
-      if(m){ env[m[1]] = (env[m[1]] ?? 0) - Number(m[2]); continue; }
-
-      // print
-      m = raw.match(new RegExp(`^(.+?)${esc(KW.printTail)}\\.?$`));
-      if(m){ out.push(String(parseExpr(m[1], env))); continue; }
-
-      // repeat
-      m = raw.match(new RegExp(`^${esc(KW.repeatHead)}\\s+(.+?)${esc(KW.repeatTail)}\\s*$`));
+      m=raw.match(R.repeat);
       if(m){
-        const n = Number(parseExpr(m[1], env));
-        const nested = [];
-        let j=i+1;
-        while(j<blockLines.length){
-          const ln=blockLines[j];
-          if(/^\s{2,}/.test(ln)) nested.push(ln.replace(/^\s{2}/,''));
-          else break;
-          j++;
-        }
-        i = j-1;
-        for(let k=0;k<n;k++) runBlock(nested);
-        continue;
+        const n=Number(parseExpr(m[1],env)); const nested=[]; let j=i+1;
+        while(j<block.length){const ln=block[j]; if(/^\s{2,}/.test(ln)) nested.push(ln.replace(/^\s{2}/,'')); else break; j++;}
+        i=j-1; for(let k=0;k<n;k++) runBlock(nested); continue;
       }
 
-      // if / else
-      const c = evalCond(raw, env);
-      if(c){
-        if(c.ok){ if(c.rest) runBlock([c.rest]); }
-        else {
-          const next = (blockLines[i+1]||'').trim();
-          const e = next.match(new RegExp(`^${esc(KW.elseHead)}\\s*(.*)$`));
-          if(e){ if(e[1]) runBlock([e[1]]); i += 1; }
-        }
-        continue;
-      }
+      let c=raw.match(R.ifEq); if(c){ if(parseExpr(c[1],env)===parseExpr(c[2],env)){ if(c[3]) runBlock([c[3]]);} else {
+        const n=(block[i+1]||'').trim().match(R.elseLine); if(n){ if(n[1]) runBlock([n[1]]); i++; }
+      } continue; }
+      c=raw.match(R.ifGt); if(c){ if(parseExpr(c[1],env)>parseExpr(c[2],env)){ if(c[3]) runBlock([c[3]]);} else {
+        const n=(block[i+1]||'').trim().match(R.elseLine); if(n){ if(n[1]) runBlock([n[1]]); i++; }
+      } continue; }
+      c=raw.match(R.ifLt); if(c){ if(parseExpr(c[1],env)<parseExpr(c[2],env)){ if(c[3]) runBlock([c[3]]);} else {
+        const n=(block[i+1]||'').trim().match(R.elseLine); if(n){ if(n[1]) runBlock([n[1]]); i++; }
+      } continue; }
 
-      if(new RegExp(`^${esc(KW.elseHead)}`).test(raw)) continue;
-      throw new Error(`해석 불가 문장: ${raw}`);
+      if(raw.match(R.elseLine)) continue;
+      throw new Error('해석 불가 문장: '+raw);
     }
   }
-
-  runBlock(lines);
-  return {output: out, env};
+  runBlock(lines); return {output:out, env};
 }
 
-function grade(code, problem){
-  const details=[]; let passed=0;
-  for(const [idx,t] of problem.tests.entries()){
-    try{
-      const r = runAI_FAIL_PL(code,t);
-      const ok = JSON.stringify(r.output)===JSON.stringify(t.out);
-      if(ok) passed++;
-      details.push({test:idx+1,input:t,expected:t.out,got:r.output,ok,env:r.env});
-    }catch(e){ details.push({test:idx+1,input:t,error:String(e),ok:false}); }
+function grade(code,p,g){
+  let passed=0; const details=[];
+  for(const [i,t] of p.tests.entries()){
+    try{const r=run(code,t,g); const ok=JSON.stringify(r.output)===JSON.stringify(t.out); if(ok) passed++; details.push({test:i+1,input:t,expected:t.out,got:r.output,ok,env:r.env});}
+    catch(e){details.push({test:i+1,input:t,ok:false,error:String(e)});}
   }
-  return {passed,total:problem.tests.length,score:Math.round((passed/problem.tests.length)*100),keywords:KW,details};
+  return {score:Math.round(passed/p.tests.length*100),passed,total:p.tests.length,grammar:g,details};
 }
 
-select.addEventListener('change', ()=>refreshProblem(false));
-document.getElementById('resetKwBtn').addEventListener('click', ()=>{ KW={...DEFAULT_KW}; buildKwUI(); refreshProblem(false); });
-document.getElementById('resetCodeBtn').addEventListener('click', ()=>{ codeInput.value=currentProblem().starter(); });
-document.getElementById('runBtn').addEventListener('click', ()=>{
-  const g = grade(codeInput.value, currentProblem());
-  const pass = g.passed===g.total;
-  statusEl.className = 'status ' + (pass?'ok':'bad');
-  statusEl.textContent = pass ? `통과 (${g.score}점 · ${g.passed}/${g.total})` : `실패 (${g.score}점 · ${g.passed}/${g.total})`;
-  resultView.textContent = JSON.stringify(g,null,2);
+function currentProblem(){return problems.find(p=>p.id===select.value)}
+function refreshProblem(resetCode=true){
+  const p=currentProblem();
+  problemView.textContent=`${p.title}\n\n${p.desc}\n\n테스트케이스: ${p.tests.length}개`;
+  if(resetCode) codeInput.value=p.starter(G);
+  statusEl.className='status'; statusEl.textContent='대기 중'; resultView.textContent='(결과 없음)';
+}
+
+function renderRuleUI(){
+  ruleGrid.innerHTML='';
+  for(const [k,label] of RULE_META){
+    const div=document.createElement('div'); div.className='rule';
+    div.innerHTML=`<label class="label">${label} 템플릿</label><input data-k="${k}" value="${G[k]}">`;
+    ruleGrid.appendChild(div);
+  }
+  ruleGrid.querySelectorAll('input[data-k]').forEach(inp=>inp.addEventListener('input',e=>{G[e.target.dataset.k]=e.target.value;}));
+}
+
+select.addEventListener('change',()=>refreshProblem(true));
+document.getElementById('resetGrammarBtn').addEventListener('click',()=>{G={...DEFAULT_GRAMMAR}; renderRuleUI(); refreshProblem(true);});
+document.getElementById('applyStarterBtn').addEventListener('click',()=>refreshProblem(true));
+document.getElementById('resetCodeBtn').addEventListener('click',()=>{codeInput.value=currentProblem().starter(G)});
+document.getElementById('runBtn').addEventListener('click',()=>{
+  try{
+    const g=grade(codeInput.value,currentProblem(),G); const pass=g.passed===g.total;
+    statusEl.className='status '+(pass?'ok':'bad');
+    statusEl.textContent=(pass?'통과':'실패')+` (${g.score}점 · ${g.passed}/${g.total})`;
+    resultView.textContent=JSON.stringify(g,null,2);
+  }catch(e){statusEl.className='status bad'; statusEl.textContent='문법 규칙 오류'; resultView.textContent=String(e)}
 });
 
-buildKwUI();
-refreshProblem(false);
+renderRuleUI(); refreshProblem(true);
 </script>
 </body>
 </html>
