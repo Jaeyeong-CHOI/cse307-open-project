@@ -124,8 +124,7 @@ for i in range(7):
     return s;
   }
 
-  function makeRandomAlias(baseToken){
-    const len = baseToken.length;
+  function makeRandomAliasByLen(len){
     let cand = randomWord(len);
     const used = new Set([...Object.values(alias), ...Object.keys(DEFAULT_ALIAS)]);
     let guard = 0;
@@ -165,7 +164,7 @@ for i in range(7):
     langDescEl.textContent =
 `Python 문법은 그대로 유지합니다.
 키워드 별칭은 사용자가 원하는 문자열(공백 포함)로 설정할 수 있습니다.
-실행 시에는 입력 코드에서 별칭을 감지해 Python 원본 키워드로 변환한 뒤 실행합니다.
+실행 시에는 입력 코드에서 별칭을 감지하고, 변경된 키워드는 원본 Python 키워드와 같은 글자수의 난수 토큰을 거친 뒤 Python 원본 키워드로 변환해 실행합니다.
 
 현재 설정 요약:
 ${mappingLines}`;
@@ -249,7 +248,7 @@ ${mappingLines}`;
     if (randomizeAliasChk.checked){
       for (const pyKw of changed){
         const userWord = alias[pyKw];
-        const rand = makeRandomAlias(userWord);
+        const rand = makeRandomAliasByLen(pyKw.length); // 원본 키워드 길이 기준
         aliasToRand[userWord] = rand;
         randToPy[rand] = pyKw;
       }
@@ -335,6 +334,11 @@ ${mappingLines}`;
     const prepared = prepareCodes(codeInput.value);
     const pyCode = prepared.pyCode;
     pyCodeView.textContent = pyCode;
+
+    const randomMapText = Object.keys(prepared.aliasToRand || {}).length
+      ? '[random-map] ' + JSON.stringify(prepared.aliasToRand)
+      : '[random-map] {}';
+    resultView.textContent += randomMapText + '\n';
 
     statusEl.className = 'status';
     statusEl.textContent = '실행 중...';
