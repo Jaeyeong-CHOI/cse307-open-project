@@ -321,10 +321,31 @@ ${mappingLines}`;
     previewTransform();
   });
 
+  async function copyTextRobust(text){
+    // 1) modern clipboard API (https/secure context)
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    // 2) fallback: hidden textarea + execCommand
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.left = '-1000px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand && document.execCommand('copy');
+    document.body.removeChild(ta);
+    if (!ok) throw new Error('브라우저가 복사 명령을 지원하지 않습니다.');
+  }
+
   copyPromptBtn.addEventListener('click', async () => {
     const text = `[언어 설명]\n${langDescEl.textContent}\n\n[문제 설명]\n${problemDescEl.textContent}`;
     try {
-      await navigator.clipboard.writeText(text);
+      await copyTextRobust(text);
       const old = copyPromptBtn.textContent;
       copyPromptBtn.textContent = '복사 완료';
       setTimeout(() => copyPromptBtn.textContent = old, 1200);
