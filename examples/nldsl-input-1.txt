@@ -1,4 +1,0 @@
-[제약]
-@mode:eval
-define token 그리고 as SEQ_EVAL
-A를 만족하고 그리고 B를 가능하면 적용한다. 단 C는 제외하고 유지한다.
