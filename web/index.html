@@ -79,9 +79,7 @@ for i in range(7):
     </div>
 
     <div class="card">
-      <h2>랜덤 언어 변환 코드</h2>
-      <div id="randCodeView" class="box"></div>
-      <h2 style="margin-top:14px">변환된 Python 코드</h2>
+      <h2>변환된 Python 코드</h2>
       <div id="pyCodeView" class="box"></div>
       <h2 style="margin-top:14px">실행 결과</h2>
       <div id="resultView" class="box result"></div>
@@ -110,7 +108,6 @@ for i in range(7):
 
   const mapGrid = document.getElementById('mapGrid');
   const codeInput = document.getElementById('codeInput');
-  const randCodeView = document.getElementById('randCodeView');
   const pyCodeView = document.getElementById('pyCodeView');
   const resultView = document.getElementById('resultView');
   const statusEl = document.getElementById('status');
@@ -290,12 +287,10 @@ ${mappingLines}`;
   function previewTransform(){
     const err = validateStrictAlias(codeInput.value);
     if (err){
-      randCodeView.textContent = '[규칙 오류] ' + err;
       pyCodeView.textContent = '[규칙 오류] ' + err;
       return;
     }
     const prepared = prepareCodes(codeInput.value);
-    randCodeView.textContent = prepared.randomCode;
     pyCodeView.textContent = prepared.pyCode;
   }
 
@@ -334,14 +329,12 @@ ${mappingLines}`;
     if (strictErr){
       statusEl.className = 'status bad';
       statusEl.textContent = '실행 실패';
-      randCodeView.textContent = '[규칙 오류] ' + strictErr;
       pyCodeView.textContent = '[규칙 오류] ' + strictErr;
       resultView.textContent += '[rule-error] ' + strictErr + '\n';
       return;
     }
 
     const prepared = prepareCodes(codeInput.value);
-    randCodeView.textContent = prepared.randomCode;
     const pyCode = prepared.pyCode;
     pyCodeView.textContent = pyCode;
 
