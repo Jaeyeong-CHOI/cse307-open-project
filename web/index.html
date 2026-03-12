@@ -3,88 +3,386 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSE307 Python Web Shell</title>
+  <title>CSE307 NL-PL Shell</title>
   <style>
-    body{margin:0;background:#0b1020;color:#e6ecff;font-family:ui-monospace,Menlo,monospace}
-    .wrap{max-width:980px;margin:24px auto;padding:0 16px}
-    .card{background:#121a33;border:1px solid #2a3b6b;border-radius:12px;padding:14px;margin-bottom:12px}
-    h1{margin:0 0 8px;font-family:system-ui}
-    textarea{width:100%;height:220px;background:#0a132b;color:#e6ecff;border:1px solid #334a86;border-radius:10px;padding:10px}
-    button{background:#79a8ff;border:0;color:#09132f;font-weight:700;padding:10px 14px;border-radius:9px;cursor:pointer}
-    pre{min-height:180px;background:#070f22;border:1px solid #2a3b6b;border-radius:10px;padding:10px;white-space:pre-wrap}
-    .muted{color:#9db0dc;font-family:system-ui}
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --text:#191f28;
+      --sub:#6b7684;
+      --line:#e5e8eb;
+      --primary:#3182f6;
+      --primary-dark:#1b64da;
+      --ok:#00a15f;
+      --bad:#d14343;
+      --code-bg:#0f1724;
+      --code-fg:#d9e3f0;
+      --shadow:0 8px 24px rgba(15, 23, 42, 0.06);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;
+      line-height:1.45;
+    }
+    .container{
+      max-width:1120px;
+      margin:0 auto;
+      padding:32px 20px 56px;
+    }
+
+    .hero{
+      margin-bottom:20px;
+    }
+    .badge{
+      display:inline-block;
+      background:#e8f1ff;
+      color:#1f6feb;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+    .hero h1{
+      margin:0;
+      font-size:36px;
+      letter-spacing:-0.02em;
+      line-height:1.2;
+    }
+    .hero p{
+      margin:12px 0 0;
+      color:var(--sub);
+      font-size:16px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+    @media (min-width:980px){
+      .grid-main{grid-template-columns:1.2fr 1fr;}
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+    .card h2{
+      margin:0 0 12px;
+      font-size:20px;
+      letter-spacing:-0.01em;
+    }
+    .muted{color:var(--sub)}
+
+    .label{
+      display:block;
+      font-size:13px;
+      color:var(--sub);
+      margin:2px 0 6px;
+      font-weight:600;
+    }
+    select,textarea,button,input{
+      width:100%;
+      font:inherit;
+    }
+    select,textarea,input{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      background:#fff;
+      color:var(--text);
+      outline:none;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    select:focus,textarea:focus,input:focus{
+      border-color:#9bc2ff;
+      box-shadow:0 0 0 4px rgba(49,130,246,.12);
+    }
+    textarea{
+      resize:vertical;
+      min-height:220px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{
+      width:auto;
+      border:0;
+      border-radius:12px;
+      padding:11px 16px;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .04s ease, background .2s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{background:var(--primary-dark)}
+    .btn-soft{background:#eef2f7;color:#334155}
+    .btn-soft:hover{background:#e6ebf1}
+
+    .status{
+      margin-top:12px;
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:700;
+      font-size:14px;
+      border:1px solid transparent;
+      background:#f2f4f6;
+      color:#4e5968;
+    }
+    .status.ok{background:#ecfff6;color:var(--ok);border-color:#b6f2d5}
+    .status.bad{background:#fff1f1;color:var(--bad);border-color:#ffd1d1}
+
+    .problem-box,.result-box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fafbfc;
+      padding:14px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      margin-top:8px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:13px;
+      line-height:1.55;
+      min-height:120px;
+    }
+
+    .result-box{
+      background:var(--code-bg);
+      color:var(--code-fg);
+      border-color:#1f2937;
+      min-height:300px;
+      overflow:auto;
+    }
+
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{
+      font-size:12px;
+      color:#4e5968;
+      background:#f2f4f6;
+      border-radius:999px;
+      padding:5px 10px;
+    }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h1>🐍 CSE307 Python Web Shell</h1>
-    <p class="muted">브라우저 내 Python 인터프리터(Pyodide)로 코드를 실행하고 결과를 출력합니다.</p>
-  </div>
+  <div class="container">
+    <div class="hero">
+      <span class="badge">CSE307 · NL-PL</span>
+      <h1>자연어 코딩 문제 웹 셸</h1>
+      <p>일반 코딩 문제를 <b>자연어 프로그래밍 언어</b>로 제출하고, 테스트케이스 기준으로 즉시 채점합니다.</p>
+    </div>
 
-  <div class="card">
-    <textarea id="code">print("hello cse307")
-for i in range(3):
-    print(i)
-</textarea>
-    <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
-      <button id="runBtn">실행</button>
-      <button id="clearBtn">출력 지우기</button>
-      <span id="status" class="muted">Pyodide 로딩 중...</span>
+    <div class="grid">
+      <div class="card">
+        <h2>지원 문법</h2>
+        <div class="chips">
+          <span class="chip">x를 3으로 둔다</span>
+          <span class="chip">만약 a가 b와 같다면 ...</span>
+          <span class="chip">그렇지 않다면 ...</span>
+          <span class="chip">반복 n번: ...</span>
+          <span class="chip">"text"을 출력한다</span>
+          <span class="chip">x를 1 증가/감소시킨다</span>
+        </div>
+      </div>
+
+      <div class="grid grid-main">
+        <div class="card">
+          <h2>1) 문제 선택</h2>
+          <label class="label">코딩 문제</label>
+          <select id="problemSelect"></select>
+          <div class="problem-box" id="problemView"></div>
+        </div>
+
+        <div class="card">
+          <h2>2) 제출 및 채점</h2>
+          <label class="label">자연어 코드</label>
+          <textarea id="codeInput"></textarea>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="runBtn">실행/채점</button>
+            <button class="btn btn-soft" id="resetBtn">스타터 코드 복원</button>
+          </div>
+          <div id="status" class="status">대기 중</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>3) 실행 결과</h2>
+        <div class="result-box" id="resultView">(결과 없음)</div>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <pre id="output"></pre>
-  </div>
-</div>
+<script>
+const problems = [
+  {
+    id:'p1',
+    title:'문제 1: if (a == b)',
+    desc:'입력 a, b가 주어진다. a와 b가 같으면 "same", 다르면 "diff"를 출력하라.',
+    tests:[{a:3,b:3,out:['same']},{a:3,b:1,out:['diff']},{a:-2,b:-2,out:['same']}],
+    starter:`만약 a가 b와 같다면 "same"을 출력한다.
+그렇지 않다면 "diff"을 출력한다.`
+  },
+  {
+    id:'p2',
+    title:'문제 2: if (a > b)',
+    desc:'입력 a, b가 주어진다. a가 b보다 크면 "left", 그렇지 않으면 "right"를 출력하라.',
+    tests:[{a:5,b:2,out:['left']},{a:1,b:4,out:['right']},{a:7,b:7,out:['right']}],
+    starter:`만약 a가 b보다 크다면 "left"을 출력한다.
+그렇지 않다면 "right"을 출력한다.`
+  },
+  {
+    id:'p3',
+    title:'문제 3: 반복 + 출력',
+    desc:'입력 n이 주어진다. "ping"을 n번 출력하라.',
+    tests:[{n:1,out:['ping']},{n:3,out:['ping','ping','ping']},{n:0,out:[]}],
+    starter:`반복 n번:
+  "ping"을 출력한다.`
+  }
+];
 
-<script type="module">
-  import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.mjs";
+const select = document.getElementById('problemSelect');
+const problemView = document.getElementById('problemView');
+const codeInput = document.getElementById('codeInput');
+const statusEl = document.getElementById('status');
+const resultView = document.getElementById('resultView');
+const resetBtn = document.getElementById('resetBtn');
 
-  const outEl = document.getElementById('output');
-  const statusEl = document.getElementById('status');
-  const codeEl = document.getElementById('code');
-  const runBtn = document.getElementById('runBtn');
-  const clearBtn = document.getElementById('clearBtn');
+problems.forEach((p,i)=>{
+  const o=document.createElement('option');
+  o.value=p.id;o.textContent=p.title; if(i===0) o.selected=true; select.appendChild(o);
+});
 
-  let pyodide = null;
+function currentProblem(){ return problems.find(p=>p.id===select.value); }
 
-  const append = (txt='') => { outEl.textContent += txt + "\n"; outEl.scrollTop = outEl.scrollHeight; };
+function refreshProblem(){
+  const p=currentProblem();
+  problemView.textContent=`${p.title}\n\n${p.desc}\n\n테스트케이스: ${p.tests.length}개`;
+  codeInput.value=p.starter;
+  statusEl.className='status';
+  statusEl.textContent='대기 중';
+  resultView.textContent='(결과 없음)';
+}
+select.addEventListener('change',refreshProblem);
+resetBtn.addEventListener('click',()=>{ codeInput.value=currentProblem().starter; });
+refreshProblem();
 
-  async function boot(){
-    pyodide = await loadPyodide();
-    statusEl.textContent = '준비 완료';
-    runBtn.disabled = false;
+function parseExpr(raw, env){
+  const s = raw.trim();
+  if(/^[-]?\d+$/.test(s)) return Number(s);
+  if(/^".*"$/.test(s)) return s.slice(1,-1);
+  if(Object.prototype.hasOwnProperty.call(env,s)) return env[s];
+  throw new Error(`알 수 없는 식: ${s}`);
+}
+
+function evalCond(line, env){
+  let m = line.match(/^만약\s+(.+?)가\s+(.+?)와\s+같다면\s*(.*)$/);
+  if(m){ return {ok: parseExpr(m[1],env)===parseExpr(m[2],env), rest:m[3]}; }
+  m = line.match(/^만약\s+(.+?)가\s+(.+?)보다\s+크다면\s*(.*)$/);
+  if(m){ return {ok: parseExpr(m[1],env)>parseExpr(m[2],env), rest:m[3]}; }
+  m = line.match(/^만약\s+(.+?)가\s+(.+?)보다\s+작다면\s*(.*)$/);
+  if(m){ return {ok: parseExpr(m[1],env)<parseExpr(m[2],env), rest:m[3]}; }
+  return null;
+}
+
+function runNLPL(code, input){
+  const env = {...input};
+  const out = [];
+  const lines = code.split(/\r?\n/).map(x=>x.replace(/\t/g,'  '));
+
+  function runBlock(blockLines){
+    for(let i=0;i<blockLines.length;i++){
+      const raw = blockLines[i].trim();
+      if(!raw) continue;
+
+      let m = raw.match(/^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\s+(.+?)으로\s+둔다\.?$/);
+      if(m){ env[m[1]] = parseExpr(m[2], env); continue; }
+
+      m = raw.match(/^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\s+([0-9]+)\s+증가시킨다\.?$/);
+      if(m){ env[m[1]] = (env[m[1]] ?? 0) + Number(m[2]); continue; }
+      m = raw.match(/^([a-zA-Z_가-힣][a-zA-Z0-9_가-힣]*)를\s+([0-9]+)\s+감소시킨다\.?$/);
+      if(m){ env[m[1]] = (env[m[1]] ?? 0) - Number(m[2]); continue; }
+
+      m = raw.match(/^(.+?)을\s+출력한다\.?$/);
+      if(m){ out.push(String(parseExpr(m[1], env))); continue; }
+
+      m = raw.match(/^반복\s+(.+?)번:\s*$/);
+      if(m){
+        const n = Number(parseExpr(m[1], env));
+        const nested = [];
+        let j=i+1;
+        while(j<blockLines.length){
+          const ln=blockLines[j];
+          if(/^\s{2,}/.test(ln)) nested.push(ln.replace(/^\s{2}/,''));
+          else break;
+          j++;
+        }
+        i = j-1;
+        for(let k=0;k<n;k++) runBlock(nested);
+        continue;
+      }
+
+      const c = evalCond(raw, env);
+      if(c){
+        if(c.ok){ if(c.rest) runBlock([c.rest]); }
+        else {
+          const next = (blockLines[i+1]||'').trim();
+          const e = next.match(/^그렇지\s*않다면\s*(.*)$/);
+          if(e){ if(e[1]) runBlock([e[1]]); i += 1; }
+        }
+        continue;
+      }
+
+      if(/^그렇지\s*않다면/.test(raw)) continue;
+      throw new Error(`해석 불가 문장: ${raw}`);
+    }
   }
 
-  runBtn.disabled = true;
-  boot().catch(err => {
-    statusEl.textContent = '로딩 실패';
-    append('Pyodide load error: ' + err.message);
-  });
+  runBlock(lines);
+  return {output: out, env};
+}
 
-  runBtn.addEventListener('click', async () => {
-    if(!pyodide) return;
-    const code = codeEl.value;
-    append('>>> 실행 시작');
-    statusEl.textContent = '실행 중...';
-    try {
-      let printed = [];
-      pyodide.setStdout({ batched: (s) => printed.push(s) });
-      pyodide.setStderr({ batched: (s) => printed.push('[stderr] ' + s) });
-      const result = await pyodide.runPythonAsync(code);
-      if (printed.length) append(printed.join('\n'));
-      if (result !== undefined) append(String(result));
-      append('>>> 실행 완료');
-    } catch (e) {
-      append('[error] ' + e.message);
-    } finally {
-      statusEl.textContent = '준비 완료';
+function grade(code, problem){
+  const details=[];
+  let passed=0;
+  for(const [idx,t] of problem.tests.entries()){
+    try{
+      const r = runNLPL(code,t);
+      const ok = JSON.stringify(r.output)===JSON.stringify(t.out);
+      if(ok) passed++;
+      details.push({test:idx+1,input:t,expected:t.out,got:r.output,ok,env:r.env});
+    }catch(e){
+      details.push({test:idx+1,input:t,error:String(e),ok:false});
     }
-  });
+  }
+  return {passed,total:problem.tests.length,score:Math.round((passed/problem.tests.length)*100),details};
+}
 
-  clearBtn.addEventListener('click', () => { outEl.textContent = ''; });
+function renderResult(g){
+  const pretty = JSON.stringify(g,null,2);
+  resultView.textContent = pretty;
+}
+
+document.getElementById('runBtn').addEventListener('click',()=>{
+  const p=currentProblem();
+  const code=codeInput.value;
+  const g=grade(code,p);
+  const pass = g.passed===g.total;
+  statusEl.className = 'status ' + (pass?'ok':'bad');
+  statusEl.textContent = pass ? `통과 (${g.score}점 · ${g.passed}/${g.total})` : `실패 (${g.score}점 · ${g.passed}/${g.total})`;
+  renderResult(g);
+});
 </script>
 </body>
 </html>
