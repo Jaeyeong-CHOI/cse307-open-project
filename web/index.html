@@ -179,19 +179,45 @@ ${mappingLines}`;
 
   function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
+  function isWordToken(s){
+    return /^[A-Za-z_][A-Za-z0-9_]*$/.test(s);
+  }
+
+  function isWordChar(ch){
+    return /[A-Za-z0-9_]/.test(ch || '');
+  }
+
   function replaceChunk(chunk, tokenMap){
     const keys = Object.keys(tokenMap).sort((a,b) => b.length - a.length);
-    let out = chunk;
-    for (const k of keys){
-      const v = tokenMap[k];
-      const isWord = /^[A-Za-z_][A-Za-z0-9_]*$/.test(k);
-      const pattern = isWord
-        ? new RegExp(`(^|[^A-Za-z0-9_])${escapeRegExp(k)}(?=[^A-Za-z0-9_]|$)`, 'g')
-        : new RegExp(escapeRegExp(k), 'g');
-      out = isWord
-        ? out.replace(pattern, (m, p1) => `${p1}${v}`)
-        : out.replace(pattern, v);
+    let out = '';
+    let i = 0;
+
+    while (i < chunk.length){
+      let matched = false;
+
+      for (const k of keys){
+        if (!k) continue;
+        if (chunk.startsWith(k, i)){
+          if (isWordToken(k)){
+            const prev = chunk[i-1] || '';
+            const next = chunk[i + k.length] || '';
+            if (isWordChar(prev) || isWordChar(next)) {
+              continue; // 식별자 내부 매칭 방지
+            }
+          }
+          out += tokenMap[k];
+          i += k.length;
+          matched = true;
+          break;
+        }
+      }
+
+      if (!matched){
+        out += chunk[i];
+        i += 1;
+      }
     }
+
     return out;
   }
 
