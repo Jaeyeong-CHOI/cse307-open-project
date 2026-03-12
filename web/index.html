@@ -54,7 +54,11 @@
   </div>
 
   <div class="card">
-    <h2>언어 설명</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+      <h2 style="margin:0;">언어 설명 + 문제 설명</h2>
+      <button class="soft" id="copyPromptBtn" style="width:auto;">AI 프롬프트 복사</button>
+    </div>
+    <h2 style="margin-top:14px;">언어 설명</h2>
     <div id="langDesc" class="box"></div>
     <h2 style="margin-top:14px;">문제 설명 (조건)</h2>
     <div id="problemDesc" class="box"></div>
@@ -115,6 +119,7 @@ for i in range(7):
   const problemDescEl = document.getElementById('problemDesc');
   const randomizeAliasChk = document.getElementById('randomizeAliasChk');
   const strictAliasChk = document.getElementById('strictAliasChk');
+  const copyPromptBtn = document.getElementById('copyPromptBtn');
 
   function saveAlias(){ localStorage.setItem('aifailpl_alias', JSON.stringify(alias)); }
 
@@ -314,6 +319,18 @@ ${mappingLines}`;
 
   strictAliasChk.addEventListener('change', () => {
     previewTransform();
+  });
+
+  copyPromptBtn.addEventListener('click', async () => {
+    const text = `[언어 설명]\n${langDescEl.textContent}\n\n[문제 설명]\n${problemDescEl.textContent}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      const old = copyPromptBtn.textContent;
+      copyPromptBtn.textContent = '복사 완료';
+      setTimeout(() => copyPromptBtn.textContent = old, 1200);
+    } catch (e) {
+      resultView.textContent += '[copy-error] 클립보드 복사 실패: ' + e.message + '\n';
+    }
   });
 
   document.getElementById('clearBtn').addEventListener('click', () => {
