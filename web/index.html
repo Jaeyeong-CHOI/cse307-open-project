@@ -298,7 +298,8 @@ ${mappingLines}`;
 
   function previewTransform(){
     const prepared = prepareCodes(codeInput.value);
-    pyCodeView.textContent = prepared.pyCode;
+    pyCodeView.textContent =
+`[STEP1: 랜덤 치환 코드]\n${prepared.randomCode}\n\n[STEP2: 최종 Python 코드]\n${prepared.pyCode}`;
   }
 
   document.getElementById('resetMapBtn').addEventListener('click', () => {
@@ -364,7 +365,8 @@ ${mappingLines}`;
 
     const prepared = prepareCodes(codeInput.value);
     const pyCode = prepared.pyCode;
-    pyCodeView.textContent = pyCode;
+    pyCodeView.textContent =
+`[STEP1: 랜덤 치환 코드]\n${prepared.randomCode}\n\n[STEP2: 최종 Python 코드]\n${prepared.pyCode}`;
 
     const randomMapText = Object.keys(prepared.aliasToRand || {}).length
       ? '[random-map] ' + JSON.stringify(prepared.aliasToRand)
