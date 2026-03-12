@@ -45,10 +45,7 @@
     <label class="label" style="margin-top:10px;">
       <input type="checkbox" id="randomizeAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 입력 코드에서 별칭 토큰을 같은 길이의 랜덤 언어 토큰으로 변환
     </label>
-    <label class="label" style="margin-top:4px;">
-      <input type="checkbox" id="strictAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 규칙 강제: 변경된 키워드는 원본(Python)으로 작성하면 실패
-    </label>
-    <p class="muted">별칭은 직접 원하는 값으로 설정하고, 실행 시 별칭 토큰만 랜덤 언어로 한 번 더 변환됩니다.</p>
+    <p class="muted">별칭은 직접 원하는 값으로 설정하고, 실행 시 별칭 토큰만 랜덤 언어로 한 번 더 변환됩니다. 별칭에는 띄어쓰기가 포함되어도 됩니다.</p>
   </div>
 
   <div class="card">
@@ -116,7 +113,6 @@ for i in range(7):
   const langDescEl = document.getElementById('langDesc');
   const problemDescEl = document.getElementById('problemDesc');
   const randomizeAliasChk = document.getElementById('randomizeAliasChk');
-  const strictAliasChk = document.getElementById('strictAliasChk');
   const copyPromptBtn = document.getElementById('copyPromptBtn');
 
   function saveAlias(){ localStorage.setItem('aifailpl_alias', JSON.stringify(alias)); }
@@ -167,7 +163,9 @@ for i in range(7):
       : '기본 설정과 동일합니다. (별칭 변경 없음)';
 
     langDescEl.textContent =
-`Python 문법을 아래의 규칙에 따라 수정합니다.
+`Python 문법은 그대로 유지합니다.
+키워드 별칭은 사용자가 원하는 문자열(공백 포함)로 설정할 수 있습니다.
+실행 시에는 입력 코드에서 별칭을 감지해 Python 원본 키워드로 변환한 뒤 실행합니다.
 
 현재 설정 요약:
 ${mappingLines}`;
@@ -180,16 +178,44 @@ ${mappingLines}`;
 4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.`;
   }
 
-  function isWordChar(ch){ return /[A-Za-z0-9_가-힣]/.test(ch); }
+  function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
-  // 문자열/주석 밖에서만 식별자 치환
+  function replaceChunk(chunk, tokenMap){
+    const keys = Object.keys(tokenMap).sort((a,b) => b.length - a.length);
+    let out = chunk;
+    for (const k of keys){
+      const v = tokenMap[k];
+      const isWord = /^[A-Za-z_][A-Za-z0-9_]*$/.test(k);
+      const pattern = isWord
+        ? new RegExp(`(^|[^A-Za-z0-9_])${escapeRegExp(k)}(?=[^A-Za-z0-9_]|$)`, 'g')
+        : new RegExp(escapeRegExp(k), 'g');
+      out = isWord
+        ? out.replace(pattern, (m, p1) => `${p1}${v}`)
+        : out.replace(pattern, v);
+    }
+    return out;
+  }
+
+  // 문자열/주석 밖에서만 치환 (별칭에 공백 포함 허용)
   function transformByMap(src, tokenMap){
     let out = '';
+    let buf = '';
     let i = 0;
     let mode = 'normal'; // normal | s_quote | d_quote | comment
 
+    const flush = () => {
+      if (buf){ out += replaceChunk(buf, tokenMap); buf = ''; }
+    };
+
     while (i < src.length){
       const ch = src[i];
+
+      if (mode === 'normal'){
+        if (ch === '#'){ flush(); mode = 'comment'; out += ch; i++; continue; }
+        if (ch === "'"){ flush(); mode = 's_quote'; out += ch; i++; continue; }
+        if (ch === '"'){ flush(); mode = 'd_quote'; out += ch; i++; continue; }
+        buf += ch; i++; continue;
+      }
 
       if (mode === 'comment'){
         out += ch;
@@ -206,22 +232,9 @@ ${mappingLines}`;
         if (ch === '"' && src[i-1] !== '\\') mode = 'normal';
         i++; continue;
       }
-
-      if (ch === '#'){ mode = 'comment'; out += ch; i++; continue; }
-      if (ch === "'"){ mode = 's_quote'; out += ch; i++; continue; }
-      if (ch === '"'){ mode = 'd_quote'; out += ch; i++; continue; }
-
-      if (isWordChar(ch)){
-        let j = i;
-        while (j < src.length && isWordChar(src[j])) j++;
-        const token = src.slice(i, j);
-        out += (tokenMap[token] || token);
-        i = j;
-      } else {
-        out += ch;
-        i++;
-      }
     }
+
+    flush();
     return out;
   }
 
@@ -253,46 +266,7 @@ ${mappingLines}`;
     return { randomCode, pyCode, aliasToRand };
   }
 
-  function validateStrictAlias(src){
-    if (!strictAliasChk.checked) return null;
-
-    const changed = Object.keys(DEFAULT_ALIAS).filter(k => (alias[k] || k) !== k);
-    if (!changed.length) return null;
-
-    let i = 0;
-    let mode = 'normal';
-    while (i < src.length){
-      const ch = src[i];
-      if (mode === 'comment'){ if (ch === '\n') mode = 'normal'; i++; continue; }
-      if (mode === 's_quote'){ if (ch === "'" && src[i-1] !== '\\') mode = 'normal'; i++; continue; }
-      if (mode === 'd_quote'){ if (ch === '"' && src[i-1] !== '\\') mode = 'normal'; i++; continue; }
-      if (ch === '#'){ mode = 'comment'; i++; continue; }
-      if (ch === "'"){ mode = 's_quote'; i++; continue; }
-      if (ch === '"'){ mode = 'd_quote'; i++; continue; }
-
-      if (isWordChar(ch)){
-        let j = i;
-        while (j < src.length && isWordChar(src[j])) j++;
-        const token = src.slice(i, j);
-        for (const pyKw of changed){
-          if (token === pyKw){
-            return `규칙 위반: '${pyKw}'는 현재 별칭 '${alias[pyKw]}'로 작성해야 합니다.`;
-          }
-        }
-        i = j;
-      } else {
-        i++;
-      }
-    }
-    return null;
-  }
-
   function previewTransform(){
-    const err = validateStrictAlias(codeInput.value);
-    if (err){
-      pyCodeView.textContent = '[규칙 오류] ' + err;
-      return;
-    }
     const prepared = prepareCodes(codeInput.value);
     pyCodeView.textContent = prepared.pyCode;
   }
@@ -315,9 +289,6 @@ ${mappingLines}`;
     previewTransform();
   });
 
-  strictAliasChk.addEventListener('change', () => {
-    previewTransform();
-  });
 
   async function copyTextRobust(text){
     // 1) modern clipboard API (https/secure context)
@@ -360,15 +331,6 @@ ${mappingLines}`;
 
   document.getElementById('runBtn').addEventListener('click', async () => {
     if (!pyodide) return;
-
-    const strictErr = validateStrictAlias(codeInput.value);
-    if (strictErr){
-      statusEl.className = 'status bad';
-      statusEl.textContent = '실행 실패';
-      pyCodeView.textContent = '[규칙 오류] ' + strictErr;
-      resultView.textContent += '[rule-error] ' + strictErr + '\n';
-      return;
-    }
 
     const prepared = prepareCodes(codeInput.value);
     const pyCode = prepared.pyCode;
