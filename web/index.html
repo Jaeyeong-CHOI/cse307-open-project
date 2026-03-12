@@ -42,15 +42,15 @@
     <div id="mapGrid" class="map-grid"></div>
     <div class="btns">
       <button class="soft" id="resetMapBtn">기본값 복원</button>
-      <button class="soft" id="regenRandomBtn">난수 별칭 재생성</button>
+      <button class="soft" id="regenRandomBtn">랜덤 언어 재생성</button>
     </div>
     <label class="label" style="margin-top:10px;">
-      <input type="checkbox" id="randomizeAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 별칭 변경 시 Python 키워드와 같은 글자수의 난수로 자동 치환
+      <input type="checkbox" id="randomizeAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 입력 코드에서 별칭 토큰을 같은 길이의 랜덤 언어 토큰으로 변환
     </label>
     <label class="label" style="margin-top:4px;">
       <input type="checkbox" id="strictAliasChk" checked style="width:auto;margin-right:6px;vertical-align:middle;"> 규칙 강제: 변경된 키워드는 원본(Python)으로 작성하면 실패
     </label>
-    <p class="muted">예: <code>def</code>를 변경하면 <code>edf</code>처럼 같은 길이의 난수 별칭으로 자동 설정됩니다.</p>
+    <p class="muted">별칭은 직접 원하는 값으로 설정하고, 실행 시 별칭 토큰만 랜덤 언어로 한 번 더 변환됩니다.</p>
   </div>
 
   <div class="card">
@@ -79,7 +79,9 @@ for i in range(7):
     </div>
 
     <div class="card">
-      <h2>변환된 Python 코드</h2>
+      <h2>랜덤 언어 변환 코드</h2>
+      <div id="randCodeView" class="box"></div>
+      <h2 style="margin-top:14px">변환된 Python 코드</h2>
       <div id="pyCodeView" class="box"></div>
       <h2 style="margin-top:14px">실행 결과</h2>
       <div id="resultView" class="box result"></div>
@@ -108,6 +110,7 @@ for i in range(7):
 
   const mapGrid = document.getElementById('mapGrid');
   const codeInput = document.getElementById('codeInput');
+  const randCodeView = document.getElementById('randCodeView');
   const pyCodeView = document.getElementById('pyCodeView');
   const resultView = document.getElementById('resultView');
   const statusEl = document.getElementById('status');
@@ -125,13 +128,12 @@ for i in range(7):
     return s;
   }
 
-  function makeRandomAlias(pyKw){
-    const len = pyKw.length;
+  function makeRandomAlias(baseToken){
+    const len = baseToken.length;
     let cand = randomWord(len);
-    const used = new Set(Object.values(alias));
-    const reserved = new Set(Object.keys(DEFAULT_ALIAS));
+    const used = new Set([...Object.values(alias), ...Object.keys(DEFAULT_ALIAS)]);
     let guard = 0;
-    while((used.has(cand) || reserved.has(cand)) && guard < 100){
+    while((used.has(cand)) && guard < 100){
       cand = randomWord(len);
       guard++;
     }
@@ -149,13 +151,7 @@ for i in range(7):
     mapGrid.querySelectorAll('input[data-k]').forEach(inp => {
       inp.addEventListener('input', (e) => {
         const k = e.target.dataset.k;
-        let v = e.target.value.trim() || k;
-
-        if (randomizeAliasChk.checked && v !== k){
-          v = makeRandomAlias(k); // 변경 시 같은 길이 난수로 강제
-          e.target.value = v;
-        }
-
+        const v = e.target.value.trim() || k;
         alias[k] = v;
         saveAlias();
         previewTransform();
@@ -172,7 +168,8 @@ for i in range(7):
 
     langDescEl.textContent =
 `AI-FAIL-PL은 Python 문법을 그대로 사용합니다.
-단, 실행 시 우리가 지정한 키워드 별칭을 Python 기본 키워드로 역치환한 뒤 인터프리터(Pyodide)에서 실행합니다.
+별칭은 사용자가 직접 설정합니다.
+실행 시 흐름: (1) 입력 코드의 별칭 토큰을 랜덤 언어 토큰으로 변환 (옵션) -> (2) Python 기본 키워드로 역치환 -> (3) Pyodide 실행.
 
 현재 설정 요약:
 ${mappingLines}`;
@@ -192,10 +189,7 @@ ${mappingLines}`;
   function isWordChar(ch){ return /[A-Za-z0-9_가-힣]/.test(ch); }
 
   // 문자열/주석 밖에서만 식별자 치환
-  function transformToPython(src){
-    const reverse = {};
-    for (const [pyKw, userWord] of Object.entries(alias)) reverse[userWord] = pyKw;
-
+  function transformByMap(src, tokenMap){
     let out = '';
     let i = 0;
     let mode = 'normal'; // normal | s_quote | d_quote | comment
@@ -227,7 +221,7 @@ ${mappingLines}`;
         let j = i;
         while (j < src.length && isWordChar(src[j])) j++;
         const token = src.slice(i, j);
-        out += (reverse[token] || token);
+        out += (tokenMap[token] || token);
         i = j;
       } else {
         out += ch;
@@ -235,6 +229,34 @@ ${mappingLines}`;
       }
     }
     return out;
+  }
+
+  function prepareCodes(src){
+    const aliasToPy = {};
+    for (const [pyKw, userWord] of Object.entries(alias)) aliasToPy[userWord] = pyKw;
+
+    const changed = Object.keys(DEFAULT_ALIAS).filter(k => (alias[k] || k) !== k);
+    const aliasToRand = {};
+    const randToPy = {};
+
+    if (randomizeAliasChk.checked){
+      for (const pyKw of changed){
+        const userWord = alias[pyKw];
+        const rand = makeRandomAlias(userWord);
+        aliasToRand[userWord] = rand;
+        randToPy[rand] = pyKw;
+      }
+    }
+
+    const randomCode = randomizeAliasChk.checked
+      ? transformByMap(src, aliasToRand)
+      : src;
+
+    const pyCode = randomizeAliasChk.checked
+      ? transformByMap(randomCode, randToPy)
+      : transformByMap(src, aliasToPy);
+
+    return { randomCode, pyCode, aliasToRand };
   }
 
   function validateStrictAlias(src){
@@ -274,10 +296,13 @@ ${mappingLines}`;
   function previewTransform(){
     const err = validateStrictAlias(codeInput.value);
     if (err){
+      randCodeView.textContent = '[규칙 오류] ' + err;
       pyCodeView.textContent = '[규칙 오류] ' + err;
       return;
     }
-    pyCodeView.textContent = transformToPython(codeInput.value);
+    const prepared = prepareCodes(codeInput.value);
+    randCodeView.textContent = prepared.randomCode;
+    pyCodeView.textContent = prepared.pyCode;
   }
 
   document.getElementById('resetMapBtn').addEventListener('click', () => {
@@ -289,17 +314,13 @@ ${mappingLines}`;
   });
 
   document.getElementById('regenRandomBtn').addEventListener('click', () => {
-    for (const k of Object.keys(alias)){
-      if (alias[k] !== k) alias[k] = makeRandomAlias(k);
-    }
-    saveAlias();
-    renderAliasUI();
+    // 별칭은 유지하고, 랜덤 언어 변환 결과만 새로 생성
     previewTransform();
-    renderDescriptions();
   });
 
   randomizeAliasChk.addEventListener('change', () => {
     renderDescriptions();
+    previewTransform();
   });
 
   strictAliasChk.addEventListener('change', () => {
@@ -319,12 +340,15 @@ ${mappingLines}`;
     if (strictErr){
       statusEl.className = 'status bad';
       statusEl.textContent = '실행 실패';
+      randCodeView.textContent = '[규칙 오류] ' + strictErr;
       pyCodeView.textContent = '[규칙 오류] ' + strictErr;
       resultView.textContent += '[rule-error] ' + strictErr + '\n';
       return;
     }
 
-    const pyCode = transformToPython(codeInput.value);
+    const prepared = prepareCodes(codeInput.value);
+    randCodeView.textContent = prepared.randomCode;
+    const pyCode = prepared.pyCode;
     pyCodeView.textContent = pyCode;
 
     statusEl.className = 'status';
