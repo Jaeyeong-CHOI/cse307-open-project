@@ -1,0 +1,19 @@
+{
+  "model": "gpt-5.4",
+  "results": [
+    {
+      "file": "docs/prompt-versions/v1.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "HTTP 401"
+        ],
+        "violations": [
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    }
+  ]
+}
