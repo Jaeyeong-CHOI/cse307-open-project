@@ -6,12 +6,12 @@ Python 문법은 그대로 유지합니다.
 실행 시에는 입력 코드에서 별칭을 감지하고, 변경된 키워드는 원본 Python 키워드와 같은 글자수의 난수 토큰을 거친 뒤 Python 원본 키워드로 변환해 실행합니다.
 
 현재 설정 요약:
-def --> function
-aelif --> elif
-for --> iterate
-in --> under token scope
-return --> send
-if --> branch
+- def --> function
+- aelif --> elif
+- for --> iterate
+- in --> under token scope
+- return --> send
+- if --> branch
 
 [문제 설명]
 [문제] 아래 동작을 만족하는 코드를 작성하시오.
