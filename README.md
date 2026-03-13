@@ -1,12 +1,16 @@
-# CSE307 Python Web Shell
+# CSE307 Open Project
 
-브라우저에서 Python 코드를 실행하는 웹 셸입니다.
+AI-FAIL-PL 실험 저장소.
 
-## 기능
-- Python 코드 입력
-- 실행 결과(stdout/stderr) 출력
-- 브라우저 내 Pyodide 인터프리터 사용
-
-## 배포
-GitHub Pages로 `web/` 폴더 배포.
-커스텀 도메인: `cse307.jaeyeong2026.com` (`web/CNAME` 설정)
+## Prompt Versions
+- `docs/prompt-versions/README.md`
+- `docs/prompt-versions/v1-fib-keyword-swap.md`
+- `docs/prompt-versions/v2-factorial-loop.md`
+- `docs/prompt-versions/v3-prime-check.md`
+- `docs/prompt-versions/v4-fizzbuzz.md`
+- `docs/prompt-versions/v5-two-sum.md`
+- `docs/prompt-versions/v6-palindrome.md`
+- `docs/prompt-versions/v7-gcd-euclid.md`
+- `docs/prompt-versions/v8-binary-search.md`
+- `docs/prompt-versions/v9-matrix-sum.md`
+- `docs/prompt-versions/v10-fib-memoization.md`
