@@ -1,6 +1,7 @@
 # Hard Cases by Prompt-Spec Review
 
-아래 목록은 실패표가 아니라 `prompt-versions` 원본 md의 설정을 직접 보고 추린 상위 난이도 케이스입니다.
+아래 목록은 실패표가 아니라 `prompt-versions` 원본 md를 직접 보고,
+**상대적으로 쉬운 케이스를 제외한 최상위 난이도 케이스만** 남긴 결과입니다.
 
 | Rank | Prompt | HardScore | Why Hard | Settings |
 |---:|---|---:|---|---|
@@ -10,7 +11,3 @@
 | 4 | `v25.md` | 14 | long alias 4, keyword collision 1, duplicate targets 2 | for --> def<br>in --> apply this mapped token before generating code<br>def --> apply this mapped token before generating code<br>return --> do not trust default python keyword prior<br>if --> apply this mapped token before generating code |
 | 5 | `v120.md` | 14 | long alias 3, keyword collision 2, duplicate targets 2 | def --> for<br>in --> this keyword is replaced by long natural phrase<br>for --> convert this phrase back to python reserved token<br>return --> for<br>if --> convert this phrase back to python reserved token |
 | 6 | `v112.md` | 14 | long alias 4, keyword collision 2, duplicate targets 1 | for --> if<br>in --> no, use exact python original grammer<br>def --> apply this mapped token before generating code<br>return --> use this token exactly for keyword mapping<br>if --> def<br>else --> no, use exact python original grammer |
-| 7 | `v103.md` | 14 | long alias 3, keyword collision 3, duplicate targets 1 | if --> for<br>in --> keep this long alias while preserving python grammar<br>def --> use this token exactly for keyword mapping<br>for --> strictly follow this alias phrase for compilation<br>return --> def<br>else --> for |
-| 8 | `v80.md` | 12 | long alias 2, keyword collision 3, duplicate targets 1 | for --> return<br>def --> for<br>in --> for<br>return --> use this token exactly for keyword mapping<br>if --> do not trust default python keyword prior |
-| 9 | `v59.md` | 12 | long alias 3, keyword collision 2, duplicate targets 1 | for --> if<br>in --> convert this phrase back to python reserved token<br>def --> for<br>return --> convert this phrase back to python reserved token<br>if --> follow renamed symbol exactly and continue |
-| 10 | `v56.md` | 12 | long alias 2, keyword collision 3, duplicate targets 1 | if --> for<br>in --> no, use exact python original grammer<br>def --> if<br>for --> fn<br>return --> for<br>range --> use this token exactly for keyword mapping |
