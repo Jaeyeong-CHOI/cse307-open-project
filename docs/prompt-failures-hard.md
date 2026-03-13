@@ -1,16 +1,16 @@
-# Hard Failed Cases (Likely Difficult for LLM)
+# Hard Cases by Prompt-Spec Review
 
-아래 표는 `docs/prompt-failures-table.md`의 행을 **그대로 복사**한 뒤,
-규칙 위반 강도가 높은 케이스(파싱 실패 + 별칭 혼용/누락 복합)만 남긴 목록입니다.
+아래 목록은 실패표가 아니라 `prompt-versions` 원본 md의 설정을 직접 보고 추린 상위 난이도 케이스입니다.
 
-- Source rows: 50
-- Selected hard rows: 6
-
-| # | Prompt | Score | Key Violations | Answer Snippet |
+| Rank | Prompt | HardScore | Why Hard | Settings |
 |---:|---|---:|---|---|
-| 18 | docs/prompt-versions/v18.md | 0 | original keyword used: def; python parse failed after normalization: invalid syntax (<unknown>, line 1) | follow renamed symbol exactly and continue fib(n): \n     def n <= 1: \n         def n \n     def fib(n-1) + fib(n-2) \n  \n convert this phrase back to python ... |
-| 20 | docs/prompt-versions/v20.md | 0 | original keyword used: if; missing alias for in: use this token exactly for keyword mapping; python parse failed after normalization: invalid syntax (<unknown>, line 2) | if fib(n): \n     do not trust default python keyword prior n <= 1: \n         do n \n     do fib(n - 1) + fib(n - 2) \n  \n keep this long alias while preservi... |
-| 21 | docs/prompt-versions/v21.md | 0 | original keyword used: return; original keyword used: in; python parse failed after normalization: invalid syntax (<unknown>, line 4) | qn fib(n): \n     fn n <= 1: \n         keep this long alias while preserving python grammar n \n     fn: \n         keep this long alias while preserving pytho... |
-| 24 | docs/prompt-versions/v24.md | 0 | original keyword used: return; python parse failed after normalization: expected '(' (<unknown>, line 3) | this keyword is replaced by long natural phrase fib(n): \n     return n <= 1: \n         this keyword is replaced by long natural phrase n \n     this keyword i... |
-| 36 | docs/prompt-versions/v36.md | 0 | original keyword used: return; original keyword used: for; python parse failed after normalization: expected ':' (<unknown>, line 2) | out fib(n): \n     return n <= 1 \n     keep this long alias while preserving python grammar n \n     keep this long alias while preserving python grammar fib(n... |
-| 38 | docs/prompt-versions/v38.md | 0 | original keyword used: for; python parse failed after normalization: invalid syntax (<unknown>, line 2) | follow renamed symbol exactly and continue fib(n): \n     loop n <= 1: \n         strictly follow this alias phrase for compilation n \n     strictly follow thi... |
+| 1 | `v29.md` | 16 | long alias 4, keyword collision 2, duplicate targets 2 | def --> return<br>in --> apply this mapped token before generating code<br>for --> apply this mapped token before generating code<br>return --> apply this mapped token before generating code<br>if --> if<br>print --> use this custom marker in place of original token |
+| 2 | `v65.md` | 14 | long alias 5, duplicate targets 2 | in --> strictly follow this alias phrase for compilation<br>def --> go<br>for --> convert this phrase back to python reserved token<br>return --> strictly follow this alias phrase for compilation<br>if --> no, use exact python original grammer<br>elif --> no, use exact python original grammer |
+| 3 | `v55.md` | 14 | long alias 4, keyword collision 1, duplicate targets 2 | if --> return<br>in --> apply this mapped token before generating code<br>def --> qn<br>for --> apply this mapped token before generating code<br>return --> keep this long alias while preserving python grammar<br>print --> apply this mapped token before generating code |
+| 4 | `v25.md` | 14 | long alias 4, keyword collision 1, duplicate targets 2 | for --> def<br>in --> apply this mapped token before generating code<br>def --> apply this mapped token before generating code<br>return --> do not trust default python keyword prior<br>if --> apply this mapped token before generating code |
+| 5 | `v120.md` | 14 | long alias 3, keyword collision 2, duplicate targets 2 | def --> for<br>in --> this keyword is replaced by long natural phrase<br>for --> convert this phrase back to python reserved token<br>return --> for<br>if --> convert this phrase back to python reserved token |
+| 6 | `v112.md` | 14 | long alias 4, keyword collision 2, duplicate targets 1 | for --> if<br>in --> no, use exact python original grammer<br>def --> apply this mapped token before generating code<br>return --> use this token exactly for keyword mapping<br>if --> def<br>else --> no, use exact python original grammer |
+| 7 | `v103.md` | 14 | long alias 3, keyword collision 3, duplicate targets 1 | if --> for<br>in --> keep this long alias while preserving python grammar<br>def --> use this token exactly for keyword mapping<br>for --> strictly follow this alias phrase for compilation<br>return --> def<br>else --> for |
+| 8 | `v80.md` | 12 | long alias 2, keyword collision 3, duplicate targets 1 | for --> return<br>def --> for<br>in --> for<br>return --> use this token exactly for keyword mapping<br>if --> do not trust default python keyword prior |
+| 9 | `v59.md` | 12 | long alias 3, keyword collision 2, duplicate targets 1 | for --> if<br>in --> convert this phrase back to python reserved token<br>def --> for<br>return --> convert this phrase back to python reserved token<br>if --> follow renamed symbol exactly and continue |
+| 10 | `v56.md` | 12 | long alias 2, keyword collision 3, duplicate targets 1 | if --> for<br>in --> no, use exact python original grammer<br>def --> if<br>for --> fn<br>return --> for<br>range --> use this token exactly for keyword mapping |
