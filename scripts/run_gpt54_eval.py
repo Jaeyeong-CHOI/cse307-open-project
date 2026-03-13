@@ -71,6 +71,7 @@ Pass only if rule-following is 100% exact.
 
 
 def main():
+    target_failures = int(os.environ.get("TARGET_FAILURES", "50"))
     prompt_files = sorted(
         [p for p in PROMPT_DIR.glob("v*.md") if p.is_file()],
         key=lambda p: int(re.search(r"v(\d+)", p.stem).group(1))
@@ -109,7 +110,10 @@ def main():
             }
             print(f"{p.name}: error {e}")
         results.append(item)
-        time.sleep(0.6)
+        if len([r for r in results if not r.get("judge", {}).get("pass")]) >= target_failures:
+            print(f"target failures reached: {target_failures}")
+            break
+        time.sleep(0.4)
 
     RESULT_JSON.write_text(json.dumps({"model": MODEL, "results": results}, ensure_ascii=False, indent=2))
 
