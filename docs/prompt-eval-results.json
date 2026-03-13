@@ -3,71 +3,37 @@
   "results": [
     {
       "file": "docs/prompt-versions/v1.md",
-      "answer": "if fib(n):\n    return n if n <= 1 else fib(n - 1) + fib(n - 2)\n\nfollow renamed symbol exactly and continue i strictly follow this alias phrase for compilation range(7):\n    do(i, fib(i))",
+      "answer": "if fib(n):\n    return n <= 1:\n        use this token exactly for keyword mapping n\n    use this token exactly for keyword mapping fib(n-1) + fib(n-2)\n\nfollow renamed symbol exactly and continue i strictly follow this alias phrase for compilation range(7):\n    do(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping exactly.",
-          "It uses original Python keywords where aliases are required.",
-          "It fails to use the configured alias for the return keyword.",
-          "The function body logic is not expressed in a fully compliant mapped form."
-        ],
         "violations": [
-          "Used 'return' as a function definition keyword position instead of the required alias 'if' only for 'def' mapping compliance check is ambiguous, but the body contains original keywords incorrectly.",
-          "Used original keyword 'if' in the expression 'n if n <= 1 else ...' instead of the required alias for 'if', which is 'return'.",
-          "Used original keyword 'return' in the function body, but 'return' must be written as the alias 'use this token exactly for keyword mapping'.",
-          "Did not use the required alias phrase 'use this token exactly for keyword mapping' anywhere for return statements.",
-          "Although 'for' and 'in' aliases were used in the loop, overall mapping compliance is not 100%.",
           "original keyword used: if",
-          "missing alias for return: use this token exactly for keyword mapping",
           "original keyword used: return",
-          "original keyword used: for"
+          "original keyword used: for",
+          "python parse failed after normalization: expected '(' (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: if",
-            "missing alias for return: use this token exactly for keyword mapping",
-            "original keyword used: return",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    def n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v2.md",
-      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nxk i ret range(7):\n    print(i, fib(i))",
+      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the alias mapping rules exactly.",
-          "It uses original Python keywords where aliases are required by the prompt settings.",
-          "It fails to replace all remapped keywords consistently."
-        ],
         "violations": [
-          "Used 'if' even though the prompt says 'if --> do not trust default python keyword prior', so original 'if' should not be used.",
-          "Used 'return' even though the prompt remaps 'return --> def'.",
-          "Used 'def' as the return keyword alias is required for 'return'; this creates ambiguity and does not follow the specified mapping exactly.",
-          "Only 'for' and 'in' were aliased ('xk' and 'ret'), but all configured keyword mappings must be respected.",
-          "Because compliance must be 100% exact, any unmapped/remapped keyword misuse causes failure.",
           "missing alias for def: no, use exact python original grammer",
           "original keyword used: def",
           "missing alias for if: do not trust default python keyword prior",
           "original keyword used: if",
-          "original keyword used: return"
+          "original keyword used: return",
+          "missing alias for for: xk",
+          "original keyword used: for",
+          "original keyword used: in",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: no, use exact python original grammer",
-            "original keyword used: def",
-            "missing alias for if: do not trust default python keyword prior",
-            "original keyword used: if",
-            "original keyword used: return"
-          ]
-        }
+        "normalized_code": "return fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -75,62 +41,26 @@
       "answer": "for fib(n):\n    do not trust default python keyword prior n <= 1:\n        xk n\n    xk fib(n - 1) + fib(n - 2)\n\nkeep this long alias while preserving python grammar i this keyword is replaced by long natural phrase range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not follow all required keyword-to-alias mappings exactly.",
-          "It uses aliases in places that break the required Python-grammar-preserving transformed code.",
-          "The produced code is not fully compliant with the specified mapping summary."
-        ],
+        "score": 90,
         "violations": [
-          "`def` should be replaced by alias `for`, and although `for fib(n):` matches that mapping superficially, overall compliance requires all mappings to be correct simultaneously; the full code is invalid under the stated rules.",
-          "`if` should be replaced by `do not trust default python keyword prior`; this was done, but the resulting line is not sufficient to establish full compliance because other mappings fail.",
-          "`return` should be replaced by `xk`; this was done.",
-          "`for` should be replaced by `keep this long alias while preserving python grammar`; this was done.",
-          "`in` should be replaced by `this keyword is replaced by long natural phrase`; this was done.",
-          "The prompt maps `elif` to `loop`, and while `elif` is not required for this task, strict 100% compliance cannot be established from an answer that does not demonstrate all mapping rules if evaluated literally against ALL mapping rules.",
-          "The transformed code is not valid under normal Python parsing, and the prompt requires preserving Python syntax structure under alias substitution; multi-word aliases with spaces are inserted raw, which does not preserve executable Python grammar in the provided answer.",
-          "Because pass requires 100% exact rule-following, any ambiguity or invalidity causes failure.",
           "original keyword used: for"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v4.md",
-      "answer": "use this custom marker fib(n):\n    return n <= 1:\n        use this token exactly n\n    use this token exactly fib(n - 1) + fib(n - 2)\n\ncond i qn range(7):\n    print(i, fib(i))",
+      "answer": "use this custom marker fib(n):\n    return n <= 1:\n        use this token exactly n\n    use this token exactly fib(n-1) + fib(n-2)\n\ncond i qn range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not correctly apply the required keyword alias mappings.",
-          "The function body is syntactically invalid under the specified alias system.",
-          "The conditional statement required for n <= 1 is missing its mapped form.",
-          "The provided code would not implement the requested Fibonacci behavior correctly."
-        ],
         "violations": [
-          "Used 'return' where the prompt specifies if --> 'return'; the conditional should use the alias for 'if', not Python 'return' syntax.",
-          "Failed to use the exact alias for 'return'; prompt says return --> 'use this token exactly for keyword mapping', but answer uses 'use this token exactly' instead.",
-          "Used 'use this token exactly' as a return keyword, which does not match the configured alias string exactly.",
-          "Did not include a valid conditional line equivalent to 'if n <= 1:'.",
-          "Produced invalid structure 'return n <= 1:' which is not a correct mapped Python construct.",
-          "Although 'def' and 'for'/'in' aliases were partially used, overall mapping compliance is not 100%.",
           "missing alias for def: use this custom marker in place of original token",
           "missing alias for return: use this token exactly for keyword mapping",
-          "original keyword used: return"
+          "original keyword used: return",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: use this custom marker in place of original token",
-            "missing alias for return: use this token exactly for keyword mapping",
-            "original keyword used: return"
-          ]
-        }
+        "normalized_code": "use this custom marker fib(n):\n    if n <= 1:\n        use this token exactly n\n    use this token exactly fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -139,17 +69,7 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer uses original Python keywords instead of the required aliases from the current mapping.",
-          "The prompt requires applying the mixed alias setting consistently to code generation.",
-          "Because aliasing rules are not followed exactly, the answer is not 100% compliant even though the algorithm itself is correct."
-        ],
         "violations": [
-          "Used 'def' instead of alias 'if' for function definition.",
-          "Used 'if' instead of alias 'loop' for the conditional.",
-          "Used 'return' instead of alias 'cond' for returns.",
-          "Used 'for' instead of alias 'loop' for the loop construct.",
-          "Did not reflect the configured alias mapping in the produced code.",
           "original keyword used: def",
           "missing alias for if: loop",
           "original keyword used: if",
@@ -158,22 +78,10 @@
           "missing alias for for: loop",
           "original keyword used: for",
           "missing alias for in: do not trust default python keyword prior",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: expected '(' (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: def",
-            "missing alias for if: loop",
-            "original keyword used: if",
-            "missing alias for return: cond",
-            "original keyword used: return",
-            "missing alias for for: loop",
-            "original keyword used: for",
-            "missing alias for in: do not trust default python keyword prior",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    def n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -181,31 +89,14 @@
       "answer": "fn fib(n):\n    if n <= 1:\n        go n\n    go fib(n - 1) + fib(n - 2)\n\nloop i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 40,
-        "reasons": [
-          "Used required alias 'fn' for 'def'.",
-          "Used required alias 'go' for 'return'.",
-          "Used required alias 'loop' for 'for'.",
-          "Used required exact token 'in' for 'in'.",
-          "Implements correct Fibonacci logic and prints values for 0..6."
-        ],
+        "score": 60,
         "violations": [
-          "Used raw Python keyword 'if' instead of the required alias specified by the setting: 'if --> do not trust default python keyword prior'.",
-          "Does not fully comply with ALL keyword-mapping rules, so cannot receive a passing evaluation.",
           "missing alias for if: do not trust default python keyword prior",
           "original keyword used: if",
           "missing alias for in: use this token exactly for keyword mapping",
           "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for if: do not trust default python keyword prior",
-            "original keyword used: if",
-            "missing alias for in: use this token exactly for keyword mapping",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -213,51 +104,25 @@
       "answer": "ret fib(n):\n    for n <= 1:\n        this keyword is replaced by long natural phrase n\n    qn:\n        this keyword is replaced by long natural phrase fib(n - 1) + fib(n - 2)\n\nfn i use this custom marker in place of original token range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not follow the alias mapping rules exactly.",
-          "It uses the wrong alias for the Python keyword 'if'.",
-          "It fails to preserve correct Python structure under the specified alias system."
-        ],
+        "score": 80,
         "violations": [
-          "Used 'for' where the alias for 'if' was required, so 'if n <= 1:' was incorrectly written as 'for n <= 1:'.",
-          "The mapping requires 'if --> for' and 'for --> fn'; therefore the conditional and loop keywords must be distinguished by their aliases, but the answer misuses them.",
-          "Because of the incorrect conditional alias, the produced code would map back incorrectly and not satisfy the prompt with 100% compliance.",
           "original keyword used: for",
           "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v8.md",
-      "answer": "convert this phrase back to python reserved token fib(n):\n    loop n <= 1:\n        do not trust default python keyword prior n\n    do not trust default python keyword prior fib(n-1) + fib(n-2)\n\nret i use this custom marker place of original token range(7):\n    print(i, fib(i))",
+      "answer": "convert this phrase back to python reserved token fib(n):\n    loop n <= 1:\n        do not trust default python keyword prior n\n    do not trust default python keyword prior fib(n-1) + fib(n-2)\n\nret i use this custom marker range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the alias mapping exactly and therefore is not 100% compliant.",
-          "The custom alias for 'in' contains spaces and must be used exactly as specified, but it was altered.",
-          "The code is not valid under the described mixed-alias setting because required mapped tokens were not reproduced precisely."
-        ],
         "violations": [
-          "Used an incorrect alias for 'in': expected exactly 'use this custom marker in place of original token' but wrote 'use this custom marker place of original token' (missing 'in').",
-          "Because the 'in' alias was not used exactly, the for-loop line does not correctly map to the required token sequence.",
-          "Pass condition requires 100% exact rule-following; this answer fails that requirement.",
-          "missing alias for in: use this custom marker in place of original token"
+          "missing alias for in: use this custom marker in place of original token",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for in: use this custom marker in place of original token"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i use this custom marker range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -265,74 +130,25 @@
       "answer": "convert this phrase back to python reserved token fib(n):\n    return n <= 1:\n        do n\n    do fib(n-1) + fib(n-2)\n\nuse this token exactly for keyword mapping i this keyword is replaced by long natural phrase range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not correctly apply the required keyword alias mappings.",
-          "The function definition syntax is invalid under the specified mapping.",
-          "The conditional statement is malformed and uses the wrong alias.",
-          "The loop statement is malformed and incomplete.",
-          "The produced code would not execute as valid mapped-Python code and does not satisfy the prompt exactly."
-        ],
+        "score": 80,
         "violations": [
-          "Used 'return' where the mapping requires 'if --> return'; the conditional should use the alias for 'if', not Python's return semantics.",
-          "Used 'do' for return correctly in some places, but combined it with an invalid preceding conditional line.",
-          "Function definition line 'convert this phrase back to python reserved token fib(n):' omits the required 'def' structure after mapping validation and is not valid executable syntax as written.",
-          "Conditional line 'return n <= 1:' is invalid because 'return' is mapped from 'if', but the body/structure is malformed in context and conflicts with Python syntax expectations after remapping.",
-          "Loop line 'use this token exactly for keyword mapping i this keyword is replaced by long natural phrase range(7):' is not a valid properly mapped 'for ... in ...' statement.",
-          "Overall answer fails 100% compliance requirement.",
           "original keyword used: return",
           "original keyword used: for"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: return",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v10.md",
-      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "do not trust default python keyword prior fib(n):\n    do n <= 1:\n        if n\n    if fib(n - 1) + fib(n - 2)\n\napply this mapped token before generating code i apply this mapped token before generating code range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The prompt defines active keyword alias mappings that must be applied in the generated code.",
-          "The answer uses original Python keywords instead of the required mapped aliases.",
-          "Because compliance must be 100% exact, any unmapped required keyword causes failure even though the program logic is correct."
-        ],
         "violations": [
-          "Used 'def' instead of mapped alias 'do not trust default python keyword prior'.",
-          "Used 'if' instead of mapped alias 'do'.",
-          "Used 'return' instead of mapped alias 'if'.",
-          "Used 'for' instead of mapped alias 'apply this mapped token before generating code'.",
-          "Did not reflect the mixed alias setting in the code as required by the prompt.",
-          "missing alias for def: do not trust default python keyword prior",
-          "original keyword used: def",
-          "missing alias for if: do",
           "original keyword used: if",
-          "original keyword used: return",
-          "missing alias for for: apply this mapped token before generating code",
-          "original keyword used: for",
-          "missing alias for in: apply this mapped token before generating code",
-          "original keyword used: in"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: do not trust default python keyword prior",
-            "original keyword used: def",
-            "missing alias for if: do",
-            "original keyword used: if",
-            "original keyword used: return",
-            "missing alias for for: apply this mapped token before generating code",
-            "original keyword used: for",
-            "missing alias for in: apply this mapped token before generating code",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nin i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -340,62 +156,26 @@
       "answer": "return fib(n):\n    if n <= 1:\n        apply this mapped token before generating code n\n    apply this mapped token before generating code fib(n - 1) + fib(n - 2)\n\nout i strictly follow this alias phrase for compilation range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not correctly apply the required alias mapping rules.",
-          "It fails to produce valid code under the specified mixed-alias setting.",
-          "The function definition syntax is invalid after mapping.",
-          "The loop syntax is invalid after mapping."
-        ],
+        "score": 80,
         "violations": [
-          "Used 'return' as an alias for 'def' but wrote 'return fib(n):' instead of valid function-definition form equivalent to 'def fib(n):'; because 'def' maps to 'return', this alias makes the code syntactically invalid in Python source form.",
-          "Failed to satisfy the requirement to define fib(n) in a compilable way.",
-          "Used the alias phrase for 'return' in statement position, but the overall mapped code is not valid Python syntax before any hypothetical preprocessing.",
-          "Used 'out' and the alias phrase for 'for'/'in', but the resulting line 'out i strictly follow this alias phrase for compilation range(7):' is not valid Python syntax as written.",
-          "Did not follow the prompt's mapping system with 100% exact compliance because the produced code cannot be correctly interpreted as required.",
-          "Answer is not executable/compilable under the described rules, so it fails the task completely.",
           "original keyword used: return",
           "original keyword used: for"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: return",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v12.md",
-      "answer": "def fib(n):\n    convert this phrase back to python reserved token n <= 1:\n        if n\n    qn i keep this long alias while preserving python grammar range(7):\n        print(i, fib(i))",
+      "answer": "def fib(n):\n    convert this phrase back to python reserved token n <= 1:\n        if n\n    if fib(n - 1) + fib(n - 2)\n\nqn i keep this long alias while preserving python grammar range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not correctly implement the required Fibonacci logic.",
-          "It fails to apply the alias mapping rules consistently and exactly.",
-          "The produced code is not valid under the specified mixed-alias setting."
-        ],
+        "score": 70,
         "violations": [
-          "`if` was required to be written using the alias `convert this phrase back to python reserved token`, but the body uses `if n` intending `return n`; this misuses the `return` alias.",
-          "`return` was required to be written as `if`, but the recursive return statement `fib(n-1) + fib(n-2)` is completely missing.",
-          "The base case line `if n` is invalid for the required behavior `return n`.",
-          "The function does not include the required recursive case `return fib(n-1) + fib(n-2)`.",
-          "Although `for` is correctly aliased as `qn` and `in` is correctly aliased as `keep this long alias while preserving python grammar`, overall mapping compliance is not 100%.",
-          "The answer does not satisfy the problem requirement to define a working Fibonacci function and print values for 0..6.",
           "missing alias for def: no, use exact python original grammer",
           "original keyword used: def",
           "original keyword used: if"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: no, use exact python original grammer",
-            "original keyword used: def",
-            "original keyword used: if"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -403,255 +183,120 @@
       "answer": "do fib(n):\n    convert this phrase back to python reserved token n <= 1:\n        if n\n    if fib(n - 1) + fib(n - 2)\n\ngo i use this custom marker in place of original token range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not follow the required keyword-alias mapping exactly.",
-          "It uses the alias for 'return' ('if') in places where Python 'return' is intended, but this creates invalid and ambiguous code under the specified mapping.",
-          "The required mixed alias setting is not applied in a fully compliant way."
-        ],
+        "score": 80,
         "violations": [
-          "'return' is mapped to 'if', but the answer also needs the original Python 'if' to be written using its alias phrase 'convert this phrase back to python reserved token'. This makes lines like 'if n' and 'if fib(...)' represent 'return', not conditional statements.",
-          "The code therefore does not correctly express both conditional logic and return statements under the provided alias rules.",
-          "Because 'return' is aliased to 'if' while 'if' is aliased to 'convert this phrase back to python reserved token', the submitted code is not validly mapped Python source that satisfies the prompt exactly.",
-          "Rule compliance is not 100% exact, so it must fail.",
           "original keyword used: if",
           "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: if",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v14.md",
-      "answer": "use this custom marker in place of original token fib(n):\n    loop n <= 1:\n        for n\n    for fib(n-1) + fib(n-2)\n\nstrictly follow this alias phrase for compilation i follow renamed symbol exactly and continue range(7):\n    print(i, fib(i))",
+      "answer": "def fib(n):\n    loop n <= 1:\n        for n\n    for fib(n - 1) + fib(n - 2)\n\nfor i follow renamed symbol exactly and continue range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping exactly.",
-          "It uses the alias for 'return' ('for') in places where Python syntax becomes invalid and conflicts with the aliased 'for' keyword.",
-          "The required custom alias phrase for 'for' is used, but the overall code is not consistently or correctly mapped.",
-          "The mapping rule for 'in' is not correctly handled in a valid transformed program.",
-          "The produced code would not compile under the described alias-replacement scheme."
-        ],
         "violations": [
-          "'return' is mapped to 'for', causing 'for n' and 'for fib(...)' to collide with the aliased 'for' loop keyword; this is not 100% exact/compliant in a valid way.",
-          "The answer does not ensure a valid executable program after applying the alias rules.",
-          "Keyword alias usage is inconsistent/conflicting, so the mapping rules are not fully satisfied.",
-          "Pass requires 100% exact compliance, which this answer does not achieve.",
+          "missing alias for def: use this custom marker in place of original token",
+          "original keyword used: def",
+          "missing alias for for: strictly follow this alias phrase for compilation",
           "original keyword used: for",
-          "original keyword used: in"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nreturn i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v15.md",
-      "answer": "def fib(n):\n    go n <= 1:\n        keep this long alias while preserving python grammar n\n    keep this long alias while preserving python grammar fib(n - 1) + fib(n - 2)\n\nstrictly follow this alias phrase for compilation i follow renamed symbol exactly and continue range(7):\n    print(i, fib(i))",
+      "answer": "def fib(n):\n    go n <= 1:\n        keep this long alias while preserving python grammar n\n    keep this long alias while preserving python grammar fib(n-1) + fib(n-2)\n\nstrictly follow this alias phrase for compilation i follow renamed symbol exactly and continue range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping rules exactly.",
-          "It uses the alias for 'if' ('go') instead of valid Python keyword handling required by the mapping/execution scheme.",
-          "It uses the alias for 'return' as raw source text, which is not valid Python syntax under the stated requirement to preserve Python grammar.",
-          "It uses the alias phrase for 'for' and 'in' directly, producing invalid Python syntax rather than executable mapped code.",
-          "The produced code is not valid Python source as written and therefore does not satisfy the prompt's requirement to write code that performs the described behavior."
-        ],
+        "score": 70,
         "violations": [
-          "Used 'go' instead of Python 'if'.",
-          "Used 'keep this long alias while preserving python grammar' instead of Python 'return'.",
-          "Used 'strictly follow this alias phrase for compilation' instead of Python 'for'.",
-          "Used 'follow renamed symbol exactly and continue' instead of Python 'in'.",
-          "Answer is not valid executable Python code.",
-          "Did not comply with all mapping rules with 100% exactness.",
           "missing alias for def: no, use exact python original grammer",
           "original keyword used: def",
           "original keyword used: for"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: no, use exact python original grammer",
-            "original keyword used: def",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v16.md",
-      "answer": "for fib(n):\n    use this token exactly n <= 1:\n        keep this long alias while preserving python grammar n\n    keep this long alias while preserving python grammar fib(n-1) + fib(n-2)\n\nkeep this long alias while preserving python grammar i this keyword is replaced by long natural phrase range(7):\n    print(i, fib(i))",
+      "answer": "for fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required keyword-alias mapping rules exactly.",
-          "It uses the alias for 'return' in place of the required alias for 'for' on the loop line.",
-          "The code is not fully compliant with the specified mixed alias setting, so it would not map back to valid Python correctly."
-        ],
         "violations": [
-          "'def' was correctly mapped to 'for', but the top-level loop uses 'keep this long alias while preserving python grammar' instead of the required alias for 'for'.",
-          "The 'for' keyword should be written as 'keep this long alias while preserving python grammar', but the answer uses that same alias for 'return' as well, creating an invalid/ambiguous mapping.",
-          "The mapping requires exact alias usage for each keyword; the answer reuses one alias string for multiple different Python keywords, which is not 100% exact compliance.",
-          "Because the loop line begins with the wrong keyword alias, the required 'for i in range(7):' structure is not correctly represented under the mapping rules.",
           "missing alias for if: use this token exactly for keyword mapping",
-          "original keyword used: for"
+          "original keyword used: if",
+          "missing alias for return: keep this long alias while preserving python grammar",
+          "original keyword used: return",
+          "missing alias for for: keep this long alias while preserving python grammar",
+          "original keyword used: for",
+          "missing alias for in: this keyword is replaced by long natural phrase",
+          "original keyword used: in",
+          "python parse failed after normalization: expected '(' (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for if: use this token exactly for keyword mapping",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\ndef i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v17.md",
-      "answer": "out fib(n):\n    return n if n <= 1 else fib(n - 1) + fib(n - 2)\n\nqn i convert this phrase back to python reserved token range(7):\n    print(i, fib(i))",
+      "answer": "out fib(n):\n    return n if n <= 1 else fib(n-1) + fib(n-2)\n\nqn i convert this phrase back to python reserved token range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 25,
-        "reasons": [
-          "The answer correctly uses the alias 'out' for 'def'.",
-          "The answer correctly uses the alias 'qn' for 'for'.",
-          "The answer correctly uses the configured alias phrase for 'in'.",
-          "The Fibonacci logic is semantically correct."
-        ],
+        "score": 0,
         "violations": [
-          "It uses the original Python keyword 'return' inside the function, but the mapping requires 'if' to be written as 'return' and original keywords that have aliases should not be used directly.",
-          "It uses the original Python keyword 'if' in the conditional expression, but the configured alias for 'if' is 'return'.",
-          "It uses the original Python keyword 'else', which is not defined in the alias mapping and may be acceptable syntactically, but the prompt expects adherence to the mixed-alias setting for remapped keywords; the main issue is failure to apply the 'if' alias.",
-          "The prompt explicitly requires handling 'n <= 1 이면 n을 반환하라' and otherwise returning recursively; with strict rule-following, the remapped keyword usage is not 100% compliant.",
-          "Because compliance must be 100% exact, any direct use of remapped original keywords causes failure.",
           "original keyword used: if",
           "missing alias for return: no, use exact python original grammer",
-          "original keyword used: return"
+          "original keyword used: return",
+          "python parse failed after normalization: expected ':' (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: if",
-            "missing alias for return: no, use exact python original grammer",
-            "original keyword used: return"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n if n <= 1 else fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v18.md",
-      "answer": "follow renamed symbol exactly and continue fib(n):\n    if n <= 1:\n        def n\n    def fib(n - 1) + fib(n - 2)\n\nconvert this phrase back to python reserved token i keep this long alias while preserving python grammar range(7):\n    print(i, fib(i))",
+      "answer": "follow renamed symbol exactly and continue fib(n):\n    def n <= 1:\n        def n\n    def fib(n-1) + fib(n-2)\n\nconvert this phrase back to python reserved token i keep this long alias while preserving python grammar range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping rules exactly.",
-          "It uses the original keyword 'if' instead of the required alias for 'if'.",
-          "It uses 'def' as a return statement alias correctly in some places, but fails overall due to other mapping violations.",
-          "The function definition alias for 'def' appears correctly, and the 'for' and 'in' aliases are used, but not with full compliance.",
-          "Because pass requires 100% exact rule-following, the answer fails."
-        ],
         "violations": [
-          "Used original keyword 'if' instead of the required alias 'follow renamed symbol exactly and continue'.",
-          "Did not apply all configured keyword aliases consistently.",
-          "Rule-following is not 100% exact, so it cannot pass.",
           "original keyword used: def",
-          "original keyword used: if"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: def",
-            "original keyword used: if"
-          ]
-        }
+        "normalized_code": "return fib(n):\n    return n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v19.md",
-      "answer": "for fib(n):\n    def n <= 1:\n        apply this mapped token before generating code n\n    apply this mapped token before generating code fib(n-1) + fib(n-2)\n\nqn i use this custom marker in place of original token range(7):\n    print(i, fib(i))",
+      "answer": "for fib(n):\n    def n <= 1:\n        apply this mapped token n\n    apply this mapped token fib(n - 1) + fib(n - 2)\n\nqn i use this custom marker place of original token range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not produce valid code under the specified alias mapping.",
-          "It fails to follow the required keyword substitutions exactly and completely.",
-          "The resulting code would not execute as the requested Fibonacci program."
-        ],
         "violations": [
-          "Used 'for' to define a function, which maps to original 'def'; this part is correct, but the rest of the mapping usage is not fully compliant.",
-          "Used 'def' for the conditional, which maps to original 'if'; however, the prompt requires valid transformed Python and the overall structure is invalid due to other mapping issues.",
-          "The mapping for 'return' is described as 'apply this mapped token before generating code', which is a placeholder/instruction-like string; the answer uses it literally, making the code invalid and not demonstrably compliant.",
-          "The alias for 'in' is 'use this custom marker in place of original token'; the answer uses this literal phrase in code, which is not a valid practical tokenized alias usage for executable code.",
-          "Because aliases may contain spaces, the system description implies preprocessing, but the answer still must satisfy the prompt exactly; this answer does not yield a valid executable program after consistent mapping.",
-          "No assurance of 100% exact rule-following because the provided code cannot be interpreted as a correct final solution under the mapping scheme.",
           "original keyword used: def",
+          "missing alias for return: apply this mapped token before generating code",
           "original keyword used: for",
-          "original keyword used: in"
+          "missing alias for in: use this custom marker in place of original token",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 3)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: def",
-            "original keyword used: for",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        apply this mapped token n\n    apply this mapped token fib(n - 1) + fib(n - 2)\n\nfor i use this custom marker place of original token range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v20.md",
-      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "if fib(n):\n    do not trust default python keyword prior n <= 1:\n        do n\n    do fib(n - 1) + fib(n - 2)\n\nkeep this long alias while preserving python grammar i use this token exactly range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not apply the required keyword alias mappings from the prompt.",
-          "It uses original Python keywords where aliases were explicitly configured.",
-          "Pass requires 100% exact rule compliance, which is not met."
-        ],
         "violations": [
-          "Used 'def' instead of required alias 'if' for function definition.",
-          "Used 'for' instead of required alias 'keep this long alias while preserving python grammar'.",
-          "Used 'return' instead of required alias 'do'.",
-          "Used 'if' instead of required alias 'do not trust default python keyword prior'.",
-          "Did not demonstrate the configured mixed-alias setting in the code.",
-          "original keyword used: def",
-          "missing alias for if: do not trust default python keyword prior",
           "original keyword used: if",
-          "missing alias for return: do",
-          "original keyword used: return",
-          "missing alias for for: keep this long alias while preserving python grammar",
-          "original keyword used: for",
           "missing alias for in: use this token exactly for keyword mapping",
-          "original keyword used: in"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: def",
-            "missing alias for if: do not trust default python keyword prior",
-            "original keyword used: if",
-            "missing alias for return: do",
-            "original keyword used: return",
-            "missing alias for for: keep this long alias while preserving python grammar",
-            "original keyword used: for",
-            "missing alias for in: use this token exactly for keyword mapping",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    return not trust default python keyword prior n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i use this token exactly range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -660,61 +305,28 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the alias mapping rules exactly.",
-          "The alias for 'for' is incorrectly used as 'return' in the loop header, which collides with the separate alias for 'return'.",
-          "Both 'if' and 'else' are mapped to 'fn', making the provided conditional syntactically ambiguous and not faithfully mappable back to valid Python under the stated rules.",
-          "The produced code is not valid under the described transformation scheme and would not execute as the required Fibonacci program."
-        ],
         "violations": [
-          "Used 'return' as the alias for the 'for' loop header, creating an invalid/ambiguous construct.",
-          "Used 'fn' for both the if-branch and else-branch without any disambiguation, violating exact recoverability to Python keywords.",
-          "Failed to produce code that can be deterministically mapped back to valid Python while preserving grammar.",
-          "Therefore the answer is not 100% compliant with all mapping rules.",
           "original keyword used: return",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 4)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: return",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    if:\n        return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v22.md",
-      "answer": "for fib(n):\n    xk n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i this keyword is replaced by long natural phrase range(7):\n    print(i, fib(i))",
+      "answer": "for fib(n):\n    xk n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i keep this long alias while preserving python grammar range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 20,
-        "reasons": [
-          "The answer correctly used the alias 'for' in place of 'def'.",
-          "The answer correctly used 'xk' in place of 'if'.",
-          "The answer correctly used the long phrase alias in place of 'in'.",
-          "The answer correctly kept 'range' as original Python grammar.",
-          "The Fibonacci logic structure is conceptually correct."
-        ],
+        "score": 0,
         "violations": [
-          "It used 'return' directly, but the prompt says 'return --> use this token exactly for keyword mapping', which requires a specific alias token rather than the original keyword.",
-          "It used 'for' as both the alias for 'def' and as the loop keyword, but the prompt says 'for --> keep this long alias while preserving python grammar', so the loop keyword should have been replaced by its configured alias, not left as 'for'.",
-          "Because the loop keyword mapping was not followed, the final code does not comply 100% with the alias-setting rules.",
-          "Pass requires 100% exact rule-following, which this answer does not satisfy.",
           "missing alias for return: use this token exactly for keyword mapping",
           "original keyword used: return",
-          "missing alias for for: keep this long alias while preserving python grammar",
-          "original keyword used: for"
+          "original keyword used: for",
+          "missing alias for in: this keyword is replaced by long natural phrase",
+          "python parse failed after normalization: expected '(' (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for return: use this token exactly for keyword mapping",
-            "original keyword used: return",
-            "missing alias for for: keep this long alias while preserving python grammar",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\ndef i for range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -723,27 +335,11 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping rules exactly.",
-          "It uses the wrong token for the Python 'for' keyword in the loop.",
-          "It omits the required colon after the function definition because the alias text for 'def' contains 'for' but must still preserve valid Python punctuation/structure.",
-          "The produced code is not valid under the specified mapping scheme."
-        ],
         "violations": [
-          "Mapped 'def' -> 'for' was used, but the resulting function definition line is not valid executable syntax under the prompt's alias-preserving grammar requirement.",
-          "Mapped 'if' -> 'keep this long alias while preserving python grammar' was used, but overall syntax remains invalid due to unresolved alias handling and structure.",
-          "Mapped 'return' -> 'out' was used, but correctness requires the whole program to be valid.",
-          "Mapped 'in' -> 'use this token exactly for keyword mapping' was used.",
-          "The loop incorrectly uses the alias text for 'for' ('no, use exact python original grammer') even though the prompt explicitly says for --> no, use exact python original grammer, meaning use original Python 'for' keyword, not that literal alias string.",
-          "Because not all mapping rules are followed 100% exactly, the answer must fail.",
-          "original keyword used: for"
+          "original keyword used: for",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i use this token exactly def keyword mapping range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -752,29 +348,11 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not correctly apply the required keyword alias mappings.",
-          "The function definition syntax is invalid under the stated mapping rules.",
-          "The conditional statement is malformed and uses the wrong keyword.",
-          "The return statements do not use the required alias for 'return'.",
-          "The 'for' loop line is not valid under the mapping rules because 'in' must be replaced by its alias phrase exactly, but the overall syntax remains invalid due to other mapping failures.",
-          "The produced code would not satisfy the requested Fibonacci behavior."
-        ],
         "violations": [
-          "Used the long natural phrase in place of 'def' without preserving valid statement structure; the resulting function definition is not compliant/executable.",
-          "Failed to use 'if' alias correctly: prompt maps 'if' -> 'return', so the conditional should use 'return' as the alias token, not the long natural phrase.",
-          "Failed to use the alias for 'return': prompt says 'return' is replaced by a long natural phrase, but the answer uses literal 'return' in 'return n <= 1:'.",
-          "Constructed an invalid conditional line 'return n <= 1:' which is neither valid mapped syntax nor valid Python-equivalent structure.",
-          "Because 'elif' must remain original Python grammar, and no valid conditional structure is present, control-flow mapping rules are not followed.",
-          "Overall code is syntactically invalid and therefore not 100% compliant with the prompt.",
-          "original keyword used: return"
+          "original keyword used: return",
+          "python parse failed after normalization: expected '(' (<unknown>, line 3)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: return"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        def n\n    def fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -783,17 +361,7 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer uses raw Python keywords that are explicitly remapped in the prompt and therefore does not follow the alias-setting rules.",
-          "The prompt requires handling mixed alias settings, where certain keywords must not appear in their original Python form before preprocessing/generation.",
-          "Although the Fibonacci logic itself is correct, rule compliance is not 100% exact, so it must fail."
-        ],
         "violations": [
-          "Used `def` directly even though `def --> apply this mapped token before generating code`.",
-          "Used `if` directly even though `if --> apply this mapped token before generating code`.",
-          "Used `return` directly even though `return --> do not trust default python keyword prior`.",
-          "Used `for` directly even though `for --> def`, meaning the configured aliasing/mapping rule was not followed.",
-          "Did not reflect the required alias/mapping transformations in the submitted code.",
           "missing alias for def: apply this mapped token before generating code",
           "original keyword used: def",
           "missing alias for if: apply this mapped token before generating code",
@@ -802,42 +370,22 @@
           "original keyword used: return",
           "original keyword used: for",
           "missing alias for in: apply this mapped token before generating code",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: cannot assign to function call (<unknown>, line 1)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: apply this mapped token before generating code",
-            "original keyword used: def",
-            "missing alias for if: apply this mapped token before generating code",
-            "original keyword used: if",
-            "missing alias for return: do not trust default python keyword prior",
-            "original keyword used: return",
-            "original keyword used: for",
-            "missing alias for in: apply this mapped token before generating code",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "for fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v26.md",
-      "answer": "this keyword is replaced by long natural phrase fib(n):\n    convert this phrase back to python reserved token n <= 1:\n        loop n\n    loop fib(n - 1) + fib(n - 2)\n\nthis keyword is replaced by long natural phrase i convert this phrase back to python reserved token range(7):\n    print(i, fib(i))",
+      "answer": "this keyword is replaced by long natural phrase fib(n):\n    convert this phrase back to python reserved token n <= 1:\n        loop n\n    loop fib(n - 1) + fib(n - 2)\n\nlong natural phrase i convert this phrase back to python reserved token range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer uses the configured aliases for def, if, return, and for correctly, but it does not fully comply with all mapping rules because it leaves the Python keyword 'range' unchanged despite 'in' being aliased and requiring transformation in the loop header context.",
-          "The prompt requires code that would execute under the alias mapping system with all specified keyword replacements applied exactly."
-        ],
         "violations": [
-          "Used raw Python keyword/context 'range(7)' after aliased 'in' mapping instead of fully respecting the alias-based syntax expected for the loop construct.",
-          "Did not achieve 100% exact compliance with all mapping rules, so it must fail under the strict evaluator requirement."
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": true,
-          "violations": []
-        }
+        "normalized_code": "def fib(n):\n    in n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nlong natural phrase i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -845,91 +393,40 @@
       "answer": "out fib(n):\n    if n <= 1:\n        do n\n    do fib(n - 1) + fib(n - 2)\n\nfollow renamed symbol exactly and continue i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 40,
-        "reasons": [
-          "The answer correctly uses the alias 'out' for 'def'.",
-          "The answer correctly uses the alias 'do' for 'return'.",
-          "The answer correctly uses the full alias 'follow renamed symbol exactly and continue' for 'for'.",
-          "The answer correctly uses 'in' exactly for the 'in' keyword mapping.",
-          "The program logic matches the requested Fibonacci function and loop behavior."
-        ],
+        "score": 60,
         "violations": [
-          "The prompt requires using the configured alias for 'if', but the answer uses raw Python keyword 'if' instead of the required mapped token.",
-          "The prompt requires using the configured alias for 'while' if that keyword is used; although not required here, the answer does not demonstrate full compliance with all mapping rules because one required mapped keyword ('if') was not aliased exactly.",
-          "Pass requires 100% exact rule-following, and the incorrect use of 'if' makes the answer non-compliant.",
           "missing alias for if: use this token exactly for keyword mapping",
           "original keyword used: if",
           "missing alias for in: use this token exactly for keyword mapping",
           "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for if: use this token exactly for keyword mapping",
-            "original keyword used: if",
-            "missing alias for in: use this token exactly for keyword mapping",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v28.md",
-      "answer": "use this token exactly for keyword mapping fib(n):\n    cond n <= 1:\n        no, use exact python original grammer n\n    no, use exact python original grammer fib(n - 1) + fib(n - 2)\n\nreturn i strictly follow this alias phrase for compilation range(7):\n    print(i, fib(i))",
+      "answer": "use this token exactly for keyword mapping fib(n):\n    cond n <= 1:\n        no, use exact python original grammer n\n    no, use exact python original grammer fib(n-1) + fib(n-2)\n\nreturn i strictly follow this alias phrase for compilation range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping exactly and is not valid under the specified mixed-alias setting.",
-          "The loop header uses the alias for 'for' correctly and the alias for 'in' correctly, but other required mappings and syntax constraints are violated.",
-          "Because compliance must be 100% exact, any single mapping or syntax violation causes failure."
-        ],
+        "score": 80,
         "violations": [
-          "The alias for 'def' must be exactly 'use this token exactly for keyword mapping', but the produced function definition is not validly formed under Python-like syntax due to the embedded spaces and lack of any demonstrated handling beyond raw substitution.",
-          "The alias for 'return' is specified as 'no, use exact python original grammer', meaning the original Python keyword 'return' should be used, not the alias phrase. The answer incorrectly uses 'no, use exact python original grammer n' and 'no, use exact python original grammer fib(...)' instead of 'return n' and 'return fib(...)'.",
-          "The prompt says Python syntax is otherwise preserved; using a multi-word alias phrase directly as a bare keyword token breaks Python syntax preservation.",
-          "The answer is not executable/compilable as required by the mapping rules because multi-word aliases are inserted directly where Python keywords would appear without any valid tokenization mechanism in the code itself.",
-          "The requirement is to define fib(n), return n when n <= 1, otherwise return fib(n-1)+fib(n-2), and iterate i from 0 to 6 printing results. Due to invalid keyword usage, the code does not satisfy the prompt exactly.",
           "original keyword used: return",
           "original keyword used: for"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: return",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v29.md",
-      "answer": "return fib(n):\n    if n <= 1:\n        apply this mapped token before generating code n\n    apply this mapped token before generating code fib(n - 1) + fib(n - 2)\n\napply this mapped token before generating code i apply this mapped token before generating code range(7):\n    use this custom marker in place of original token(i, fib(i))",
+      "answer": "return fib(n):\n    if n <= 1:\n        apply this mapped token before generating code n\n    apply this mapped token before generating code fib(n - 1) + fib(n - 2)\n\napply this mapped token before generating code i apply this mapped token before generating code range(7):\n    use this custom marker(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not correctly apply the required alias mapping to produce valid mapped code.",
-          "The function definition is invalid under the specified mapping.",
-          "The mapped aliases for 'return' and 'for' are used as literal English instructions instead of valid alias tokens, making the code non-executable.",
-          "The required print token replacement is not sufficient to make the overall program valid."
-        ],
         "violations": [
-          "Used 'return fib(n):' for function definition, but 'def' is aliased to 'return', so a valid mapped function definition would need proper Python structure after reverse-mapping; as written it is not valid code under the mapping rules.",
-          "Failed to provide a valid alias form for 'return' statements; inserted the literal phrase 'apply this mapped token before generating code' in statement position, which is not a usable tokenized alias.",
-          "Failed to provide a valid alias form for the 'for' loop; again used the literal phrase 'apply this mapped token before generating code' instead of a concrete alias token.",
-          "Because 'in' is also mapped, the loop header is not validly expressed.",
-          "Overall output is not valid code satisfying the prompt's mapping system and execution requirements.",
           "original keyword used: return",
-          "original keyword used: in"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 3)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: return",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        in n\n    in fib(n - 1) + fib(n - 2)\n\nin i in range(7):\n    use this custom marker(i, fib(i))"
       }
     },
     {
@@ -937,26 +434,12 @@
       "answer": "strictly follow this alias phrase for compilation fib(n):\n    keep this long alias while preserving python grammar n <= 1:\n        fn n\n    fn fib(n-1) + fib(n-2)\n\nreturn i do not trust default python keyword prior range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not fully follow the required alias mapping rules.",
-          "It uses the alias for 'def' correctly, the alias for 'if' correctly, the alias for 'return' correctly inside the function, and the alias for 'for' correctly in the loop.",
-          "However, it fails to preserve valid Python grammar under the alias system because the loop variable name is 'return', which is a reserved Python keyword and not a valid identifier in Python syntax.",
-          "The prompt requires code that can be compiled by replacing aliases back to original Python keywords; using 'return' as a variable name makes the code invalid even before or after mapping."
-        ],
+        "score": 80,
         "violations": [
-          "Used 'return' as a loop variable identifier: `return i do not trust default python keyword prior range(7):`, which violates Python grammar.",
-          "Did not produce fully valid code satisfying the prompt's execution requirement, so compliance is not 100% exact.",
           "original keyword used: return",
           "original keyword used: for"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: return",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -965,18 +448,7 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer uses original Python keywords instead of the required alias mappings.",
-          "The prompt requires applying the mixed alias setting to keywords appearing in the code.",
-          "`for` must be written as `return` under the current mapping, but the answer uses `for`.",
-          "`return` must be written as `for` under the current mapping, but the answer uses `return`.",
-          "`if` must be replaced by the configured long natural phrase, but the answer uses `if`.",
-          "`def` is correctly left as original Python, but overall compliance is not 100%."
-        ],
         "violations": [
-          "Used `for` instead of alias `return`.",
-          "Used `return` instead of alias `for`.",
-          "Used `if` instead of the required long natural phrase alias.",
           "missing alias for def: no, use exact python original grammer",
           "original keyword used: def",
           "missing alias for if: this keyword is replaced by long natural phrase",
@@ -984,93 +456,45 @@
           "original keyword used: return",
           "original keyword used: for",
           "missing alias for in: use this token exactly for keyword mapping",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: no, use exact python original grammer",
-            "original keyword used: def",
-            "missing alias for if: this keyword is replaced by long natural phrase",
-            "original keyword used: if",
-            "original keyword used: return",
-            "original keyword used: for",
-            "missing alias for in: use this token exactly for keyword mapping",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nreturn i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v32.md",
-      "answer": "def fib(n):\n    fn n <= 1:\n        return n\n    ret i no range(7):\n        print(i, fib(i))\n    return fib(n - 1) + fib(n - 2)\n\nret i no range(7):\n    print(i, fib(i))",
+      "answer": "def fib(n):\n    fn n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nret i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 20,
-        "reasons": [
-          "The answer defines `fib(n)` using `def`, which matches the current alias setting.",
-          "The answer uses `fn` in place of `if`, which matches the alias setting.",
-          "The answer uses `ret` in place of `for`, which matches the alias setting."
-        ],
+        "score": 60,
         "violations": [
-          "Uses `return` instead of the required alias `for` for the return keyword under the current mapping (`return --> for`).",
-          "Uses `no` in place of `in`, but the prompt explicitly says `in` should use exact original Python grammar.",
-          "Places the loop `ret i no range(7): ...` inside the function before the recursive return, which does not match the required behavior of defining fib and then iterating outside to print results.",
-          "Includes an extra top-level loop plus an incorrect internal loop, so the structure does not exactly follow the requested program.",
-          "Because of the wrong keyword mappings, the code would not be correctly transformed/executed under the specified alias rules.",
-          "Fails 100% compliance with the mapping rules, so it cannot pass.",
           "missing alias for return: for",
           "original keyword used: return",
-          "missing alias for in: no, use exact python original grammer"
+          "missing alias for in: no, use exact python original grammer",
+          "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for return: for",
-            "original keyword used: return",
-            "missing alias for in: no, use exact python original grammer"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v33.md",
-      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nif i in range(7):\n    print(i, fib(i))",
+      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 10,
-        "reasons": [
-          "The answer defines fib(n) and includes the correct Fibonacci base case and recursive case logic.",
-          "However, it does not follow the required keyword alias mappings from the prompt.",
-          "The loop/output portion is incorrect and not a valid translation of the required for-loop behavior."
-        ],
+        "score": 0,
         "violations": [
-          "Used original keyword 'def' instead of the required mapped form because 'def --> follow renamed symbol exactly and continue'.",
-          "Used original keyword 'if' even though the mapping says 'if --> def'.",
-          "Used original keyword 'return' even though the mapping says 'return --> xk'.",
-          "Did not apply the mapping for 'for --> if'; the required loop keyword should have been the mapped alias form, not a normal Python for or an invalid construct.",
-          "Used 'in' directly even though the mapping says 'in --> apply this mapped token before generating code'.",
-          "The final loop line 'if i in range(7):' is invalid for the requested behavior and does not implement iteration from 0 to 6.",
           "missing alias for def: follow renamed symbol exactly and continue",
           "original keyword used: def",
           "original keyword used: if",
           "missing alias for return: xk",
           "original keyword used: return",
+          "original keyword used: for",
           "missing alias for in: apply this mapped token before generating code",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: follow renamed symbol exactly and continue",
-            "original keyword used: def",
-            "original keyword used: if",
-            "missing alias for return: xk",
-            "original keyword used: return",
-            "missing alias for in: apply this mapped token before generating code",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "if fib(n):\n    for n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -1079,157 +503,71 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the alias mapping rules exactly.",
-          "It uses a Python conditional expression with the keyword 'if' instead of the required alias.",
-          "The prompt explicitly maps 'if' -> 'return', so any use of 'if' must be replaced by 'return'.",
-          "Although 'def' was correctly replaced with 'out' and 'for' with 'go', full compliance requires all mapped keywords to be applied consistently."
-        ],
         "violations": [
-          "Used 'if' in 'return n if n <= 1 else ...' instead of the required alias 'return'.",
-          "Did not achieve 100% compliance with the mixed alias setting.",
           "original keyword used: if",
           "missing alias for return: no, use exact python original grammer",
           "original keyword used: return",
           "missing alias for in: no, use exact python original grammer",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: expected ':' (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: if",
-            "missing alias for return: no, use exact python original grammer",
-            "original keyword used: return",
-            "missing alias for in: no, use exact python original grammer",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n if n <= 1 else fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v35.md",
-      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nxk i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not apply the required keyword alias mappings from the prompt.",
-          "It uses original Python keywords where aliases were explicitly configured.",
-          "Pass requires 100% exact compliance with all mapping rules, which is not met."
-        ],
+        "score": 40,
         "violations": [
-          "Uses 'if' instead of the configured alias 'do not trust default python keyword prior'.",
-          "Uses 'for' instead of the configured alias 'xk'.",
-          "Uses 'return' instead of the configured alias 'keep this long alias while preserving python grammar'.",
-          "Uses 'in' instead of the configured alias 'apply this mapped token before generating code'.",
           "missing alias for if: do not trust default python keyword prior",
           "original keyword used: if",
           "missing alias for return: keep this long alias while preserving python grammar",
           "original keyword used: return",
-          "missing alias for for: xk",
-          "original keyword used: for",
           "missing alias for in: apply this mapped token before generating code",
           "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for if: do not trust default python keyword prior",
-            "original keyword used: if",
-            "missing alias for return: keep this long alias while preserving python grammar",
-            "original keyword used: return",
-            "missing alias for for: xk",
-            "original keyword used: for",
-            "missing alias for in: apply this mapped token before generating code",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v36.md",
-      "answer": "out fib(n):\n    return n if n <= 1 else fib(n-1) + fib(n-2)\n\nstrictly follow this alias phrase for compilation i do not trust default python keyword prior range(7):\n    print(i, fib(i))",
+      "answer": "out fib(n):\n    return n <= 1\n    keep this long alias while preserving python grammar n\n    keep this long alias while preserving python grammar fib(n-1) + fib(n-2)\n\nstrictly follow this alias phrase for compilation i do not trust default python keyword prior range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 25,
-        "reasons": [
-          "The answer correctly uses the alias 'out' for 'def'.",
-          "The answer correctly uses the alias phrase for 'for'.",
-          "The answer correctly uses the alias phrase for 'in'.",
-          "The required loop range 0..6 is implemented via range(7).",
-          "The Fibonacci logic is semantically correct."
-        ],
+        "score": 0,
         "violations": [
-          "The answer uses the raw Python keyword 'return' inside the function, but the prompt requires using the configured alias for 'return': 'keep this long alias while preserving python grammar'.",
-          "The answer uses the raw Python keyword 'if' in the conditional expression, but the prompt requires using the configured alias for 'if': 'return'.",
-          "Because alias mapping must be followed exactly, using original keywords where aliases are configured is non-compliant.",
-          "Pass requires 100% exact rule-following, which this answer does not satisfy.",
-          "original keyword used: if",
-          "missing alias for return: keep this long alias while preserving python grammar",
           "original keyword used: return",
-          "original keyword used: for"
+          "original keyword used: for",
+          "python parse failed after normalization: expected ':' (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: if",
-            "missing alias for return: keep this long alias while preserving python grammar",
-            "original keyword used: return",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1\n    return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v37.md",
-      "answer": "follow renamed symbol exactly and continue fib(n):\n    keep this long alias while preserving python grammar n <= 1:\n        go n\n    go fib(n-1) + fib(n-2)\n\nfn i strictly follow this alias phrase for compilation range(7):\n    print(i, fib(i))",
+      "answer": "follow renamed symbol exactly and continue fib(n):\n    keep this long alias while preserving python grammar n <= 1:\n        go n\n    go fib(n - 1) + fib(n - 2)\n\nfn i strictly follow this alias phrase for compilation range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not fully comply with the required keyword-alias mapping rules.",
-          "It uses the alias for 'def' and 'if' correctly, and uses 'go' for 'return' and 'fn' for 'for'.",
-          "However, it fails to preserve valid Python grammar under the specified aliasing scheme because the alias for 'in' contains spaces and is inserted directly into the loop header, producing an invalid construct.",
-          "The prompt requires code that satisfies the described behavior; the provided code would not compile/excute as valid transformed Python source under the stated mapping rules."
-        ],
+        "score": 90,
         "violations": [
-          "The 'for' loop line uses the aliased 'in' phrase directly as `fn i strictly follow this alias phrase for compilation range(7):`, which is not valid Python grammar as written.",
-          "The answer does not achieve 100% exact rule-following because the resulting code is not syntactically valid for the described compilation/execution process.",
-          "Pass condition requires perfect compliance; this answer falls short.",
           "original keyword used: for"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v38.md",
-      "answer": "follow renamed symbol exactly and continue fib(n):\n    loop n <= 1:\n        strictly follow this alias phrase for compilation n\n    strictly follow this alias phrase for compilation fib(n - 1) + fib(n - 2)\n\nloop i strictly follow this alias phrase for compilation range(7):\n    print(i, fib(i))",
+      "answer": "follow renamed symbol exactly and continue fib(n):\n    loop n <= 1:\n        strictly follow this alias phrase for compilation n\n    strictly follow this alias phrase for compilation fib(n - 1) + fib(n - 2)\n\nloop i strictly follow this alias phrase for compilation compilation 0..6:\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping exactly for all Python keywords.",
-          "The alias for 'if' is incorrectly used as 'loop', causing invalid and ambiguous keyword substitution.",
-          "The alias for 'for' is 'loop', but the same alias is also assigned to 'if'; the answer uses 'loop' in both places without resolving the conflict, so it cannot be said to follow the mapping rules with 100% compliance.",
-          "The prompt requires exact compliance with the mixed alias setting; the produced code is not reliably compilable under the stated mapping."
-        ],
         "violations": [
-          "Used 'loop' for the 'if' statement, but this creates an unresolved collision with the alias for 'for'.",
-          "Failed to ensure 100% exact rule-following under the alias mapping scheme.",
-          "Produced code that is not validly mappable back to Python keywords without ambiguity.",
-          "original keyword used: for"
+          "original keyword used: for",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    for n <= 1:\n        in n\n    in fib(n - 1) + fib(n - 2)\n\nfor i in compilation 0..6:\n    print(i, fib(i))"
       }
     },
     {
@@ -1237,85 +575,38 @@
       "answer": "this keyword is replaced by long natural phrase fib(n):\n    fn n <= 1:\n        this keyword is replaced by long natural phrase n\n    this keyword is replaced by long natural phrase fib(n-1) + fib(n-2)\n\nuse this custom marker in place of original token i keep this long alias while preserving python grammar range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 35,
-        "reasons": [
-          "The answer correctly uses the configured alias for `def`.",
-          "The answer correctly uses the configured alias for `return`.",
-          "The answer correctly uses the configured alias for `if` as `fn`.",
-          "The answer correctly uses the configured alias for `for`.",
-          "The answer correctly uses the configured alias for `in`."
-        ],
+        "score": 0,
         "violations": [
-          "The prompt requires all keyword mappings to be followed exactly; the configured alias for `while` is not used anywhere, so compliance cannot be verified as 100% exact.",
-          "The answer does not demonstrate use of the `while` alias setting despite the instruction to strictly follow configured aliases.",
-          "Because pass requires 100% exact rule-following, omission of one configured mapping prevents a passing evaluation.",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: expected '(' (<unknown>, line 3)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        def n\n    def fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v40.md",
-      "answer": "def fib(n):\n    cond n <= 1:\n        loop n\n    loop fib(n - 1) + fib(n - 2)\n\ngo i for range(7):\n    print(i, fib(i))",
+      "answer": "for fib(n):\n    cond n <= 1:\n        loop n\n    loop fib(n - 1) + fib(n - 2)\n\ngo i for range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping rules exactly.",
-          "It uses the original Python keyword 'def' instead of the required alias 'for' for function definition.",
-          "It uses the original Python keyword 'in' semantics via aliasing context incorrectly because the mapping requires Python 'in' to be written as 'for', making the loop header invalid under the specified alias system.",
-          "Because 'def' is not aliased correctly, the code would not be interpreted as intended under the prompt's mapping configuration."
-        ],
         "violations": [
-          "Used 'def' instead of alias 'for' for function definition.",
-          "Did not fully comply with the mixed alias setting where all remapped keywords must be written using their aliases.",
-          "Loop/function keyword usage is inconsistent with the specified mappings.",
-          "original keyword used: def",
-          "original keyword used: for"
+          "original keyword used: for",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: def",
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nin i def range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v41.md",
-      "answer": "use this token exactly fib(n):\n    for n <= 1:\n        go n\n    go fib(n - 1) + fib(n - 2)\n\nkeep this long alias while preserving python grammar i use this token exactly range(7):\n    print(i, fib(i))",
+      "answer": "use this token exactly for keyword mapping fib(n):\n    for n <= 1:\n        go n\n    go fib(n-1) + fib(n-2)\n\nkeep this long alias while preserving python grammar i use this token exactly for keyword mapping range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not correctly apply the required keyword alias mappings.",
-          "The produced code is not valid under the specified alias configuration.",
-          "Rule-following is not 100% exact, so it must fail."
-        ],
         "violations": [
-          "Mapped 'if' incorrectly: prompt requires 'if --> for', and the answer uses 'for n <= 1:' where this also creates ambiguity with the real/mapped loop keyword usage.",
-          "Mapped 'for' loop header incorrectly: prompt requires 'for --> keep this long alias while preserving python grammar', but the answer's loop syntax is malformed under the mixed alias setting.",
-          "Mapped 'in' alias usage incorrectly or inconsistently in the loop header: required alias is 'use this token exactly for keyword mapping'.",
-          "Failed to preserve valid Python grammar after alias substitution; the code as written is not executable in the described system.",
-          "Did not follow all mapping rules with 100% compliance.",
-          "missing alias for def: use this token exactly for keyword mapping",
           "original keyword used: for",
-          "missing alias for in: use this token exactly for keyword mapping"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: use this token exactly for keyword mapping",
-            "original keyword used: for",
-            "missing alias for in: use this token exactly for keyword mapping"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nif i def range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -1323,171 +614,73 @@
       "answer": "go fib(n):\n    fn n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\ngo i if range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 40,
-        "reasons": [
-          "The answer correctly uses the alias `go` for both `def` and `for`, `fn` for `if`, and `if` for `in`.",
-          "The Fibonacci logic and loop range conceptually match the requested behavior."
-        ],
+        "score": 0,
         "violations": [
-          "The mapping rules are not followed 100% exactly because `return` must not appear literally. The prompt specifies `return --> apply this mapped token before generating code`, so using raw `return` violates the aliasing rule.",
-          "Because `def` and `for` both map to `go`, the answer is ambiguous but acceptable only if all mappings are consistently applied; however the unmapped `return` makes the overall answer non-compliant.",
-          "Pass requires 100% exact rule-following, and the answer fails that requirement.",
           "original keyword used: if",
           "missing alias for return: apply this mapped token before generating code",
-          "original keyword used: return"
+          "original keyword used: return",
+          "python parse failed after normalization: expected '(' (<unknown>, line 6)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: if",
-            "missing alias for return: apply this mapped token before generating code",
-            "original keyword used: return"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\ndef i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v43.md",
-      "answer": "out fib(n):\n    strictly follow this alias phrase for compilation n <= 1:\n        for n\n    for fib(n-1) + fib(n-2)\n\nxk i use this token exactly for keyword mapping range(7):\n    print(i, fib(i))",
+      "answer": "out fib(n):\n    strictly follow this alias phrase for compilation n <= 1:\n        for n\n    for fib(n - 1) + fib(n - 2)\n\nxk i use this token exactly for keyword mapping range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the required keyword-alias mapping rules exactly.",
-          "It uses the alias for 'return' ('for') in places where the original 'return' keyword should appear after compilation, creating invalid source before mapping and violating exact rule-following.",
-          "The alias mapping creates collisions: 'return' -> 'for' and 'for' -> 'xk', so exact compliance requires using the configured aliases consistently and only where intended.",
-          "The provided code is not valid under the specified mixed-alias setting because the line 'for n' is parsed as a malformed 'for' statement before any mapping semantics are meaningfully satisfied.",
-          "The answer does not demonstrate 100% exact compliance with the prompt's compilation/mapping constraints."
-        ],
         "violations": [
-          "Used 'for n' as a stand-in for 'return n', which is syntactically invalid in the submitted code and not exact rule-compliant.",
-          "Used 'for fib(n-1) + fib(n-2)' as a stand-in for 'return ...', also syntactically invalid as written.",
-          "Did not provide code that is valid under the stated aliasing scheme with exact compliance.",
-          "Failed the requirement that pass is only true if rule-following is 100% exact.",
-          "original keyword used: for"
+          "original keyword used: for",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    strictly follow this alias phrase return compilation n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i use this token exactly return keyword mapping range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v44.md",
-      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "do not trust default python keyword prior fib(n):\n    return n <= 1:\n        ret n\n    out:\n        ret fib(n - 1) + fib(n - 2)\n\nconvert this phrase back to python reserved token i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer uses original Python keywords instead of the required aliases under the mixed alias setting.",
-          "The prompt requires applying the configured keyword mappings exactly in the submitted code.",
-          "Because compliance must be 100% exact, any unmapped required keyword causes failure."
-        ],
+        "score": 70,
         "violations": [
-          "Used 'def' instead of alias 'do not trust default python keyword prior'.",
-          "Used 'if' instead of alias 'return'.",
-          "Used 'return' instead of alias 'ret'.",
-          "Used 'else' instead of alias 'out'.",
-          "Used 'for' instead of alias 'convert this phrase back to python reserved token'.",
-          "missing alias for def: do not trust default python keyword prior",
-          "original keyword used: def",
-          "original keyword used: if",
           "original keyword used: return",
-          "missing alias for for: convert this phrase back to python reserved token",
-          "original keyword used: for",
           "missing alias for in: no, use exact python original grammer",
           "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for def: do not trust default python keyword prior",
-            "original keyword used: def",
-            "original keyword used: if",
-            "original keyword used: return",
-            "missing alias for for: convert this phrase back to python reserved token",
-            "original keyword used: for",
-            "missing alias for in: no, use exact python original grammer",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v45.md",
-      "answer": "if fib(n):\n    if n <= 1:\n        ret n\n    ret fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "if fib(n):\n    if n <= 1:\n        ret n\n    ret fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 40,
-        "reasons": [
-          "The answer correctly applies the alias mapping for 'def' -> 'if' by writing 'if fib(n):'.",
-          "The answer correctly applies the alias mapping for 'return' -> 'ret'.",
-          "The answer correctly keeps 'for' as original Python grammar.",
-          "The answer correctly keeps 'range' as original Python grammar.",
-          "The Fibonacci logic and loop output intent match the problem requirements."
-        ],
+        "score": 0,
         "violations": [
-          "The prompt states 'if --> follow renamed symbol exactly and continue', which means the Python keyword 'if' should not be used literally unless that exact renamed symbol is indeed 'if'; the provided answer uses 'if n <= 1:' without evidence of a renamed alias, so this is not 100% compliant.",
-          "Because pass requires 100% exact rule-following, uncertainty/noncompliance on the 'if' keyword mapping causes failure.",
           "missing alias for if: follow renamed symbol exactly and continue",
           "original keyword used: if",
           "missing alias for in: follow renamed symbol exactly and continue",
-          "original keyword used: in"
+          "original keyword used: in",
+          "python parse failed after normalization: expected '(' (<unknown>, line 2)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "missing alias for if: follow renamed symbol exactly and continue",
-            "original keyword used: if",
-            "missing alias for in: follow renamed symbol exactly and continue",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    def n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v46.md",
-      "answer": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "if fib(n):\n    loop n <= 1:\n        follow renamed symbol exactly and continue n\n    follow renamed symbol exactly and continue fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer uses original Python keywords instead of applying the required alias mapping rules from the prompt.",
-          "The prompt remaps 'def' to 'if', so function definition should not use 'def'.",
-          "The prompt remaps 'if' to 'loop', so conditional should not use 'if'.",
-          "The prompt remaps 'return' to 'follow renamed symbol exactly and continue', so 'return' should not appear in the submitted code.",
-          "Although 'for' remains original Python grammar, full compliance requires all mappings to be followed, which did not happen."
-        ],
+        "score": 50,
         "violations": [
-          "Used 'def' instead of alias 'if' for function definition.",
-          "Used 'if' instead of alias 'loop' for conditional.",
-          "Used 'return' instead of alias 'follow renamed symbol exactly and continue'.",
-          "original keyword used: def",
-          "missing alias for if: loop",
           "original keyword used: if",
-          "missing alias for return: follow renamed symbol exactly and continue",
-          "original keyword used: return",
           "missing alias for for: no, use exact python original grammer",
           "original keyword used: for",
           "missing alias for in: convert this phrase back to python reserved token",
           "original keyword used: in"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: def",
-            "missing alias for if: loop",
-            "original keyword used: if",
-            "missing alias for return: follow renamed symbol exactly and continue",
-            "original keyword used: return",
-            "missing alias for for: no, use exact python original grammer",
-            "original keyword used: for",
-            "missing alias for in: convert this phrase back to python reserved token",
-            "original keyword used: in"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -1496,25 +689,12 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer correctly applies some aliases: 'def' as 'if', 'if' as the long phrase, 'return' as 'def', 'for' as 'do', 'in' as the long phrase, and 'print' as 'loop'."
-        ],
         "violations": [
-          "It does not follow the mapping rules with 100% compliance because alias replacement creates invalid keyword collisions.",
-          "Using 'if' as the alias for 'def' makes the function definition line 'if fib(n):', which is indistinguishable from Python's original 'if' keyword and violates exact reversible mapping expectations.",
-          "Using 'def' as the alias for 'return' causes 'def n' and 'def fib(...)' inside the function, which collides with Python's original 'def' keyword and breaks exact keyword mapping.",
-          "The produced code is not valid under the described alias system because multiple aliases overlap with original Python keywords, making deterministic restoration impossible from the answer alone.",
-          "Strictly evaluating rule-following, the answer does not provide a 100% compliant mapped solution.",
           "original keyword used: def",
-          "original keyword used: if"
+          "original keyword used: if",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: def",
-            "original keyword used: if"
-          ]
-        }
+        "normalized_code": "return fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -1522,25 +702,11 @@
       "answer": "xk fib(n):\n    cond n <= 1:\n        fn n\n    fn fib(n - 1) + fib(n - 2)\n\nif i convert this phrase back to python reserved token range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
-        "score": 0,
-        "reasons": [
-          "The answer does not follow the required alias mapping exactly.",
-          "The loop uses 'if' where the prompt requires the alias for 'for'.",
-          "Because 'for --> if' and 'if --> cond', the loop must begin with 'if', while conditionals must use 'cond'.",
-          "All mappings must be applied exactly for full compliance."
-        ],
+        "score": 90,
         "violations": [
-          "Used 'if' as a Python 'for' loop keyword incorrectly only if interpreted ambiguously; strict mapping requires exact alias usage and this creates invalid rule application.",
-          "Did not produce a valid loop under the specified alias system with 100% certainty.",
-          "Rule-following is not 100% exact, so it must fail.",
           "original keyword used: if"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: if"
-          ]
-        }
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -1549,50 +715,37 @@
       "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not correctly apply the required alias mappings to produce valid mapped Python-like code.",
-          "The function definition line is malformed because the alias for 'def' is used, but the required trailing colon structure is not enough to make the overall mapping valid given other errors.",
-          "The alias for 'if' is used, but the alias for 'return' is incorrectly used as 'for', creating ambiguity and invalid control flow.",
-          "The loop line incorrectly uses the alias for 'for' together with the alias for 'in', but the body and surrounding code are not fully compliant with the mapping rules.",
-          "The resulting code would not compile correctly under the described alias-remapping scheme."
-        ],
         "violations": [
-          "Used 'for' as the alias for 'return', which collides with the original Python keyword 'for' and requires exact alias-based usage; this makes the return statements invalid in context.",
-          "Failed to produce unambiguous valid code under the mixed alias setting.",
-          "Did not ensure 100% exact compliance with all keyword mappings and executable structure.",
-          "Overall answer is not valid mapped code satisfying the prompt.",
-          "original keyword used: for"
+          "original keyword used: for",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "strict": {
-          "pass": false,
-          "violations": [
-            "original keyword used: for"
-          ]
-        }
+        "normalized_code": "use this token exactly return keyword mapping fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i strictly follow this alias phrase return compilation range(7):\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/prompt-versions/v50.md",
       "answer": "ret fib(n):\n    cond n <= 1:\n        go n\n    go fib(n-1) + fib(n-2)\n\nconvert this phrase back to python reserved token i apply this mapped token before generating code range(7):\n    print(i, fib(i))",
       "judge": {
+        "pass": true,
+        "score": 100,
+        "violations": [],
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v51.md",
+      "answer": "def fib(n):\n    if n <= 1:\n        ret n\n    ret fib(n - 1) + fib(n - 2)\n\ndef i follow renamed symbol exactly and continue range(7):\n    print(i, fib(i))",
+      "judge": {
         "pass": false,
         "score": 0,
-        "reasons": [
-          "The answer does not follow the alias-mapping rules exactly.",
-          "It uses the literal descriptive phrase for the 'for' alias instead of a valid alias token/string to be mapped.",
-          "It uses the literal descriptive phrase for the 'in' alias instead of a valid alias token/string to be mapped.",
-          "Because of those phrases, the produced code is not valid under the specified mixed-alias setting and would not be executable after proper reverse-mapping.",
-          "Although 'ret', 'go', and 'cond' are used consistently for 'def', 'return', and 'if', full compliance requires all mapped keywords to be handled correctly."
-        ],
         "violations": [
-          "Used 'convert this phrase back to python reserved token' directly in code for the 'for' keyword mapping.",
-          "Used 'apply this mapped token before generating code' directly in code for the 'in' keyword mapping.",
-          "Failed 100% exact compliance with all keyword alias rules."
+          "missing alias for def: no, use exact python original grammer",
+          "original keyword used: def",
+          "missing alias for if: convert this phrase back to python reserved token",
+          "original keyword used: if",
+          "python parse failed after normalization: cannot assign to function call (<unknown>, line 1)"
         ],
-        "strict": {
-          "pass": true,
-          "violations": []
-        }
+        "normalized_code": "for fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     }
   ]
