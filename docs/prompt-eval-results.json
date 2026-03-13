@@ -3,15 +3,390 @@
   "results": [
     {
       "file": "docs/prompt-versions/v1.md",
-      "answer": "",
+      "answer": "for fib(n):\n    if n <= 1:\n        while n\n    else:\n        while fib(n - 1) + fib(n - 2)\n\ndef i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 20,
+        "reasons": [
+          "The answer correctly applies some configured keyword aliases: 'for' is used where Python 'def' should be, 'while' is used where Python 'return' should be, and 'def' is used where Python 'for' should be.",
+          "The overall intended Fibonacci structure is recognizable."
+        ],
+        "violations": [
+          "Uses 'in' in 'def i in range(7):' even though the prompt explicitly says for 'in' --> 'no, use exact python original grammer', meaning 'in' must not be remapped and the mapping rules must be followed exactly; the provided code does not demonstrate careful compliance with this rule context.",
+          "The function definition line 'for fib(n):' is invalid under the stated transformation scheme because only keyword aliases are swapped; this produces non-executable code as written and does not satisfy the requirement to write code that fulfills the behavior.",
+          "The loop line 'def i in range(7):' is invalid syntax under the described setting and therefore does not satisfy the required behavior.",
+          "Fails the requirement that the code execute to print Fibonacci values for i = 0..6, because the provided answer is not valid runnable code under the described mapping/execution rules.",
+          "The prompt requires exact rule-following; the answer does not ensure 100% compliance with the mapping/execution specification."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v2.md",
+      "answer": "define function only after careful check fib(n):\n    check this condition branch now n <= 1:\n        send result back to caller now n\n    send result back to caller now fib(n - 1) + fib(n - 2)\n\niterate using loop keyword exactly i no, use exact python original grammer range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "reasons": [
-          "HTTP 401"
+          "The answer does not follow the mapping rules exactly.",
+          "The alias for 'for' is used, but the prompt explicitly requires 'in' to remain the exact original Python grammar.",
+          "The code is not valid under the specified alias mapping because it replaces 'in' with a non-keyword phrase.",
+          "Rule-following must be 100% exact to pass."
         ],
         "violations": [
-          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+          "Used 'no, use exact python original grammer' in place of the Python keyword 'in'.",
+          "Failed to preserve original Python 'in' as required by the setting.",
+          "Did not comply with all keyword mapping constraints exactly."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v3.md",
+      "answer": "create callable block with this token fib(n):\n    choose this branch with strict rule n <= 1:\n        send computed value to upper scope n\n    fallback branch with extra condition True:\n        send computed value to upper scope fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow the mapping rules exactly.",
+          "It uses the alias for 'elif' as if it were an 'else' branch, changing the required Python structure.",
+          "The prompt requires Python grammar to remain intact except for configured keyword aliases; 'elif True:' is not equivalent to the intended unconditional fallback for this task under strict exactness.",
+          "The configured mapping explicitly says 'in' must use exact original Python grammar, and the answer correctly uses 'in', but overall compliance is still not 100%.",
+          "Because pass requires 100% exact rule-following, the submission fails."
+        ],
+        "violations": [
+          "Used 'fallback branch with extra condition True:' instead of a correct unconditional else branch or an actually valid exact mapping for the required logic.",
+          "Did not adhere exactly to the provided keyword-alias setting semantics for branch structure.",
+          "Rule-following is not 100% exact, so it cannot pass."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v4.md",
+      "answer": "declare routine in this custom phrase fib(n):\n    if n <= 1:\n        return n\n    alternative branch in this wording:\n        return fib(n - 1) + fib(n - 2)\n\nrepeat statement using custom opener i in range(7):\n    emit output text to console now(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 95,
+        "reasons": [
+          "The answer correctly uses the configured alias for `def`: `declare routine in this custom phrase`.",
+          "The answer correctly uses the configured alias for `for`: `repeat statement using custom opener`.",
+          "The answer correctly keeps `in` as the original Python keyword, matching the setting `no, use exact python original grammer`.",
+          "The answer correctly uses the configured alias for `else`: `alternative branch in this wording`.",
+          "The answer correctly uses the configured alias for `print`: `emit output text to console now`.",
+          "The code defines `fib(n)`, returns `n` when `n <= 1`, otherwise returns `fib(n - 1) + fib(n - 2)`, and iterates `i` from 0 to 6 printing `i, fib(i)`."
+        ],
+        "violations": [
+          "The prompt says to use exact Python grammar except for configured aliases. The answer uses `if` and `return` in plain Python, which is fine, but the configured alias strings contain spaces and are inserted directly as if they were Python syntax; under the described system this is acceptable only if treated as aliases before execution. However, the answer does not violate that.",
+          "Minor issue: the prompt says `i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.` The answer uses `range(7)`, which is semantically correct, so not a real violation.",
+          "Strictly, there is no clear rule violation in the mapping or task requirements; therefore this should not pass only if 100% exactness is interpreted literally with no ambiguity. The provided answer appears compliant."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v5.md",
+      "answer": "build function body with renamed keyword fib(n):\n    evaluate condition and enter this path n <= 1:\n        deliver answer token to parent frame n\n    deliver answer token to parent frame fib(n - 1) + fib(n - 2)\n\npass through all items with this text i no, use exact python original grammer range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow all mapping rules exactly.",
+          "It uses the renamed aliases for def, for, if, and return, but the resulting code is not valid under the stated mapping constraints because multi-word aliases with spaces are not usable as Python-style keyword replacements in source code syntax.",
+          "The prompt explicitly says 'in' must use the exact original Python grammar, and while the answer does use 'in', the overall syntax still fails exact compliance.",
+          "Pass requires 100% exact rule-following, and this answer is not fully compliant."
+        ],
+        "violations": [
+          "Uses space-containing alias phrases as if they were valid standalone Python keyword tokens in code syntax.",
+          "Does not produce executable code under the described setting-only mapping rules with exact compliance.",
+          "Fails the '100% exact' requirement, so it cannot pass."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v6.md",
+      "answer": "function starts with this long marker fib(n):\n    conditional gate written in this phrase n <= 1:\n        hand back value from current function n\n    hand back value from current function fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": true,
+        "score": 100,
+        "reasons": [
+          "The answer correctly uses the configured alias for def: 'function starts with this long marker'.",
+          "The answer correctly uses the configured alias for if: 'conditional gate written in this phrase'.",
+          "The answer correctly uses the configured alias for return: 'hand back value from current function'.",
+          "The answer defines fib(n) as required.",
+          "The base case n <= 1 returns n as required.",
+          "The recursive case returns fib(n - 1) + fib(n - 2) as required.",
+          "The loop iterates with for i in range(7), covering 0 through 6 inclusive.",
+          "The output statement print(i, fib(i)) matches the requirement.",
+          "The answer does not incorrectly alias 'in', respecting the instruction to use exact Python original grammar for 'in'.",
+          "No forbidden or incorrect keyword mappings are used."
+        ],
+        "violations": []
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v7.md",
+      "answer": "procedure declaration with this sentence fib(n):\n    if n <= 1:\n        end function and provide computed result n\n    end function and provide computed result fib(n - 1) + fib(n - 2)\n\nsequential iteration starts from this phrase i in range(7):\n    output current value to terminal now(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 95,
+        "reasons": [
+          "The answer correctly uses the configured alias for `def`: `procedure declaration with this sentence`.",
+          "The answer correctly uses the configured alias for `for`: `sequential iteration starts from this phrase`.",
+          "The answer correctly keeps `in` as the original Python keyword, matching the setting `no, use exact python original grammer`.",
+          "The answer correctly uses the configured alias for `print`: `output current value to terminal now`.",
+          "The answer correctly uses the configured alias for `return`: `end function and provide computed result`.",
+          "The code defines `fib(n)` and implements the required Fibonacci base case and recursive case.",
+          "The loop iterates over `range(7)`, which corresponds to `i = 0..6`, and prints `i, fib(i)`."
+        ],
+        "violations": [
+          "The prompt requires 100% exact rule-following. The answer uses `if`, which is a Python keyword not mentioned as remapped, so this is likely acceptable; however, the prompt's transformation system is strict about configured mappings only, and the answer does not violate those mappings. No explicit mapping-rule violation is present, but because pass is only for 100% exact compliance, the answer is not guaranteed valid under the custom execution scheme unless all unmapped keywords are assumed unchanged."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v8.md",
+      "answer": "create binary-search helper in this token fib(n):\n    enter branch if condition holds exactly n <= 1:\n        send found index back immediately n\n    otherwise check secondary condition next:\n        send found index back immediately fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow the keyword mapping rules exactly.",
+          "It uses a mapped alias for 'elif' where standard Python requires 'else' for the described Fibonacci logic.",
+          "The resulting code is not valid under the stated mapping/execution scheme."
+        ],
+        "violations": [
+          "Used 'otherwise check secondary condition next' (mapped from 'elif') without a condition and colon structure appropriate to 'elif'.",
+          "The prompt's required behavior for the fallback case is an unconditional else-case, not an elif-case.",
+          "Because 'elif' is mapped but written as if it were 'else', the code is syntactically invalid after reverse-mapping."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v9.md",
+      "answer": "define matrix helper routine like this fib(n):\n    if n <= 1:\n        give aggregated values back safely n\n    give aggregated values back safely fib(n - 1) + fib(n - 2)\n\nrow or column iteration via this phrase i in range(7):\n    display row and column sums now(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow the mapping rules with 100% compliance.",
+          "The alias for 'def' is used correctly.",
+          "The alias for 'for' is used correctly.",
+          "The alias for 'return' is used correctly.",
+          "The alias for 'print' is used correctly.",
+          "However, the prompt explicitly states that 'in' must use the exact original Python grammar, and the answer uses plain 'in' instead of preserving the required transformed/mapping rule context exactly.",
+          "Because pass requires perfect compliance, any mapping inconsistency causes failure."
+        ],
+        "violations": [
+          "Rule for 'in' is not handled with 100% exact compliance under the stated mapping constraints.",
+          "Answer is therefore not fully compliant with all mapping rules."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v10.md",
+      "answer": "create memoized fibonacci function phrase fib(n):\n    branch when memo or base-case matches n <= 1:\n        send memoized or computed value back n\n    send memoized or computed value back fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 92,
+        "reasons": [
+          "The answer correctly uses the configured alias for `def`: `create memoized fibonacci function phrase`.",
+          "The answer correctly uses the configured alias for `if`: `branch when memo or base-case matches`.",
+          "The answer correctly uses the configured alias for `return`: `send memoized or computed value back`.",
+          "It defines `fib(n)` and implements the required Fibonacci base case and recursive case.",
+          "It uses a `for` loop to iterate `i` from 0 to 6 and prints `i, fib(i)` as required.",
+          "It does not incorrectly replace `in`; it keeps original Python grammar `for i in range(7):`."
+        ],
+        "violations": [
+          "The prompt explicitly states a current setting for `while` alias (`continue loop with this custom marker`), implying changed keywords must follow configured mappings. The answer does not demonstrate or use the `while` alias, though this is not required by the task.",
+          "The prompt says 'Python syntax remains the same,' but the provided alias mechanism allows keyword substitution; the answer assumes aliases directly in code without clarifying execution under the mapping system. This is a minor compliance ambiguity, so rule-following is not 100% exact."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v11.md",
+      "answer": "if fib(n):\n    if n <= 1:\n        while n\n    else:\n        while fib(n - 1) + fib(n - 2)\n\nloop through with custom phrase now i no, use exact python original grammer range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not produce valid code under the alias mapping rules.",
+          "It correctly uses the alias 'if' in place of 'def', but fails other required mappings and syntax constraints.",
+          "The prompt requires Python syntax with only configured keyword aliases substituted; the answer mixes invalid constructs and unsupported keywords.",
+          "The function body uses 'else', which is not part of the required behavior and is unnecessary for the specified recursive Fibonacci form.",
+          "The alias for 'return' is 'while', but the resulting lines are syntactically invalid because they omit the required colon after a real 'while' statement and rely on remapping to become 'return'; however, overall code validity still fails due to other issues.",
+          "The for-loop line is invalid because the mapping for 'in' explicitly says to use the exact original Python grammar, so 'in' should appear literally, not the provided phrase.",
+          "The answer therefore fails 100% compliance."
+        ],
+        "violations": [
+          "Used 'no, use exact python original grammer' instead of literal Python keyword 'in'.",
+          "Produced invalid loop syntax: 'loop through with custom phrase now i no, use exact python original grammer range(7):' should use literal 'in'.",
+          "Included unsupported/unchanged keyword usage pattern that does not ensure valid transformed Python code.",
+          "Did not strictly follow the mapping rule that only configured aliases apply and 'in' must remain original Python keyword.",
+          "Overall submitted code is not valid under the specified alias setting and execution model."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v12.md",
+      "answer": "define function only after careful check fib(n):\n    branch n <= 1:\n        out n\n    out fib(n - 1) + fib(n - 2)\n\ndef i use membership operator in disguised channel range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow the required keyword-alias mapping exactly.",
+          "The loop uses the wrong alias for the Python keyword 'for'.",
+          "Because compliance must be 100% exact, any single mapping error causes failure."
+        ],
+        "violations": [
+          "The prompt specifies 'for --> def', so the loop must start with 'def', but the answer uses the original keyword 'def' in a way that maps to 'for' only if interpreted incorrectly. In this setting, 'def' is reserved as the alias for 'for', while function definition must use 'define function only after careful check'. The provided loop line is therefore not compliant with the exact aliasing rules.",
+          "The answer mixes alias usage in a way that is ambiguous with original Python keywords, violating the strict mapping requirement."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v13.md",
+      "answer": "proc fib(n):\n    check this condition and continue n <= 1:\n        send computed value to caller frame n\n    send computed value to caller frame fib(n - 1) + fib(n - 2)\n\niterate i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow the alias mapping rules exactly.",
+          "The code uses the original Python keyword 'in' even though the prompt explicitly states to use exact original grammar for 'in', but the mapping summary is inconsistent and requires strict compliance assessment.",
+          "Because pass requires 100% exact rule-following, any ambiguity or mismatch results in failure."
+        ],
+        "violations": [
+          "Used 'in' in a mixed-alias setting where strict mapping compliance is required and the prompt's mapping line for 'in' is not followed as an alias rule.",
+          "Did not demonstrate fully unambiguous compliance with all mapping rules under the stated transformation scheme."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v14.md",
+      "answer": "for fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\npass over i membership goes through this long sentence token range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": true,
+        "score": 100,
+        "reasons": [
+          "The answer correctly applies the alias mapping: 'def' is replaced with 'for', 'for' is replaced with 'pass over', 'in' is replaced with 'membership goes through this long sentence token', while 'if' and 'return' remain unchanged.",
+          "The function fib(n) is defined correctly under the alias setting.",
+          "The base case 'n <= 1' returns n as required.",
+          "The recursive case returns fib(n - 1) + fib(n - 2) as required.",
+          "The loop iterates over range(7), covering i = 0..6, and prints i and fib(i).",
+          "Python syntax structure is otherwise preserved as required."
+        ],
+        "violations": []
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v15.md",
+      "answer": "create callable block fib(n):\n    elif n <= 1:\n        finalize and hand back current value n\n    if:\n        finalize and hand back current value fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 35,
+        "reasons": [
+          "The answer correctly uses the alias for `def` (`create callable block`) and the alias for `return` (`finalize and hand back current value`).",
+          "The Fibonacci function structure is mostly intended correctly, with a base case and recursive case, and it includes the required loop `for i in range(7): print(i, fib(i))`.",
+          "However, the prompt requires exact compliance with the alias mapping rules, and the answer violates the swapped `if`/`elif` mapping."
+        ],
+        "violations": [
+          "Used `elif n <= 1:` where original Python requires `if n <= 1:`; under the mapping, `if` must be written as `elif`, so this line would translate incorrectly to `elif n <= 1:` in Python without a preceding `if`.",
+          "Used `if:` for the fallback branch; under the mapping, `elif` must be written as `if`, but `if:` without a condition is invalid and does not represent the required `else` or valid recursive branch.",
+          "Did not produce valid executable code under the stated alias transformation rules.",
+          "Fails 100% compliance because the conditional structure is syntactically invalid after mapping."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v16.md",
+      "answer": "maker fib(n):\n    decision gateway phrase with long context n <= 1:\n        send n\n    send fib(n - 1) + fib(n - 2)\n\nif i inside relation marker for sequence traversal range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 35,
+        "reasons": [
+          "The answer correctly used the alias 'maker' for 'def'.",
+          "The answer correctly used the alias phrase for 'if'.",
+          "The answer correctly used the alias 'send' for 'return'.",
+          "The Fibonacci logic inside the function matches the required behavior."
+        ],
+        "violations": [
+          "The answer did not use the required alias mapping for 'for'. The prompt specifies 'for --> if', so the loop must start with 'if', not Python's original 'for' semantics wording beyond that mapping.",
+          "The answer used the original keyword 'range' context correctly, but the loop line is malformed under the alias system only if interpreted as Python; more importantly, strict compliance requires following the exact alias mapping structure for a for-loop, and this answer is not valid under the described transformed syntax.",
+          "The answer failed to preserve Python syntax after alias substitution in a fully valid way. With mappings applied, the loop should correspond exactly to a Python 'for i in range(7):' structure using aliases.",
+          "Because strict 100% compliance is required, the malformed/incorrect loop syntax causes failure."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v17.md",
+      "answer": "if fib(n):\n    choose this branch with strict rule n <= 1:\n        emit back to parent n\n    emit back to parent fib(n - 1) + fib(n - 2)\n\nwalk i no, use exact python original grammer range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow the alias mapping rules exactly.",
+          "It uses the configured alias for def ('if') and for ('walk') correctly, but fails on the required handling of 'in'.",
+          "The prompt explicitly states that 'in' must use the exact original Python grammar, not an alias.",
+          "All rules must be followed with 100% compliance, and this answer is not fully compliant."
+        ],
+        "violations": [
+          "Used 'no, use exact python original grammer' in place of the Python keyword 'in' in the for-loop.",
+          "Did not preserve exact Python original keyword for 'in' as required by the mapping setting.",
+          "Therefore the produced code is not valid under the specified mixed alias configuration."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v18.md",
+      "answer": "define action with unusual long form token fib(n):\n    cond n <= 1:\n        while n\n    while fib(n - 1) + fib(n - 2)\n\nfor i qx range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": true,
+        "score": 100,
+        "reasons": [
+          "Uses the configured alias for def exactly: 'define action with unusual long form token'.",
+          "Uses the configured alias for if exactly: 'cond'.",
+          "Uses the configured alias for in exactly: 'qx'.",
+          "Uses the configured alias for return exactly: 'while' in both required return statements.",
+          "Uses 'for' unchanged as required by the mapping.",
+          "Defines fib(n).",
+          "Implements the base case n <= 1 returning n.",
+          "Implements the recursive case fib(n-1) + fib(n-2).",
+          "Iterates i from 0 to 6 with range(7).",
+          "Prints i and fib(i) in the loop."
+        ],
+        "violations": []
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v19.md",
+      "answer": "set function opener as this sentence fib(n):\n    case n <= 1:\n        give back and terminate function n\n    give back and terminate function fib(n - 1) + fib(n - 2)\n\ndef i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 20,
+        "reasons": [
+          "The answer correctly uses the configured alias for `def` in the function definition.",
+          "The answer correctly uses the configured alias for `if` as `case`.",
+          "The answer correctly uses the configured alias for `return` as `give back and terminate function`.",
+          "The Fibonacci logic itself matches the requested behavior."
+        ],
+        "violations": [
+          "The `for` keyword was remapped to `def`, but the answer uses `def i in range(7):` with original Python `in`; under the prompt, `in` must use exact original grammar, so `in` is correct, but the overall loop syntax is invalid because `def` now stands in place of `for` while `def` is also the alias for `for`, creating mixed alias usage that does not produce valid Python-style structure as written for evaluation.",
+          "The prompt requires code that satisfies the mapping rules exactly; using `def` as a loop keyword makes the submitted code ambiguous and not 100% compliant for a strict evaluator.",
+          "Pass requires 100% exact rule-following, which is not met."
+        ]
+      }
+    },
+    {
+      "file": "docs/prompt-versions/v20.md",
+      "answer": "if fib(n):\n    gate n <= 1:\n        result n\n    result fib(n - 1) + fib(n - 2)\n\niterate using this unusually verbose marker i no, use exact python original grammer range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "reasons": [
+          "The answer does not follow the alias mapping rules exactly.",
+          "It uses the wrong alias for the Python keyword 'in'.",
+          "The code would not correctly map back under the provided settings because 'in' must remain the original Python keyword.",
+          "100% compliance is required, and this answer fails that requirement."
+        ],
+        "violations": [
+          "Used 'no, use exact python original grammer' in place of 'in', but the prompt explicitly says 'in' must use the exact original Python grammar.",
+          "Mapping rule violation in the for-loop header: 'iterate using this unusually verbose marker i no, use exact python original grammer range(7):' should have used original 'in'."
         ]
       }
     }
