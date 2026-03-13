@@ -1,4 +1,4 @@
-# v6 - Palindrome String
+# v6 - Fibonacci / Setting Only
 
 [언어 설명]
 Python 문법은 그대로 유지합니다.
@@ -6,14 +6,17 @@ Python 문법은 그대로 유지합니다.
 실행 시에는 입력 코드에서 별칭을 감지하고, 변경된 키워드는 원본 Python 키워드와 같은 글자수의 난수 토큰을 거친 뒤 Python 원본 키워드로 변환해 실행합니다.
 
 현재 설정 요약:
-def --> build
-if --> decide
-else --> else path
+def --> create
+if --> gate
+else --> alternate
+for --> cycle
+in --> where in rule
 return --> yield
+while --> spin
 
 [문제 설명]
-[문제] 문자열 s가 회문인지 검사하는 코드를 작성하시오.
-1) is_pal(s) 함수를 정의하라.
-2) 소문자/숫자만 남기고 비교 가능한 형태로 정리하라.
-3) 앞뒤가 같은지 판별하여 True/False를 반환하라.
-4) "racecar", "hello" 테스트 결과를 출력하라.
+[문제] 아래 동작을 만족하는 코드를 작성하시오.
+1) fib(n) 함수를 정의하라.
+2) n <= 1 이면 n을 반환하라.
+3) 그 외에는 fib(n-1) + fib(n-2)를 반환하라.
+4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.

@@ -1,4 +1,4 @@
-# v8 - Binary Search
+# v8 - Fibonacci / Setting Only
 
 [언어 설명]
 Python 문법은 그대로 유지합니다.
@@ -7,14 +7,16 @@ Python 문법은 그대로 유지합니다.
 
 현재 설정 요약:
 def --> maker
-while --> loopkeep
 if --> cond
 elif --> cond2
 else --> final
+for --> walker
+in --> location marker text
 return --> emit back
 
 [문제 설명]
-[문제] 정렬된 리스트에서 target의 인덱스를 이진 탐색으로 찾으시오.
-1) bsearch(arr, target) 함수를 정의하라.
-2) 찾으면 인덱스를, 없으면 -1을 반환하라.
-3) arr=[1,3,5,7,9], target=7과 2에 대해 결과를 출력하라.
+[문제] 아래 동작을 만족하는 코드를 작성하시오.
+1) fib(n) 함수를 정의하라.
+2) n <= 1 이면 n을 반환하라.
+3) 그 외에는 fib(n-1) + fib(n-2)를 반환하라.
+4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.

@@ -1,4 +1,4 @@
-# v10 - Fibonacci with Memoization
+# v10 - Fibonacci / Setting Only
 
 [언어 설명]
 Python 문법은 그대로 유지합니다.
@@ -8,12 +8,14 @@ Python 문법은 그대로 유지합니다.
 현재 설정 요약:
 def --> create
 if --> case
-return --> send back
+for --> iterate
 in --> key exists marker
+return --> send back
+while --> keep spin
 
 [문제 설명]
-[문제] 메모이제이션을 사용해 Fibonacci를 구현하시오.
-1) fib(n, memo) 함수를 정의하라.
-2) memo에 값이 있으면 즉시 반환하라.
-3) 없으면 재귀 계산 후 memo에 저장하고 반환하라.
-4) fib(10)의 결과를 출력하라.
+[문제] 아래 동작을 만족하는 코드를 작성하시오.
+1) fib(n) 함수를 정의하라.
+2) n <= 1 이면 n을 반환하라.
+3) 그 외에는 fib(n-1) + fib(n-2)를 반환하라.
+4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.

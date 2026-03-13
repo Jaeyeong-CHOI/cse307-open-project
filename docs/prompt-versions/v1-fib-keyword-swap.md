@@ -1,4 +1,4 @@
-# v1 - Fibonacci / Keyword Swap
+# v1 - Fibonacci / Setting Only
 
 [언어 설명]
 Python 문법은 그대로 유지합니다.

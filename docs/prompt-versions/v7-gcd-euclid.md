@@ -1,4 +1,4 @@
-# v7 - GCD (Euclidean)
+# v7 - Fibonacci / Setting Only
 
 [언어 설명]
 Python 문법은 그대로 유지합니다.
@@ -7,13 +7,15 @@ Python 문법은 그대로 유지합니다.
 
 현재 설정 요약:
 def --> proc
-while --> spin
+if --> branch
+for --> loop token
+in --> in scope phrase
 return --> end
 print --> show
 
 [문제 설명]
-[문제] 유클리드 호제법으로 최대공약수를 구하시오.
-1) gcd(a, b) 함수를 정의하라.
-2) b가 0이 될 때까지 반복하라.
-3) a를 결과로 반환하라.
-4) gcd(48, 18), gcd(84, 30)을 출력하라.
+[문제] 아래 동작을 만족하는 코드를 작성하시오.
+1) fib(n) 함수를 정의하라.
+2) n <= 1 이면 n을 반환하라.
+3) 그 외에는 fib(n-1) + fib(n-2)를 반환하라.
+4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.

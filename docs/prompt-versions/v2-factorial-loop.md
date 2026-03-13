@@ -1,4 +1,4 @@
-# v2 - Factorial / Loop
+# v2 - Fibonacci / Setting Only
 
 [언어 설명]
 Python 문법은 그대로 유지합니다.
@@ -7,14 +7,15 @@ Python 문법은 그대로 유지합니다.
 
 현재 설정 요약:
 def --> function
-for --> loop
-in --> element in scope
-return --> giveback
-if --> condition
+aelif --> elif
+for --> iterate
+in --> under token scope
+return --> send
+if --> branch
 
 [문제 설명]
-[문제] 정수 n이 주어질 때 n!을 계산하는 코드를 작성하시오.
-1) factorial(n) 함수를 정의하라.
-2) n < 2이면 1을 반환하라.
-3) 반복문으로 2부터 n까지 누적 곱을 계산하라.
-4) n=1, 3, 5에 대해 결과를 print로 출력하라.
+[문제] 아래 동작을 만족하는 코드를 작성하시오.
+1) fib(n) 함수를 정의하라.
+2) n <= 1 이면 n을 반환하라.
+3) 그 외에는 fib(n-1) + fib(n-2)를 반환하라.
+4) for 반복문으로 i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.
