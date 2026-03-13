@@ -70,6 +70,64 @@ Pass only if rule-following is 100% exact.
         return {"pass": False, "score": 0, "reasons": ["judge json decode failed"], "violations": [raw[:500]]}
 
 
+def parse_mapping(prompt_text):
+    m = re.search(r"현재 설정 요약:\n([\s\S]*?)\n\n\[문제 설명\]", prompt_text)
+    if not m:
+        return {}
+    mp = {}
+    for ln in m.group(1).splitlines():
+        ln = ln.strip().lstrip("-").strip()
+        if "-->" in ln:
+            a, b = [x.strip() for x in ln.split("-->", 1)]
+            mp[a] = b
+    return mp
+
+
+def has_word(text, token):
+    return re.search(r"(?<![A-Za-z0-9_])" + re.escape(token) + r"(?![A-Za-z0-9_])", text) is not None
+
+
+def strict_rule_check(prompt_text, answer_text):
+    # Problem-specific strict check for this project's fib prompt
+    mapping = parse_mapping(prompt_text)
+    required = ["def", "if", "return", "for", "in"]
+    violations = []
+
+    for k in required:
+        if k in mapping and mapping[k] != k:
+            alias = mapping[k]
+            if alias and alias not in answer_text:
+                violations.append(f"missing alias for {k}: {alias}")
+            if has_word(answer_text, k):
+                violations.append(f"original keyword used: {k}")
+
+    # Basic fib task hints should appear
+    if "fib(" not in answer_text:
+        violations.append("missing fib function usage")
+
+    return {
+        "pass": len(violations) == 0,
+        "violations": violations,
+    }
+
+
+def merge_judges(llm_judge, strict_judge):
+    llm_pass = bool(llm_judge.get("pass"))
+    strict_pass = bool(strict_judge.get("pass"))
+    merged_pass = llm_pass and strict_pass
+    score = llm_judge.get("score", 0)
+    if not strict_pass:
+        score = min(score, 40)
+    merged = dict(llm_judge)
+    merged["pass"] = merged_pass
+    merged["strict"] = strict_judge
+    if not strict_pass:
+        merged.setdefault("violations", [])
+        merged["violations"] = merged["violations"] + strict_judge.get("violations", [])
+    merged["score"] = score
+    return merged
+
+
 def main():
     target_failures = int(os.environ.get("TARGET_FAILURES", "50"))
     prompt_files = sorted(
@@ -85,13 +143,15 @@ def main():
                 {"role": "system", "content": "Solve the prompt exactly. Output only code."},
                 {"role": "user", "content": prompt_text},
             ])
-            j = judge(prompt_text, answer)
+            j_llm = judge(prompt_text, answer)
+            j_strict = strict_rule_check(prompt_text, answer)
+            j = merge_judges(j_llm, j_strict)
             item = {
                 "file": str(p.relative_to(ROOT)),
                 "answer": answer,
                 "judge": j,
             }
-            print(f"{p.name}: pass={j.get('pass')} score={j.get('score')}")
+            print(f"{p.name}: pass={j.get('pass')} score={j.get('score')} strict={j_strict.get('pass')}")
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="ignore")
             item = {
