@@ -6,4 +6,4 @@ AI-FAIL-PL 실험 저장소.
 - `docs/prompt-versions/README.md`
 
 ## Demo Safe Preset (교수님 시연용)
-- `docs/prof-demo-safe-aliases.md`
+- `docs/prof-demo-safe/FINAL-DEMO-ALIASES.md`
