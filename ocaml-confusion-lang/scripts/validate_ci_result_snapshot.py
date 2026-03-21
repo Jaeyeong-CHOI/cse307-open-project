@@ -139,6 +139,24 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
                 ):
                     errors.append(f"{path}: run_context.{key} must be a non-empty string when present")
 
+            run_id = run_context.get("run_id")
+            run_url = run_context.get("run_url")
+            has_run_id = isinstance(run_id, str) and bool(run_id.strip())
+            has_run_url = isinstance(run_url, str) and bool(run_url.strip())
+
+            if has_run_id != has_run_url:
+                errors.append(f"{path}: run_context.run_id and run_context.run_url must be provided together")
+
+            if has_run_url and not str(run_url).startswith(("http://", "https://")):
+                errors.append(f"{path}: run_context.run_url must start with http:// or https://")
+
+            if has_run_id and has_run_url and str(run_id) not in str(run_url):
+                errors.append(f"{path}: run_context.run_url must include run_context.run_id for traceability")
+
+            run_attempt = run_context.get("run_attempt")
+            if isinstance(run_attempt, str) and run_attempt.strip() and not run_attempt.isdigit():
+                errors.append(f"{path}: run_context.run_attempt must be a numeric string when present")
+
     return errors
 
 

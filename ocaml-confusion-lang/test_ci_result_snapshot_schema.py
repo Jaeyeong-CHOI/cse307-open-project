@@ -141,6 +141,54 @@ def main() -> None:
         "run_context.repository must be a non-empty string when present",
     )
 
+    invalid_run_context_pair = dict(valid_payload)
+    invalid_run_context_pair["run_context"] = {
+        "run_id": "123456789",
+        "event_name": "push",
+    }
+    invalid_run_context_pair_path = _write(
+        OUT / "snapshot.invalid-run-context-pair.json", invalid_run_context_pair
+    )
+    bad_run_context_pair = _run(invalid_run_context_pair_path)
+    if bad_run_context_pair.returncode == 0:
+        raise AssertionError("expected failure when run_id/run_url are not provided together")
+    _assert_contains(
+        bad_run_context_pair.stderr,
+        "run_context.run_id and run_context.run_url must be provided together",
+    )
+
+    invalid_run_context_traceability = dict(valid_payload)
+    invalid_run_context_traceability["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/999999999",
+    }
+    invalid_run_context_traceability_path = _write(
+        OUT / "snapshot.invalid-run-context-traceability.json",
+        invalid_run_context_traceability,
+    )
+    bad_run_context_traceability = _run(invalid_run_context_traceability_path)
+    if bad_run_context_traceability.returncode == 0:
+        raise AssertionError("expected failure when run_url does not contain run_id")
+    _assert_contains(
+        bad_run_context_traceability.stderr,
+        "run_context.run_url must include run_context.run_id for traceability",
+    )
+
+    invalid_run_attempt = dict(valid_payload)
+    invalid_run_attempt["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "run_attempt": "two",
+    }
+    invalid_run_attempt_path = _write(OUT / "snapshot.invalid-run-attempt.json", invalid_run_attempt)
+    bad_run_attempt = _run(invalid_run_attempt_path)
+    if bad_run_attempt.returncode == 0:
+        raise AssertionError("expected failure for non-numeric run_attempt")
+    _assert_contains(
+        bad_run_attempt.stderr,
+        "run_context.run_attempt must be a numeric string when present",
+    )
+
 
 if __name__ == "__main__":
     main()
