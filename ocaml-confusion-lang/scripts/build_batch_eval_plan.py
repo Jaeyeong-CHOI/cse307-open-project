@@ -502,6 +502,11 @@ def parse_args() -> argparse.Namespace:
         help="Include python_version in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-pid",
+        action="store_true",
+        help="Include pid in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -577,6 +582,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-python-version",
         action="store_true",
         help="Include python_version in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-pid",
+        action="store_true",
+        help="Include pid in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -772,6 +782,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["python_version"] = sys.version.split()[0]
+            if args.show_preset_meta_include_pid:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["pid"] = str(os.getpid())
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -871,6 +885,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["python_version"] = sys.version.split()[0]
+            if args.list_presets_meta_include_pid:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["pid"] = str(os.getpid())
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}

@@ -1065,6 +1065,31 @@ def main() -> int:
             f"{names_with_meta_python_version_lines}"
         )
 
+    preset_list_names_with_meta_pid = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-pid",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_pid_lines = [
+        line.strip() for line in preset_list_names_with_meta_pid.stdout.splitlines() if line.strip()
+    ]
+    pid_value = names_with_meta_pid_lines[-1].rsplit("pid=", 1)[-1]
+    if re.fullmatch(r"\d+", pid_value) is None:
+        raise AssertionError(
+            "unexpected pid format in list-presets meta footer: "
+            f"{names_with_meta_pid_lines}"
+        )
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -1650,6 +1675,34 @@ def main() -> int:
         raise AssertionError(
             "unexpected python_version format in show-preset meta footer: "
             f"{show_preset_with_meta_python_version_lines}"
+        )
+
+    show_preset_summary_with_meta_pid = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-pid",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_pid_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_pid.stdout.splitlines()
+        if line.strip()
+    ]
+    show_pid_value = show_preset_with_meta_pid_lines[-1].rsplit("pid=", 1)[-1]
+    if re.fullmatch(r"\d+", show_pid_value) is None:
+        raise AssertionError(
+            "unexpected pid format in show-preset meta footer: "
+            f"{show_preset_with_meta_pid_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(
