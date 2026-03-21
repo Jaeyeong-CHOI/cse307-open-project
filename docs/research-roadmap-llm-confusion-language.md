@@ -79,7 +79,7 @@
 
 ## 6) Update Policy (GitHub)
 - 작업 단위별 커밋(문서/코드/실험결과 분리)
-- 최소 1일 1회 진행 로그 업데이트
+- 연속 작업 중에도 **의미 있는 변경 단위마다 즉시 커밋/푸시**
 - 주기적 스냅샷:
   - `docs/research-log/YYYY-MM-DD.md`
   - `docs/results/*.json`
@@ -87,7 +87,36 @@
 
 ---
 
-## 7) Immediate Next Actions
+## 7) Cost Control Policy (GPT API 포함)
+- 기본 원칙: **cheap-first, selective-escalation**
+- 모델 사용 단계화:
+  1. 문서 정리/포맷/기초 변환: 저비용 모델
+  2. 실패 케이스 분석/정교한 비교: 중간 비용 모델
+  3. 핵심 실험(샘플링된 일부 배치): 고성능 모델 제한 사용
+- 호출량 제한:
+  - 동일 프롬프트 반복 호출 금지
+  - 배치당 샘플 수 상한 설정(예: task subset)
+  - 실패 재시도 횟수 제한
+- 비용 추적:
+  - 실험 로그에 `model / calls / est. cost` 기록
+  - 일/주간 soft cap를 넘기면 고성능 모델 호출 중단 후 저비용 모드 전환
+
+---
+
+## 8) Continuous Execution Mode (며칠 연속 작업)
+- “매일 1회”가 아니라, **연속 세션 기반으로 backlog를 순차 처리**
+- 실행 방식:
+  1. TODO queue를 우선순위로 정렬
+  2. 완료할 때마다 즉시 결과 반영 + 커밋
+  3. 블로커 발생 시 우회 경로 먼저 수행
+  4. 장시간 구간은 checkpoint 커밋으로 안정화
+- 중단/재개 용이성 확보:
+  - 각 단계 산출물 경로 고정
+  - 로그에 다음 시작 포인트 명시
+
+---
+
+## 9) Immediate Next Actions
 1. 실험 task set v1 파일 생성
 2. metric schema JSON 정의
 3. batch eval 스크립트 뼈대 작성
