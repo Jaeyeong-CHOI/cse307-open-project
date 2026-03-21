@@ -13,11 +13,14 @@
 2. 어떤 키워드/구문에서 Python 회귀가 많이 발생하는가?
 3. 프롬프트 설계(엄격 지시/예시 제공/단계적 변환)가 준수율에 미치는 영향은?
 4. 학생 학습 관점에서 “검수·수정 과정”이 코드 이해도 향상에 기여하는가?
+5. 혼동 유도 언어를 설계할 때, 어떤 문법 변형이 모델의 취약점/강점을 가장 잘 드러내는가?
 
 ---
 
 ## 2) Experimental Axes
 - **문법 변형 유형**: 키워드 alias, 구문 일부 치환, 복합 문장형 alias
+- **구현 언어(메타 언어)**: OCaml 기반 파서/트랜스파일러/검증 도구 체인
+- **대상 언어**: Python 혼동 유도 언어(Python-like confusion language)
 - **모델군**: frontier/open 모델 혼합
 - **프롬프트 조건**:
   - Base instruction
@@ -61,7 +64,20 @@
 
 ---
 
-## 5) 2-Week Initial Execution Plan
+## 5) Iterative Research Loop (계속 반복)
+1. **Ideate (연구자 관점 가설 수립)**
+   - 왜 이 변형이 유의미한지 가설 명시
+2. **Implement (OCaml 도구 체인 반영)**
+   - 파서/치환/검증 규칙 업데이트
+3. **Critique (비판적 검토)**
+   - 반례, 실패 케이스, 과적합 가능성 점검
+4. **Package (사람이 보기 쉬운 산출물화)**
+   - 표/그림/요약/케이스북 정리
+5. **Review & Feedback (재검토/피드백 반영)**
+   - 자체 리뷰 + 사용자 피드백 반영
+6. 다음 iteration으로 재진입
+
+## 6) 2-Week Initial Execution Plan
 ### Day 1-2
 - 실험 스펙 고정, 평가 지표 정의, task set v1 확정
 ### Day 3-4
@@ -77,7 +93,7 @@
 
 ---
 
-## 6) Update Policy (GitHub)
+## 7) Update Policy (GitHub)
 - 작업 단위별 커밋(문서/코드/실험결과 분리)
 - 연속 작업 중에도 **의미 있는 변경 단위마다 즉시 커밋/푸시**
 - 주기적 스냅샷:
@@ -87,7 +103,7 @@
 
 ---
 
-## 7) Cost Control Policy (GPT API 포함)
+## 8) Cost Control Policy (GPT API 포함)
 - 기본 원칙: **cheap-first, selective-escalation**
 - 모델 사용 단계화:
   1. 문서 정리/포맷/기초 변환: 저비용 모델
@@ -103,7 +119,7 @@
 
 ---
 
-## 8) Continuous Execution Mode (며칠 연속 작업)
+## 9) Continuous Execution Mode (며칠 연속 작업)
 - “매일 1회”가 아니라, **연속 세션 기반으로 backlog를 순차 처리**
 - 실행 방식:
   1. TODO queue를 우선순위로 정렬
@@ -116,7 +132,7 @@
 
 ---
 
-## 9) Immediate Next Actions
+## 10) Immediate Next Actions
 1. 실험 task set v1 파일 생성
 2. metric schema JSON 정의
 3. batch eval 스크립트 뼈대 작성
