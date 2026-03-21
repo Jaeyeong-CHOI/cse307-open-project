@@ -82,7 +82,7 @@ python3 scripts/emit_ci_result_snapshot.py ../docs/research/results/roundtrip-ba
 # summary JSON -> metric snapshot 생성 (task-set lineage 자동 포함)
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json
 # batch eval run plan 생성(offline, dedupe + cheap-first ordering + run cap)
-python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5-mini --prompt-conditions base,strict,base --repeats 2 --cheap-first --max-total-runs 64 -o ../docs/research/results/roundtrip-batch-v1.plan.json
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5-mini --prompt-conditions base,strict,base --repeats 2 --cheap-first --max-total-runs 64 --max-runs-per-model 24 -o ../docs/research/results/roundtrip-batch-v1.plan.json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
 # run_context fallback event_name(unknown/derived) 차단(엄격 모드)
@@ -278,3 +278,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 133. ~~CI mode resolution Step Summary에서 `*_require_explicit_event_name` raw flag 3줄을 제거하고 compact policy line(`event_name_policy_modes`)만 남겨 요약 노이즈를 줄이기~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
 134. ~~`detect-changes` 단계의 summary/snapshot/metric event-name mode 해석을 배치 스크립트(`scripts/resolve_event_name_modes.py`) 1회 호출로 통합해 중복 subprocess/grep 체인을 줄이고 유지보수 비용을 낮추기~~ ✅ (`scripts/resolve_event_name_modes.py`, `test_resolve_event_name_modes.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `scripts/run_python_regression_tests.sh`, `README.md`)
 135. ~~batch 평가 준비 단계에서 API 호출 전 실행계획을 deterministic하게 고정하는 planner(`scripts/build_batch_eval_plan.py`)를 추가하고, dedupe/cheap-first ordering/총 실행 cap(`--max-total-runs`)을 통해 중복 호출과 비용 폭주를 사전 차단~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `scripts/run_python_regression_tests.sh`, `README.md`)
+136. ~~planner(`build_batch_eval_plan.py`)에 모델별 run cap(`--max-runs-per-model`)과 모델별 planned run 집계(`summary.planned_runs_by_model`)를 추가해 고비용 모델 쏠림을 사전 차단하고 비용 통제를 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

@@ -47,6 +47,10 @@ def main() -> int:
         raise AssertionError(
             f"expected planned_runs_total={expected_total}, got {summary['planned_runs_total']}"
         )
+    if summary["planned_runs_by_model"] != {"gpt-5-mini": 12, "gpt-5-pro": 12}:
+        raise AssertionError(
+            f"unexpected planned_runs_by_model: {summary['planned_runs_by_model']}"
+        )
 
     capped = subprocess.run(
         [
@@ -69,6 +73,41 @@ def main() -> int:
     )
     if capped.returncode == 0:
         raise AssertionError("expected max-total-runs cap violation to fail")
+
+    per_model_capped_output = OUT / "batch-plan.per-model-capped.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(TASK_SET),
+            "--models",
+            "gpt-5-mini,gpt-5-pro",
+            "--prompt-conditions",
+            "base,strict",
+            "--repeats",
+            "3",
+            "--max-runs-per-model",
+            "5",
+            "--cheap-first",
+            "--output",
+            str(per_model_capped_output),
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    per_model_capped_payload = json.loads(per_model_capped_output.read_text(encoding="utf-8"))
+    per_model_summary = per_model_capped_payload["summary"]
+    if per_model_summary["planned_runs_total"] != 10:
+        raise AssertionError(
+            f"expected per-model capped total=10, got {per_model_summary['planned_runs_total']}"
+        )
+    if per_model_summary["planned_runs_by_model"] != {"gpt-5-mini": 5, "gpt-5-pro": 5}:
+        raise AssertionError(
+            "unexpected per-model capped runs_by_model: "
+            f"{per_model_summary['planned_runs_by_model']}"
+        )
 
     print("OK: build_batch_eval_plan regression passed")
     return 0

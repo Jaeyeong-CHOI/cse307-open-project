@@ -106,6 +106,12 @@ def parse_args() -> argparse.Namespace:
         help="Optional hard cap for total planned runs (0 disables cap)",
     )
     parser.add_argument(
+        "--max-runs-per-model",
+        type=int,
+        default=0,
+        help="Optional per-model cap for planned runs (0 disables cap)",
+    )
+    parser.add_argument(
         "--cheap-first",
         action="store_true",
         help="Order model runs using a cheap-first heuristic before expanding matrix",
@@ -128,6 +134,8 @@ def main() -> int:
             raise ValueError("--repeats must be >= 1")
         if args.max_total_runs < 0:
             raise ValueError("--max-total-runs must be >= 0")
+        if args.max_runs_per_model < 0:
+            raise ValueError("--max-runs-per-model must be >= 0")
 
         task_set = load_json(args.task_set_json)
         task_set_id, tasks = validate_task_set(task_set, args.task_set_json)
@@ -140,11 +148,15 @@ def main() -> int:
 
         plan: list[dict[str, Any]] = []
         run_index = 0
+        runs_per_model: dict[str, int] = {model: 0 for model in models}
         for model in models:
             for condition in conditions:
                 for task in tasks:
                     for rep in range(1, args.repeats + 1):
+                        if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
+                            continue
                         run_index += 1
+                        runs_per_model[model] += 1
                         plan.append(
                             {
                                 "run_id": f"run-{run_index:04d}",
@@ -172,6 +184,7 @@ def main() -> int:
                 "repeats": args.repeats,
                 "cheap_first": bool(args.cheap_first),
                 "max_total_runs": args.max_total_runs,
+                "max_runs_per_model": args.max_runs_per_model,
             },
             "summary": {
                 "task_count": len(tasks),
@@ -179,6 +192,7 @@ def main() -> int:
                 "prompt_condition_count": len(conditions),
                 "unique_call_units": len(tasks) * len(models) * len(conditions),
                 "planned_runs_total": len(plan),
+                "planned_runs_by_model": runs_per_model,
             },
             "plan": plan,
         }
