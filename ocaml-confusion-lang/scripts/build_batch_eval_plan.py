@@ -147,7 +147,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-format",
-        choices=("names", "json"),
+        choices=("names", "json", "summary"),
         default="names",
         help="Output format for --list-presets (default: names)",
     )
@@ -208,6 +208,24 @@ def main() -> int:
                 print(json.dumps({"schema_version": "v1", "presets": presets}, ensure_ascii=False, indent=2))
                 return 0
             preset_names = sorted(presets.keys())
+            if args.list_presets_format == "summary":
+                for name in preset_names:
+                    preset = presets[name]
+                    if not isinstance(preset, dict):
+                        raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
+                    max_total_runs = int(preset.get("max_total_runs", 0))
+                    max_runs_per_model = int(preset.get("max_runs_per_model", 0))
+                    max_runs_per_prompt_condition = int(preset.get("max_runs_per_prompt_condition", 0))
+                    cheap_first = bool(preset.get("cheap_first", False))
+                    fair_model_allocation = bool(preset.get("fair_model_allocation", False))
+                    print(
+                        f"{name}\tmax_total_runs={max_total_runs}\t"
+                        f"max_runs_per_model={max_runs_per_model}\t"
+                        f"max_runs_per_prompt_condition={max_runs_per_prompt_condition}\t"
+                        f"cheap_first={str(cheap_first).lower()}\t"
+                        f"fair_model_allocation={str(fair_model_allocation).lower()}"
+                    )
+                return 0
             for name in preset_names:
                 print(name)
             return 0

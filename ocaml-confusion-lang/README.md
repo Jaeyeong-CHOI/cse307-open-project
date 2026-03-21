@@ -103,6 +103,8 @@ python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset bala
 python3 scripts/build_batch_eval_plan.py --list-presets
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
+# preset 핵심 cap/정책을 compact summary 라인으로 확인
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
 # run_context fallback event_name(unknown/derived) 차단(엄격 모드)
@@ -315,3 +317,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 150. ~~planner(`build_batch_eval_plan.py`)에 `--preset/--preset-file`을 추가하고 `examples/batch-plan-presets.v1.json`을 도입해 cap 조합 프리셋을 재사용 가능하게 만들며, CLI override 우선순위를 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `examples/batch-plan-presets.v1.json`, `test_build_batch_eval_plan.py`, `README.md`)
 151. ~~planner(`build_batch_eval_plan.py`)에 `--list-presets`를 추가해 task set 인자 없이도 preset 이름을 즉시 확인할 수 있게 하여 운영자가 cheap-first preset 후보를 빠르게 탐색~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 152. ~~planner(`build_batch_eval_plan.py`)의 preset discovery 경로에 JSON 출력 모드(`--list-presets-format json`)를 추가해 preset 자동화 소비 시 text 파싱 의존을 제거하고 저비용 오케스트레이션 연동을 단순화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+153. ~~planner(`build_batch_eval_plan.py`)에 preset compact 출력 모드(`--list-presets-format summary`)를 추가해 preset 선택 전 핵심 cap/정책(`max_total_runs`, per-model/per-condition cap, cheap/fair 토글)을 한눈에 확인 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

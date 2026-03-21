@@ -672,6 +672,36 @@ def main() -> int:
     if not isinstance(listed_presets, dict) or "quick-smoke" not in listed_presets:
         raise AssertionError(f"unexpected preset list json payload: {preset_list_payload}")
 
+    preset_list_summary = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary_lines = [line.strip() for line in preset_list_summary.stdout.splitlines() if line.strip()]
+    if len(summary_lines) != 3:
+        raise AssertionError(f"unexpected preset summary line count: {summary_lines}")
+    quick_smoke_line = next((line for line in summary_lines if line.startswith("quick-smoke\t")), None)
+    if quick_smoke_line is None:
+        raise AssertionError(f"missing quick-smoke summary line: {summary_lines}")
+    expected_snippets = [
+        "max_total_runs=6",
+        "max_runs_per_model=0",
+        "max_runs_per_prompt_condition=0",
+        "cheap_first=true",
+        "fair_model_allocation=false",
+    ]
+    for snippet in expected_snippets:
+        if snippet not in quick_smoke_line:
+            raise AssertionError(f"missing '{snippet}' in summary line: {quick_smoke_line}")
+
     preset_output = OUT / "batch-plan.preset.quick-smoke.json"
     subprocess.run(
         [
