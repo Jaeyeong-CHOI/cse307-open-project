@@ -174,9 +174,6 @@ jobs:
             echo "- detected_full_ci: ${DETECTED_FULL_CI}"
             echo "- resolved_full_ci: ${RESOLVED_FULL_CI}"
             echo "- snapshot_top_k_mismatches: ${SNAPSHOT_TOP_K}"
-            echo "- summary_require_explicit_event_name: ${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}"
-            echo "- snapshot_require_explicit_event_name: ${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}"
-            echo "- metric_require_explicit_event_name: ${METRIC_REQUIRE_EXPLICIT_EVENT_NAME}"
             python3 ocaml-confusion-lang/scripts/format_event_name_policy_modes.py \
               --summary "${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}" \
               --snapshot "${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}" \
