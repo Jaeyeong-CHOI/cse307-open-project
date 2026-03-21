@@ -72,6 +72,14 @@ def main() -> int:
             "unexpected planned_runs_by_model_prompt_condition: "
             f"{summary['planned_runs_by_model_prompt_condition']}"
         )
+    if summary["planned_runs_by_task_model"] != {
+        "sample-basic-loop": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+        "protected-literals": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+        "triple-quote-stress": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+    }:
+        raise AssertionError(
+            f"unexpected planned_runs_by_task_model: {summary['planned_runs_by_task_model']}"
+        )
     if summary["potential_runs_total"] != expected_total or summary["skipped_runs_total"] != 0:
         raise AssertionError(
             "expected uncapped run counters to match planned total: "
@@ -102,6 +110,15 @@ def main() -> int:
             "unexpected potential_runs_by_model_prompt_condition: "
             f"{summary['potential_runs_by_model_prompt_condition']}"
         )
+    if summary["potential_runs_by_task_model"] != {
+        "sample-basic-loop": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+        "protected-literals": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+        "triple-quote-stress": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+    }:
+        raise AssertionError(
+            "unexpected potential_runs_by_task_model: "
+            f"{summary['potential_runs_by_task_model']}"
+        )
     if summary["skipped_runs_by_model"] != {"gpt-5-mini": 0, "gpt-5-pro": 0}:
         raise AssertionError(
             f"unexpected skipped_runs_by_model: {summary['skipped_runs_by_model']}"
@@ -126,6 +143,15 @@ def main() -> int:
         raise AssertionError(
             "unexpected skipped_runs_by_model_prompt_condition: "
             f"{summary['skipped_runs_by_model_prompt_condition']}"
+        )
+    if summary["skipped_runs_by_task_model"] != {
+        "sample-basic-loop": {"gpt-5-mini": 0, "gpt-5-pro": 0},
+        "protected-literals": {"gpt-5-mini": 0, "gpt-5-pro": 0},
+        "triple-quote-stress": {"gpt-5-mini": 0, "gpt-5-pro": 0},
+    }:
+        raise AssertionError(
+            "unexpected skipped_runs_by_task_model: "
+            f"{summary['skipped_runs_by_task_model']}"
         )
 
     capped = subprocess.run(
@@ -337,6 +363,55 @@ def main() -> int:
         raise AssertionError(
             "unexpected per-task capped skipped_runs_by_task: "
             f"{per_task_summary['skipped_runs_by_task']}"
+        )
+
+    per_task_model_capped_output = OUT / "batch-plan.per-task-model-capped.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(TASK_SET),
+            "--models",
+            "gpt-5-mini,gpt-5-pro",
+            "--prompt-conditions",
+            "base,strict",
+            "--repeats",
+            "3",
+            "--max-runs-per-task-model",
+            "2",
+            "--cheap-first",
+            "--output",
+            str(per_task_model_capped_output),
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    per_task_model_capped_payload = json.loads(per_task_model_capped_output.read_text(encoding="utf-8"))
+    per_task_model_summary = per_task_model_capped_payload["summary"]
+    if per_task_model_summary["planned_runs_total"] != 12:
+        raise AssertionError(
+            "unexpected per-task-model capped total: "
+            f"{per_task_model_summary['planned_runs_total']}"
+        )
+    if per_task_model_summary["planned_runs_by_task_model"] != {
+        "sample-basic-loop": {"gpt-5-mini": 2, "gpt-5-pro": 2},
+        "protected-literals": {"gpt-5-mini": 2, "gpt-5-pro": 2},
+        "triple-quote-stress": {"gpt-5-mini": 2, "gpt-5-pro": 2},
+    }:
+        raise AssertionError(
+            "unexpected per-task-model capped planned_runs_by_task_model: "
+            f"{per_task_model_summary['planned_runs_by_task_model']}"
+        )
+    if per_task_model_summary["skipped_runs_by_task_model"] != {
+        "sample-basic-loop": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+        "protected-literals": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+        "triple-quote-stress": {"gpt-5-mini": 4, "gpt-5-pro": 4},
+    }:
+        raise AssertionError(
+            "unexpected per-task-model capped skipped_runs_by_task_model: "
+            f"{per_task_model_summary['skipped_runs_by_task_model']}"
         )
 
     print("OK: build_batch_eval_plan regression passed")
