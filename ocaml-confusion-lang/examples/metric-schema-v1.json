@@ -1,0 +1,13 @@
+{
+  "schema_version": "v1",
+  "task_set_id": "task-set-v1-sample",
+  "prompt_condition": "strict",
+  "model": "gpt-5.3-codex",
+  "metrics": {
+    "acr": 0.82,
+    "prr": 0.18,
+    "esr": 0.76,
+    "mfb": 2.4,
+    "lgp": 0.31
+  }
+}
