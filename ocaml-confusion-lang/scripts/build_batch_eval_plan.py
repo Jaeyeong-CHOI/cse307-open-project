@@ -149,6 +149,7 @@ def main() -> int:
         plan: list[dict[str, Any]] = []
         run_index = 0
         runs_per_model: dict[str, int] = {model: 0 for model in models}
+        runs_per_prompt_condition: dict[str, int] = {condition: 0 for condition in conditions}
         for model in models:
             for condition in conditions:
                 for task in tasks:
@@ -157,6 +158,7 @@ def main() -> int:
                             continue
                         run_index += 1
                         runs_per_model[model] += 1
+                        runs_per_prompt_condition[condition] += 1
                         plan.append(
                             {
                                 "run_id": f"run-{run_index:04d}",
@@ -176,8 +178,13 @@ def main() -> int:
 
         potential_runs_per_model = len(tasks) * len(conditions) * args.repeats
         potential_runs_total = potential_runs_per_model * len(models)
+        potential_runs_per_condition = len(tasks) * len(models) * args.repeats
         skipped_runs_by_model = {
             model: max(0, potential_runs_per_model - runs_per_model[model]) for model in models
+        }
+        skipped_runs_by_prompt_condition = {
+            condition: max(0, potential_runs_per_condition - runs_per_prompt_condition[condition])
+            for condition in conditions
         }
 
         payload: dict[str, Any] = {
@@ -201,8 +208,13 @@ def main() -> int:
                 "potential_runs_total": potential_runs_total,
                 "skipped_runs_total": max(0, potential_runs_total - len(plan)),
                 "planned_runs_by_model": runs_per_model,
+                "planned_runs_by_prompt_condition": runs_per_prompt_condition,
                 "potential_runs_by_model": {model: potential_runs_per_model for model in models},
+                "potential_runs_by_prompt_condition": {
+                    condition: potential_runs_per_condition for condition in conditions
+                },
                 "skipped_runs_by_model": skipped_runs_by_model,
+                "skipped_runs_by_prompt_condition": skipped_runs_by_prompt_condition,
             },
             "plan": plan,
         }
