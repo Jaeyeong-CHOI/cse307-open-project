@@ -135,6 +135,7 @@ jobs:
             ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json
 
       - name: Upload lightweight CI artifacts
+        if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: ocaml-confusion-lang-ci-results-lightweight
@@ -230,6 +231,7 @@ jobs:
             ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json
 
       - name: Upload CI smoke artifacts
+        if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: ocaml-confusion-lang-ci-results
