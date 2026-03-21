@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from error_utils import emit_error
+from run_context_validation import validate_run_context
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROFILE_DIR = SCRIPT_DIR.parent / "examples" / "weights"
@@ -343,6 +344,16 @@ def build_run_context_from_args(args: argparse.Namespace) -> dict[str, str] | No
         if stripped:
             run_context[key] = stripped
     return run_context or None
+
+
+def validate_injected_run_context(run_context: dict[str, str] | None, input_path: Path) -> None:
+    if run_context is None:
+        return
+    errors: list[str] = []
+    validate_run_context({"run_context": run_context}, input_path, errors)
+    if errors:
+        _, _, detail = errors[0].partition(": ")
+        raise ValueError(detail or errors[0])
 
 
 def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
@@ -683,6 +694,7 @@ def main() -> int:
     taxonomy_weights, default_weight = load_taxonomy_weights(taxonomy_weight_path)
     task_set_lineage = load_task_set_lineage(args.task_set_json)
     run_context = build_run_context_from_args(args)
+    validate_injected_run_context(run_context, args.input_json)
     payload = build_summary_payload(
         report,
         args.input_json,

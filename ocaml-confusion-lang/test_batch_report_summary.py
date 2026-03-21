@@ -574,7 +574,7 @@ def main() -> int:
         json_output=True,
         extra_args=[
             "--run-id", "123456789",
-            "--run-url", "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+            "--run-url", "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789/attempts/2",
             "--run-attempt", "2",
             "--event-name", "workflow_dispatch",
             "--repository", "Jaeyeong-CHOI/cse307-open-project",
@@ -594,6 +594,30 @@ def main() -> int:
     if run_context.get("actor") != "github-actions":
         raise AssertionError("expected run_context.actor to be serialized from CLI flags")
     _ = run_context_summary_md
+
+    invalid_run_context_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.summary.invalid-run-context.md"),
+            "--run-id",
+            "123456789",
+            "--run-url",
+            "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+            "--run-attempt",
+            "2",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_run_context_proc.returncode == 0:
+        raise AssertionError("expected invalid run_context flags to fail fast")
+    if "run_context.run_url must include '/attempts/<n>'" not in invalid_run_context_proc.stderr:
+        raise AssertionError("expected run_context pair validation message for invalid run_attempt/run_url")
 
     print("OK: batch_report_summary fixture regression passed")
     return 0
