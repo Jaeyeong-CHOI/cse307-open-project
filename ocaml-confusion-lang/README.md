@@ -16,7 +16,7 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 - `roundtrip-report <alias_tsv> <source_file> <out_json>`: roundtrip 결과 JSON 리포트 저장 (`first_diff`, `failure_taxonomy`, `ast_equivalent` 포함)
 - `batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json> [--include-diff]`: 여러 소스 파일에 대한 일괄 roundtrip JSON 요약 (`total_cases`, `ok_cases`, `mismatch_cases`, `cases[]`) 생성
   - `--include-diff` 사용 시 각 케이스에 `first_diff`, `first_token_diff` 포함
-- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md] [--csv-output output.csv] [--top-k-mismatches 5] [--include-diff-columns]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환하고(선택) case-level CSV로 내보냄
+- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md] [--csv-output output.csv] [--top-k-mismatches 5] [--include-diff-columns] [--mismatch-sort input|severity]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환하고(선택) case-level CSV로 내보냄
 
 ## Alias TSV 형식
 `<python_keyword>\t<alias_phrase>`
@@ -44,6 +44,8 @@ dune exec confusionlang -- batch-roundtrip-report examples/case-c2.tsv examples/
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.md --csv-output ../docs/research/results/roundtrip-batch-v1.diff.csv --top-k-mismatches 10
 # CSV에 diff 상세 컬럼(first_diff/first_token_diff)까지 포함
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json --csv-output ../docs/research/results/roundtrip-batch-v1.diff.with-diff.csv --include-diff-columns
+# mismatch 하이라이트를 severity 기반으로 정렬
+python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.severity.md --mismatch-sort severity
 ```
 
 ## 다음 구현
@@ -67,3 +69,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 18. ~~whitespace/line-count drift 유도 fixture 추가로 taxonomy/배치 회귀 커버리지 확장~~ ✅ (`examples/batch-summary-fixture-whitespace-linecount.json`, `test_batch_report_summary.py`)
 19. ~~summary 스크립트에 CSV export + top-k mismatch view 옵션 추가~~ ✅ (`--csv-output`, `--top-k-mismatches`)
 20. ~~summary CSV에 optional diff 컬럼(`--include-diff-columns`) 추가~~ ✅ (`first_diff_*`, `first_token_diff_*`)
+21. ~~mismatch highlight 정렬 옵션(`--mismatch-sort severity`) 추가~~ ✅ (taxonomy/AST/token 기반 severity 우선 정렬)

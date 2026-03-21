@@ -10,7 +10,7 @@ OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def run_summary(*, top_k: int, include_diff_columns: bool) -> tuple[pathlib.Path, pathlib.Path]:
+def run_summary(*, top_k: int, include_diff_columns: bool, mismatch_sort: str) -> tuple[pathlib.Path, pathlib.Path]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
     cmd = [
@@ -23,6 +23,8 @@ def run_summary(*, top_k: int, include_diff_columns: bool) -> tuple[pathlib.Path
         str(summary_csv),
         "--top-k-mismatches",
         str(top_k),
+        "--mismatch-sort",
+        mismatch_sort,
     ]
     if include_diff_columns:
         cmd.append("--include-diff-columns")
@@ -36,7 +38,7 @@ def assert_contains(content: str, needle: str) -> None:
 
 
 def main() -> int:
-    summary_md, summary_csv = run_summary(top_k=2, include_diff_columns=True)
+    summary_md, summary_csv = run_summary(top_k=2, include_diff_columns=True, mismatch_sort="severity")
 
     content = summary_md.read_text(encoding="utf-8")
     assert_contains(content, "- total_cases: 3")
@@ -50,8 +52,13 @@ def main() -> int:
     assert_contains(content, "- token_stream_mismatch: 1")
 
     # mismatch highlight block should list top-k mismatches and include the drift case.
-    assert_contains(content, "## Top 2 Mismatch Cases")
+    assert_contains(content, "## Top 2 Mismatch Cases (sort=severity)")
     assert_contains(content, "examples/blankline-drift.py (failure_taxonomy=line_count_mismatch, whitespace_or_blankline_drift)")
+    # severity sort should rank token-stream collision case ahead of whitespace drift case.
+    collision_idx = content.find("examples/collision-risk-case.py (failure_taxonomy=token_stream_mismatch, token_substitution_mismatch)")
+    drift_idx = content.find("examples/blankline-drift.py (failure_taxonomy=line_count_mismatch, whitespace_or_blankline_drift)")
+    if collision_idx == -1 or drift_idx == -1 or collision_idx > drift_idx:
+        raise AssertionError("expected collision-risk mismatch to be listed before blankline drift under severity sort")
 
     # CSV export should include the fixture rows and taxonomy serialization.
     with summary_csv.open("r", encoding="utf-8", newline="") as f:

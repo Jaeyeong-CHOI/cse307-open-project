@@ -22,7 +22,38 @@ def load_json(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
-def build_summary(report: dict[str, Any], source_path: Path, top_k_mismatches: int) -> str:
+def _mismatch_severity_score(case: dict[str, Any]) -> tuple[int, int, int, str]:
+    """Higher tuple value means more severe mismatch.
+
+    Priority (desc):
+    1) taxonomy weight
+    2) ast/token equivalence broken
+    3) taxonomy tag count
+    4) source path (stable tie-break)
+    """
+    taxonomy_weights = {
+        "token_stream_mismatch": 40,
+        "token_substitution_mismatch": 35,
+        "ast_parse_error": 30,
+        "line_count_mismatch": 10,
+        "whitespace_or_blankline_drift": 5,
+    }
+    tags = [str(t) for t in (case.get("failure_taxonomy") or [])]
+    tag_weight = sum(taxonomy_weights.get(tag, 15) for tag in tags)
+
+    ast_penalty = 0 if case.get("ast_equivalent") is True else 20
+    token_penalty = 0 if case.get("token_equivalent") is True else 20
+    severity = tag_weight + ast_penalty + token_penalty
+
+    return (severity, len(tags), 1 if case.get("status") != "ok" else 0, str(case.get("source", "")))
+
+
+def build_summary(
+    report: dict[str, Any],
+    source_path: Path,
+    top_k_mismatches: int,
+    mismatch_sort: str,
+) -> str:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
     mismatch_cases = int(report.get("mismatch_cases", 0))
@@ -63,9 +94,17 @@ def build_summary(report: dict[str, Any], source_path: Path, top_k_mismatches: i
         lines.append("- none")
 
     mismatch_list = [c for c in cases if c.get("status") != "ok"]
+    if mismatch_sort == "severity":
+        mismatch_list = sorted(
+            mismatch_list,
+            key=_mismatch_severity_score,
+            reverse=True,
+        )
     if top_k_mismatches > 0:
         lines.append("")
-        lines.append(f"## Top {min(top_k_mismatches, len(mismatch_list))} Mismatch Cases")
+        lines.append(
+            f"## Top {min(top_k_mismatches, len(mismatch_list))} Mismatch Cases (sort={mismatch_sort})"
+        )
         if mismatch_list:
             for case in mismatch_list[:top_k_mismatches]:
                 path = case.get("source", "<unknown>")
@@ -174,6 +213,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Include first_diff/first_token_diff detail columns in CSV export",
     )
+    parser.add_argument(
+        "--mismatch-sort",
+        choices=["input", "severity"],
+        default="input",
+        help="Sort mode for mismatch highlight section (default: input)",
+    )
     return parser.parse_args()
 
 
@@ -182,7 +227,7 @@ def main() -> int:
     report = load_json(args.input_json)
     output = args.output or args.input_json.with_suffix("").with_suffix(".summary.md")
     top_k = max(0, int(args.top_k_mismatches))
-    summary = build_summary(report, args.input_json, top_k)
+    summary = build_summary(report, args.input_json, top_k, args.mismatch_sort)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(summary, encoding="utf-8")
 
