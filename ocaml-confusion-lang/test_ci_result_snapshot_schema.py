@@ -372,8 +372,31 @@ def main() -> None:
         raise AssertionError("expected failure for invalid run_context.ref")
     _assert_contains(
         bad_ref.stderr,
-        "run_context.ref must start with 'refs/' when present",
+        "run_context.ref must match 'refs/heads/*', 'refs/tags/*', or 'refs/pull/*' when present",
     )
+
+    invalid_ref_namespace = dict(valid_payload)
+    invalid_ref_namespace["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "ref": "refs/notes/main",
+    }
+    invalid_ref_namespace_path = _write(OUT / "snapshot.invalid-run-ref-namespace.json", invalid_ref_namespace)
+    bad_ref_namespace = _run(invalid_ref_namespace_path)
+    if bad_ref_namespace.returncode == 0:
+        raise AssertionError("expected failure for unsupported run_context.ref namespace")
+    _assert_contains(
+        bad_ref_namespace.stderr,
+        "run_context.ref must match 'refs/heads/*', 'refs/tags/*', or 'refs/pull/*' when present",
+    )
+
+    valid_pull_ref = dict(valid_payload)
+    valid_pull_ref["run_context"] = dict(valid_payload["run_context"])
+    valid_pull_ref["run_context"]["ref"] = "refs/pull/42/merge"
+    valid_pull_ref_path = _write(OUT / "snapshot.valid-run-ref-pull.json", valid_pull_ref)
+    ok_pull_ref = _run(valid_pull_ref_path)
+    if ok_pull_ref.returncode != 0:
+        raise AssertionError(f"expected success for refs/pull/* ref, got rc={ok_pull_ref.returncode}\n{ok_pull_ref.stderr}")
 
     invalid_event_name = dict(valid_payload)
     invalid_event_name["run_context"] = {

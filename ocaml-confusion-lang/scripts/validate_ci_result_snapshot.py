@@ -27,6 +27,7 @@ SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
 RUN_ID_PATTERN = re.compile(r"^\d+$")
 REPOSITORY_PATTERN = re.compile(r"^[^/\s]+/[^/\s]+$")
 ACTOR_PATTERN = re.compile(r"^[A-Za-z0-9-]+$")
+REF_PATTERN = re.compile(r"^refs/(heads|tags|pull)/.+$")
 GITHUB_RUN_URL_PATTERN = re.compile(
     r"^https://github\.com/(?P<repository>[^/\s]+/[^/\s]+)/actions/runs/(?P<run_id>\d+)(?:/attempts/(?P<attempt>\d+))?/?$"
 )
@@ -240,9 +241,9 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
                 )
 
             ref = run_context.get("ref")
-            if isinstance(ref, str) and ref.strip() and not ref.strip().startswith("refs/"):
+            if isinstance(ref, str) and ref.strip() and not REF_PATTERN.match(ref.strip()):
                 errors.append(
-                    f"{path}: run_context.ref must start with 'refs/' when present"
+                    f"{path}: run_context.ref must match 'refs/heads/*', 'refs/tags/*', or 'refs/pull/*' when present"
                 )
 
             event_name = run_context.get("event_name")

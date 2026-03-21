@@ -111,7 +111,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - `run_context.run_attempt`가 제공되면 `run_url`에도 `/attempts/<n>` segment가 있어야 하며 값이 일치해야 함 (반대로 `run_url`에 attempt segment가 있으면 `run_attempt`도 필수)
 - optional `run_context.repository`는 `<owner>/<repo>` 형식이어야 하며, `run_url`이 있을 때 URL의 repository segment와 일치해야 함
 - optional `run_context.sha`는 7~40 길이 hex 문자열이어야 함 (short/full SHA 허용)
-- optional `run_context.ref`는 `refs/` prefix를 가져야 함 (`refs/heads/main`, `refs/pull/123/merge` 등)
+- optional `run_context.ref`는 `refs/heads/*`, `refs/tags/*`, `refs/pull/*` 중 하나의 네임스페이스를 따라야 함 (예: `refs/heads/main`, `refs/tags/v1.0.0`, `refs/pull/123/merge`)
 - optional `run_context.workflow`/`run_context.job`은 non-empty string이어야 하며, Step Summary/JSON에서 워크플로우 이름과 잡 식별자를 함께 노출함
 
 `validate_task_set.py` 스키마 규칙:
@@ -228,3 +228,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 101. ~~snapshot validator에 `run_context.run_attempt`↔`run_url /attempts/<n>` pair/값 일치 검증을 추가해 rerun attempt 메타데이터 추적 무결성을 fail-fast 보장~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 102. ~~snapshot validator에 `run_context.actor` 허용 문자 패턴(`^[A-Za-z0-9-]+$`) 검증을 추가해 다운스트림 파서 입력 오염을 fail-fast 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 103. ~~snapshot validator에 `cases.total == cases.ok + cases.mismatch` 및 non-negative 카운터 검증을 추가해 손상/집계 불일치 스냅샷을 fail-fast 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
+104. ~~snapshot validator의 `run_context.ref` 검증을 whitelist(`refs/heads/*|refs/tags/*|refs/pull/*`)로 강화해 비표준 ref 네임스페이스 오염을 조기 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
