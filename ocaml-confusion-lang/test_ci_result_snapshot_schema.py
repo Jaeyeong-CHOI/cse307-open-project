@@ -98,6 +98,28 @@ def main() -> None:
         raise AssertionError("expected failure for any_tripped/tripped_list inconsistency")
     _assert_contains(bad_any_tripped.stderr, "any_tripped must equal bool(tripped_list)")
 
+    invalid_cases_sum = dict(valid_payload)
+    invalid_cases_sum["cases"] = {"total": 3, "ok": 2, "mismatch": 2}
+    invalid_cases_sum_path = _write(OUT / "snapshot.invalid-cases-sum.json", invalid_cases_sum)
+    bad_cases_sum = _run(invalid_cases_sum_path)
+    if bad_cases_sum.returncode == 0:
+        raise AssertionError("expected failure for cases total/ok/mismatch inconsistency")
+    _assert_contains(
+        bad_cases_sum.stderr,
+        "cases.total must equal cases.ok + cases.mismatch",
+    )
+
+    invalid_cases_negative = dict(valid_payload)
+    invalid_cases_negative["cases"] = {"total": -1, "ok": 0, "mismatch": 0}
+    invalid_cases_negative_path = _write(OUT / "snapshot.invalid-cases-negative.json", invalid_cases_negative)
+    bad_cases_negative = _run(invalid_cases_negative_path)
+    if bad_cases_negative.returncode == 0:
+        raise AssertionError("expected failure for negative case counters")
+    _assert_contains(
+        bad_cases_negative.stderr,
+        "cases.total must be >= 0",
+    )
+
     invalid_schema_version = dict(valid_payload)
     invalid_schema_version["schema_version"] = "ci_result_snapshot.v0"
     invalid_schema_version_path = _write(

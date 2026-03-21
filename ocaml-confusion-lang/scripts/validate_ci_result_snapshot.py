@@ -75,6 +75,14 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
             value = cases.get(key)
             if not isinstance(value, int):
                 errors.append(f"{path}: cases.{key} must be an integer")
+            elif value < 0:
+                errors.append(f"{path}: cases.{key} must be >= 0")
+
+        total = cases.get("total")
+        ok = cases.get("ok")
+        mismatch = cases.get("mismatch")
+        if all(isinstance(v, int) for v in (total, ok, mismatch)) and total != ok + mismatch:
+            errors.append(f"{path}: cases.total must equal cases.ok + cases.mismatch")
 
     severity = _expect_type(payload, "severity", dict, errors, path)
     if isinstance(severity, dict):
