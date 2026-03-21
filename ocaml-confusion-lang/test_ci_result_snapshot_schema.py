@@ -368,6 +368,21 @@ def main() -> None:
         "run_context.event_name must be one of",
     )
 
+    invalid_actor = dict(valid_payload)
+    invalid_actor["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "actor": "octo_cat",
+    }
+    invalid_actor_path = _write(OUT / "snapshot.invalid-actor.json", invalid_actor)
+    bad_actor = _run(invalid_actor_path)
+    if bad_actor.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.actor")
+    _assert_contains(
+        bad_actor.stderr,
+        "run_context.actor must match '[A-Za-z0-9-]+' when present",
+    )
+
 
 if __name__ == "__main__":
     main()

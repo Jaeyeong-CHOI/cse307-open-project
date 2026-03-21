@@ -26,6 +26,7 @@ SCHEMA_VERSION_PATTERN = re.compile(r"^ci_result_snapshot\.v(\d+)$")
 SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
 RUN_ID_PATTERN = re.compile(r"^\d+$")
 REPOSITORY_PATTERN = re.compile(r"^[^/\s]+/[^/\s]+$")
+ACTOR_PATTERN = re.compile(r"^[A-Za-z0-9-]+$")
 GITHUB_RUN_URL_PATTERN = re.compile(
     r"^https://github\.com/(?P<repository>[^/\s]+/[^/\s]+)/actions/runs/(?P<run_id>\d+)(?:/attempts/(?P<attempt>\d+))?/?$"
 )
@@ -240,6 +241,12 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
             if isinstance(event_name, str) and event_name.strip() and event_name.strip() not in ALLOWED_EVENT_NAMES:
                 errors.append(
                     f"{path}: run_context.event_name must be one of {sorted(ALLOWED_EVENT_NAMES)} when present"
+                )
+
+            actor = run_context.get("actor")
+            if isinstance(actor, str) and actor.strip() and not ACTOR_PATTERN.match(actor.strip()):
+                errors.append(
+                    f"{path}: run_context.actor must match '[A-Za-z0-9-]+' when present"
                 )
 
     return errors
