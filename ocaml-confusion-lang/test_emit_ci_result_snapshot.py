@@ -18,6 +18,7 @@ def _run(
     top_k_mismatches: int | str = 1,
     json_output: Path | None = None,
     run_context: dict[str, str] | None = None,
+    schema_version: str | None = None,
 ) -> str:
     summary = OUT / "tmp.emit-ci-summary.json"
     metric = OUT / "tmp.emit-ci-metric.json"
@@ -37,6 +38,8 @@ def _run(
     ]
     if json_output is not None:
         cmd.extend(["--json-output", str(json_output)])
+    if schema_version is not None:
+        cmd.extend(["--schema-version", schema_version])
     if run_context is not None:
         for arg, key in [
             ("--run-id", "run_id"),
@@ -231,6 +234,45 @@ def main() -> None:
     assert_contains(auto_no_mm, "## Auto no mismatch snapshot")
     assert_contains(auto_no_mm, "- top_k_mismatches: requested=auto; resolved=1")
     assert_contains(auto_no_mm, "- top1_mismatches_compact: n/a")
+
+    snapshot_v2_json = OUT / "tmp.emit-ci-snapshot.v2.json"
+    _run(
+        payload_with_mismatch,
+        "Schema v2 snapshot",
+        json_output=snapshot_v2_json,
+        schema_version="ci_result_snapshot.v2",
+    )
+    snapshot_v2_payload = json.loads(snapshot_v2_json.read_text(encoding="utf-8"))
+    if snapshot_v2_payload.get("schema_version") != "ci_result_snapshot.v2":
+        raise AssertionError("json snapshot schema_version override mismatch")
+
+    invalid_schema_summary = OUT / "tmp.emit-ci-summary.invalid-schema.json"
+    invalid_schema_metric = OUT / "tmp.emit-ci-metric.invalid-schema.json"
+    invalid_schema_summary.write_text(json.dumps(payload_with_mismatch, ensure_ascii=False), encoding="utf-8")
+    invalid_schema_metric.write_text("{}", encoding="utf-8")
+    invalid_schema = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(invalid_schema_summary),
+            "--metric-json",
+            str(invalid_schema_metric),
+            "--label",
+            "Invalid schema snapshot",
+            "--schema-version",
+            "ci_result_snapshot.vX",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+    if invalid_schema.returncode == 0:
+        raise AssertionError("expected non-zero exit for invalid --schema-version")
+    assert_contains(
+        invalid_schema.stderr,
+        "--schema-version must match 'ci_result_snapshot.vN' where N is a positive integer",
+    )
 
     invalid_shape_summary = OUT / "tmp.emit-ci-summary.invalid-shape.json"
     invalid_shape_metric = OUT / "tmp.emit-ci-metric.invalid-shape.json"

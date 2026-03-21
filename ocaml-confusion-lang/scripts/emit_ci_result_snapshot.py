@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,7 @@ TOP_K_AUTO = "auto"
 TOP_K_MIN = 1
 TOP_K_MAX = 3
 SNAPSHOT_SCHEMA_VERSION = "ci_result_snapshot.v1"
+SCHEMA_VERSION_PATTERN = r"^ci_result_snapshot\.v[1-9][0-9]*$"
 
 
 def _mismatch_fields(item: Any) -> dict[str, Any]:
@@ -161,6 +163,7 @@ def build_snapshot_payload(
     label: str,
     summary_path: Path,
     metric_path: Path,
+    schema_version: str = SNAPSHOT_SCHEMA_VERSION,
     top_k_mismatches: str = "1",
     run_context: dict[str, str] | None = None,
 ) -> dict[str, Any]:
@@ -170,7 +173,7 @@ def build_snapshot_payload(
     resolved_top_k = _resolve_top_k(payload, top_k_mismatches)
 
     snapshot = {
-        "schema_version": SNAPSHOT_SCHEMA_VERSION,
+        "schema_version": schema_version,
         "label": label,
         "cases": {
             "total": overview.get("total_cases"),
@@ -271,6 +274,14 @@ def main() -> None:
         help="section header label (default: CI result snapshot)",
     )
     parser.add_argument(
+        "--schema-version",
+        default=SNAPSHOT_SCHEMA_VERSION,
+        help=(
+            "snapshot schema version tag (default: ci_result_snapshot.v1, "
+            "format: ci_result_snapshot.vN)"
+        ),
+    )
+    parser.add_argument(
         "--top-k-mismatches",
         default="1",
         help="number of mismatch hints to compact into one line (1-3) or 'auto' (default: 1)",
@@ -284,6 +295,11 @@ def main() -> None:
     parser.add_argument("--repository", help="optional repository metadata (owner/repo)")
     parser.add_argument("--actor", help="optional trigger actor metadata")
     args = parser.parse_args()
+
+    if not re.match(SCHEMA_VERSION_PATTERN, args.schema_version):
+        raise SystemExit(
+            "--schema-version must match 'ci_result_snapshot.vN' where N is a positive integer"
+        )
 
     if args.top_k_mismatches != TOP_K_AUTO:
         try:
@@ -318,6 +334,7 @@ def main() -> None:
         label=args.label,
         summary_path=args.summary_json,
         metric_path=args.metric_json,
+        schema_version=args.schema_version,
         top_k_mismatches=args.top_k_mismatches,
         run_context=run_context or None,
     )

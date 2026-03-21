@@ -69,6 +69,8 @@ python3 scripts/validate_task_set.py examples/task-set-v1.json
 python3 scripts/validate_ci_result_snapshot.py ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 # snapshot schema version range 허용 (예: v1~v2)
 python3 scripts/validate_ci_result_snapshot.py ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json --schema-version-min 1 --schema-version-max 2
+# snapshot emit 시 schema version override (v2 실험 분기)
+python3 scripts/emit_ci_result_snapshot.py ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json --metric-json ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json --json-output ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.v2.ci.json --schema-version ci_result_snapshot.v2
 # summary JSON -> metric snapshot 생성 (task-set lineage 자동 포함)
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json
 # summary/task-set lineage 불일치 시 fail-fast
@@ -208,3 +210,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 91. ~~CI snapshot JSON/Step Summary에 실행 컨텍스트(`run_id`, `run_url`, `sha`, `ref`)를 optional 메타데이터로 포함해 실패 스냅샷을 워크플로우 실행과 즉시 역추적 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/validate_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
 92. ~~CI snapshot run_context에 `run_attempt`/`event_name` 메타데이터를 추가해 재실행(workflow rerun)과 트리거 유형(push/PR/manual)을 Step Summary/JSON만으로 즉시 식별 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/validate_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
 93. ~~CI snapshot run_context에 `repository`/`actor` 메타데이터를 추가해 multi-repo 운영 및 수동 실행 주체 추적을 Step Summary/JSON 단일 뷰에서 즉시 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/validate_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
+94. ~~`emit_ci_result_snapshot.py`에 `--schema-version` override 옵션을 추가해 v2 실험 분기에서도 동일 emitter를 재사용하고, validator의 버전 범위 검증(`--schema-version-min/max`)과 조합해 점진 롤아웃 경로를 단일 CLI로 유지~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `README.md`)
