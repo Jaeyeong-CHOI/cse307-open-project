@@ -60,43 +60,53 @@ let is_word_char c =
   (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')
   || c = '_'
 
-let find_sub s sub from_i =
-  let len_s = String.length s and len_sub = String.length sub in
-  let rec loop i =
-    if i + len_sub > len_s then None
-    else if String.sub s i len_sub = sub then Some i
-    else loop (i + 1)
-  in
-  loop from_i
-
-let replace_keyword_wordboundary line keyword repl =
-  let kw_len = String.length keyword in
-  let n = String.length line in
-  let buf = Buffer.create (n + 32) in
-  let rec loop i =
-    match find_sub line keyword i with
-    | None -> Buffer.add_substring buf line i (n - i)
-    | Some j ->
-        let before_ok =
-          j = 0 || not (is_word_char line.[j - 1])
-        in
-        let after_idx = j + kw_len in
-        let after_ok = after_idx >= n || not (is_word_char line.[after_idx]) in
-        if before_ok && after_ok then (
-          Buffer.add_substring buf line i (j - i);
-          Buffer.add_string buf repl;
-          loop after_idx)
-        else (
-          Buffer.add_substring buf line i ((j - i) + 1);
-          loop (j + 1))
-  in
-  loop 0;
-  Buffer.contents buf
-
 let sort_pairs_by_key_length_desc pairs =
   List.sort
     (fun (k1, _) (k2, _) -> compare (String.length k2) (String.length k1))
     pairs
+
+let starts_with_at s i sub =
+  let n = String.length s and m = String.length sub in
+  if i + m > n then false
+  else
+    let rec loop j =
+      if j = m then true
+      else if s.[i + j] <> sub.[j] then false
+      else loop (j + 1)
+    in
+    loop 0
+
+let has_word_boundaries s i len =
+  let n = String.length s in
+  let before_ok = i = 0 || not (is_word_char s.[i - 1]) in
+  let after_idx = i + len in
+  let after_ok = after_idx >= n || not (is_word_char s.[after_idx]) in
+  before_ok && after_ok
+
+let replace_keywords_single_pass text pairs_sorted =
+  let n = String.length text in
+  let out = Buffer.create (n + 32) in
+  let rec pick_match idx = function
+    | [] -> None
+    | (kw, alias) :: rest ->
+        let kw_len = String.length kw in
+        if starts_with_at text idx kw && has_word_boundaries text idx kw_len then
+          Some (kw_len, alias)
+        else pick_match idx rest
+  in
+  let rec loop idx =
+    if idx >= n then ()
+    else
+      match pick_match idx pairs_sorted with
+      | Some (kw_len, alias) ->
+          Buffer.add_string out alias;
+          loop (idx + kw_len)
+      | None ->
+          Buffer.add_char out text.[idx];
+          loop (idx + 1)
+  in
+  loop 0;
+  Buffer.contents out
 
 type scan_state =
   | Normal
@@ -119,11 +129,7 @@ let transform_text pairs text =
     if Buffer.length code_buf > 0 then (
       let code = Buffer.contents code_buf in
       Buffer.clear code_buf;
-      let transformed =
-        List.fold_left
-          (fun acc (py_kw, alias) -> replace_keyword_wordboundary acc py_kw alias)
-          code pairs_sorted
-      in
+      let transformed = replace_keywords_single_pass code pairs_sorted in
       Buffer.add_string out transformed)
   in
   let rec loop i state escaped =
