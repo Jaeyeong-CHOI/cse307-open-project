@@ -36,5 +36,6 @@ dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample
 1. ~~문자열/주석 보호 토크나이저~~ ✅ (single/double/triple quote + line comment 보호)
 2. ~~single-pass replace 엔진 고도화 (현재는 코드 span별 fold)~~ ✅ (코드 span에서 keyword 매칭 1-pass 스캐너로 대체)
 3. ~~roundtrip 결과 JSON 리포트 저장~~ ✅ (`roundtrip-report`)
-4. round-trip equivalence checker 강화 (AST/토큰 단위 비교)
-5. ~~failure taxonomy 자동 라벨링~~ ✅ (기초 휴리스틱 태그: `token_substitution_mismatch`, `line_count_mismatch` 등)
+4. ~~round-trip equivalence checker 강화 (토큰 단위 1차 비교)~~ ✅ (`token_equivalent`, `first_token_diff` 리포트 포함)
+5. ~~failure taxonomy 자동 라벨링~~ ✅ (기초 휴리스틱 태그: `token_substitution_mismatch`, `line_count_mismatch`, `token_stream_mismatch` 등)
+6. AST 기반 비교기(정밀 단계) 추가

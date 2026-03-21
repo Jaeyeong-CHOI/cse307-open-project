@@ -246,12 +246,82 @@ let uniq lst =
   in
   loop [] lst
 
+type token =
+  | TWord of string
+  | TString
+  | TSymbol of char
+
+let tokenize_code_like text =
+  let n = String.length text in
+  let rec skip_ws i =
+    if i < n then
+      match text.[i] with
+      | ' ' | '\t' | '\n' | '\r' -> skip_ws (i + 1)
+      | _ -> i
+    else i
+  in
+  let rec read_word i j =
+    if j < n && is_word_char text.[j] then read_word i (j + 1)
+    else (String.sub text i (j - i), j)
+  in
+  let rec skip_string i quote escaped =
+    if i >= n then i
+    else
+      let c = text.[i] in
+      if escaped then skip_string (i + 1) quote false
+      else if c = '\\' then skip_string (i + 1) quote true
+      else if c = quote then i + 1
+      else skip_string (i + 1) quote false
+  in
+  let rec skip_triple i quote =
+    if i >= n then n
+    else if is_triple_quote text i quote then i + 3
+    else skip_triple (i + 1) quote
+  in
+  let rec skip_comment i =
+    if i >= n then n
+    else if text.[i] = '\n' then i + 1
+    else skip_comment (i + 1)
+  in
+  let rec loop i acc =
+    let i = skip_ws i in
+    if i >= n then List.rev acc
+    else if text.[i] = '#' then loop (skip_comment i) acc
+    else if is_triple_quote text i '\'' then loop (skip_triple (i + 3) '\'') (TString :: acc)
+    else if is_triple_quote text i '"' then loop (skip_triple (i + 3) '"') (TString :: acc)
+    else
+      let c = text.[i] in
+      if c = '\'' || c = '"' then loop (skip_string (i + 1) c false) (TString :: acc)
+      else if is_word_char c then
+        let w, next_i = read_word i (i + 1) in
+        loop next_i (TWord w :: acc)
+      else loop (i + 1) (TSymbol c :: acc)
+  in
+  loop 0 []
+
+let first_token_diff a b =
+  let rec loop idx xs ys =
+    match (xs, ys) with
+    | x :: xr, y :: yr -> if x = y then loop (idx + 1) xr yr else Some (idx, x, y)
+    | [], _ | _, [] -> None
+  in
+  loop 1 a b
+
+let token_to_string = function
+  | TWord w -> Printf.sprintf "word:%s" w
+  | TString -> "string_literal"
+  | TSymbol c -> Printf.sprintf "symbol:%c" c
+
 let classify_failure_taxonomy pairs src restored =
   let src_lines = String.split_on_char '\n' src in
   let rst_lines = String.split_on_char '\n' restored in
+  let src_tokens = tokenize_code_like src in
+  let rst_tokens = tokenize_code_like restored in
   let tags = ref [] in
   if List.length src_lines <> List.length rst_lines then
     tags := "line_count_mismatch" :: !tags;
+
+  if src_tokens <> rst_tokens then tags := "token_stream_mismatch" :: !tags;
 
   let keyword_reversion =
     List.exists
@@ -267,6 +337,8 @@ let classify_failure_taxonomy pairs src restored =
   | Some (_, s, r) ->
       if String.trim s = "" || String.trim r = "" then
         tags := "whitespace_or_blankline_drift" :: !tags
+      else if src_tokens = rst_tokens then
+        tags := "formatting_only_drift" :: !tags
       else tags := "token_substitution_mismatch" :: !tags
   | None -> ());
 
@@ -282,7 +354,10 @@ let json_array_of_strings xs =
 let write_roundtrip_report out_path pairs src restored =
   let src_lines = String.split_on_char '\n' src in
   let rst_lines = String.split_on_char '\n' restored in
+  let src_tokens = tokenize_code_like src in
+  let rst_tokens = tokenize_code_like restored in
   let exact = restored = src in
+  let token_equivalent = src_tokens = rst_tokens in
   let diff_json =
     match first_diff src restored with
     | Some (line_no, s, r) ->
@@ -290,6 +365,14 @@ let write_roundtrip_report out_path pairs src restored =
           "\"first_diff\":{\"line\":%d,\"src\":\"%s\",\"restored\":\"%s\"}"
           line_no (escape_json s) (escape_json r)
     | None -> "\"first_diff\":null"
+  in
+  let token_diff_json =
+    match first_token_diff src_tokens rst_tokens with
+    | Some (idx, a, b) ->
+        Printf.sprintf
+          "\"first_token_diff\":{\"index\":%d,\"src\":\"%s\",\"restored\":\"%s\"}"
+          idx (escape_json (token_to_string a)) (escape_json (token_to_string b))
+    | None -> "\"first_token_diff\":null"
   in
   let taxonomy_json =
     if exact then "\"failure_taxonomy\":[]"
@@ -299,10 +382,13 @@ let write_roundtrip_report out_path pairs src restored =
   in
   let json =
     Printf.sprintf
-      "{\n  \"status\":\"%s\",\n  \"exact_match\":%s,\n  \"src_line_count\":%d,\n  \"restored_line_count\":%d,\n  %s,\n  %s\n}\n"
+      "{\n  \"status\":\"%s\",\n  \"exact_match\":%s,\n  \"token_equivalent\":%s,\n  \"src_line_count\":%d,\n  \"restored_line_count\":%d,\n  \"src_token_count\":%d,\n  \"restored_token_count\":%d,\n  %s,\n  %s,\n  %s\n}\n"
       (if exact then "ok" else "mismatch")
       (if exact then "true" else "false")
-      (List.length src_lines) (List.length rst_lines) diff_json taxonomy_json
+      (if token_equivalent then "true" else "false")
+      (List.length src_lines) (List.length rst_lines)
+      (List.length src_tokens) (List.length rst_tokens)
+      diff_json token_diff_json taxonomy_json
   in
   let oc = open_out out_path in
   output_string oc json;
