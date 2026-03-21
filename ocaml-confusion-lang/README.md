@@ -143,6 +143,11 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary-tsv --show-preset-with-meta
 # show-preset text meta footer schema id를 버전 실험용으로 override
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-schema-id planner_preset_show_meta.v2
+# meta footer schema id 정책(파서 구현 참고용 단일 규약)
+# - list-presets text meta footer: planner_preset_list_meta.vN (기본: planner_preset_list_meta.v1)
+# - show-preset text meta footer: planner_preset_show_meta.vN (기본: planner_preset_show_meta.v1)
+# - 공통 규칙: ^planner_preset_(list|show)_meta\.v[1-9][0-9]*$
+# - major 변경(키 삭제/의미 변경) 시 N 증가, minor 확장(새 optional key 추가)은 동일 vN 유지 가능
 # show-preset에서도 CLI override가 최종값에 어떻게 반영되는지 미리 확인
 python3 scripts/build_batch_eval_plan.py --show-preset balanced-ci --show-preset-format summary --repeats 1 --max-total-runs 12 --fair-model-allocation
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
@@ -389,3 +394,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 179. ~~planner `--list-presets` text meta footer에 schema id(`schema=planner_preset_list_meta.vN`)를 포함하고 `--list-presets-meta-schema-id` override를 추가해 footer 포맷 버전을 parser가 fail-fast로 식별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 180. ~~planner `--show-preset` text meta footer에도 schema id(`schema=planner_preset_show_meta.vN`)를 포함하고 `--show-preset-meta-schema-id` override를 추가해 단일 preset 출력 footer 포맷 버전을 parser가 fail-fast로 식별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 181. ~~`--show-preset-with-meta` footer에도 list-presets와 동일한 카운터형 메타(`filtered_count=1`, `emitted_count=1`, `truncated=false`)를 추가해 text meta parser를 list/show 경로에서 동일 키셋으로 처리 가능하게 정렬~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+182. ~~list/show text meta footer schema id 패턴/버전 정책을 README 단일 블록으로 명시해 parser 구현체의 참고 지점을 일원화~~ ✅ (`README.md`)
