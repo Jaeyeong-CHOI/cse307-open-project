@@ -15,6 +15,7 @@ from error_utils import emit_error
 
 EXPECTED_GATES = {"mismatch", "severity_total", "severity_avg"}
 SCHEMA_VERSION_PATTERN = re.compile(r"^ci_result_snapshot\.v(\d+)$")
+SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
 
 
 def load_json(path: Path) -> Any:
@@ -167,6 +168,12 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
             run_attempt = run_context.get("run_attempt")
             if isinstance(run_attempt, str) and run_attempt.strip() and not run_attempt.isdigit():
                 errors.append(f"{path}: run_context.run_attempt must be a numeric string when present")
+
+            sha = run_context.get("sha")
+            if isinstance(sha, str) and sha.strip() and not SHA_PATTERN.match(sha.strip()):
+                errors.append(
+                    f"{path}: run_context.sha must be a 7~40 hex string when present"
+                )
 
     return errors
 

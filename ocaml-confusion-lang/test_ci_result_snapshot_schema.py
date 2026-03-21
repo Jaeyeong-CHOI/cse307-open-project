@@ -208,6 +208,21 @@ def main() -> None:
         "run_context.run_attempt must be a numeric string when present",
     )
 
+    invalid_sha = dict(valid_payload)
+    invalid_sha["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "sha": "zz12",
+    }
+    invalid_sha_path = _write(OUT / "snapshot.invalid-run-sha.json", invalid_sha)
+    bad_sha = _run(invalid_sha_path)
+    if bad_sha.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.sha")
+    _assert_contains(
+        bad_sha.stderr,
+        "run_context.sha must be a 7~40 hex string when present",
+    )
+
 
 if __name__ == "__main__":
     main()
