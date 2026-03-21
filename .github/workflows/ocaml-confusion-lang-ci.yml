@@ -30,6 +30,14 @@ on:
           - "2"
           - "3"
           - auto
+      summary_event_name_mode:
+        description: "Summary run_context event_name policy (permissive=strict off, strict=require explicit --event-name)"
+        required: false
+        default: permissive
+        type: choice
+        options:
+          - permissive
+          - strict
 
 concurrency:
   group: ocaml-confusion-lang-ci-${{ github.workflow }}-${{ github.ref }}
@@ -43,6 +51,7 @@ jobs:
       manual_mode: ${{ steps.resolve-mode.outputs.manual_mode }}
       detected_full_ci: ${{ steps.resolve-mode.outputs.detected_full_ci }}
       snapshot_top_k_mismatches: ${{ steps.resolve-mode.outputs.snapshot_top_k_mismatches }}
+      summary_require_explicit_event_name: ${{ steps.resolve-mode.outputs.summary_require_explicit_event_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,6 +84,7 @@ jobs:
           FILTER_FULL_CI: ${{ steps.filter.outputs.full_ci }}
           MANUAL_MODE: ${{ github.event.inputs.ci_mode || 'auto' }}
           MANUAL_SNAPSHOT_TOP_K: ${{ github.event.inputs.snapshot_top_k_mismatches || '1' }}
+          MANUAL_SUMMARY_EVENT_NAME_MODE: ${{ github.event.inputs.summary_event_name_mode || 'permissive' }}
         run: |
           set -euo pipefail
           if [[ "${MANUAL_MODE}" == "full" ]]; then
@@ -91,11 +101,23 @@ jobs:
             snapshot_top_k=1
           fi
 
+          summary_event_name_mode="${MANUAL_SUMMARY_EVENT_NAME_MODE}"
+          if [[ "${summary_event_name_mode}" == "strict" ]]; then
+            summary_require_explicit_event_name=true
+          elif [[ "${summary_event_name_mode}" == "permissive" ]]; then
+            summary_require_explicit_event_name=false
+          else
+            echo "Invalid summary_event_name_mode='${summary_event_name_mode}', fallback to permissive"
+            summary_event_name_mode=permissive
+            summary_require_explicit_event_name=false
+          fi
+
           echo "full_ci=${full_ci}" >> "$GITHUB_OUTPUT"
           echo "manual_mode=${MANUAL_MODE}" >> "$GITHUB_OUTPUT"
           echo "detected_full_ci=${FILTER_FULL_CI}" >> "$GITHUB_OUTPUT"
           echo "snapshot_top_k_mismatches=${snapshot_top_k}" >> "$GITHUB_OUTPUT"
-          echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI}, top_k=${snapshot_top_k})"
+          echo "summary_require_explicit_event_name=${summary_require_explicit_event_name}" >> "$GITHUB_OUTPUT"
+          echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI}, top_k=${snapshot_top_k}, summary_event_name_mode=${summary_event_name_mode})"
 
       - name: Publish CI mode decision summary
         shell: bash
@@ -104,6 +126,7 @@ jobs:
           MANUAL_MODE: ${{ steps.resolve-mode.outputs.manual_mode }}
           DETECTED_FULL_CI: ${{ steps.resolve-mode.outputs.detected_full_ci }}
           SNAPSHOT_TOP_K: ${{ steps.resolve-mode.outputs.snapshot_top_k_mismatches }}
+          SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME: ${{ steps.resolve-mode.outputs.summary_require_explicit_event_name }}
         run: |
           {
             echo "## CI mode resolution"
@@ -111,6 +134,7 @@ jobs:
             echo "- detected_full_ci: ${DETECTED_FULL_CI}"
             echo "- resolved_full_ci: ${RESOLVED_FULL_CI}"
             echo "- snapshot_top_k_mismatches: ${SNAPSHOT_TOP_K}"
+            echo "- summary_require_explicit_event_name: ${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   test-lightweight:
@@ -134,8 +158,16 @@ jobs:
           python3 scripts/validate_task_set.py examples/task-set-v1.json
 
       - name: Summarize fixture + validate summary schema
+        shell: bash
+        env:
+          SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME: ${{ needs.detect-changes.outputs.summary_require_explicit_event_name }}
         run: |
+          set -euo pipefail
           mkdir -p ../docs/research/results
+          summary_args=()
+          if [[ "${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
+            summary_args+=(--require-explicit-event-name)
+          fi
           python3 scripts/batch_report_summary.py \
             examples/batch-summary-fixture-whitespace-linecount.json \
             -o ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.md \
@@ -143,7 +175,8 @@ jobs:
             --json-output ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
             --task-set-json examples/task-set-v1.json \
             --include-diff-columns \
-            --mismatch-sort severity
+            --mismatch-sort severity \
+            "${summary_args[@]}"
           python3 scripts/validate_summary_payload.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json
 
@@ -242,7 +275,15 @@ jobs:
             ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json --include-diff
 
       - name: Summarize batch report to markdown/csv/json (severity-first + task-set lineage)
+        shell: bash
+        env:
+          SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME: ${{ needs.detect-changes.outputs.summary_require_explicit_event_name }}
         run: |
+          set -euo pipefail
+          summary_args=()
+          if [[ "${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
+            summary_args+=(--require-explicit-event-name)
+          fi
           python3 scripts/batch_report_summary.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json \
             -o ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.md \
@@ -250,7 +291,8 @@ jobs:
             --json-output ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json \
             --task-set-json examples/task-set-v1.json \
             --include-diff-columns \
-            --mismatch-sort severity
+            --mismatch-sort severity \
+            "${summary_args[@]}"
 
       - name: Validate taxonomy weight profile schema
         run: python3 scripts/validate_taxonomy_profiles.py
