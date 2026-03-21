@@ -49,6 +49,11 @@ def _topk_compact(payload: dict[str, Any], *, top_k: int) -> str:
                 f"first_token_diff_index={top['first_token_diff_index']})"
             )
         )
+
+    remaining = len(mismatches) - min(top_k, len(mismatches))
+    if remaining > 0:
+        chunks.append(f"... (+{remaining} more)")
+
     return " | ".join(chunks)
 
 

@@ -68,6 +68,13 @@ def main() -> None:
                 "first_diff_line": 4,
                 "first_token_diff_index": "n/a",
             },
+            {
+                "source": "examples/ast-risk-case.py",
+                "failure_taxonomy": ["ast_equivalence_fail"],
+                "severity": 40,
+                "first_diff_line": 7,
+                "first_token_diff_index": 11,
+            },
         ],
     }
 
@@ -80,7 +87,7 @@ def main() -> None:
     )
     assert_contains(
         content,
-        "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a)",
+        "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+1 more)",
     )
 
     payload_no_mismatch = {
