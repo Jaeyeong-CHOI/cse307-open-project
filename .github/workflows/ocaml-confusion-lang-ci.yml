@@ -32,7 +32,7 @@ jobs:
           opam install . --deps-only --with-test -y
 
       - name: Build OCaml executable
-        run: opam exec -- dune build ./main.exe
+        run: opam exec -- dune build bin/main.exe
 
       - name: Run Python schema/unit tests
         run: |
@@ -43,23 +43,24 @@ jobs:
           python3 test_metric_schema.py
           python3 test_generate_metric_snapshot.py
           python3 test_task_set_schema.py
+          python3 test_validator_error_output.py
 
       - name: Smoke roundtrip-report output
         run: |
           mkdir -p ../docs/research/results
-          opam exec -- dune exec ./main.exe -- \
+          opam exec -- dune exec ./bin/main.exe -- \
             roundtrip-report examples/case-c2.tsv examples/sample.py \
             ../docs/research/results/roundtrip-sample.ci.json
 
       - name: Smoke batch-roundtrip-report output
         run: |
-          opam exec -- dune exec ./main.exe -- \
+          opam exec -- dune exec ./bin/main.exe -- \
             batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
             ../docs/research/results/roundtrip-batch-v1.ci.json
 
       - name: Smoke batch-roundtrip-report output (--include-diff)
         run: |
-          opam exec -- dune exec ./main.exe -- \
+          opam exec -- dune exec ./bin/main.exe -- \
             batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
             ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json --include-diff
 
@@ -109,6 +110,7 @@ jobs:
           python3 test_metric_schema.py
           python3 test_generate_metric_snapshot.py
           python3 test_task_set_schema.py
+          python3 test_validator_error_output.py
 
       - name: Upload CI smoke artifacts
         uses: actions/upload-artifact@v4
