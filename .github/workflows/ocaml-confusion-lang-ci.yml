@@ -161,9 +161,9 @@ jobs:
           print(f"- tripped_list: {gates.get('tripped_list')}")
           print(
             "- top1_mismatch: "
-            f"source={top1_source}; "
-            f"taxonomy={top1_taxonomy}; "
             f"severity={top1_severity}; "
+            f"taxonomy={top1_taxonomy}; "
+            f"source={top1_source}; "
             f"first_diff_line={top1_first_diff_line}; "
             f"first_token_diff_index={top1_first_token_diff_index}"
           )
@@ -294,9 +294,9 @@ jobs:
           print(f"- tripped_list: {gates.get('tripped_list')}")
           print(
             "- top1_mismatch: "
-            f"source={top1_source}; "
-            f"taxonomy={top1_taxonomy}; "
             f"severity={top1_severity}; "
+            f"taxonomy={top1_taxonomy}; "
+            f"source={top1_source}; "
             f"first_diff_line={top1_first_diff_line}; "
             f"first_token_diff_index={top1_first_token_diff_index}"
           )
