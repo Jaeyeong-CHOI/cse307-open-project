@@ -10,6 +10,16 @@ on:
       - "ocaml-confusion-lang/**"
       - ".github/workflows/ocaml-confusion-lang-ci.yml"
   workflow_dispatch:
+    inputs:
+      ci_mode:
+        description: "CI execution mode"
+        required: false
+        default: auto
+        type: choice
+        options:
+          - auto
+          - lightweight
+          - full
 
 concurrency:
   group: ocaml-confusion-lang-ci-${{ github.workflow }}-${{ github.ref }}
@@ -19,7 +29,7 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      full_ci: ${{ steps.filter.outputs.full_ci }}
+      full_ci: ${{ steps.resolve-mode.outputs.full_ci }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,6 +50,24 @@ jobs:
               - 'ocaml-confusion-lang/examples/**/*.tsv'
               - 'ocaml-confusion-lang/examples/**/*.txt'
               - 'ocaml-confusion-lang/examples/**/*.py'
+
+      - name: Resolve CI mode (auto/lightweight/full)
+        id: resolve-mode
+        shell: bash
+        env:
+          FILTER_FULL_CI: ${{ steps.filter.outputs.full_ci }}
+          MANUAL_MODE: ${{ github.event.inputs.ci_mode || 'auto' }}
+        run: |
+          set -euo pipefail
+          if [[ "${MANUAL_MODE}" == "full" ]]; then
+            full_ci=true
+          elif [[ "${MANUAL_MODE}" == "lightweight" ]]; then
+            full_ci=false
+          else
+            full_ci="${FILTER_FULL_CI}"
+          fi
+          echo "full_ci=${full_ci}" >> "$GITHUB_OUTPUT"
+          echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI})"
 
   test-lightweight:
     needs: detect-changes
