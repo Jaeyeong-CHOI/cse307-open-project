@@ -1,0 +1,40 @@
+name: OCaml confusion-lang CI
+
+on:
+  push:
+    paths:
+      - "ocaml-confusion-lang/**"
+      - ".github/workflows/ocaml-confusion-lang-ci.yml"
+  pull_request:
+    paths:
+      - "ocaml-confusion-lang/**"
+      - ".github/workflows/ocaml-confusion-lang-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ocaml-confusion-lang
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.1.1
+
+      - name: Install dependencies
+        run: opam install . --deps-only --with-test -y
+
+      - name: Run dune runtest
+        run: opam exec -- dune runtest
+
+      - name: Smoke roundtrip-report output
+        run: |
+          mkdir -p ../docs/research/results
+          opam exec -- dune exec confusionlang -- \
+            roundtrip-report examples/case-c2.tsv examples/sample.py \
+            ../docs/research/results/roundtrip-sample.ci.json
