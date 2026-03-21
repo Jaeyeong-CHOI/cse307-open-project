@@ -343,7 +343,18 @@ def build_run_context_from_args(args: argparse.Namespace) -> dict[str, str] | No
         stripped = str(value).strip()
         if stripped:
             run_context[key] = stripped
-    return run_context or None
+
+    if not run_context:
+        return None
+
+    event_name = run_context.get("event_name")
+    if event_name:
+        run_context["event_name_source"] = "provided"
+    else:
+        run_context["event_name"] = "unknown"
+        run_context["event_name_source"] = "derived"
+
+    return run_context
 
 
 def validate_injected_run_context(run_context: dict[str, str] | None, input_path: Path) -> None:

@@ -593,7 +593,31 @@ def main() -> int:
         raise AssertionError("expected run_context object in JSON summary when run_context flags are provided")
     if run_context.get("actor") != "github-actions":
         raise AssertionError("expected run_context.actor to be serialized from CLI flags")
+    if run_context.get("event_name_source") != "provided":
+        raise AssertionError("expected run_context.event_name_source=provided when --event-name is set")
     _ = run_context_summary_md
+
+    derived_event_summary_md, _, derived_event_summary_json = run_summary(
+        top_k=1,
+        include_diff_columns=False,
+        mismatch_sort="input",
+        json_output=True,
+        extra_args=[
+            "--run-id", "123456789",
+            "--run-url", "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+        ],
+    )
+    if derived_event_summary_json is None:
+        raise AssertionError("expected derived-event JSON summary output path")
+    derived_payload = json.loads(derived_event_summary_json.read_text(encoding="utf-8"))
+    derived_run_context = derived_payload.get("run_context")
+    if not isinstance(derived_run_context, dict):
+        raise AssertionError("expected run_context object in derived-event summary")
+    if derived_run_context.get("event_name") != "unknown":
+        raise AssertionError("expected run_context.event_name to fallback to 'unknown'")
+    if derived_run_context.get("event_name_source") != "derived":
+        raise AssertionError("expected run_context.event_name_source=derived when --event-name is omitted")
+    _ = derived_event_summary_md
 
     invalid_run_context_proc = subprocess.run(
         [
