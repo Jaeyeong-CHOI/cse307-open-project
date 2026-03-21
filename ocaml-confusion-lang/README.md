@@ -112,6 +112,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - optional `run_context.repository`는 `<owner>/<repo>` 형식이어야 하며, `run_url`이 있을 때 URL의 repository segment와 일치해야 함
 - optional `run_context.sha`는 7~40 길이 hex 문자열이어야 함 (short/full SHA 허용)
 - optional `run_context.ref`는 `refs/heads/*`, `refs/tags/*`, `refs/pull/*` 중 하나의 네임스페이스를 따라야 함 (예: `refs/heads/main`, `refs/tags/v1.0.0`, `refs/pull/123/merge`)
+- optional `run_context.event_name`는 `push|pull_request|pull_request_target|merge_group|workflow_dispatch|schedule|workflow_run|repository_dispatch` 중 하나여야 함
 - optional `run_context.workflow`/`run_context.job`은 non-empty string이어야 하며 길이는 1~128자로 제한됨 (비정상적으로 긴 메타데이터 fail-fast 차단)
 
 `validate_task_set.py` 스키마 규칙:
@@ -230,3 +231,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 103. ~~snapshot validator에 `cases.total == cases.ok + cases.mismatch` 및 non-negative 카운터 검증을 추가해 손상/집계 불일치 스냅샷을 fail-fast 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 104. ~~snapshot validator의 `run_context.ref` 검증을 whitelist(`refs/heads/*|refs/tags/*|refs/pull/*`)로 강화해 비표준 ref 네임스페이스 오염을 조기 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 105. ~~snapshot validator에 `run_context.workflow`/`run_context.job` 길이 상한(<=128) 검증을 추가해 비정상적으로 긴 실행 메타데이터를 fail-fast 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
+106. ~~snapshot validator의 `run_context.event_name` 허용 enum에 `pull_request_target`/`merge_group`를 추가해 merge queue 및 보안 컨텍스트 PR 실행 메타데이터를 false-positive 없이 수용~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)

@@ -17,6 +17,8 @@ EXPECTED_GATES = {"mismatch", "severity_total", "severity_avg"}
 ALLOWED_EVENT_NAMES = {
     "push",
     "pull_request",
+    "pull_request_target",
+    "merge_group",
     "workflow_dispatch",
     "schedule",
     "workflow_run",

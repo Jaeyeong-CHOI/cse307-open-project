@@ -398,6 +398,21 @@ def main() -> None:
     if ok_pull_ref.returncode != 0:
         raise AssertionError(f"expected success for refs/pull/* ref, got rc={ok_pull_ref.returncode}\n{ok_pull_ref.stderr}")
 
+    valid_pull_request_target_event = dict(valid_payload)
+    valid_pull_request_target_event["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "event_name": "pull_request_target",
+    }
+    valid_pull_request_target_event_path = _write(
+        OUT / "snapshot.valid-event-name-pull-request-target.json", valid_pull_request_target_event
+    )
+    ok_pull_request_target_event = _run(valid_pull_request_target_event_path)
+    if ok_pull_request_target_event.returncode != 0:
+        raise AssertionError(
+            f"expected success for run_context.event_name=pull_request_target, got rc={ok_pull_request_target_event.returncode}\n{ok_pull_request_target_event.stderr}"
+        )
+
     invalid_event_name = dict(valid_payload)
     invalid_event_name["run_context"] = {
         "run_id": "123456789",
