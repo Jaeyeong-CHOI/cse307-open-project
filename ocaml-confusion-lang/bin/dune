@@ -3,3 +3,7 @@
  (public_name confusionlang)
  (libraries unix)
 )
+
+(rule
+ (alias runtest)
+ (action (chdir .. (run python3 test_roundtrip_report_schema.py))))
