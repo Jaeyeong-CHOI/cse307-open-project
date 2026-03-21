@@ -16,6 +16,8 @@ from error_utils import emit_error
 EXPECTED_GATES = {"mismatch", "severity_total", "severity_avg"}
 SCHEMA_VERSION_PATTERN = re.compile(r"^ci_result_snapshot\.v(\d+)$")
 SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
+RUN_ID_PATTERN = re.compile(r"^\d+$")
+REPOSITORY_PATTERN = re.compile(r"^[^/\s]+/[^/\s]+$")
 
 
 def load_json(path: Path) -> Any:
@@ -165,9 +167,19 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
             if has_run_id and has_run_url and str(run_id) not in str(run_url):
                 errors.append(f"{path}: run_context.run_url must include run_context.run_id for traceability")
 
+            run_id = run_context.get("run_id")
+            if isinstance(run_id, str) and run_id.strip() and not RUN_ID_PATTERN.match(run_id.strip()):
+                errors.append(f"{path}: run_context.run_id must be a numeric string when present")
+
             run_attempt = run_context.get("run_attempt")
             if isinstance(run_attempt, str) and run_attempt.strip() and not run_attempt.isdigit():
                 errors.append(f"{path}: run_context.run_attempt must be a numeric string when present")
+
+            repository = run_context.get("repository")
+            if isinstance(repository, str) and repository.strip() and not REPOSITORY_PATTERN.match(repository.strip()):
+                errors.append(
+                    f"{path}: run_context.repository must match '<owner>/<repo>' when present"
+                )
 
             sha = run_context.get("sha")
             if isinstance(sha, str) and sha.strip() and not SHA_PATTERN.match(sha.strip()):

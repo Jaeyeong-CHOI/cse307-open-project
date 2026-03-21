@@ -193,6 +193,20 @@ def main() -> None:
         "run_context.run_url must include run_context.run_id for traceability",
     )
 
+    invalid_run_id = dict(valid_payload)
+    invalid_run_id["run_context"] = {
+        "run_id": "run-123",
+        "run_url": "https://github.com/org/repo/actions/runs/run-123",
+    }
+    invalid_run_id_path = _write(OUT / "snapshot.invalid-run-id.json", invalid_run_id)
+    bad_run_id = _run(invalid_run_id_path)
+    if bad_run_id.returncode == 0:
+        raise AssertionError("expected failure for non-numeric run_id")
+    _assert_contains(
+        bad_run_id.stderr,
+        "run_context.run_id must be a numeric string when present",
+    )
+
     invalid_run_attempt = dict(valid_payload)
     invalid_run_attempt["run_context"] = {
         "run_id": "123456789",
@@ -206,6 +220,23 @@ def main() -> None:
     _assert_contains(
         bad_run_attempt.stderr,
         "run_context.run_attempt must be a numeric string when present",
+    )
+
+    invalid_repository_format = dict(valid_payload)
+    invalid_repository_format["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "repository": "org repo",
+    }
+    invalid_repository_format_path = _write(
+        OUT / "snapshot.invalid-repository-format.json", invalid_repository_format
+    )
+    bad_repository_format = _run(invalid_repository_format_path)
+    if bad_repository_format.returncode == 0:
+        raise AssertionError("expected failure for invalid repository format")
+    _assert_contains(
+        bad_repository_format.stderr,
+        "run_context.repository must match '<owner>/<repo>' when present",
     )
 
     invalid_sha = dict(valid_payload)
