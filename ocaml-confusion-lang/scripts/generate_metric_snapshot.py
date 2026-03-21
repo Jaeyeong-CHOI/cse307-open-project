@@ -163,6 +163,24 @@ def check_summary_lineage_consistency(
             print(f"WARN: {message}")
 
 
+def validate_summary_event_name_policy(summary: dict[str, Any], require_explicit_event_name: bool) -> None:
+    if not require_explicit_event_name:
+        return
+
+    run_context = summary.get("run_context")
+    if not isinstance(run_context, dict):
+        return
+
+    event_name = run_context.get("event_name")
+    event_name_source = run_context.get("event_name_source")
+    if event_name == "unknown" or event_name_source == "derived":
+        raise ValueError(
+            "summary run_context.event_name must be explicit when --require-explicit-event-name is set "
+            "(got event_name='unknown', event_name_source='derived'). "
+            "Pass --event-name to batch_report_summary.py."
+        )
+
+
 def build_metric_payload(
     summary: dict[str, Any],
     task_set_id: str,
@@ -242,6 +260,11 @@ def parse_args() -> argparse.Namespace:
         default="warn",
         help="How to handle summary/task-set lineage mismatches when --task-set-json is used",
     )
+    parser.add_argument(
+        "--require-explicit-event-name",
+        action="store_true",
+        help="Reject summary run_context fallback event_name ('unknown'/'derived')",
+    )
     return parser.parse_args()
 
 
@@ -249,6 +272,9 @@ def main() -> int:
     try:
         args = parse_args()
         summary = load_json(args.summary_json)
+        validate_summary_event_name_policy(
+            summary, require_explicit_event_name=args.require_explicit_event_name
+        )
 
         task_set_lineage: dict[str, str] | None = None
         if args.task_set_json is not None:

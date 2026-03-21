@@ -68,6 +68,7 @@ def main() -> int:
             "gpt-5.3-codex",
             "--task-set-json",
             str(TASK_SET_FIXTURE),
+            "--require-explicit-event-name",
         ],
         cwd=ROOT,
         check=True,
@@ -96,6 +97,63 @@ def main() -> int:
         text=True,
     )
     assert mismatch.returncode != 0, "expected mismatched task-set consistency check to fail"
+
+    summary_with_derived_event = OUT / "fixture.summary.derived-event.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SUMMARY_SCRIPT),
+            str(FIXTURE),
+            "--json-output",
+            str(summary_with_derived_event),
+            "--top-k-mismatches",
+            "0",
+            "--run-id",
+            "123456789",
+            "--run-url",
+            "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+            "--repository",
+            "Jaeyeong-CHOI/cse307-open-project",
+            "--sha",
+            "abcdef1",
+            "--ref",
+            "refs/heads/main",
+            "--workflow",
+            "ocaml-confusion-lang-ci",
+            "--job",
+            "summary-regression",
+            "--actor",
+            "github-actions",
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    derived_event_policy = subprocess.run(
+        [
+            "python3",
+            str(METRIC_SCRIPT),
+            str(summary_with_derived_event),
+            "--task-set-id",
+            "fixture-task-set-v1",
+            "--prompt-condition",
+            "strict",
+            "--model",
+            "gpt-5.3-codex",
+            "--task-set-json",
+            str(TASK_SET_FIXTURE),
+            "--require-explicit-event-name",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    derived_event_output = derived_event_policy.stderr + derived_event_policy.stdout
+    assert derived_event_policy.returncode != 0
+    assert "--require-explicit-event-name" in derived_event_output
+    assert "Pass --event-name to batch_report_summary.py" in derived_event_output
 
     mismatch_only_summary = OUT / "fixture.summary.mismatch-only.json"
     subprocess.run(

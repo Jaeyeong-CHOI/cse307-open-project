@@ -83,6 +83,8 @@ python3 scripts/emit_ci_result_snapshot.py ../docs/research/results/roundtrip-ba
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
+# run_context fallback event_name(unknown/derived) 차단(엄격 모드)
+python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-event-name.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --require-explicit-event-name
 # 생성된 metric snapshot schema lint
 python3 scripts/validate_metric_schema.py ../docs/research/results/roundtrip-batch-v1.diff.metrics.json
 # 케이스 목록을 mismatch만으로 축소
@@ -265,3 +267,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 124. ~~공통 `run_context` validator가 `event_name` 존재 시 `event_name_source`도 필수로 강제해 summary/metric/snapshot provenance 필드 누락을 fail-fast 차단~~ ✅ (`scripts/run_context_validation.py`, `test_summary_payload_schema.py`, `test_ci_result_snapshot_schema.py`, `test_metric_schema.py`, `test_generate_metric_snapshot.py`, `examples/metric-schema-v1.json`, `README.md`)
 125. ~~snapshot emitter(`emit_ci_result_snapshot.py`)에 strict event-name 정책(`--require-explicit-event-name`)을 추가하고, workflow_dispatch 입력(`snapshot_event_name_mode=permissive|strict`)으로 lightweight/full CI snapshot 단계에서 fallback(`unknown`) 허용 여부를 런타임 제어~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
 126. ~~CI mode resolution Step Summary에 strict event-name 정책 배너를 추가해(`summary/snapshot` 각각) 수동 실행 시 fallback 차단 상태를 로그 첫 화면에서 즉시 식별 가능하게 개선~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
+127. ~~`generate_metric_snapshot.py`에 `--require-explicit-event-name` 옵션을 추가해 summary run_context fallback(`unknown/derived`) 유입을 선택적으로 차단하고, metric 단계에서도 strict event-name 정책을 fail-fast로 강제~~ ✅ (`scripts/generate_metric_snapshot.py`, `test_generate_metric_snapshot.py`, `README.md`)
