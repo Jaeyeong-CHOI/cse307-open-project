@@ -99,6 +99,7 @@ def build_summary(
     mismatch_sort: str,
     taxonomy_weights: Mapping[str, int],
     default_weight: int,
+    taxonomy_weight_source: str,
 ) -> str:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
@@ -126,6 +127,7 @@ def build_summary(
     lines.append(f"- ok_cases: {ok_cases} ({pct(ok_cases, total)})")
     lines.append(f"- mismatch_cases: {mismatch_cases} ({pct(mismatch_cases, total)})")
     lines.append(f"- include_diff: {str(include_diff).lower()}")
+    lines.append(f"- taxonomy_weight_source: {taxonomy_weight_source}")
     lines.append("")
     mismatch_list = [c for c in cases if c.get("status") != "ok"]
     mismatch_severity_total = sum(
@@ -341,6 +343,12 @@ def main() -> int:
     if taxonomy_weight_path is None and args.taxonomy_weight_profile is not None:
         taxonomy_weight_path = resolve_taxonomy_profile(args.taxonomy_weight_profile, PROFILE_DIR)
 
+    taxonomy_weight_source = "default:built-in"
+    if args.taxonomy_weights is not None:
+        taxonomy_weight_source = f"file:{args.taxonomy_weights}"
+    elif args.taxonomy_weight_profile is not None and taxonomy_weight_path is not None:
+        taxonomy_weight_source = f"profile:{args.taxonomy_weight_profile} ({taxonomy_weight_path})"
+
     taxonomy_weights, default_weight = load_taxonomy_weights(taxonomy_weight_path)
     summary = build_summary(
         report,
@@ -349,6 +357,7 @@ def main() -> int:
         args.mismatch_sort,
         taxonomy_weights,
         default_weight,
+        taxonomy_weight_source,
     )
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(summary, encoding="utf-8")

@@ -58,6 +58,7 @@ def main() -> int:
     assert_contains(content, "- ok_cases: 1 (33.3%)")
     assert_contains(content, "- mismatch_cases: 2 (66.7%)")
     assert_contains(content, "- include_diff: true")
+    assert_contains(content, "- taxonomy_weight_source: default:built-in")
     assert_contains(content, "- mismatch_severity_total: 130")
     assert_contains(content, "- mismatch_severity_avg: 65.0")
 
@@ -130,6 +131,7 @@ def main() -> int:
         taxonomy_weights=ALT_WEIGHTS,
     )
     alt_content = alt_summary_md.read_text(encoding="utf-8")
+    assert_contains(alt_content, f"- taxonomy_weight_source: file:{ALT_WEIGHTS}")
     assert_contains(alt_content, "- token_substitution_mismatch: weighted_score=60 (count=1, weight=60)")
     alt_collision_idx = alt_content.find(
         "examples/collision-risk-case.py (failure_taxonomy=token_stream_mismatch, token_substitution_mismatch)"
@@ -160,6 +162,7 @@ def main() -> int:
         taxonomy_weight_profile=PROFILE_V2,
     )
     prof_content = prof_summary_md.read_text(encoding="utf-8")
+    assert_contains(prof_content, f"- taxonomy_weight_source: profile:{PROFILE_V2} ({ROOT / 'examples' / 'weights' / f'{PROFILE_V2}.json'})")
     assert_contains(prof_content, "- token_substitution_mismatch: weighted_score=60 (count=1, weight=60)")
 
     print("OK: batch_report_summary fixture regression passed")
