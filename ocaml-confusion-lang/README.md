@@ -108,6 +108,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - optional `run_context`가 존재하면 `run_id`/`run_url`은 함께 제공되어야 하며(`pair`), `run_url`은 `http(s)` 형식이고 `run_id`를 포함해야 함(실행 역추적성 보장)
 - optional `run_context.run_attempt`는 숫자 문자열이어야 함
 - optional `run_context.sha`는 7~40 길이 hex 문자열이어야 함 (short/full SHA 허용)
+- optional `run_context.ref`는 `refs/` prefix를 가져야 함 (`refs/heads/main`, `refs/pull/123/merge` 등)
 - optional `run_context.workflow`/`run_context.job`은 non-empty string이어야 하며, Step Summary/JSON에서 워크플로우 이름과 잡 식별자를 함께 노출함
 
 `validate_task_set.py` 스키마 규칙:
@@ -218,3 +219,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 95. ~~snapshot validator의 `run_context` 검증을 강화해 `run_id`/`run_url` pair 강제 + URL traceability(`run_url`에 `run_id` 포함) + `run_attempt` 숫자 문자열 규칙을 추가하여 실행 역추적 metadata의 무결성을 fail-fast 보장~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 96. ~~CI snapshot run_context에 `workflow`/`job` 메타데이터를 추가해 동일 run 내 어떤 워크플로우/잡에서 생성된 스냅샷인지 Step Summary/JSON만으로 즉시 식별 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/validate_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
 97. ~~snapshot validator에 `run_context.sha` 형식 검증(7~40 hex)을 추가해 잘못된 commit 메타데이터를 조기 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
+98. ~~snapshot validator에 `run_context.ref` 형식 검증(`refs/` prefix)을 추가해 브랜치/PR ref 메타데이터 손상을 조기 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)

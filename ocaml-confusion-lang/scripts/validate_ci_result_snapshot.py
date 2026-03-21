@@ -175,6 +175,12 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
                     f"{path}: run_context.sha must be a 7~40 hex string when present"
                 )
 
+            ref = run_context.get("ref")
+            if isinstance(ref, str) and ref.strip() and not ref.strip().startswith("refs/"):
+                errors.append(
+                    f"{path}: run_context.ref must start with 'refs/' when present"
+                )
+
     return errors
 
 

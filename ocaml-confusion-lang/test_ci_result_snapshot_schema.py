@@ -223,6 +223,21 @@ def main() -> None:
         "run_context.sha must be a 7~40 hex string when present",
     )
 
+    invalid_ref = dict(valid_payload)
+    invalid_ref["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "ref": "main",
+    }
+    invalid_ref_path = _write(OUT / "snapshot.invalid-run-ref.json", invalid_ref)
+    bad_ref = _run(invalid_ref_path)
+    if bad_ref.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.ref")
+    _assert_contains(
+        bad_ref.stderr,
+        "run_context.ref must start with 'refs/' when present",
+    )
+
 
 if __name__ == "__main__":
     main()
