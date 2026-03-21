@@ -296,6 +296,15 @@ def _format_preset_summary_tsv_row(
     return "\t".join(item.replace("\t", " ") for item in row)
 
 
+def _emit_list_presets_text_meta(filtered_count: int, emitted_count: int, truncated: bool) -> None:
+    print(
+        "# meta\t"
+        f"filtered_count={filtered_count}\t"
+        f"emitted_count={emitted_count}\t"
+        f"truncated={str(truncated).lower()}"
+    )
+
+
 def _dedupe_keep_order(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -423,6 +432,14 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=None,
         help="Optional max number of presets to emit after filtering (sorted by name)",
+    )
+    parser.add_argument(
+        "--list-presets-with-meta",
+        action="store_true",
+        help=(
+            "Emit filtered/emitted/truncated metadata for text formats (names/summary/summary-tsv). "
+            "JSON/resolved-json always include metadata."
+        ),
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -668,6 +685,8 @@ def main() -> int:
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
                     resolved = resolve_preset_with_defaults(preset)
                     print(_format_preset_summary_line(name, resolved))
+                if args.list_presets_with_meta:
+                    _emit_list_presets_text_meta(len(filtered_presets), len(preset_names), truncated)
                 return 0
             if args.list_presets_format == "summary-tsv":
                 _emit_preset_summary_tsv_header(
@@ -691,9 +710,13 @@ def main() -> int:
                             description_max_len=args.summary_tsv_description_max_len,
                         )
                     )
+                if args.list_presets_with_meta:
+                    _emit_list_presets_text_meta(len(filtered_presets), len(preset_names), truncated)
                 return 0
             for name in preset_names:
                 print(name)
+            if args.list_presets_with_meta:
+                _emit_list_presets_text_meta(len(filtered_presets), len(preset_names), truncated)
             return 0
 
         if args.task_set_json is None:

@@ -912,6 +912,24 @@ def main() -> int:
             f"{preset_list_resolved_json_limited_payload}"
         )
 
+    preset_list_names_with_meta = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_lines = [line.strip() for line in preset_list_names_with_meta.stdout.splitlines() if line.strip()]
+    if names_with_meta_lines[-1] != "# meta\tfiltered_count=3\temitted_count=2\ttruncated=true":
+        raise AssertionError(f"unexpected names-with-meta footer: {names_with_meta_lines}")
+
     preset_list_summary = subprocess.run(
         [
             "python3",
@@ -991,6 +1009,26 @@ def main() -> int:
         raise AssertionError(f"unexpected summary-tsv description_mode cell: {quick_smoke_tsv_cells}")
     if quick_smoke_tsv_cells[16] != "false":
         raise AssertionError(f"unexpected summary-tsv description_truncated cell: {quick_smoke_tsv_cells}")
+
+    preset_list_summary_tsv_with_meta = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary_tsv_meta_lines = [line.rstrip("\n") for line in preset_list_summary_tsv_with_meta.stdout.splitlines() if line.strip()]
+    if summary_tsv_meta_lines[-1] != "# meta\tfiltered_count=3\temitted_count=2\ttruncated=true":
+        raise AssertionError(f"unexpected summary-tsv meta footer: {summary_tsv_meta_lines}")
 
     preset_list_summary_tsv_with_schema = subprocess.run(
         [
