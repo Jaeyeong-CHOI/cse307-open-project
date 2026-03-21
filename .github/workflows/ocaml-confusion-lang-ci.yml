@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       full_ci: ${{ steps.resolve-mode.outputs.full_ci }}
+      manual_mode: ${{ steps.resolve-mode.outputs.manual_mode }}
+      detected_full_ci: ${{ steps.resolve-mode.outputs.detected_full_ci }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,7 +69,23 @@ jobs:
             full_ci="${FILTER_FULL_CI}"
           fi
           echo "full_ci=${full_ci}" >> "$GITHUB_OUTPUT"
+          echo "manual_mode=${MANUAL_MODE}" >> "$GITHUB_OUTPUT"
+          echo "detected_full_ci=${FILTER_FULL_CI}" >> "$GITHUB_OUTPUT"
           echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI})"
+
+      - name: Publish CI mode decision summary
+        shell: bash
+        env:
+          RESOLVED_FULL_CI: ${{ steps.resolve-mode.outputs.full_ci }}
+          MANUAL_MODE: ${{ steps.resolve-mode.outputs.manual_mode }}
+          DETECTED_FULL_CI: ${{ steps.resolve-mode.outputs.detected_full_ci }}
+        run: |
+          {
+            echo "## CI mode resolution"
+            echo "- manual_mode: ${MANUAL_MODE}"
+            echo "- detected_full_ci: ${DETECTED_FULL_CI}"
+            echo "- resolved_full_ci: ${RESOLVED_FULL_CI}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   test-lightweight:
     needs: detect-changes
