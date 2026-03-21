@@ -35,6 +35,27 @@ def load_json(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
+def load_task_set_lineage(path: Path | None) -> dict[str, str] | None:
+    if path is None:
+        return None
+    payload = load_json(path)
+    if not isinstance(payload, dict):
+        raise ValueError("task set JSON root must be an object")
+
+    lineage: dict[str, str] = {}
+    task_set_id = payload.get("task_set_id")
+    if isinstance(task_set_id, str) and task_set_id.strip():
+        lineage["task_set_id"] = task_set_id
+    alias_set_id = payload.get("alias_set_id")
+    if isinstance(alias_set_id, str) and alias_set_id.strip():
+        lineage["alias_set_id"] = alias_set_id
+    manifest_path = payload.get("manifest_path")
+    if isinstance(manifest_path, str) and manifest_path.strip():
+        lineage["manifest_path"] = manifest_path
+
+    return lineage or None
+
+
 def load_taxonomy_weights(path: Path | None) -> tuple[dict[str, int], int]:
     if path is None:
         return dict(TAXONOMY_WEIGHTS), DEFAULT_TAXONOMY_WEIGHT
@@ -102,6 +123,7 @@ def build_summary_payload(
     default_weight: int,
     taxonomy_weight_source: str,
     only_mismatches: bool,
+    task_set_lineage: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
@@ -166,12 +188,16 @@ def build_summary_payload(
 
     generated_at_utc = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
+    metadata: dict[str, Any] = {
+        "schema_version": "v1",
+        "generated_at_utc": generated_at_utc,
+        "input_report": str(source_path),
+    }
+    if task_set_lineage:
+        metadata["task_set_lineage"] = task_set_lineage
+
     return {
-        "metadata": {
-            "schema_version": "v1",
-            "generated_at_utc": generated_at_utc,
-            "input_report": str(source_path),
-        },
+        "metadata": metadata,
         "title": f"Batch Roundtrip Summary ({source_path.name})",
         "overview": {
             "total_cases": total,
@@ -204,6 +230,8 @@ def build_summary_payload(
 def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
     overview = payload["overview"]
     quality = payload["quality_signals"]
+    metadata = payload.get("metadata") or {}
+    task_set_lineage = metadata.get("task_set_lineage") if isinstance(metadata, dict) else None
     lines: list[str] = []
     lines.append(f"# {payload['title']}")
     lines.append("")
@@ -216,6 +244,13 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
     lines.append(f"- include_diff: {str(overview['include_diff']).lower()}")
     lines.append(f"- taxonomy_weight_source: {overview['taxonomy_weight_source']}")
     lines.append(f"- cases_scope: {overview['cases_scope']}")
+    if isinstance(task_set_lineage, dict):
+        if "task_set_id" in task_set_lineage:
+            lines.append(f"- task_set_id: {task_set_lineage['task_set_id']}")
+        if "alias_set_id" in task_set_lineage:
+            lines.append(f"- alias_set_id: {task_set_lineage['alias_set_id']}")
+        if "manifest_path" in task_set_lineage:
+            lines.append(f"- manifest_path: {task_set_lineage['manifest_path']}")
     lines.append("")
 
     lines.append("## Quality Signals")
@@ -405,6 +440,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Exit with code 2 when mismatch_cases > 0 (useful for CI gating)",
     )
+    parser.add_argument(
+        "--task-set-json",
+        type=Path,
+        default=None,
+        help="Optional task-set JSON; embed task-set lineage metadata into summary outputs",
+    )
     return parser.parse_args()
 
 
@@ -435,6 +476,7 @@ def main() -> int:
         taxonomy_weight_source = f"profile:{args.taxonomy_weight_profile} ({taxonomy_weight_path})"
 
     taxonomy_weights, default_weight = load_taxonomy_weights(taxonomy_weight_path)
+    task_set_lineage = load_task_set_lineage(args.task_set_json)
     payload = build_summary_payload(
         report,
         args.input_json,
@@ -444,6 +486,7 @@ def main() -> int:
         default_weight,
         taxonomy_weight_source,
         args.only_mismatches,
+        task_set_lineage=task_set_lineage,
     )
     summary = build_summary(payload, top_k)
     output.parent.mkdir(parents=True, exist_ok=True)

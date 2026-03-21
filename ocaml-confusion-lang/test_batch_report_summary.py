@@ -9,6 +9,7 @@ FIXTURE = ROOT / "examples" / "batch-summary-fixture-whitespace-linecount.json"
 SCRIPT = ROOT / "scripts" / "batch_report_summary.py"
 ALT_WEIGHTS = ROOT / "examples" / "taxonomy-weights-severity-alt.json"
 PROFILE_V2 = "v2-education-risk"
+TASK_SET = ROOT / "examples" / "task-set-v1.json"
 OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -22,6 +23,7 @@ def run_summary(
     taxonomy_weight_profile: str | None = None,
     json_output: bool = False,
     only_mismatches: bool = False,
+    task_set_json: pathlib.Path | None = None,
 ) -> tuple[pathlib.Path, pathlib.Path, pathlib.Path | None]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
@@ -49,6 +51,8 @@ def run_summary(
         cmd.extend(["--json-output", str(summary_json)])
     if only_mismatches:
         cmd.append("--only-mismatches")
+    if task_set_json is not None:
+        cmd.extend(["--task-set-json", str(task_set_json)])
     subprocess.run(cmd, cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return summary_md, summary_csv, summary_json
 
@@ -64,6 +68,7 @@ def main() -> int:
         include_diff_columns=True,
         mismatch_sort="severity",
         json_output=True,
+        task_set_json=TASK_SET,
     )
 
     content = summary_md.read_text(encoding="utf-8")
@@ -73,6 +78,9 @@ def main() -> int:
     assert_contains(content, "- include_diff: true")
     assert_contains(content, "- taxonomy_weight_source: default:built-in")
     assert_contains(content, "- cases_scope: all")
+    assert_contains(content, "- task_set_id: cse307-task-set-v1")
+    assert_contains(content, "- alias_set_id: case-c2")
+    assert_contains(content, "- manifest_path: examples/manifest-v1.txt")
     assert_contains(content, "- mismatch_severity_total: 130")
     assert_contains(content, "- mismatch_severity_avg: 65.0")
 
@@ -85,6 +93,11 @@ def main() -> int:
     for key in ["schema_version", "generated_at_utc", "input_report"]:
         if key not in metadata:
             raise AssertionError(f"expected metadata.{key} in JSON summary")
+    lineage = metadata.get("task_set_lineage")
+    if not isinstance(lineage, dict):
+        raise AssertionError("expected metadata.task_set_lineage in JSON summary")
+    if lineage.get("task_set_id") != "cse307-task-set-v1":
+        raise AssertionError("unexpected task_set_id in summary metadata lineage")
 
     if payload["overview"]["total_cases"] != 3:
         raise AssertionError("expected total_cases=3 in JSON summary")
