@@ -53,7 +53,15 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 python3 scripts/batch_report_summary.py --list-taxonomy-profiles
 # 내장 profile 이름으로 가중치 적용
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.profile-v2.md --mismatch-sort severity --taxonomy-weight-profile v2-education-risk
+# taxonomy profile schema lint (CI/local)
+python3 scripts/validate_taxonomy_profiles.py
 ```
+
+`validate_taxonomy_profiles.py` 스키마 규칙:
+- 루트는 JSON object
+- `default_weight`는 integer
+- `weights`는 object (`"taxonomy_tag": int` 쌍)
+
 
 ## 다음 구현
 1. ~~문자열/주석 보호 토크나이저~~ ✅ (single/double/triple quote + line comment 보호)
@@ -82,3 +90,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 24. ~~taxonomy severity 가중치 외부 설정(JSON) 주입 지원 추가~~ ✅ (`--taxonomy-weights`, `examples/taxonomy-weights-severity-alt.json`)
 25. ~~summary Markdown에 배치 위험 신호 지표(`mismatch_severity_total`, `mismatch_severity_avg`) 추가~~ ✅ (`scripts/batch_report_summary.py`)
 26. ~~taxonomy weight 파일 버전 프로파일(`examples/weights/*.json`) + named profile 선택 옵션(`--taxonomy-weight-profile`) + profile 목록 조회(`--list-taxonomy-profiles`) 추가~~ ✅ (`scripts/batch_report_summary.py`)
+27. ~~taxonomy profile schema lint 스크립트 + CI 검증 단계 추가~~ ✅ (`scripts/validate_taxonomy_profiles.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`)
