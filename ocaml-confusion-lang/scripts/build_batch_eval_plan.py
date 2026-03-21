@@ -243,7 +243,7 @@ def _emit_preset_summary_tsv_header(
     if with_schema_header:
         print(f"# schema={schema_id}")
     description_column = "description_full" if description_mode == "full" else "description_preview"
-    columns = [*PRESET_SUMMARY_TSV_BASE_COLUMNS, "description_mode", description_column]
+    columns = [*PRESET_SUMMARY_TSV_BASE_COLUMNS, "description_mode", "description_truncated", description_column]
     if with_schema_column:
         columns.append("schema")
     print("\t".join(columns))
@@ -259,13 +259,17 @@ def _format_preset_summary_tsv_row(
 ) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
-    description_value = (
-        _preset_description_text(resolved.get("description", ""))
-        if description_mode == "full"
-        else _preset_description_preview(resolved.get("description", ""))
-    )
-    if description_mode == "full" and description_max_len:
-        description_value = _preset_description_preview(description_value, description_max_len)
+    raw_description = str(resolved.get("description", ""))
+    if description_mode == "full":
+        normalized_full_description = _preset_description_text(raw_description)
+        description_value = normalized_full_description
+        if description_max_len:
+            description_value = _preset_description_preview(description_value, description_max_len)
+        description_truncated = description_value != normalized_full_description
+    else:
+        normalized_preview_source = _preset_description_text(raw_description)
+        description_value = _preset_description_preview(raw_description)
+        description_truncated = description_value != normalized_preview_source
     row = [
         name,
         str(resolved["models"]),
@@ -282,6 +286,7 @@ def _format_preset_summary_tsv_row(
         str(resolved["max_runs_per_task_prompt_condition"]),
         tag_value,
         description_mode,
+        str(description_truncated).lower(),
         description_value,
     ]
     if with_schema_column:
