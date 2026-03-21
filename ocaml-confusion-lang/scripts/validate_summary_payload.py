@@ -36,6 +36,19 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
             if key not in metadata:
                 errors.append(f"{path}: metadata missing '{key}'")
 
+        task_set_lineage = metadata.get("task_set_lineage")
+        if task_set_lineage is not None:
+            if not isinstance(task_set_lineage, dict):
+                errors.append(f"{path}: metadata.task_set_lineage must be an object when present")
+            else:
+                for key in ["task_set_id", "alias_set_id", "manifest_path"]:
+                    if key in task_set_lineage:
+                        value = task_set_lineage.get(key)
+                        if not isinstance(value, str) or not value.strip():
+                            errors.append(
+                                f"{path}: metadata.task_set_lineage.{key} must be a non-empty string"
+                            )
+
     _expect_type(payload, "title", str, errors, path)
 
     overview = _expect_type(payload, "overview", dict, errors, path)
