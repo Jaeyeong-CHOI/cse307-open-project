@@ -918,7 +918,7 @@ def main() -> int:
         "preset\tmodels\tprompt_conditions\trepeats\tcheap_first\tfair_model_allocation\t"
         "max_total_runs\tmax_total_runs_mode\tmax_runs_per_model\tmax_runs_per_prompt_condition\t"
         "max_runs_per_task\tmax_runs_per_task_model\tmax_runs_per_task_prompt_condition\t"
-        "tags\tdescription_mode\tdescription_truncated\tdescription_preview"
+        "tags\tdescription_length\tdescription_mode\tdescription_truncated\tdescription_preview"
     )
     if not summary_tsv_lines or summary_tsv_lines[0] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected summary-tsv header: {summary_tsv_lines}")
@@ -930,13 +930,15 @@ def main() -> int:
             f"summary-tsv row should be raw TSV values (not key=value pairs): {quick_smoke_tsv_row}"
         )
     quick_smoke_tsv_cells = quick_smoke_tsv_row.split("\t")
-    if len(quick_smoke_tsv_cells) != 17:
+    if len(quick_smoke_tsv_cells) != 18:
         raise AssertionError(f"unexpected summary-tsv column count: {quick_smoke_tsv_cells}")
     if quick_smoke_tsv_cells[13] != "cheap-first,smoke":
         raise AssertionError(f"unexpected summary-tsv tags cell: {quick_smoke_tsv_cells}")
-    if quick_smoke_tsv_cells[14] != "preview":
+    if quick_smoke_tsv_cells[14] != "36":
+        raise AssertionError(f"unexpected summary-tsv description_length cell: {quick_smoke_tsv_cells}")
+    if quick_smoke_tsv_cells[15] != "preview":
         raise AssertionError(f"unexpected summary-tsv description_mode cell: {quick_smoke_tsv_cells}")
-    if quick_smoke_tsv_cells[15] != "false":
+    if quick_smoke_tsv_cells[16] != "false":
         raise AssertionError(f"unexpected summary-tsv description_truncated cell: {quick_smoke_tsv_cells}")
 
     preset_list_summary_tsv_with_schema = subprocess.run(
@@ -958,7 +960,7 @@ def main() -> int:
     ]
     if len(summary_tsv_schema_lines) < 3:
         raise AssertionError(f"summary-tsv with schema header should include comment+header+rows: {summary_tsv_schema_lines}")
-    if summary_tsv_schema_lines[0] != "# schema=planner_preset_summary_tsv.v1":
+    if summary_tsv_schema_lines[0] != "# schema=planner_preset_summary_tsv.v2":
         raise AssertionError(f"unexpected schema header line: {summary_tsv_schema_lines}")
     if summary_tsv_schema_lines[1] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected summary-tsv header with schema preface: {summary_tsv_schema_lines}")
@@ -991,7 +993,7 @@ def main() -> int:
         raise AssertionError(
             f"missing quick-smoke summary-tsv schema-column row: {summary_tsv_schema_column_lines}"
         )
-    if not quick_smoke_tsv_schema_row.endswith("\tplanner_preset_summary_tsv.v1"):
+    if not quick_smoke_tsv_schema_row.endswith("\tplanner_preset_summary_tsv.v2"):
         raise AssertionError(
             f"summary-tsv schema-column row should end with schema id: {quick_smoke_tsv_schema_row}"
         )
@@ -1006,7 +1008,7 @@ def main() -> int:
             "--summary-tsv-with-schema-header",
             "--summary-tsv-with-schema-column",
             "--summary-tsv-schema-id",
-            "planner_preset_summary_tsv.v2",
+            "planner_preset_summary_tsv.v3",
         ],
         cwd=ROOT,
         check=True,
@@ -1016,7 +1018,7 @@ def main() -> int:
     summary_tsv_custom_schema_lines = [
         line.rstrip("\n") for line in preset_list_summary_tsv_custom_schema.stdout.splitlines() if line.strip()
     ]
-    if summary_tsv_custom_schema_lines[0] != "# schema=planner_preset_summary_tsv.v2":
+    if summary_tsv_custom_schema_lines[0] != "# schema=planner_preset_summary_tsv.v3":
         raise AssertionError(f"unexpected custom schema header line: {summary_tsv_custom_schema_lines}")
     if not summary_tsv_custom_schema_lines[1].endswith("\tschema"):
         raise AssertionError(f"expected schema column in custom schema header: {summary_tsv_custom_schema_lines}")
@@ -1024,7 +1026,7 @@ def main() -> int:
         (line for line in summary_tsv_custom_schema_lines[2:] if line.startswith("quick-smoke\t")),
         None,
     )
-    if quick_smoke_custom_schema_row is None or not quick_smoke_custom_schema_row.endswith("\tplanner_preset_summary_tsv.v2"):
+    if quick_smoke_custom_schema_row is None or not quick_smoke_custom_schema_row.endswith("\tplanner_preset_summary_tsv.v3"):
         raise AssertionError(
             "expected custom schema id in summary-tsv row, got: "
             f"{summary_tsv_custom_schema_lines}"
@@ -1257,7 +1259,7 @@ def main() -> int:
         raise AssertionError(
             f"unexpected show-preset summary-tsv with schema output lines: {show_summary_tsv_schema_lines}"
         )
-    if show_summary_tsv_schema_lines[0] != "# schema=planner_preset_summary_tsv.v1":
+    if show_summary_tsv_schema_lines[0] != "# schema=planner_preset_summary_tsv.v2":
         raise AssertionError(f"unexpected show-preset schema header: {show_summary_tsv_schema_lines}")
     if show_summary_tsv_schema_lines[1] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected show-preset summary-tsv header with schema preface: {show_summary_tsv_schema_lines}")
@@ -1288,7 +1290,7 @@ def main() -> int:
         raise AssertionError(
             f"unexpected show-preset summary-tsv schema-column header: {show_summary_tsv_schema_column_lines}"
         )
-    if not show_summary_tsv_schema_column_lines[1].endswith("\tplanner_preset_summary_tsv.v1"):
+    if not show_summary_tsv_schema_column_lines[1].endswith("\tplanner_preset_summary_tsv.v2"):
         raise AssertionError(
             f"show-preset summary-tsv schema-column row should end with schema id: {show_summary_tsv_schema_column_lines}"
         )

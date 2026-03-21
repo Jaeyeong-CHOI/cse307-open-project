@@ -33,8 +33,9 @@ PRESET_SUMMARY_TSV_BASE_COLUMNS = [
     "max_runs_per_task_model",
     "max_runs_per_task_prompt_condition",
     "tags",
+    "description_length",
 ]
-PRESET_SUMMARY_TSV_SCHEMA = "planner_preset_summary_tsv.v1"
+PRESET_SUMMARY_TSV_SCHEMA = "planner_preset_summary_tsv.v2"
 PRESET_SUMMARY_TSV_SCHEMA_PATTERN = re.compile(r"^planner_preset_summary_tsv\.v[1-9][0-9]*$")
 
 
@@ -260,16 +261,16 @@ def _format_preset_summary_tsv_row(
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
     raw_description = str(resolved.get("description", ""))
+    normalized_full_description = _preset_description_text(raw_description)
+    description_length = 0 if normalized_full_description == "-" else len(normalized_full_description)
     if description_mode == "full":
-        normalized_full_description = _preset_description_text(raw_description)
         description_value = normalized_full_description
         if description_max_len:
             description_value = _preset_description_preview(description_value, description_max_len)
         description_truncated = description_value != normalized_full_description
     else:
-        normalized_preview_source = _preset_description_text(raw_description)
         description_value = _preset_description_preview(raw_description)
-        description_truncated = description_value != normalized_preview_source
+        description_truncated = description_value != normalized_full_description
     row = [
         name,
         str(resolved["models"]),
@@ -285,6 +286,7 @@ def _format_preset_summary_tsv_row(
         str(resolved["max_runs_per_task_model"]),
         str(resolved["max_runs_per_task_prompt_condition"]),
         tag_value,
+        str(description_length),
         description_mode,
         str(description_truncated).lower(),
         description_value,
