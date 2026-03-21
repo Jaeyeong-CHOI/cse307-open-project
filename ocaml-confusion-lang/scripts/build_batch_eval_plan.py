@@ -161,13 +161,17 @@ def resolve_preset_with_defaults(preset: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _matches_preset_tags(preset: dict[str, Any], required_tags: set[str]) -> bool:
+def _matches_preset_tags(
+    preset: dict[str, Any], required_tags: set[str], match_mode: str = "all"
+) -> bool:
     if not required_tags:
         return True
     raw_tags = preset.get("tags", [])
     if not isinstance(raw_tags, list):
         return False
     preset_tags = {str(tag).strip().lower() for tag in raw_tags if str(tag).strip()}
+    if match_mode == "any":
+        return any(tag in preset_tags for tag in required_tags)
     return required_tags.issubset(preset_tags)
 
 
@@ -281,6 +285,12 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-tag",
         default=None,
         help="Optional tag filter for --list-presets (comma-separated, case-insensitive)",
+    )
+    parser.add_argument(
+        "--list-presets-tag-match",
+        choices=("all", "any"),
+        default="all",
+        help="Tag match mode for --list-presets-tag: all (default, AND) or any (OR)",
     )
     parser.add_argument(
         "--preset-file",
@@ -411,7 +421,12 @@ def main() -> int:
             filtered_presets = {
                 name: preset
                 for name, preset in presets.items()
-                if isinstance(preset, dict) and _matches_preset_tags(preset, required_tags)
+                if isinstance(preset, dict)
+                and _matches_preset_tags(
+                    preset,
+                    required_tags,
+                    match_mode=args.list_presets_tag_match,
+                )
             }
             if args.list_presets_format == "json":
                 print(json.dumps({"schema_version": "v1", "presets": filtered_presets}, ensure_ascii=False, indent=2))

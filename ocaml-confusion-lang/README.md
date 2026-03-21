@@ -101,8 +101,10 @@ python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset quic
 python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset balanced-ci --repeats 2 -o ../docs/research/results/plan.balanced-ci.override.json
 # preset 목록 확인(task set 없이 빠른 탐색)
 python3 scripts/build_batch_eval_plan.py --list-presets
-# preset 태그 필터(예: cheap-first + smoke)로 후보 빠르게 좁히기
+# preset 태그 필터(기본 all=AND, 예: cheap-first + smoke 동시 포함)로 후보 빠르게 좁히기
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,smoke
+# preset 태그 필터 any=OR 모드(예: cheap-first 또는 analysis)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match any
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트)을 compact summary 라인으로 확인
@@ -339,3 +341,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 159. ~~planner(`build_batch_eval_plan.py`)의 `--show-preset` 경로에 CLI override preview를 반영해(`models/repeats/cap/fair 등`) preset 선택 단계에서 실제 적용 최종값을 task set 없이 즉시 검증 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 160. ~~planner preset schema(v1)에 optional metadata(`description`, `tags`)를 추가하고 fail-fast 타입 검증을 도입해 preset discovery JSON(`--list-presets-format resolved-json`/`--show-preset`)을 운영 문서/자동화에서 바로 재사용 가능하게 개선~~ ✅ (`examples/batch-plan-presets.v1.json`, `scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 161. ~~planner preset discovery에 태그 필터(`--list-presets-tag`)를 추가해 cheap-first/smoke 등 운영 목적별 preset을 즉시 좁혀 탐색하고, names/json 출력 모두에서 동일 필터를 재사용 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+162. ~~planner preset 태그 필터에 매칭 모드(`--list-presets-tag-match all|any`)를 추가해 strict 교집합 탐색(AND)과 느슨한 합집합 탐색(OR)을 런타임으로 전환 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

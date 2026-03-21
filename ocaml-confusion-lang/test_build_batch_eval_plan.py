@@ -742,6 +742,34 @@ def main() -> int:
             f"{preset_list_json_tag_filtered_payload}"
         )
 
+    preset_list_json_tag_filtered_any = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+            "--list-presets-tag",
+            "cheap-first,analysis",
+            "--list-presets-tag-match",
+            "any",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_json_tag_filtered_any_payload = json.loads(preset_list_json_tag_filtered_any.stdout)
+    if sorted(preset_list_json_tag_filtered_any_payload.get("presets", {}).keys()) != [
+        "balanced-ci",
+        "full-analysis",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "unexpected tag-filtered(any) preset json payload: "
+            f"{preset_list_json_tag_filtered_any_payload}"
+        )
+
     preset_list_resolved_json = subprocess.run(
         [
             "python3",
