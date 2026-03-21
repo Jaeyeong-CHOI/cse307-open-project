@@ -96,7 +96,7 @@ def assert_task_set_consistency(
     if scope != "all":
         raise ValueError(
             "summary overview.cases_scope must be 'all' when using --task-set-json "
-            f"(got '{scope}')"
+            f"(got '{scope}'). Re-generate summary without --only-mismatches to keep all task-set cases."
         )
 
     tasks = task_set.get("tasks") or []
@@ -149,7 +149,12 @@ def check_summary_lineage_consistency(
             )
 
     if mismatches:
-        message = "summary/task-set lineage mismatch: " + "; ".join(mismatches)
+        message = (
+            "summary/task-set lineage mismatch. "
+            "Check task_set_lineage in summary metadata vs task-set JSON fields "
+            "(task_set_id, alias_set_id, manifest_path): "
+            + "; ".join(mismatches)
+        )
         if mode == "fail":
             raise ValueError(message)
         if mode == "warn":

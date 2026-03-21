@@ -73,10 +73,49 @@ def main() -> int:
         ],
         cwd=ROOT,
         check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert mismatch.returncode != 0, "expected mismatched task-set consistency check to fail"
+
+    mismatch_only_summary = OUT / "fixture.summary.mismatch-only.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SUMMARY_SCRIPT),
+            str(FIXTURE),
+            "--json-output",
+            str(mismatch_only_summary),
+            "--only-mismatches",
+            "--top-k-mismatches",
+            "0",
+        ],
+        cwd=ROOT,
+        check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
-    assert mismatch.returncode != 0, "expected mismatched task-set consistency check to fail"
+    mismatch_only_metric = subprocess.run(
+        [
+            "python3",
+            str(METRIC_SCRIPT),
+            str(mismatch_only_summary),
+            "--task-set-id",
+            "fixture-task-set-v1",
+            "--prompt-condition",
+            "strict",
+            "--model",
+            "gpt-5.3-codex",
+            "--task-set-json",
+            str(TASK_SET_FIXTURE),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert mismatch_only_metric.returncode != 0, "expected mismatch-only summary to be rejected with --task-set-json"
+    assert "without --only-mismatches" in (mismatch_only_metric.stderr + mismatch_only_metric.stdout)
 
     lineage_mismatch_summary = OUT / "fixture.summary.lineage-mismatch.json"
     payload = json.loads(summary_json.read_text(encoding="utf-8"))
@@ -101,10 +140,11 @@ def main() -> int:
         ],
         cwd=ROOT,
         check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
     )
     assert lineage_fail.returncode != 0, "expected lineage consistency fail mode to fail"
+    assert "alias_set_id" in (lineage_fail.stderr + lineage_fail.stdout)
 
     subprocess.run(
         ["python3", str(METRIC_VALIDATOR), str(metric_json)],
