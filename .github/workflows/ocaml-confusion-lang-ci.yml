@@ -134,6 +134,28 @@ jobs:
           python3 scripts/validate_metric_schema.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json
 
+      - name: Publish lightweight result snapshot (step summary)
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          summary_path = Path("../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json")
+          metric_path = Path("../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json")
+          payload = json.loads(summary_path.read_text(encoding="utf-8"))
+          overview = payload.get("overview", {})
+          gates = payload.get("gates", {})
+
+          print("## Lightweight CI result snapshot")
+          print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
+          print(f"- severity_total: {overview.get('mismatch_severity_total')} (avg={overview.get('mismatch_severity_avg')})")
+          print(f"- any_tripped: {gates.get('any_tripped')}")
+          print(f"- tripped_list: {gates.get('tripped_list')}")
+          print(f"- summary_json: `{summary_path}`")
+          print(f"- metric_json: `{metric_path}`")
+          PY
+
       - name: Upload lightweight CI artifacts
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
@@ -229,6 +251,28 @@ jobs:
             --lineage-consistency fail
           python3 scripts/validate_metric_schema.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json
+
+      - name: Publish full CI result snapshot (step summary)
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          summary_path = Path("../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json")
+          metric_path = Path("../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json")
+          payload = json.loads(summary_path.read_text(encoding="utf-8"))
+          overview = payload.get("overview", {})
+          gates = payload.get("gates", {})
+
+          print("## Full CI result snapshot")
+          print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
+          print(f"- severity_total: {overview.get('mismatch_severity_total')} (avg={overview.get('mismatch_severity_avg')})")
+          print(f"- any_tripped: {gates.get('any_tripped')}")
+          print(f"- tripped_list: {gates.get('tripped_list')}")
+          print(f"- summary_json: `{summary_path}`")
+          print(f"- metric_json: `{metric_path}`")
+          PY
 
       - name: Upload CI smoke artifacts
         if: github.event_name != 'pull_request'
