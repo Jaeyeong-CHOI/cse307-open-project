@@ -16,6 +16,41 @@ let read_lines path =
 
 let read_file path = String.concat "\n" (read_lines path)
 
+let write_file path content =
+  let oc = open_out path in
+  output_string oc content;
+  close_out oc
+
+let read_all_channel ic =
+  let b = Buffer.create 256 in
+  (try
+     while true do
+       Buffer.add_string b (input_line ic);
+       Buffer.add_char b '\n'
+     done
+   with End_of_file -> ());
+  Buffer.contents b
+
+let python_ast_dump_from_text text =
+  let tmp_path = Filename.temp_file "confusionlang_ast_" ".py" in
+  write_file tmp_path text;
+  let cmd =
+    Printf.sprintf
+      "python3 -c %s %s"
+      (Filename.quote
+         "import ast,sys,pathlib; p=pathlib.Path(sys.argv[1]); src=p.read_text(); print(ast.dump(ast.parse(src), include_attributes=False))")
+      (Filename.quote tmp_path)
+  in
+  let ic = Unix.open_process_in cmd in
+  let out = read_all_channel ic |> String.trim in
+  match Unix.close_process_in ic with
+  | Unix.WEXITED 0 ->
+      (try Sys.remove tmp_path with _ -> ());
+      Ok out
+  | _ ->
+      (try Sys.remove tmp_path with _ -> ());
+      Error (if out = "" then "python_ast_parse_failed" else out)
+
 let split_once_tab line =
   match String.split_on_char '\t' line with
   | [ k; v ] -> Some (String.trim k, String.trim v)
@@ -312,7 +347,7 @@ let token_to_string = function
   | TString -> "string_literal"
   | TSymbol c -> Printf.sprintf "symbol:%c" c
 
-let classify_failure_taxonomy pairs src restored =
+let classify_failure_taxonomy pairs src restored ast_equivalent =
   let src_lines = String.split_on_char '\n' src in
   let rst_lines = String.split_on_char '\n' restored in
   let src_tokens = tokenize_code_like src in
@@ -332,6 +367,10 @@ let classify_failure_taxonomy pairs src restored =
       pairs
   in
   if keyword_reversion then tags := "alias_design_collision_risk" :: !tags;
+
+  (match ast_equivalent with
+  | Some false -> tags := "ast_structure_mismatch" :: !tags
+  | _ -> ());
 
   (match first_diff src restored with
   | Some (_, s, r) ->
@@ -358,6 +397,27 @@ let write_roundtrip_report out_path pairs src restored =
   let rst_tokens = tokenize_code_like restored in
   let exact = restored = src in
   let token_equivalent = src_tokens = rst_tokens in
+  let src_ast = python_ast_dump_from_text src in
+  let restored_ast = python_ast_dump_from_text restored in
+  let ast_equivalent =
+    match (src_ast, restored_ast) with
+    | Ok a, Ok b -> Some (a = b)
+    | _ -> None
+  in
+  let ast_json =
+    match ast_equivalent with
+    | Some true -> "\"ast_equivalent\":true"
+    | Some false -> "\"ast_equivalent\":false"
+    | None -> "\"ast_equivalent\":null"
+  in
+  let ast_error_json =
+    match (src_ast, restored_ast) with
+    | Error e, _ ->
+        Printf.sprintf "\"ast_parse_error\":\"src: %s\"" (escape_json e)
+    | _, Error e ->
+        Printf.sprintf "\"ast_parse_error\":\"restored: %s\"" (escape_json e)
+    | Ok _, Ok _ -> "\"ast_parse_error\":null"
+  in
   let diff_json =
     match first_diff src restored with
     | Some (line_no, s, r) ->
@@ -377,15 +437,16 @@ let write_roundtrip_report out_path pairs src restored =
   let taxonomy_json =
     if exact then "\"failure_taxonomy\":[]"
     else
-      let tags = classify_failure_taxonomy pairs src restored in
+      let tags = classify_failure_taxonomy pairs src restored ast_equivalent in
       Printf.sprintf "\"failure_taxonomy\":%s" (json_array_of_strings tags)
   in
   let json =
     Printf.sprintf
-      "{\n  \"status\":\"%s\",\n  \"exact_match\":%s,\n  \"token_equivalent\":%s,\n  \"src_line_count\":%d,\n  \"restored_line_count\":%d,\n  \"src_token_count\":%d,\n  \"restored_token_count\":%d,\n  %s,\n  %s,\n  %s\n}\n"
+      "{\n  \"status\":\"%s\",\n  \"exact_match\":%s,\n  \"token_equivalent\":%s,\n  %s,\n  %s,\n  \"src_line_count\":%d,\n  \"restored_line_count\":%d,\n  \"src_token_count\":%d,\n  \"restored_token_count\":%d,\n  %s,\n  %s,\n  %s\n}\n"
       (if exact then "ok" else "mismatch")
       (if exact then "true" else "false")
       (if token_equivalent then "true" else "false")
+      ast_json ast_error_json
       (List.length src_lines) (List.length rst_lines)
       (List.length src_tokens) (List.length rst_tokens)
       diff_json token_diff_json taxonomy_json

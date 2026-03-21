@@ -10,7 +10,7 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 - `validate <alias_tsv>`: 필수 키 존재 + 중복 alias 감지
 - `transform <alias_tsv> <source_file>`: Python -> 혼동 언어 치환
 - `roundtrip <alias_tsv> <source_file>`: Python -> alias -> Python 복원 일치성 검사
-- `roundtrip-report <alias_tsv> <source_file> <out_json>`: roundtrip 결과 JSON 리포트 저장 (`first_diff`, `failure_taxonomy` 포함)
+- `roundtrip-report <alias_tsv> <source_file> <out_json>`: roundtrip 결과 JSON 리포트 저장 (`first_diff`, `failure_taxonomy`, `ast_equivalent` 포함)
 
 ## Alias TSV 형식
 `<python_keyword>\t<alias_phrase>`
@@ -38,4 +38,4 @@ dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample
 3. ~~roundtrip 결과 JSON 리포트 저장~~ ✅ (`roundtrip-report`)
 4. ~~round-trip equivalence checker 강화 (토큰 단위 1차 비교)~~ ✅ (`token_equivalent`, `first_token_diff` 리포트 포함)
 5. ~~failure taxonomy 자동 라벨링~~ ✅ (기초 휴리스틱 태그: `token_substitution_mismatch`, `line_count_mismatch`, `token_stream_mismatch` 등)
-6. AST 기반 비교기(정밀 단계) 추가
+6. ~~AST 기반 비교기(정밀 단계) 추가~~ ✅ (`roundtrip-report`에 Python `ast.parse` 기반 `ast_equivalent`/`ast_parse_error` 기록)
