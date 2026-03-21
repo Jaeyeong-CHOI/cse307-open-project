@@ -1,0 +1,25 @@
+{
+  "schema_version": "v1",
+  "task_set_id": "cse307-task-set-v1",
+  "description": "Confusion-language baseline task set v1 for regression and batch evaluation",
+  "tasks": [
+    {
+      "task_id": "sample-basic-loop",
+      "source": "examples/sample.py",
+      "difficulty": "easy",
+      "tags": ["loop", "return"]
+    },
+    {
+      "task_id": "protected-literals",
+      "source": "examples/protected_literals.py",
+      "difficulty": "medium",
+      "tags": ["string-literal", "comment"]
+    },
+    {
+      "task_id": "triple-quote-stress",
+      "source": "examples/triple_quote_stress.py",
+      "difficulty": "hard",
+      "tags": ["triple-quote", "tokenizer"]
+    }
+  ]
+}
