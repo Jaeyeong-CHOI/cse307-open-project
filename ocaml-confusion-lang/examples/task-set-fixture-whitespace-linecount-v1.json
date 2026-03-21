@@ -1,6 +1,8 @@
 {
   "schema_version": "v1",
   "task_set_id": "fixture-task-set-v1",
+  "alias_set_id": "fixture-alias-v1",
+  "manifest_path": "examples/manifest-v1.txt",
   "description": "Task-set fixture aligned with batch-summary-fixture-whitespace-linecount",
   "tasks": [
     {

@@ -88,6 +88,11 @@ def main() -> int:
 
     payload = json.loads(metric_json.read_text(encoding="utf-8"))
     metrics = payload["metrics"]
+    source_summary = payload.get("source_summary") or {}
+    lineage = source_summary.get("task_set_lineage") or {}
+
+    assert lineage.get("alias_set_id") == "fixture-alias-v1", lineage
+    assert lineage.get("manifest_path") == "examples/manifest-v1.txt", lineage
 
     # fixture totals: total=3, ok=1, mismatch=2, ast_true=2,
     # line-gap proxy tags(line_count + whitespace)=2

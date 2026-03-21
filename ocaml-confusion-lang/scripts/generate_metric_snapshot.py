@@ -123,6 +123,7 @@ def build_metric_payload(
     task_set_id: str,
     prompt_condition: str,
     model: str,
+    task_set_lineage: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     overview = summary.get("overview") or {}
     quality = summary.get("quality_signals") or {}
@@ -148,16 +149,20 @@ def build_metric_payload(
     }
 
     metadata = summary.get("metadata") or {}
+    source_summary: dict[str, Any] = {
+        "input_report": metadata.get("input_report"),
+        "generated_at_utc": metadata.get("generated_at_utc"),
+    }
+    if task_set_lineage:
+        source_summary["task_set_lineage"] = task_set_lineage
+
     return {
         "schema_version": "v1",
         "task_set_id": task_set_id,
         "prompt_condition": prompt_condition,
         "model": model,
         "metrics": metrics,
-        "source_summary": {
-            "input_report": metadata.get("input_report"),
-            "generated_at_utc": metadata.get("generated_at_utc"),
-        },
+        "source_summary": source_summary,
     }
 
 
@@ -189,6 +194,7 @@ def main() -> int:
     args = parse_args()
     summary = load_json(args.summary_json)
 
+    task_set_lineage: dict[str, str] | None = None
     if args.task_set_json is not None:
         task_set = load_json(args.task_set_json)
         errors = validate_task_set_payload(task_set, args.task_set_json)
@@ -203,11 +209,21 @@ def main() -> int:
             task_set_id=args.task_set_id,
         )
 
+        lineage: dict[str, str] = {}
+        alias_set_id = task_set.get("alias_set_id")
+        manifest_path = task_set.get("manifest_path")
+        if isinstance(alias_set_id, str) and alias_set_id.strip():
+            lineage["alias_set_id"] = alias_set_id
+        if isinstance(manifest_path, str) and manifest_path.strip():
+            lineage["manifest_path"] = manifest_path
+        task_set_lineage = lineage or None
+
     payload = build_metric_payload(
         summary,
         task_set_id=args.task_set_id,
         prompt_condition=args.prompt_condition,
         model=args.model,
+        task_set_lineage=task_set_lineage,
     )
 
     output = args.output or args.summary_json.with_suffix("").with_suffix(".metrics.json")
