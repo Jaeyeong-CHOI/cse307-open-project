@@ -34,7 +34,7 @@ def parse_csv_list(raw: str, field_name: str) -> list[str]:
     return values
 
 
-def load_preset_config(preset_file: Path, preset_name: str) -> dict[str, Any]:
+def load_preset_file(preset_file: Path) -> dict[str, Any]:
     payload = load_json(preset_file)
     schema_version = payload.get("schema_version")
     if schema_version != "v1":
@@ -42,6 +42,11 @@ def load_preset_config(preset_file: Path, preset_name: str) -> dict[str, Any]:
     presets_raw = payload.get("presets")
     if not isinstance(presets_raw, dict):
         raise ValueError(f"{preset_file}: presets must be an object")
+    return presets_raw
+
+
+def load_preset_config(preset_file: Path, preset_name: str) -> dict[str, Any]:
+    presets_raw = load_preset_file(preset_file)
     preset = presets_raw.get(preset_name)
     if not isinstance(preset, dict):
         available = ", ".join(sorted(presets_raw.keys())) or "<none>"
@@ -133,8 +138,13 @@ def validate_task_set(payload: dict[str, Any], path: Path) -> tuple[str, list[di
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build a batch evaluation plan JSON")
-    parser.add_argument("task_set_json", type=Path, help="Path to task-set v1 JSON")
+    parser.add_argument("task_set_json", nargs="?", type=Path, help="Path to task-set v1 JSON")
     parser.add_argument("--preset", default=None, help="Preset name from --preset-file")
+    parser.add_argument(
+        "--list-presets",
+        action="store_true",
+        help="List available preset names from --preset-file and exit",
+    )
     parser.add_argument(
         "--preset-file",
         type=Path,
@@ -185,6 +195,15 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     try:
         args = parse_args()
+
+        if args.list_presets:
+            preset_names = sorted(load_preset_file(args.preset_file).keys())
+            for name in preset_names:
+                print(name)
+            return 0
+
+        if args.task_set_json is None:
+            raise ValueError("task_set_json is required (or use --list-presets)")
 
         preset: dict[str, Any] = {}
         if args.preset:

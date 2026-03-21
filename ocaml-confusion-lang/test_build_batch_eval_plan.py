@@ -637,6 +637,21 @@ def main() -> int:
             f"{fair_per_task_prompt_summary['planned_runs_by_model']}"
         )
 
+    preset_list = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names = [line.strip() for line in preset_list.stdout.splitlines() if line.strip()]
+    if preset_names != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(f"unexpected preset list output: {preset_names}")
+
     preset_output = OUT / "batch-plan.preset.quick-smoke.json"
     subprocess.run(
         [
