@@ -1330,9 +1330,66 @@ def main() -> int:
         raise AssertionError(
             f"unexpected show-preset summary with meta output: {show_preset_summary_with_meta_lines}"
         )
-    if not show_preset_summary_with_meta_lines[1].startswith("# meta\tpreset=quick-smoke\tformat=summary\tpreset_file="):
+    if not show_preset_summary_with_meta_lines[1].startswith(
+        "# meta\tschema=planner_preset_show_meta.v1\tpreset=quick-smoke\tformat=summary\tpreset_file="
+    ):
         raise AssertionError(
             f"unexpected show-preset summary meta footer: {show_preset_summary_with_meta_lines}"
+        )
+
+    show_preset_summary_with_meta_custom_schema = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-schema-id",
+            "planner_preset_show_meta.v2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_summary_with_meta_custom_schema_lines = [
+        line.rstrip("\n") for line in show_preset_summary_with_meta_custom_schema.stdout.splitlines() if line.strip()
+    ]
+    if not show_preset_summary_with_meta_custom_schema_lines[-1].startswith(
+        "# meta\tschema=planner_preset_show_meta.v2\tpreset=quick-smoke\tformat=summary\tpreset_file="
+    ):
+        raise AssertionError(
+            "unexpected show-preset summary custom schema meta footer: "
+            f"{show_preset_summary_with_meta_custom_schema_lines}"
+        )
+
+    invalid_show_preset_meta_schema = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-schema-id",
+            "bad_schema",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_show_preset_meta_schema.returncode == 0:
+        raise AssertionError("expected show-preset meta schema id validation failure")
+    if "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)" not in (
+        invalid_show_preset_meta_schema.stderr or ""
+    ):
+        raise AssertionError(
+            "expected show-preset meta schema validation error, got: "
+            f"{invalid_show_preset_meta_schema.stderr}"
         )
 
     show_preset_summary_tsv = subprocess.run(
@@ -1380,7 +1437,7 @@ def main() -> int:
             f"unexpected show-preset summary-tsv with meta output: {show_summary_tsv_with_meta_lines}"
         )
     if not show_summary_tsv_with_meta_lines[2].startswith(
-        "# meta\tpreset=quick-smoke\tformat=summary-tsv\tpreset_file="
+        "# meta\tschema=planner_preset_show_meta.v1\tpreset=quick-smoke\tformat=summary-tsv\tpreset_file="
     ):
         raise AssertionError(
             f"unexpected show-preset summary-tsv meta footer: {show_summary_tsv_with_meta_lines}"

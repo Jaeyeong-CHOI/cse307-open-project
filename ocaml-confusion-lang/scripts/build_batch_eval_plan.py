@@ -39,6 +39,8 @@ PRESET_SUMMARY_TSV_SCHEMA = "planner_preset_summary_tsv.v2"
 PRESET_SUMMARY_TSV_SCHEMA_PATTERN = re.compile(r"^planner_preset_summary_tsv\.v[1-9][0-9]*$")
 PRESET_LIST_TEXT_META_SCHEMA = "planner_preset_list_meta.v1"
 PRESET_LIST_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_list_meta\.v[1-9][0-9]*$")
+PRESET_SHOW_TEXT_META_SCHEMA = "planner_preset_show_meta.v1"
+PRESET_SHOW_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_show_meta\.v[1-9][0-9]*$")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -313,9 +315,15 @@ def _emit_list_presets_text_meta(
     )
 
 
-def _emit_show_preset_text_meta(preset_name: str, output_format: str, preset_file: Path) -> None:
+def _emit_show_preset_text_meta(
+    preset_name: str,
+    output_format: str,
+    preset_file: Path,
+    schema_id: str,
+) -> None:
     print(
         "# meta\t"
+        f"schema={schema_id}\t"
         f"preset={preset_name}\t"
         f"format={output_format}\t"
         f"preset_file={preset_file}"
@@ -423,6 +431,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Emit preset/format/preset_file metadata footer for text show-preset formats "
             "(summary/summary-tsv)."
+        ),
+    )
+    parser.add_argument(
+        "--show-preset-meta-schema-id",
+        default=PRESET_SHOW_TEXT_META_SCHEMA,
+        help=(
+            "Schema id for --show-preset text meta footer "
+            "(default: planner_preset_show_meta.v1)"
         ),
     )
     parser.add_argument(
@@ -570,6 +586,11 @@ def main() -> int:
             raise ValueError(
                 "--list-presets-meta-schema-id must match planner_preset_list_meta.vN (N>=1)"
             )
+        show_meta_schema_id = str(args.show_preset_meta_schema_id).strip()
+        if not PRESET_SHOW_TEXT_META_SCHEMA_PATTERN.match(show_meta_schema_id):
+            raise ValueError(
+                "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)"
+            )
         if args.summary_tsv_description_max_len is not None and args.summary_tsv_description_max_len < 4:
             raise ValueError("--summary-tsv-description-max-len must be >= 4")
 
@@ -628,7 +649,12 @@ def main() -> int:
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
                 if args.show_preset_with_meta:
-                    _emit_show_preset_text_meta(args.show_preset, args.show_preset_format, args.preset_file)
+                    _emit_show_preset_text_meta(
+                        args.show_preset,
+                        args.show_preset_format,
+                        args.preset_file,
+                        schema_id=show_meta_schema_id,
+                    )
                 return 0
             if args.show_preset_format == "summary-tsv":
                 _emit_preset_summary_tsv_header(
@@ -648,7 +674,12 @@ def main() -> int:
                     )
                 )
                 if args.show_preset_with_meta:
-                    _emit_show_preset_text_meta(args.show_preset, args.show_preset_format, args.preset_file)
+                    _emit_show_preset_text_meta(
+                        args.show_preset,
+                        args.show_preset_format,
+                        args.preset_file,
+                        schema_id=show_meta_schema_id,
+                    )
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0
