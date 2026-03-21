@@ -118,6 +118,7 @@ def main() -> int:
     mismatch_only_output = mismatch_only_metric.stderr + mismatch_only_metric.stdout
     assert mismatch_only_metric.returncode != 0, "expected mismatch-only summary to be rejected with --task-set-json"
     assert "without --only-mismatches" in mismatch_only_output
+    assert "HINT: input=" in mismatch_only_output
     assert "Traceback" not in mismatch_only_output
 
     lineage_mismatch_summary = OUT / "fixture.summary.lineage-mismatch.json"

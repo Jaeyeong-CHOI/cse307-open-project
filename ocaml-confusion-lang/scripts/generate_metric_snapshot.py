@@ -285,7 +285,13 @@ def main() -> int:
         print(output)
         return 0
     except (ValueError, OSError, json.JSONDecodeError) as exc:
-        emit_error(str(exc))
+        hints = [
+            f"input={args.summary_json}" if "args" in locals() else "input=<unknown>",
+            (
+                f"task_set_json={args.task_set_json}" if "args" in locals() and args.task_set_json is not None else "task_set_json=<none>"
+            ),
+        ]
+        emit_error(str(exc), hints=hints)
         return 1
 
 

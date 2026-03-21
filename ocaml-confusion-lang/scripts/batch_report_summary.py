@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -529,6 +530,10 @@ def main() -> int:
     print("\n".join(str(p) for p in outputs))
 
     if args.fail_on_mismatch and int(payload["overview"]["mismatch_cases"]) > 0:
+        emit_error(
+            "mismatch gate tripped: mismatch_cases > 0",
+            hints=[f"input={args.input_json}", "gate=--fail-on-mismatch"],
+        )
         return 2
 
     severity_total = int(payload["quality_signals"]["mismatch_severity_total"])
@@ -537,11 +542,27 @@ def main() -> int:
         args.fail_on_severity_total_ge is not None
         and severity_total >= int(args.fail_on_severity_total_ge)
     ):
+        emit_error(
+            "severity total gate tripped",
+            hints=[
+                f"input={args.input_json}",
+                f"observed_total={severity_total}",
+                f"threshold_total={int(args.fail_on_severity_total_ge)}",
+            ],
+        )
         return 3
     if (
         args.fail_on_severity_avg_ge is not None
         and severity_avg >= float(args.fail_on_severity_avg_ge)
     ):
+        emit_error(
+            "severity average gate tripped",
+            hints=[
+                f"input={args.input_json}",
+                f"observed_avg={severity_avg}",
+                f"threshold_avg={float(args.fail_on_severity_avg_ge)}",
+            ],
+        )
         return 3
 
     return 0
@@ -551,5 +572,6 @@ if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except (ValueError, OSError, json.JSONDecodeError) as exc:
-        emit_error(str(exc))
+        input_hint = f"input={sys.argv[1]}" if len(sys.argv) > 1 and not sys.argv[1].startswith("-") else "input=<unspecified>"
+        emit_error(str(exc), hints=[input_hint])
         raise SystemExit(1)

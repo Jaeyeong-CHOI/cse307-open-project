@@ -246,13 +246,15 @@ def main() -> int:
         ],
         cwd=ROOT,
         check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
     )
     if fail_proc.returncode != 2:
         raise AssertionError(
             f"expected --fail-on-mismatch to exit 2 for mismatch fixture, got {fail_proc.returncode}"
         )
+    if "HINT: input=" not in fail_proc.stderr:
+        raise AssertionError("expected mismatch gate failure to include structured HINT input")
 
     # --fail-on-mismatch should succeed (0) when mismatch_cases == 0.
     clean_fixture = OUT / "fixture.clean.json"
@@ -311,14 +313,16 @@ def main() -> int:
         ],
         cwd=ROOT,
         check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
     )
     if total_gate_proc.returncode != 3:
         raise AssertionError(
             "expected --fail-on-severity-total-ge 130 to exit 3 for fixture "
             f"(mismatch_severity_total=130), got {total_gate_proc.returncode}"
         )
+    if "HINT: observed_total=130" not in total_gate_proc.stderr:
+        raise AssertionError("expected severity total gate failure to include observed_total hint")
 
     # Severity avg gate should fail with code 3 when threshold is met.
     avg_gate_proc = subprocess.run(
