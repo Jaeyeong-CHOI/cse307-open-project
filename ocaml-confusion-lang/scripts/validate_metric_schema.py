@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
@@ -21,6 +22,7 @@ REQUIRED_ROOT_KEYS = [
 ]
 
 REQUIRED_METRICS_KEYS = ["acr", "prr", "esr", "mfb"]
+SCHEMA_VERSION_PATTERN = re.compile(r"^v(\d+)$")
 
 
 def load_json(path: Path) -> Any:
@@ -32,7 +34,7 @@ def _in_range_0_1(value: Any) -> bool:
     return isinstance(value, (int, float)) and 0.0 <= float(value) <= 1.0
 
 
-def validate_payload(payload: Any, path: Path) -> list[str]:
+def validate_payload(payload: Any, path: Path, schema_version_min: int, schema_version_max: int) -> list[str]:
     errors: list[str] = []
     if not isinstance(payload, dict):
         return [f"{path}: root must be a JSON object"]
@@ -40,6 +42,20 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
     for key in REQUIRED_ROOT_KEYS:
         if key not in payload:
             errors.append(f"{path}: missing required key '{key}'")
+
+    schema_version = payload.get("schema_version")
+    if isinstance(schema_version, str):
+        match = SCHEMA_VERSION_PATTERN.match(schema_version)
+        if not match:
+            errors.append(f"{path}: schema_version must match 'vN' (got '{schema_version}')")
+        else:
+            version_num = int(match.group(1))
+            if version_num < schema_version_min or version_num > schema_version_max:
+                errors.append(
+                    f"{path}: schema_version v{version_num} is outside allowed range [v{schema_version_min}, v{schema_version_max}]"
+                )
+    elif schema_version is not None:
+        errors.append(f"{path}: schema_version must be a string")
 
     metrics = payload.get("metrics")
     if not isinstance(metrics, dict):
@@ -103,17 +119,43 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate metric schema JSON")
     parser.add_argument("metric_json", type=Path, help="Path to metric schema JSON")
+    parser.add_argument(
+        "--schema-version-min",
+        type=int,
+        default=1,
+        help="Minimum allowed schema version number (vN). Default: 1",
+    )
+    parser.add_argument(
+        "--schema-version-max",
+        type=int,
+        default=1,
+        help="Maximum allowed schema version number (vN). Default: 1",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    if args.schema_version_min > args.schema_version_max:
+        raise ValueError(
+            f"schema-version-min ({args.schema_version_min}) cannot be greater than schema-version-max ({args.schema_version_max})"
+        )
+
     payload = load_json(args.metric_json)
-    errors = validate_payload(payload, args.metric_json)
+    errors = validate_payload(
+        payload,
+        args.metric_json,
+        schema_version_min=args.schema_version_min,
+        schema_version_max=args.schema_version_max,
+    )
     if errors:
         emit_error(
             "Metric schema validation failed:\n" + "\n".join(f"- {err}" for err in errors),
-            hints=[f"input={args.metric_json}", "schema=examples/metric-schema-v1.json"],
+            hints=[
+                f"input={args.metric_json}",
+                "schema=examples/metric-schema-v1.json",
+                f"allowed_schema_range=v{args.schema_version_min}..v{args.schema_version_max}",
+            ],
         )
         return 1
     print(f"OK: metric schema valid ({args.metric_json})")

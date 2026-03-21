@@ -67,6 +67,8 @@ python3 scripts/validate_summary_payload.py ../docs/research/results/roundtrip-b
 python3 scripts/validate_summary_payload.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json --schema-version-min 1 --schema-version-max 2
 # metric schema JSON lint
 python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json
+# metric schema version range 허용 (예: v1~v2)
+python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json --schema-version-min 1 --schema-version-max 2
 # task set schema JSON lint
 python3 scripts/validate_task_set.py examples/task-set-v1.json
 # CI step snapshot JSON schema lint
@@ -249,3 +251,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 114. ~~snapshot emitter에서 `event_name` 미지정 시 `unknown` fallback을 자동 주입하고 공용 enum에 포함해 summary/snapshot 경로의 run_context 정책(`n/a` vs `unknown`)을 명시적으로 통일~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/run_context_schema.py`, `test_emit_ci_result_snapshot.py`, `test_run_context_event_name_schema.py`, `test_run_context_schema_export.py`, `README.md`)
 115. ~~metric snapshot `source_summary`에 `run_context`를 전달하고 metric validator가 해당 run_context 규칙을 동일하게 검증하도록 확장해 summary→metric→snapshot 추적 체인의 metadata parity를 강화~~ ✅ (`scripts/generate_metric_snapshot.py`, `scripts/validate_metric_schema.py`, `examples/metric-schema-v1.json`, `test_generate_metric_snapshot.py`, `test_metric_schema.py`)
 116. ~~summary payload validator에 schema version range 옵션(`--schema-version-min/--schema-version-max`)을 추가해 v1 고정 검증과 향후 v2 점진 도입 검증을 모두 지원~~ ✅ (`scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
+117. ~~metric schema validator(`validate_metric_schema.py`)에도 schema version range 옵션(`--schema-version-min/--schema-version-max`)을 추가해 summary/snapshot과 동일한 점진 버전 검증 흐름을 지원~~ ✅ (`scripts/validate_metric_schema.py`, `test_metric_schema.py`, `README.md`)

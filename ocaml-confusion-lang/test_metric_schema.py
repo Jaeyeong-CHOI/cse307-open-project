@@ -17,6 +17,57 @@ def main() -> int:
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
+    subprocess.run(
+        [
+            "python3",
+            str(VALIDATOR),
+            str(FIXTURE),
+            "--schema-version-min",
+            "1",
+            "--schema-version-max",
+            "2",
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    failed_range = subprocess.run(
+        [
+            "python3",
+            str(VALIDATOR),
+            str(FIXTURE),
+            "--schema-version-min",
+            "2",
+            "--schema-version-max",
+            "2",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if failed_range.returncode == 0:
+        raise AssertionError("expected schema version range mismatch to fail validation")
+
+    failed_invalid_range = subprocess.run(
+        [
+            "python3",
+            str(VALIDATOR),
+            str(FIXTURE),
+            "--schema-version-min",
+            "3",
+            "--schema-version-max",
+            "2",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if failed_invalid_range.returncode == 0:
+        raise AssertionError("expected invalid schema version range arguments to fail")
 
     invalid = OUT / "metric.invalid.json"
     invalid.write_text(
