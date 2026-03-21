@@ -12,6 +12,7 @@ import json
 import os
 import re
 import socket
+import subprocess
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -49,6 +50,21 @@ PRESET_TEXT_META_JSON_SCHEMA_VERSION = "v1"
 
 def _utc_now_iso() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _git_head_short(cwd: str | None = None) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=cwd,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        value = completed.stdout.strip()
+        return value or "unknown"
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -513,6 +529,11 @@ def parse_args() -> argparse.Namespace:
         help="Include hostname in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-git-head",
+        action="store_true",
+        help="Include git_head (short HEAD commit) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -598,6 +619,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-hostname",
         action="store_true",
         help="Include hostname in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-git-head",
+        action="store_true",
+        help="Include git_head (short HEAD commit) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -801,6 +827,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["hostname"] = socket.gethostname()
+            if args.show_preset_meta_include_git_head:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["git_head"] = _git_head_short(cwd=os.getcwd())
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -908,6 +938,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["hostname"] = socket.gethostname()
+            if args.list_presets_meta_include_git_head:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["git_head"] = _git_head_short(cwd=os.getcwd())
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}

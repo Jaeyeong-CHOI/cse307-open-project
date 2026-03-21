@@ -1115,6 +1115,31 @@ def main() -> int:
             f"{names_with_meta_hostname_lines}"
         )
 
+    preset_list_names_with_meta_git_head = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-git-head",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_git_head_lines = [
+        line.strip() for line in preset_list_names_with_meta_git_head.stdout.splitlines() if line.strip()
+    ]
+    git_head_value = names_with_meta_git_head_lines[-1].rsplit("git_head=", 1)[-1]
+    if re.fullmatch(r"[0-9a-f]{4,40}|unknown", git_head_value) is None:
+        raise AssertionError(
+            "unexpected git_head format in list-presets meta footer: "
+            f"{names_with_meta_git_head_lines}"
+        )
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -1755,6 +1780,34 @@ def main() -> int:
         raise AssertionError(
             "missing hostname in show-preset meta footer: "
             f"{show_preset_with_meta_hostname_lines}"
+        )
+
+    show_preset_summary_with_meta_git_head = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-git-head",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_git_head_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_git_head.stdout.splitlines()
+        if line.strip()
+    ]
+    show_git_head_value = show_preset_with_meta_git_head_lines[-1].rsplit("git_head=", 1)[-1]
+    if re.fullmatch(r"[0-9a-f]{4,40}|unknown", show_git_head_value) is None:
+        raise AssertionError(
+            "unexpected git_head format in show-preset meta footer: "
+            f"{show_preset_with_meta_git_head_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(
