@@ -38,6 +38,61 @@ def load_json(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
+def validate_batch_report_shape(report: dict[str, Any], input_path: Path) -> None:
+    required_root_keys = {"total_cases", "ok_cases", "mismatch_cases", "cases"}
+    missing = sorted(required_root_keys.difference(report.keys()))
+    if missing:
+        raise ValueError(
+            f"batch report missing required key(s): {', '.join(missing)}"
+        )
+
+    cases = report.get("cases")
+    if not isinstance(cases, list):
+        raise ValueError("batch report key 'cases' must be an array")
+
+    required_case_keys = {
+        "source",
+        "status",
+        "exact_match",
+        "token_equivalent",
+        "ast_equivalent",
+        "failure_taxonomy",
+    }
+    for idx, case in enumerate(cases):
+        if not isinstance(case, dict):
+            raise ValueError(f"cases[{idx}] must be an object")
+        missing_case = sorted(required_case_keys.difference(case.keys()))
+        if missing_case:
+            raise ValueError(
+                f"cases[{idx}] missing required key(s): {', '.join(missing_case)}"
+            )
+        if not isinstance(case.get("failure_taxonomy"), list):
+            raise ValueError(f"cases[{idx}].failure_taxonomy must be an array")
+
+    total_cases = int(report.get("total_cases", 0))
+    ok_cases = int(report.get("ok_cases", 0))
+    mismatch_cases = int(report.get("mismatch_cases", 0))
+    observed_total = len(cases)
+    observed_mismatch = sum(1 for c in cases if c.get("status") != "ok")
+    observed_ok = observed_total - observed_mismatch
+
+    if total_cases != observed_total:
+        raise ValueError(
+            "batch report counter mismatch: total_cases does not match len(cases) "
+            f"(declared={total_cases}, observed={observed_total}, input={input_path})"
+        )
+    if mismatch_cases != observed_mismatch:
+        raise ValueError(
+            "batch report counter mismatch: mismatch_cases does not match case statuses "
+            f"(declared={mismatch_cases}, observed={observed_mismatch}, input={input_path})"
+        )
+    if ok_cases != observed_ok:
+        raise ValueError(
+            "batch report counter mismatch: ok_cases does not match case statuses "
+            f"(declared={ok_cases}, observed={observed_ok}, input={input_path})"
+        )
+
+
 def load_task_set_lineage(path: Path | None) -> dict[str, str] | None:
     if path is None:
         return None
@@ -483,6 +538,7 @@ def main() -> int:
         raise ValueError("input_json is required unless --list-taxonomy-profiles is used")
 
     report = load_json(args.input_json)
+    validate_batch_report_shape(report, args.input_json)
     output = args.output or args.input_json.with_suffix("").with_suffix(".summary.md")
     top_k = max(0, int(args.top_k_mismatches))
 

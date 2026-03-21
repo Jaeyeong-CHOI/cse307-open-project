@@ -413,6 +413,58 @@ def main() -> int:
     if "::error::" not in gha_proc.stderr:
         raise AssertionError("expected ::error:: annotation in GITHUB_ACTIONS mode")
 
+    # Corrupted counter values should fail fast with concise schema/counter mismatch error.
+    invalid_counter_fixture = OUT / "fixture.invalid-counter.json"
+    invalid_payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    invalid_payload["total_cases"] = 999
+    invalid_counter_fixture.write_text(
+        json.dumps(invalid_payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    invalid_counter_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(invalid_counter_fixture),
+            "-o",
+            str(OUT / "fixture.invalid-counter.summary.md"),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_counter_proc.returncode == 0:
+        raise AssertionError("expected invalid counter fixture to fail")
+    if "counter mismatch" not in invalid_counter_proc.stderr:
+        raise AssertionError("expected counter mismatch message for invalid counter fixture")
+    if "Traceback" in invalid_counter_proc.stderr:
+        raise AssertionError("did not expect traceback for invalid counter failure")
+
+    # Missing required per-case keys should be rejected before summary generation.
+    invalid_case_fixture = OUT / "fixture.invalid-case-shape.json"
+    invalid_case_payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    del invalid_case_payload["cases"][0]["failure_taxonomy"]
+    invalid_case_fixture.write_text(
+        json.dumps(invalid_case_payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    invalid_case_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(invalid_case_fixture),
+            "-o",
+            str(OUT / "fixture.invalid-case-shape.summary.md"),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_case_proc.returncode == 0:
+        raise AssertionError("expected invalid case-shape fixture to fail")
+    if "missing required key(s): failure_taxonomy" not in invalid_case_proc.stderr:
+        raise AssertionError("expected missing key message for invalid case-shape fixture")
+
     print("OK: batch_report_summary fixture regression passed")
     return 0
 
