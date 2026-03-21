@@ -5,21 +5,14 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
-import sys
 from pathlib import Path
 from typing import Any
+
+from error_utils import emit_error
 
 LINEAGE_KEYS = ("task_set_id", "alias_set_id", "manifest_path")
 
 ALLOWED_DIFFICULTIES = {"easy", "medium", "hard"}
-
-
-def emit_error(message: str) -> None:
-    print(f"ERROR: {message}", file=sys.stderr)
-    if os.getenv("GITHUB_ACTIONS", "").lower() == "true":
-        safe = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
-        print(f"::error::{safe}", file=sys.stderr)
 
 
 def load_json(path: Path) -> dict[str, Any]:

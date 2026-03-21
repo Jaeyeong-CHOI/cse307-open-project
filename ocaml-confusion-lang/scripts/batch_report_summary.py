@@ -6,12 +6,12 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import os
-import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
+
+from error_utils import emit_error
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROFILE_DIR = SCRIPT_DIR.parent / "examples" / "weights"
@@ -24,13 +24,6 @@ TAXONOMY_WEIGHTS: dict[str, int] = {
     "whitespace_or_blankline_drift": 5,
 }
 DEFAULT_TAXONOMY_WEIGHT = 15
-
-
-def emit_error(message: str) -> None:
-    print(f"ERROR: {message}", file=sys.stderr)
-    if os.getenv("GITHUB_ACTIONS", "").lower() == "true":
-        safe = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
-        print(f"::error::{safe}", file=sys.stderr)
 
 
 def pct(n: int, d: int) -> str:
