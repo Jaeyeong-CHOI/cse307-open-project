@@ -133,6 +133,7 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
                         f"{path}: gates.tripped_list[{idx}] must be one of ['mismatch', 'severity_total', 'severity_avg']"
                     )
 
+        gate_tripped_map: dict[str, bool] = {}
         for gate_key in ["mismatch", "severity_total", "severity_avg"]:
             gate_value = gates.get(gate_key)
             if not isinstance(gate_value, dict):
@@ -141,6 +142,35 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
             for key in ["enabled", "tripped"]:
                 if key not in gate_value:
                     errors.append(f"{path}: gates.{gate_key} missing '{key}'")
+            tripped_value = gate_value.get("tripped")
+            if isinstance(tripped_value, bool):
+                gate_tripped_map[gate_key] = tripped_value
+
+        if isinstance(any_tripped, bool) and isinstance(tripped_list, list):
+            expected_any_tripped = bool(tripped_list)
+            if any_tripped != expected_any_tripped:
+                errors.append(f"{path}: gates.any_tripped must equal bool(gates.tripped_list)")
+
+        if isinstance(tripped_list, list) and gate_tripped_map:
+            expected_tripped_list = [
+                gate_key for gate_key in ["mismatch", "severity_total", "severity_avg"] if gate_tripped_map.get(gate_key)
+            ]
+            if tripped_list != expected_tripped_list:
+                errors.append(
+                    f"{path}: gates.tripped_list must match tripped gate entries {expected_tripped_list}"
+                )
+
+        aggregate = gates.get("aggregate")
+        if aggregate is not None:
+            if not isinstance(aggregate, dict):
+                errors.append(f"{path}: gates.aggregate must be an object")
+            else:
+                enabled = aggregate.get("enabled")
+                if not isinstance(enabled, bool):
+                    errors.append(f"{path}: gates.aggregate.enabled must be a boolean")
+                exit_code = aggregate.get("exit_code")
+                if not isinstance(exit_code, int):
+                    errors.append(f"{path}: gates.aggregate.exit_code must be an integer")
 
     cases = _expect_type(payload, "cases", list, errors, path)
     if isinstance(cases, list):

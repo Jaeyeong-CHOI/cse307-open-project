@@ -57,6 +57,11 @@ def main() -> int:
         raise RuntimeError("expected mismatch/severity gate entries in summary payload")
     if "any_tripped" not in gates or "tripped_list" not in gates:
         raise RuntimeError("expected aggregate gate fields (any_tripped/tripped_list) in summary payload")
+    aggregate_gate = gates.get("aggregate")
+    if not isinstance(aggregate_gate, dict):
+        raise RuntimeError("expected gates.aggregate object in summary payload")
+    if aggregate_gate.get("enabled") is not False or aggregate_gate.get("exit_code") != 4:
+        raise RuntimeError("expected gates.aggregate defaults to enabled=False exit_code=4")
 
     invalid_summary = OUT / "fixture.summary.schema-check.invalid-lineage.json"
     payload = json.loads(summary_json.read_text(encoding="utf-8"))
@@ -87,6 +92,26 @@ def main() -> int:
     )
 
     _run_validator(invalid_gate_list_summary, expect_ok=False)
+
+    invalid_aggregate_summary = OUT / "fixture.summary.schema-check.invalid-aggregate.json"
+    payload_aggregate = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload_aggregate["gates"]["aggregate"] = {"enabled": "nope", "exit_code": "4"}
+    invalid_aggregate_summary.write_text(
+        json.dumps(payload_aggregate, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    _run_validator(invalid_aggregate_summary, expect_ok=False)
+
+    invalid_gate_consistency_summary = OUT / "fixture.summary.schema-check.invalid-gate-consistency.json"
+    payload_gate_consistency = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload_gate_consistency["gates"]["mismatch"]["tripped"] = True
+    payload_gate_consistency["gates"]["any_tripped"] = False
+    payload_gate_consistency["gates"]["tripped_list"] = []
+    invalid_gate_consistency_summary.write_text(
+        json.dumps(payload_gate_consistency, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    _run_validator(invalid_gate_consistency_summary, expect_ok=False)
 
     print("OK: summary payload schema regression passed")
     return 0
