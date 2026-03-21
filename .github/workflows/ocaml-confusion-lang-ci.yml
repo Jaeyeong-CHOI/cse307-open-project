@@ -36,6 +36,10 @@ jobs:
               - 'ocaml-confusion-lang/bin/**'
               - 'ocaml-confusion-lang/**/*.ml'
               - 'ocaml-confusion-lang/**/*.mli'
+              # OCaml smoke 입력(별칭/manifest/source fixture) 변경도 full 경로로 승격
+              - 'ocaml-confusion-lang/examples/**/*.tsv'
+              - 'ocaml-confusion-lang/examples/**/*.txt'
+              - 'ocaml-confusion-lang/examples/**/*.py'
 
   test-lightweight:
     needs: detect-changes
