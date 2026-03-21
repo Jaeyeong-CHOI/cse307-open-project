@@ -16,7 +16,96 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      full_ci: ${{ steps.filter.outputs.full_ci }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect OCaml-engine changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            full_ci:
+              - '.github/workflows/ocaml-confusion-lang-ci.yml'
+              - 'ocaml-confusion-lang/dune-project'
+              - 'ocaml-confusion-lang/**/dune'
+              - 'ocaml-confusion-lang/bin/**'
+              - 'ocaml-confusion-lang/**/*.ml'
+              - 'ocaml-confusion-lang/**/*.mli'
+
+  test-lightweight:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.full_ci != 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ocaml-confusion-lang
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Python schema/unit tests (lightweight)
+        run: |
+          python3 test_roundtrip_report_schema.py
+          python3 test_batch_report_summary.py
+          python3 test_taxonomy_profile_schema.py
+          python3 test_summary_payload_schema.py
+          python3 test_metric_schema.py
+          python3 test_generate_metric_snapshot.py
+          python3 test_task_set_schema.py
+          python3 test_validator_error_output.py
+
+      - name: Validate taxonomy/summary/metric/task-set schemas (smoke)
+        run: |
+          python3 scripts/validate_taxonomy_profiles.py
+          python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json
+          python3 scripts/validate_task_set.py examples/task-set-v1.json
+
+      - name: Summarize fixture + validate summary schema
+        run: |
+          mkdir -p ../docs/research/results
+          python3 scripts/batch_report_summary.py \
+            examples/batch-summary-fixture-whitespace-linecount.json \
+            -o ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.md \
+            --csv-output ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.csv \
+            --json-output ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
+            --task-set-json examples/task-set-v1.json \
+            --include-diff-columns \
+            --mismatch-sort severity
+          python3 scripts/validate_summary_payload.py \
+            ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json
+
+      - name: Generate metric snapshot from fixture summary + validate
+        run: |
+          python3 scripts/generate_metric_snapshot.py \
+            ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
+            -o ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json \
+            --task-set-id cse307-roundtrip-batch-v1 \
+            --prompt-condition strict \
+            --model gpt-5.3-codex \
+            --task-set-json examples/task-set-v1.json \
+            --lineage-consistency fail
+          python3 scripts/validate_metric_schema.py \
+            ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json
+
+      - name: Upload lightweight CI artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ocaml-confusion-lang-ci-results-lightweight
+          path: |
+            docs/research/results/roundtrip-batch-v1.fixture.summary.ci.md
+            docs/research/results/roundtrip-batch-v1.fixture.summary.ci.csv
+            docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json
+            docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json
+          if-no-files-found: error
+
+  test-full:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.full_ci == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
