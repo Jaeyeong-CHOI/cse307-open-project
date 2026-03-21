@@ -12,9 +12,12 @@ OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def _run_validator(path: pathlib.Path, expect_ok: bool) -> None:
+def _run_validator(path: pathlib.Path, expect_ok: bool, extra_args: list[str] | None = None) -> None:
+    command = ["python3", str(VALIDATOR), str(path)]
+    if extra_args:
+        command.extend(extra_args)
     result = subprocess.run(
-        ["python3", str(VALIDATOR), str(path)],
+        command,
         cwd=ROOT,
         check=False,
         stdout=subprocess.DEVNULL,
@@ -48,6 +51,7 @@ def main() -> int:
     )
 
     _run_validator(summary_json, expect_ok=True)
+    _run_validator(summary_json, expect_ok=True, extra_args=["--schema-version-min", "1", "--schema-version-max", "2"])
 
     payload_ok = json.loads(summary_json.read_text(encoding="utf-8"))
     gates = payload_ok.get("gates")
@@ -80,6 +84,20 @@ def main() -> int:
     invalid_scope_summary.write_text(json.dumps(payload_scope, ensure_ascii=False, indent=2), encoding="utf-8")
 
     _run_validator(invalid_scope_summary, expect_ok=False)
+
+    invalid_schema_version_summary = OUT / "fixture.summary.schema-check.invalid-schema-version.json"
+    payload_schema_version = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload_schema_version["metadata"]["schema_version"] = "v2"
+    invalid_schema_version_summary.write_text(
+        json.dumps(payload_schema_version, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    _run_validator(invalid_schema_version_summary, expect_ok=False)
+    _run_validator(
+        invalid_schema_version_summary,
+        expect_ok=True,
+        extra_args=["--schema-version-min", "1", "--schema-version-max", "2"],
+    )
 
     invalid_gate_summary = OUT / "fixture.summary.schema-check.invalid-gate-shape.json"
     payload_gate = json.loads(summary_json.read_text(encoding="utf-8"))

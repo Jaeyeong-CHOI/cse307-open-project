@@ -63,6 +63,8 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 python3 scripts/validate_taxonomy_profiles.py
 # summary JSON payload schema lint
 python3 scripts/validate_summary_payload.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json
+# summary schema version range 허용 (예: v1~v2)
+python3 scripts/validate_summary_payload.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json --schema-version-min 1 --schema-version-max 2
 # metric schema JSON lint
 python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json
 # task set schema JSON lint
@@ -100,6 +102,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - 루트는 JSON object
 - 필수 top-level key: `metadata`, `title`, `overview`, `quality_signals`, `failure_taxonomy`, `top_mismatches`, `mismatch_sort`, `gates`, `cases`
 - `metadata`는 `schema_version`, `generated_at_utc`, `input_report` 필수
+- `metadata.schema_version`은 `vN` 형식이어야 하며 validator의 `--schema-version-min/max` 범위 내여야 함 (기본: v1 고정)
 - optional `metadata.task_set_lineage`가 존재하면 object여야 하며, 포함된 `task_set_id/alias_set_id/manifest_path`는 non-empty string이어야 함
 - `overview.cases_scope`는 `all|mismatches-only` enum 중 하나여야 함
 - `failure_taxonomy.severity_weighted[*]`는 `tag/count/weight/weighted_score` 필수
@@ -245,3 +248,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 113. ~~`run_context` payload에 허용 키 화이트리스트 검증(unknown key fail-fast)을 공통 validator에 추가해 오타/스키마 드리프트를 조기 차단~~ ✅ (`scripts/run_context_validation.py`, `test_summary_payload_schema.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 114. ~~snapshot emitter에서 `event_name` 미지정 시 `unknown` fallback을 자동 주입하고 공용 enum에 포함해 summary/snapshot 경로의 run_context 정책(`n/a` vs `unknown`)을 명시적으로 통일~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/run_context_schema.py`, `test_emit_ci_result_snapshot.py`, `test_run_context_event_name_schema.py`, `test_run_context_schema_export.py`, `README.md`)
 115. ~~metric snapshot `source_summary`에 `run_context`를 전달하고 metric validator가 해당 run_context 규칙을 동일하게 검증하도록 확장해 summary→metric→snapshot 추적 체인의 metadata parity를 강화~~ ✅ (`scripts/generate_metric_snapshot.py`, `scripts/validate_metric_schema.py`, `examples/metric-schema-v1.json`, `test_generate_metric_snapshot.py`, `test_metric_schema.py`)
+116. ~~summary payload validator에 schema version range 옵션(`--schema-version-min/--schema-version-max`)을 추가해 v1 고정 검증과 향후 v2 점진 도입 검증을 모두 지원~~ ✅ (`scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
