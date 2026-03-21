@@ -77,19 +77,31 @@
    - 자체 리뷰 + 사용자 피드백 반영
 6. 다음 iteration으로 재진입
 
-## 6) 2-Week Initial Execution Plan
-### Day 1-2
-- 실험 스펙 고정, 평가 지표 정의, task set v1 확정
-### Day 3-4
+## 6) Phase-based Execution Plan (기간 고정 없음)
+### Phase 1 — Spec Freeze
+- 실험 스펙 고정
+- 평가 지표 정의
+- task set v1 확정
+
+### Phase 2 — Language Stability Check
 - 변형 문법 세트(A~E + variants) 안정성 검증
-### Day 5-7
-- 모델 1차 배치 평가 + 오류 로그 정리
-### Day 8-10
+- alias 충돌/복원 모호성 사전 제거
+
+### Phase 3 — Initial Model Batch
+- 모델 1차 배치 평가
+- 오류 로그 수집 및 정리
+
+### Phase 4 — Prompt Condition Comparison
 - 프롬프트 조건 비교 실험(base/strict/few-shot/2-step)
-### Day 11-12
-- 결과 시각화, failure taxonomy 작성
-### Day 13-14
-- 중간 보고서 초안 + 다음 실험 backlog 정리
+- 조건별 준수율/회귀율 차이 분석
+
+### Phase 5 — Analysis Packaging
+- 결과 시각화
+- failure taxonomy 정교화
+
+### Phase 6 — Report & Backlog
+- 중간 보고서 초안 작성
+- 다음 실험 backlog 우선순위 정리
 
 ---
 
