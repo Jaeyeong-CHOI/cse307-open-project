@@ -37,19 +37,19 @@ jobs:
       - name: Smoke roundtrip-report output
         run: |
           mkdir -p ../docs/research/results
-          opam exec -- dune exec confusionlang -- \
+          opam exec -- dune exec ./main.exe -- \
             roundtrip-report examples/case-c2.tsv examples/sample.py \
             ../docs/research/results/roundtrip-sample.ci.json
 
       - name: Smoke batch-roundtrip-report output
         run: |
-          opam exec -- dune exec confusionlang -- \
+          opam exec -- dune exec ./main.exe -- \
             batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
             ../docs/research/results/roundtrip-batch-v1.ci.json
 
       - name: Smoke batch-roundtrip-report output (--include-diff)
         run: |
-          opam exec -- dune exec confusionlang -- \
+          opam exec -- dune exec ./main.exe -- \
             batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
             ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json --include-diff
 

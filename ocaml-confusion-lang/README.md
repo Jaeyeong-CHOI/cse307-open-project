@@ -28,15 +28,15 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 ## 실행 예시
 ```bash
 cd ocaml-confusion-lang
-dune exec confusionlang -- validate examples/case-c2.tsv
-dune exec confusionlang -- transform examples/case-c2.tsv examples/sample.py
-dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/sample.py
+dune exec ./main.exe -- validate examples/case-c2.tsv
+dune exec ./main.exe -- transform examples/case-c2.tsv examples/sample.py
+dune exec ./main.exe -- roundtrip examples/case-c2.tsv examples/sample.py
 # 문자열/주석 보호 확인용
-dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/protected_literals.py
+dune exec ./main.exe -- roundtrip examples/case-c2.tsv examples/protected_literals.py
 # triple-quote 스트레스 케이스
-dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/triple_quote_stress.py
+dune exec ./main.exe -- roundtrip examples/case-c2.tsv examples/triple_quote_stress.py
 # 결과 JSON 저장 (repo 루트 docs/research/results 권장)
-dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample.py ../docs/research/results/roundtrip-sample.json
+dune exec ./main.exe -- roundtrip-report examples/case-c2.tsv examples/sample.py ../docs/research/results/roundtrip-sample.json
 # manifest 기반 batch 리포트
 dune exec confusionlang -- batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt ../docs/research/results/roundtrip-batch-v1.json
 # mismatch 디버깅용 상세 diff 포함

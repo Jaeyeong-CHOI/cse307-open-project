@@ -1,3 +1,9 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# OCaml build artifacts
+ocaml-confusion-lang/_build/
+
+# Local generated summaries
+*.summary.md
