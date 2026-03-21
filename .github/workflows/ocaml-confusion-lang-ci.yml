@@ -45,6 +45,12 @@ jobs:
             batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
             ../docs/research/results/roundtrip-batch-v1.ci.json
 
+      - name: Smoke batch-roundtrip-report output (--include-diff)
+        run: |
+          opam exec -- dune exec confusionlang -- \
+            batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
+            ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json --include-diff
+
       - name: Upload CI smoke artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -52,4 +58,5 @@ jobs:
           path: |
             docs/research/results/roundtrip-sample.ci.json
             docs/research/results/roundtrip-batch-v1.ci.json
+            docs/research/results/roundtrip-batch-v1.include-diff.ci.json
           if-no-files-found: error
