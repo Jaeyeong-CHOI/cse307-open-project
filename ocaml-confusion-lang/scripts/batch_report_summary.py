@@ -441,6 +441,24 @@ def parse_args() -> argparse.Namespace:
         help="Exit with code 2 when mismatch_cases > 0 (useful for CI gating)",
     )
     parser.add_argument(
+        "--fail-on-severity-total-ge",
+        type=int,
+        default=None,
+        help=(
+            "Exit with code 3 when quality_signals.mismatch_severity_total is >= this threshold "
+            "(risk-budget gate for CI/automation)"
+        ),
+    )
+    parser.add_argument(
+        "--fail-on-severity-avg-ge",
+        type=float,
+        default=None,
+        help=(
+            "Exit with code 3 when quality_signals.mismatch_severity_avg is >= this threshold "
+            "(risk-budget gate for CI/automation)"
+        ),
+    )
+    parser.add_argument(
         "--task-set-json",
         type=Path,
         default=None,
@@ -510,6 +528,20 @@ def main() -> int:
 
     if args.fail_on_mismatch and int(payload["overview"]["mismatch_cases"]) > 0:
         return 2
+
+    severity_total = int(payload["quality_signals"]["mismatch_severity_total"])
+    severity_avg = float(payload["quality_signals"]["mismatch_severity_avg"])
+    if (
+        args.fail_on_severity_total_ge is not None
+        and severity_total >= int(args.fail_on_severity_total_ge)
+    ):
+        return 3
+    if (
+        args.fail_on_severity_avg_ge is not None
+        and severity_avg >= float(args.fail_on_severity_avg_ge)
+    ):
+        return 3
+
     return 0
 
 

@@ -297,6 +297,74 @@ def main() -> int:
             f"expected --fail-on-mismatch to exit 0 for clean fixture, got {pass_proc.returncode}"
         )
 
+    # Severity total gate should fail with code 3 when threshold is met.
+    total_gate_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.fail-on-severity-total.md"),
+            "--fail-on-severity-total-ge",
+            "130",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if total_gate_proc.returncode != 3:
+        raise AssertionError(
+            "expected --fail-on-severity-total-ge 130 to exit 3 for fixture "
+            f"(mismatch_severity_total=130), got {total_gate_proc.returncode}"
+        )
+
+    # Severity avg gate should fail with code 3 when threshold is met.
+    avg_gate_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.fail-on-severity-avg.md"),
+            "--fail-on-severity-avg-ge",
+            "65",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if avg_gate_proc.returncode != 3:
+        raise AssertionError(
+            "expected --fail-on-severity-avg-ge 65 to exit 3 for fixture "
+            f"(mismatch_severity_avg=65.0), got {avg_gate_proc.returncode}"
+        )
+
+    # Severity gates should pass when threshold is above observed risk metrics.
+    severity_pass_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.pass-on-severity.md"),
+            "--fail-on-severity-total-ge",
+            "131",
+            "--fail-on-severity-avg-ge",
+            "65.1",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if severity_pass_proc.returncode != 0:
+        raise AssertionError(
+            "expected severity gates to pass with thresholds above fixture metrics, got "
+            f"{severity_pass_proc.returncode}"
+        )
+
     print("OK: batch_report_summary fixture regression passed")
     return 0
 
