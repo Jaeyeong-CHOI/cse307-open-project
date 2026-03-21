@@ -71,11 +71,15 @@ jobs:
           python3 scripts/validate_summary_payload.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json
 
-      - name: Python regression checks (summary + taxonomy schema + summary schema)
+      - name: Validate metric schema (smoke)
+        run: python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json
+
+      - name: Python regression checks (summary + taxonomy schema + summary schema + metric schema)
         run: |
           python3 test_batch_report_summary.py
           python3 test_taxonomy_profile_schema.py
           python3 test_summary_payload_schema.py
+          python3 test_metric_schema.py
 
       - name: Upload CI smoke artifacts
         uses: actions/upload-artifact@v4
