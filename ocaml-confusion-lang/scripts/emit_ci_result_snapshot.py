@@ -294,6 +294,14 @@ def main() -> None:
     parser.add_argument("--run-url", help="optional CI run URL metadata")
     parser.add_argument("--run-attempt", help="optional CI run attempt metadata")
     parser.add_argument("--event-name", help="optional GitHub event name metadata")
+    parser.add_argument(
+        "--require-explicit-event-name",
+        action="store_true",
+        help=(
+            "fail when run_context is provided but --event-name is omitted "
+            "(prevents fallback event_name=unknown)"
+        ),
+    )
     parser.add_argument("--sha", help="optional git SHA metadata")
     parser.add_argument("--ref", help="optional git ref metadata")
     parser.add_argument("--repository", help="optional repository metadata (owner/repo)")
@@ -342,6 +350,12 @@ def main() -> None:
         if "event_name" in run_context:
             run_context["event_name_source"] = "provided"
         else:
+            if args.require_explicit_event_name:
+                emit_error(
+                    "--require-explicit-event-name requires --event-name when run_context metadata is provided",
+                    hints=["event_name=missing", "policy=strict"],
+                )
+                raise SystemExit(1)
             run_context["event_name"] = "unknown"
             run_context["event_name_source"] = "derived"
 

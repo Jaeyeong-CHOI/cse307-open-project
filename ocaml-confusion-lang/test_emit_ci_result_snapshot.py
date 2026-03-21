@@ -19,6 +19,7 @@ def _run(
     json_output: Path | None = None,
     run_context: dict[str, str] | None = None,
     schema_version: str | None = None,
+    require_explicit_event_name: bool = False,
 ) -> str:
     summary = OUT / "tmp.emit-ci-summary.json"
     metric = OUT / "tmp.emit-ci-metric.json"
@@ -40,6 +41,8 @@ def _run(
         cmd.extend(["--json-output", str(json_output)])
     if schema_version is not None:
         cmd.extend(["--schema-version", schema_version])
+    if require_explicit_event_name:
+        cmd.append("--require-explicit-event-name")
     if run_context is not None:
         for arg, key in [
             ("--run-id", "run_id"),
@@ -334,6 +337,43 @@ def main() -> None:
     )
     assert_contains(unknown_default_content, "event_name=unknown")
     assert_contains(unknown_default_content, "event_name_source=derived")
+
+    strict_missing_event = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(invalid_summary),
+            "--metric-json",
+            str(invalid_metric),
+            "--label",
+            "Strict missing event snapshot",
+            "--require-explicit-event-name",
+            "--run-id",
+            "987654321",
+            "--run-url",
+            "https://github.com/org/repo/actions/runs/987654321",
+            "--run-attempt",
+            "1",
+            "--repository",
+            "org/repo",
+            "--actor",
+            "octocat",
+            "--workflow",
+            "ocaml-confusion-lang-ci",
+            "--job",
+            "build-and-test",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+    if strict_missing_event.returncode == 0:
+        raise AssertionError("expected non-zero exit for strict mode without --event-name")
+    assert_contains(
+        strict_missing_event.stderr,
+        "--require-explicit-event-name requires --event-name when run_context metadata is provided",
+    )
 
     invalid_event = subprocess.run(
         [

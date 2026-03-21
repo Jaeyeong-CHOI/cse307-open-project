@@ -38,6 +38,14 @@ on:
         options:
           - permissive
           - strict
+      snapshot_event_name_mode:
+        description: "Snapshot run_context event_name policy (permissive=fallback unknown allowed, strict=require explicit --event-name)"
+        required: false
+        default: permissive
+        type: choice
+        options:
+          - permissive
+          - strict
 
 concurrency:
   group: ocaml-confusion-lang-ci-${{ github.workflow }}-${{ github.ref }}
@@ -52,6 +60,7 @@ jobs:
       detected_full_ci: ${{ steps.resolve-mode.outputs.detected_full_ci }}
       snapshot_top_k_mismatches: ${{ steps.resolve-mode.outputs.snapshot_top_k_mismatches }}
       summary_require_explicit_event_name: ${{ steps.resolve-mode.outputs.summary_require_explicit_event_name }}
+      snapshot_require_explicit_event_name: ${{ steps.resolve-mode.outputs.snapshot_require_explicit_event_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -85,6 +94,7 @@ jobs:
           MANUAL_MODE: ${{ github.event.inputs.ci_mode || 'auto' }}
           MANUAL_SNAPSHOT_TOP_K: ${{ github.event.inputs.snapshot_top_k_mismatches || '1' }}
           MANUAL_SUMMARY_EVENT_NAME_MODE: ${{ github.event.inputs.summary_event_name_mode || 'permissive' }}
+          MANUAL_SNAPSHOT_EVENT_NAME_MODE: ${{ github.event.inputs.snapshot_event_name_mode || 'permissive' }}
         run: |
           set -euo pipefail
           if [[ "${MANUAL_MODE}" == "full" ]]; then
@@ -112,12 +122,24 @@ jobs:
             summary_require_explicit_event_name=false
           fi
 
+          snapshot_event_name_mode="${MANUAL_SNAPSHOT_EVENT_NAME_MODE}"
+          if [[ "${snapshot_event_name_mode}" == "strict" ]]; then
+            snapshot_require_explicit_event_name=true
+          elif [[ "${snapshot_event_name_mode}" == "permissive" ]]; then
+            snapshot_require_explicit_event_name=false
+          else
+            echo "Invalid snapshot_event_name_mode='${snapshot_event_name_mode}', fallback to permissive"
+            snapshot_event_name_mode=permissive
+            snapshot_require_explicit_event_name=false
+          fi
+
           echo "full_ci=${full_ci}" >> "$GITHUB_OUTPUT"
           echo "manual_mode=${MANUAL_MODE}" >> "$GITHUB_OUTPUT"
           echo "detected_full_ci=${FILTER_FULL_CI}" >> "$GITHUB_OUTPUT"
           echo "snapshot_top_k_mismatches=${snapshot_top_k}" >> "$GITHUB_OUTPUT"
           echo "summary_require_explicit_event_name=${summary_require_explicit_event_name}" >> "$GITHUB_OUTPUT"
-          echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI}, top_k=${snapshot_top_k}, summary_event_name_mode=${summary_event_name_mode})"
+          echo "snapshot_require_explicit_event_name=${snapshot_require_explicit_event_name}" >> "$GITHUB_OUTPUT"
+          echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI}, top_k=${snapshot_top_k}, summary_event_name_mode=${summary_event_name_mode}, snapshot_event_name_mode=${snapshot_event_name_mode})"
 
       - name: Publish CI mode decision summary
         shell: bash
@@ -127,6 +149,7 @@ jobs:
           DETECTED_FULL_CI: ${{ steps.resolve-mode.outputs.detected_full_ci }}
           SNAPSHOT_TOP_K: ${{ steps.resolve-mode.outputs.snapshot_top_k_mismatches }}
           SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME: ${{ steps.resolve-mode.outputs.summary_require_explicit_event_name }}
+          SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME: ${{ steps.resolve-mode.outputs.snapshot_require_explicit_event_name }}
         run: |
           {
             echo "## CI mode resolution"
@@ -135,6 +158,7 @@ jobs:
             echo "- resolved_full_ci: ${RESOLVED_FULL_CI}"
             echo "- snapshot_top_k_mismatches: ${SNAPSHOT_TOP_K}"
             echo "- summary_require_explicit_event_name: ${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}"
+            echo "- snapshot_require_explicit_event_name: ${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   test-lightweight:
@@ -195,7 +219,14 @@ jobs:
 
       - name: Publish lightweight result snapshot (step summary)
         shell: bash
+        env:
+          SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME: ${{ needs.detect-changes.outputs.snapshot_require_explicit_event_name }}
         run: |
+          set -euo pipefail
+          snapshot_args=()
+          if [[ "${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
+            snapshot_args+=(--require-explicit-event-name)
+          fi
           python3 scripts/emit_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
             --metric-json ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json \
@@ -211,7 +242,8 @@ jobs:
             --repository "${{ github.repository }}" \
             --actor "${{ github.actor }}" \
             --workflow "${{ github.workflow }}" \
-            --job "${{ github.job }}" >> "$GITHUB_STEP_SUMMARY"
+            --job "${{ github.job }}" \
+            "${snapshot_args[@]}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json
 
@@ -323,7 +355,14 @@ jobs:
 
       - name: Publish full CI result snapshot (step summary)
         shell: bash
+        env:
+          SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME: ${{ needs.detect-changes.outputs.snapshot_require_explicit_event_name }}
         run: |
+          set -euo pipefail
+          snapshot_args=()
+          if [[ "${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
+            snapshot_args+=(--require-explicit-event-name)
+          fi
           python3 scripts/emit_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json \
             --metric-json ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json \
@@ -339,7 +378,8 @@ jobs:
             --repository "${{ github.repository }}" \
             --actor "${{ github.actor }}" \
             --workflow "${{ github.workflow }}" \
-            --job "${{ github.job }}" >> "$GITHUB_STEP_SUMMARY"
+            --job "${{ github.job }}" \
+            "${snapshot_args[@]}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 
