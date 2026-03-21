@@ -38,3 +38,18 @@ jobs:
           opam exec -- dune exec confusionlang -- \
             roundtrip-report examples/case-c2.tsv examples/sample.py \
             ../docs/research/results/roundtrip-sample.ci.json
+
+      - name: Smoke batch-roundtrip-report output
+        run: |
+          opam exec -- dune exec confusionlang -- \
+            batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
+            ../docs/research/results/roundtrip-batch-v1.ci.json
+
+      - name: Upload CI smoke artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ocaml-confusion-lang-ci-results
+          path: |
+            docs/research/results/roundtrip-sample.ci.json
+            docs/research/results/roundtrip-batch-v1.ci.json
+          if-no-files-found: error
