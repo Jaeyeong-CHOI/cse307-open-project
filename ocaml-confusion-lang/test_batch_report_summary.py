@@ -6,11 +6,18 @@ import subprocess
 ROOT = pathlib.Path(__file__).resolve().parent
 FIXTURE = ROOT / "examples" / "batch-summary-fixture-whitespace-linecount.json"
 SCRIPT = ROOT / "scripts" / "batch_report_summary.py"
+ALT_WEIGHTS = ROOT / "examples" / "taxonomy-weights-severity-alt.json"
 OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def run_summary(*, top_k: int, include_diff_columns: bool, mismatch_sort: str) -> tuple[pathlib.Path, pathlib.Path]:
+def run_summary(
+    *,
+    top_k: int,
+    include_diff_columns: bool,
+    mismatch_sort: str,
+    taxonomy_weights: pathlib.Path | None = None,
+) -> tuple[pathlib.Path, pathlib.Path]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
     cmd = [
@@ -28,6 +35,8 @@ def run_summary(*, top_k: int, include_diff_columns: bool, mismatch_sort: str) -
     ]
     if include_diff_columns:
         cmd.append("--include-diff-columns")
+    if taxonomy_weights is not None:
+        cmd.extend(["--taxonomy-weights", str(taxonomy_weights)])
     subprocess.run(cmd, cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return summary_md, summary_csv
 
@@ -106,6 +115,24 @@ def main() -> int:
             "expected first_token_diff_index=8 for collision-risk row, got "
             f"{collision_row['first_token_diff_index']}"
         )
+
+    # Custom taxonomy weight config should affect severity-weighted section and ordering.
+    alt_summary_md, _ = run_summary(
+        top_k=2,
+        include_diff_columns=False,
+        mismatch_sort="severity",
+        taxonomy_weights=ALT_WEIGHTS,
+    )
+    alt_content = alt_summary_md.read_text(encoding="utf-8")
+    assert_contains(alt_content, "- token_substitution_mismatch: weighted_score=60 (count=1, weight=60)")
+    alt_collision_idx = alt_content.find(
+        "examples/collision-risk-case.py (failure_taxonomy=token_stream_mismatch, token_substitution_mismatch)"
+    )
+    alt_drift_idx = alt_content.find(
+        "examples/blankline-drift.py (failure_taxonomy=line_count_mismatch, whitespace_or_blankline_drift)"
+    )
+    if alt_collision_idx == -1 or alt_drift_idx == -1 or alt_collision_idx > alt_drift_idx:
+        raise AssertionError("expected collision-risk mismatch to remain above blankline drift with custom weights")
 
     print("OK: batch_report_summary fixture regression passed")
     return 0

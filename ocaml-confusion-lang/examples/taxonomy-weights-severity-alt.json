@@ -1,0 +1,10 @@
+{
+  "default_weight": 12,
+  "weights": {
+    "token_stream_mismatch": 10,
+    "token_substitution_mismatch": 60,
+    "ast_parse_error": 30,
+    "line_count_mismatch": 8,
+    "whitespace_or_blankline_drift": 4
+  }
+}

@@ -16,7 +16,7 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 - `roundtrip-report <alias_tsv> <source_file> <out_json>`: roundtrip 결과 JSON 리포트 저장 (`first_diff`, `failure_taxonomy`, `ast_equivalent` 포함)
 - `batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json> [--include-diff]`: 여러 소스 파일에 대한 일괄 roundtrip JSON 요약 (`total_cases`, `ok_cases`, `mismatch_cases`, `cases[]`) 생성
   - `--include-diff` 사용 시 각 케이스에 `first_diff`, `first_token_diff` 포함
-- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md] [--csv-output output.csv] [--top-k-mismatches 5] [--include-diff-columns] [--mismatch-sort input|severity]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환하고(선택) case-level CSV로 내보냄
+- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md] [--csv-output output.csv] [--top-k-mismatches 5] [--include-diff-columns] [--mismatch-sort input|severity] [--taxonomy-weights weights.json]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환하고(선택) case-level CSV로 내보냄
 
 ## Alias TSV 형식
 `<python_keyword>\t<alias_phrase>`
@@ -46,6 +46,8 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json --csv-output ../docs/research/results/roundtrip-batch-v1.diff.with-diff.csv --include-diff-columns
 # mismatch 하이라이트를 severity 기반으로 정렬
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.severity.md --mismatch-sort severity
+# taxonomy severity 가중치를 외부 JSON으로 주입
+python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.custom-weight.md --mismatch-sort severity --taxonomy-weights examples/taxonomy-weights-severity-alt.json
 ```
 
 ## 다음 구현
@@ -72,3 +74,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 21. ~~mismatch highlight 정렬 옵션(`--mismatch-sort severity`) 추가~~ ✅ (taxonomy/AST/token 기반 severity 우선 정렬)
 22. ~~CI summary 단계에 severity 정렬 + diff 컬럼 CSV artifact 추가~~ ✅ (`roundtrip-batch-v1.include-diff.summary.ci.csv` 업로드)
 23. ~~summary Markdown taxonomy 섹션에 severity-weighted 뷰 추가~~ ✅ (`Failure Taxonomy (severity-weighted)`)
+24. ~~taxonomy severity 가중치 외부 설정(JSON) 주입 지원 추가~~ ✅ (`--taxonomy-weights`, `examples/taxonomy-weights-severity-alt.json`)

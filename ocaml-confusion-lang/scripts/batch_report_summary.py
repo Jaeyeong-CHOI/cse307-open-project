@@ -8,7 +8,7 @@ import csv
 import json
 from collections import Counter
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 TAXONOMY_WEIGHTS: dict[str, int] = {
     "token_stream_mismatch": 40,
@@ -31,11 +31,31 @@ def load_json(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
-def _tag_weight(tag: str) -> int:
-    return TAXONOMY_WEIGHTS.get(tag, DEFAULT_TAXONOMY_WEIGHT)
+def load_taxonomy_weights(path: Path | None) -> tuple[dict[str, int], int]:
+    if path is None:
+        return dict(TAXONOMY_WEIGHTS), DEFAULT_TAXONOMY_WEIGHT
+
+    payload = load_json(path)
+    default_weight = int(payload.get("default_weight", DEFAULT_TAXONOMY_WEIGHT))
+
+    raw_weights = payload.get("weights", {})
+    if not isinstance(raw_weights, Mapping):
+        raise ValueError("taxonomy weights JSON must contain an object at key 'weights'")
+
+    weights: dict[str, int] = {}
+    for k, v in raw_weights.items():
+        weights[str(k)] = int(v)
+
+    return weights, default_weight
 
 
-def _mismatch_severity_score(case: dict[str, Any]) -> tuple[int, int, int, str]:
+def _tag_weight(tag: str, taxonomy_weights: Mapping[str, int], default_weight: int) -> int:
+    return int(taxonomy_weights.get(tag, default_weight))
+
+
+def _mismatch_severity_score(
+    case: dict[str, Any], taxonomy_weights: Mapping[str, int], default_weight: int
+) -> tuple[int, int, int, str]:
     """Higher tuple value means more severe mismatch.
 
     Priority (desc):
@@ -45,7 +65,7 @@ def _mismatch_severity_score(case: dict[str, Any]) -> tuple[int, int, int, str]:
     4) source path (stable tie-break)
     """
     tags = [str(t) for t in (case.get("failure_taxonomy") or [])]
-    tag_weight = sum(_tag_weight(tag) for tag in tags)
+    tag_weight = sum(_tag_weight(tag, taxonomy_weights, default_weight) for tag in tags)
 
     ast_penalty = 0 if case.get("ast_equivalent") is True else 20
     token_penalty = 0 if case.get("token_equivalent") is True else 20
@@ -59,6 +79,8 @@ def build_summary(
     source_path: Path,
     top_k_mismatches: int,
     mismatch_sort: str,
+    taxonomy_weights: Mapping[str, int],
+    default_weight: int,
 ) -> str:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
@@ -100,7 +122,15 @@ def build_summary(
         lines.append("")
         lines.append("### Failure Taxonomy (severity-weighted)")
         weighted_rows = sorted(
-            ((tag, count, _tag_weight(tag), count * _tag_weight(tag)) for tag, count in taxonomy_counts.items()),
+            (
+                (
+                    tag,
+                    count,
+                    _tag_weight(tag, taxonomy_weights, default_weight),
+                    count * _tag_weight(tag, taxonomy_weights, default_weight),
+                )
+                for tag, count in taxonomy_counts.items()
+            ),
             key=lambda item: (item[3], item[1], item[0]),
             reverse=True,
         )
@@ -115,7 +145,7 @@ def build_summary(
     if mismatch_sort == "severity":
         mismatch_list = sorted(
             mismatch_list,
-            key=_mismatch_severity_score,
+            key=lambda c: _mismatch_severity_score(c, taxonomy_weights, default_weight),
             reverse=True,
         )
     if top_k_mismatches > 0:
@@ -237,6 +267,15 @@ def parse_args() -> argparse.Namespace:
         default="input",
         help="Sort mode for mismatch highlight section (default: input)",
     )
+    parser.add_argument(
+        "--taxonomy-weights",
+        type=Path,
+        default=None,
+        help=(
+            "Optional JSON file with taxonomy severity weights. "
+            "Schema: {\"default_weight\": 15, \"weights\": {\"tag\": 40, ...}}"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -245,7 +284,15 @@ def main() -> int:
     report = load_json(args.input_json)
     output = args.output or args.input_json.with_suffix("").with_suffix(".summary.md")
     top_k = max(0, int(args.top_k_mismatches))
-    summary = build_summary(report, args.input_json, top_k, args.mismatch_sort)
+    taxonomy_weights, default_weight = load_taxonomy_weights(args.taxonomy_weights)
+    summary = build_summary(
+        report,
+        args.input_json,
+        top_k,
+        args.mismatch_sort,
+        taxonomy_weights,
+        default_weight,
+    )
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(summary, encoding="utf-8")
 
