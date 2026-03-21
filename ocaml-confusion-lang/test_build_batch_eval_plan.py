@@ -896,6 +896,39 @@ def main() -> int:
     if summary_tsv_schema_lines[1] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected summary-tsv header with schema preface: {summary_tsv_schema_lines}")
 
+    preset_list_summary_tsv_schema_column = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+            "--summary-tsv-with-schema-column",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary_tsv_schema_column_lines = [
+        line.rstrip("\n") for line in preset_list_summary_tsv_schema_column.stdout.splitlines() if line.strip()
+    ]
+    expected_tsv_header_preview_with_schema_column = f"{expected_tsv_header_preview}\tschema"
+    if not summary_tsv_schema_column_lines or summary_tsv_schema_column_lines[0] != expected_tsv_header_preview_with_schema_column:
+        raise AssertionError(f"unexpected summary-tsv schema-column header: {summary_tsv_schema_column_lines}")
+    quick_smoke_tsv_schema_row = next(
+        (line for line in summary_tsv_schema_column_lines[1:] if line.startswith("quick-smoke\t")),
+        None,
+    )
+    if quick_smoke_tsv_schema_row is None:
+        raise AssertionError(
+            f"missing quick-smoke summary-tsv schema-column row: {summary_tsv_schema_column_lines}"
+        )
+    if not quick_smoke_tsv_schema_row.endswith("\tplanner_preset_summary_tsv.v1"):
+        raise AssertionError(
+            f"summary-tsv schema-column row should end with schema id: {quick_smoke_tsv_schema_row}"
+        )
+
     preset_list_summary_tsv_full = subprocess.run(
         [
             "python3",
@@ -1036,6 +1069,37 @@ def main() -> int:
         raise AssertionError(f"unexpected show-preset schema header: {show_summary_tsv_schema_lines}")
     if show_summary_tsv_schema_lines[1] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected show-preset summary-tsv header with schema preface: {show_summary_tsv_schema_lines}")
+
+    show_preset_summary_tsv_schema_column = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary-tsv",
+            "--summary-tsv-with-schema-column",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_summary_tsv_schema_column_lines = [
+        line.rstrip("\n") for line in show_preset_summary_tsv_schema_column.stdout.splitlines() if line.strip()
+    ]
+    if len(show_summary_tsv_schema_column_lines) != 2:
+        raise AssertionError(
+            f"unexpected show-preset summary-tsv schema-column lines: {show_summary_tsv_schema_column_lines}"
+        )
+    if show_summary_tsv_schema_column_lines[0] != f"{expected_tsv_header_preview}\tschema":
+        raise AssertionError(
+            f"unexpected show-preset summary-tsv schema-column header: {show_summary_tsv_schema_column_lines}"
+        )
+    if not show_summary_tsv_schema_column_lines[1].endswith("\tplanner_preset_summary_tsv.v1"):
+        raise AssertionError(
+            f"show-preset summary-tsv schema-column row should end with schema id: {show_summary_tsv_schema_column_lines}"
+        )
 
     show_preset_overridden = subprocess.run(
         [

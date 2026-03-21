@@ -113,6 +113,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format su
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv
 # parser 버전 추적용 schema 주석(# schema=...)을 TSV 상단에 함께 출력
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --summary-tsv-with-schema-header
+# row 단위 파서용 schema 컬럼을 TSV 끝에 추가(주석 헤더 없이도 버전 식별 가능)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --summary-tsv-with-schema-column
 # summary-tsv 설명 컬럼을 preview(기본) 대신 full 원문으로 출력
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --summary-tsv-description full
 # 모든 preset의 resolved 설정(기본값 포함)을 JSON으로 한번에 확인
@@ -353,3 +355,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 165. ~~planner preset summary를 downstream parser 친화적으로 소비할 수 있도록 header 포함 TSV 출력 모드(`--list-presets-format summary-tsv`, `--show-preset-format summary-tsv`)를 추가해 key=value 재파싱 의존을 제거~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 166. ~~planner summary TSV 출력에 optional schema 주석 헤더(`--summary-tsv-with-schema-header`, `# schema=planner_preset_summary_tsv.v1`)를 추가해 downstream parser가 포맷 버전을 fail-fast로 식별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 167. ~~planner summary-tsv 설명 컬럼 모드(`--summary-tsv-description preview|full`)를 추가해 사람 친화 프리뷰와 parser용 원문 전달을 런타임에서 분리~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+168. ~~planner summary-tsv에 optional schema 컬럼(`--summary-tsv-with-schema-column`)을 추가해 주석 헤더가 제거된 row-only 소비 경로에서도 포맷 버전을 fail-fast로 식별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

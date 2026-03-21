@@ -226,15 +226,25 @@ def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
     )
 
 
-def _emit_preset_summary_tsv_header(with_schema_header: bool, description_mode: str) -> None:
+def _emit_preset_summary_tsv_header(
+    with_schema_header: bool,
+    description_mode: str,
+    with_schema_column: bool,
+) -> None:
     if with_schema_header:
         print(f"# schema={PRESET_SUMMARY_TSV_SCHEMA}")
     description_column = "description_full" if description_mode == "full" else "description_preview"
-    print("\t".join([*PRESET_SUMMARY_TSV_BASE_COLUMNS, description_column]))
+    columns = [*PRESET_SUMMARY_TSV_BASE_COLUMNS, description_column]
+    if with_schema_column:
+        columns.append("schema")
+    print("\t".join(columns))
 
 
 def _format_preset_summary_tsv_row(
-    name: str, resolved: dict[str, Any], description_mode: str = "preview"
+    name: str,
+    resolved: dict[str, Any],
+    description_mode: str = "preview",
+    with_schema_column: bool = False,
 ) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
@@ -260,6 +270,8 @@ def _format_preset_summary_tsv_row(
         tag_value,
         description_value,
     ]
+    if with_schema_column:
+        row.append(PRESET_SUMMARY_TSV_SCHEMA)
     return "\t".join(item.replace("\t", " ") for item in row)
 
 
@@ -394,6 +406,13 @@ def parse_args() -> argparse.Namespace:
         help="summary-tsv description column mode: preview (default) or full",
     )
     parser.add_argument(
+        "--summary-tsv-with-schema-column",
+        action="store_true",
+        help=(
+            "Append 'schema' column to each summary-tsv row for parser-friendly inline format versioning"
+        ),
+    )
+    parser.add_argument(
         "--preset-file",
         type=Path,
         default=DEFAULT_PRESET_FILE,
@@ -503,12 +522,14 @@ def main() -> int:
                 _emit_preset_summary_tsv_header(
                     args.summary_tsv_with_schema_header,
                     args.summary_tsv_description,
+                    args.summary_tsv_with_schema_column,
                 )
                 print(
                     _format_preset_summary_tsv_row(
                         args.show_preset,
                         resolved,
                         description_mode=args.summary_tsv_description,
+                        with_schema_column=args.summary_tsv_with_schema_column,
                     )
                 )
                 return 0
@@ -567,6 +588,7 @@ def main() -> int:
                 _emit_preset_summary_tsv_header(
                     args.summary_tsv_with_schema_header,
                     args.summary_tsv_description,
+                    args.summary_tsv_with_schema_column,
                 )
                 for name in preset_names:
                     preset = filtered_presets[name]
@@ -578,6 +600,7 @@ def main() -> int:
                             name,
                             resolved,
                             description_mode=args.summary_tsv_description,
+                            with_schema_column=args.summary_tsv_with_schema_column,
                         )
                     )
                 return 0
