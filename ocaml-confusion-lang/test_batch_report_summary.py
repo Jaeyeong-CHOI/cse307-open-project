@@ -51,6 +51,15 @@ def main() -> int:
     assert_contains(content, "- whitespace_or_blankline_drift: 1")
     assert_contains(content, "- token_stream_mismatch: 1")
 
+    # severity-weighted taxonomy view should rank token-level failures above drift tags.
+    assert_contains(content, "### Failure Taxonomy (severity-weighted)")
+    assert_contains(content, "- token_stream_mismatch: weighted_score=40 (count=1, weight=40)")
+    assert_contains(content, "- token_substitution_mismatch: weighted_score=35 (count=1, weight=35)")
+    token_weighted_idx = content.find("- token_stream_mismatch: weighted_score=40 (count=1, weight=40)")
+    linecount_weighted_idx = content.find("- line_count_mismatch: weighted_score=10 (count=1, weight=10)")
+    if token_weighted_idx == -1 or linecount_weighted_idx == -1 or token_weighted_idx > linecount_weighted_idx:
+        raise AssertionError("expected token_stream_mismatch to rank above line_count_mismatch in severity-weighted taxonomy")
+
     # mismatch highlight block should list top-k mismatches and include the drift case.
     assert_contains(content, "## Top 2 Mismatch Cases (sort=severity)")
     assert_contains(content, "examples/blankline-drift.py (failure_taxonomy=line_count_mismatch, whitespace_or_blankline_drift)")

@@ -10,6 +10,15 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+TAXONOMY_WEIGHTS: dict[str, int] = {
+    "token_stream_mismatch": 40,
+    "token_substitution_mismatch": 35,
+    "ast_parse_error": 30,
+    "line_count_mismatch": 10,
+    "whitespace_or_blankline_drift": 5,
+}
+DEFAULT_TAXONOMY_WEIGHT = 15
+
 
 def pct(n: int, d: int) -> str:
     if d == 0:
@@ -22,6 +31,10 @@ def load_json(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
+def _tag_weight(tag: str) -> int:
+    return TAXONOMY_WEIGHTS.get(tag, DEFAULT_TAXONOMY_WEIGHT)
+
+
 def _mismatch_severity_score(case: dict[str, Any]) -> tuple[int, int, int, str]:
     """Higher tuple value means more severe mismatch.
 
@@ -31,15 +44,8 @@ def _mismatch_severity_score(case: dict[str, Any]) -> tuple[int, int, int, str]:
     3) taxonomy tag count
     4) source path (stable tie-break)
     """
-    taxonomy_weights = {
-        "token_stream_mismatch": 40,
-        "token_substitution_mismatch": 35,
-        "ast_parse_error": 30,
-        "line_count_mismatch": 10,
-        "whitespace_or_blankline_drift": 5,
-    }
     tags = [str(t) for t in (case.get("failure_taxonomy") or [])]
-    tag_weight = sum(taxonomy_weights.get(tag, 15) for tag in tags)
+    tag_weight = sum(_tag_weight(tag) for tag in tags)
 
     ast_penalty = 0 if case.get("ast_equivalent") is True else 20
     token_penalty = 0 if case.get("token_equivalent") is True else 20
@@ -90,6 +96,18 @@ def build_summary(
     if taxonomy_counts:
         for tag, count in taxonomy_counts.most_common():
             lines.append(f"- {tag}: {count}")
+
+        lines.append("")
+        lines.append("### Failure Taxonomy (severity-weighted)")
+        weighted_rows = sorted(
+            ((tag, count, _tag_weight(tag), count * _tag_weight(tag)) for tag, count in taxonomy_counts.items()),
+            key=lambda item: (item[3], item[1], item[0]),
+            reverse=True,
+        )
+        for tag, count, weight, weighted_score in weighted_rows:
+            lines.append(
+                f"- {tag}: weighted_score={weighted_score} (count={count}, weight={weight})"
+            )
     else:
         lines.append("- none")
 
