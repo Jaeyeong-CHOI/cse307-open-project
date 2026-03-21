@@ -65,7 +65,7 @@ def main() -> None:
             "mismatch": {"enabled": True, "tripped": True, "observed_mismatch_cases": 2},
             "severity_total": {"enabled": True, "threshold": 120, "observed": 130, "tripped": True},
             "severity_avg": {"enabled": True, "threshold": 60.0, "observed": 65.0, "tripped": True},
-            "aggregate": {"enabled": True, "exit_code": 4},
+            "aggregate": {"enabled": True, "tripped": True, "exit_code": 4},
             "any_tripped": True,
             "tripped_list": ["mismatch", "severity_total", "severity_avg"],
         },
@@ -112,7 +112,7 @@ def main() -> None:
     assert_contains(content, "- tripped_list: mismatch, severity_total, severity_avg")
     assert_contains(
         content,
-        "- gate_details: mismatch(enabled=True,tripped=True,observed_mismatch_cases=2) | severity_total(enabled=True,tripped=True,threshold=120,observed=130) | severity_avg(enabled=True,tripped=True,threshold=60.0,observed=65.0) | aggregate(enabled=True,tripped=n/a,exit_code=4)",
+        "- gate_details: mismatch(enabled=True,tripped=True,observed_mismatch_cases=2) | severity_total(enabled=True,tripped=True,threshold=120,observed=130) | severity_avg(enabled=True,tripped=True,threshold=60.0,observed=65.0) | aggregate(enabled=True,tripped=True,exit_code=4)",
     )
     assert_contains(
         content,

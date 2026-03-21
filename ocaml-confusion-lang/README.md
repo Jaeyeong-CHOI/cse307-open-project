@@ -100,7 +100,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - `top_mismatches[*]`는 `source/failure_taxonomy/severity` 필수
 - `gates`는 object여야 하며 aggregate 필드 `any_tripped`(bool), `tripped_list`(array)와 `mismatch`, `severity_total`, `severity_avg` 서브 오브젝트(각각 `enabled`, `tripped`)를 포함해야 함
 - `gates.any_tripped`는 `bool(gates.tripped_list)`와 일치해야 하며 `gates.tripped_list`는 실제 `tripped=true` gate 이름 집합과 동일해야 함
-- optional `gates.aggregate`가 존재하면 object여야 하며 `enabled`(bool), `exit_code`(int) 필드를 가져야 함 (`--fail-on-any-tripped` 실행 정책 노출)
+- optional `gates.aggregate`가 존재하면 object여야 하며 `enabled`(bool), `tripped`(bool), `exit_code`(int) 필드를 가져야 함 (`--fail-on-any-tripped` 실행 정책 노출)
 
 `validate_task_set.py` 스키마 규칙:
 - 루트는 JSON object
@@ -201,3 +201,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 86. ~~CI snapshot JSON 전용 schema validator(`validate_ci_result_snapshot.py`)와 회귀 테스트를 추가하고, lightweight/full 워크플로우에서 `--json-output` 산출물을 즉시 검증해 Step Summary↔JSON 드리프트를 fail-fast로 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`)
 87. ~~`emit_ci_result_snapshot.py` 입력 summary payload에 대한 fail-fast shape 검증(`overview/gates` 필수 타입)과 `ERROR:`/`HINT:` 출력 추가로 손상된 summary를 조기 차단~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`)
 88. ~~CI snapshot JSON payload에 `schema_version`(`ci_result_snapshot.v1`)를 도입하고 validator에서 버전 고정을 검증해 향후 필드 확장 시 호환성 관리 기준을 명확화~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/validate_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`)
+89. ~~summary payload의 `gates.aggregate`에 `tripped`(bool)를 추가하고 validator/step snapshot 표시를 동기화해 aggregate gate trip 상태를 artifact 없이도 명시적으로 관측 가능하게 개선~~ ✅ (`scripts/batch_report_summary.py`, `scripts/validate_summary_payload.py`, `test_batch_report_summary.py`, `test_summary_payload_schema.py`, `test_emit_ci_result_snapshot.py`, `README.md`)

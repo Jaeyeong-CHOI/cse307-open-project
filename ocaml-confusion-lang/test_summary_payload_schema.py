@@ -60,8 +60,12 @@ def main() -> int:
     aggregate_gate = gates.get("aggregate")
     if not isinstance(aggregate_gate, dict):
         raise RuntimeError("expected gates.aggregate object in summary payload")
-    if aggregate_gate.get("enabled") is not False or aggregate_gate.get("exit_code") != 4:
-        raise RuntimeError("expected gates.aggregate defaults to enabled=False exit_code=4")
+    if (
+        aggregate_gate.get("enabled") is not False
+        or aggregate_gate.get("tripped") is not False
+        or aggregate_gate.get("exit_code") != 4
+    ):
+        raise RuntimeError("expected gates.aggregate defaults to enabled=False tripped=False exit_code=4")
 
     invalid_summary = OUT / "fixture.summary.schema-check.invalid-lineage.json"
     payload = json.loads(summary_json.read_text(encoding="utf-8"))
@@ -95,7 +99,7 @@ def main() -> int:
 
     invalid_aggregate_summary = OUT / "fixture.summary.schema-check.invalid-aggregate.json"
     payload_aggregate = json.loads(summary_json.read_text(encoding="utf-8"))
-    payload_aggregate["gates"]["aggregate"] = {"enabled": "nope", "exit_code": "4"}
+    payload_aggregate["gates"]["aggregate"] = {"enabled": "nope", "tripped": "nope", "exit_code": "4"}
     invalid_aggregate_summary.write_text(
         json.dumps(payload_aggregate, ensure_ascii=False, indent=2), encoding="utf-8"
     )
@@ -112,6 +116,19 @@ def main() -> int:
     )
 
     _run_validator(invalid_gate_consistency_summary, expect_ok=False)
+
+    invalid_aggregate_consistency = OUT / "fixture.summary.schema-check.invalid-aggregate-consistency.json"
+    payload_aggregate_consistency = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload_aggregate_consistency["gates"]["any_tripped"] = True
+    payload_aggregate_consistency["gates"]["tripped_list"] = ["mismatch"]
+    payload_aggregate_consistency["gates"]["mismatch"]["tripped"] = True
+    payload_aggregate_consistency["gates"]["aggregate"]["enabled"] = True
+    payload_aggregate_consistency["gates"]["aggregate"]["tripped"] = False
+    invalid_aggregate_consistency.write_text(
+        json.dumps(payload_aggregate_consistency, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    _run_validator(invalid_aggregate_consistency, expect_ok=False)
 
     print("OK: summary payload schema regression passed")
     return 0

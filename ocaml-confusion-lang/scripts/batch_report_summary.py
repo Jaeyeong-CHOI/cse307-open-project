@@ -368,6 +368,7 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
             lines.append(
                 "- aggregate gate: "
                 f"enabled={aggregate_gate.get('enabled')}, "
+                f"tripped={aggregate_gate.get('tripped')}, "
                 f"exit_code={aggregate_gate.get('exit_code')}"
             )
         mismatch_gate = gates.get("mismatch") if isinstance(gates.get("mismatch"), dict) else None
@@ -705,6 +706,7 @@ def main() -> int:
         "tripped_list": tripped_gate_names,
         "aggregate": {
             "enabled": bool(args.fail_on_any_tripped),
+            "tripped": bool(args.fail_on_any_tripped and tripped_gate_names),
             "exit_code": 4,
         },
     }

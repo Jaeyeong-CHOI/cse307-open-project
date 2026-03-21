@@ -86,7 +86,7 @@ def main() -> int:
     assert_contains(content, "- mismatch_severity_avg: 65.0")
     assert_contains(content, "- any_tripped: False")
     assert_contains(content, "- tripped_list: none")
-    assert_contains(content, "- aggregate gate: enabled=False, exit_code=4")
+    assert_contains(content, "- aggregate gate: enabled=False, tripped=False, exit_code=4")
 
     if summary_json is None:
         raise AssertionError("expected JSON summary output path")
@@ -123,8 +123,12 @@ def main() -> int:
     aggregate_gate = gates.get("aggregate")
     if not isinstance(aggregate_gate, dict):
         raise AssertionError("expected aggregate gate object in JSON summary")
-    if aggregate_gate.get("enabled") is not False or aggregate_gate.get("exit_code") != 4:
-        raise AssertionError("expected aggregate gate defaults to enabled=False exit_code=4")
+    if (
+        aggregate_gate.get("enabled") is not False
+        or aggregate_gate.get("tripped") is not False
+        or aggregate_gate.get("exit_code") != 4
+    ):
+        raise AssertionError("expected aggregate gate defaults to enabled=False tripped=False exit_code=4")
 
     # taxonomy frequency block should include whitespace/line-count drift tags.
     assert_contains(content, "- line_count_mismatch: 1")

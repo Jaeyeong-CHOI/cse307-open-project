@@ -168,6 +168,15 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
                 enabled = aggregate.get("enabled")
                 if not isinstance(enabled, bool):
                     errors.append(f"{path}: gates.aggregate.enabled must be a boolean")
+                tripped = aggregate.get("tripped")
+                if not isinstance(tripped, bool):
+                    errors.append(f"{path}: gates.aggregate.tripped must be a boolean")
+                elif isinstance(enabled, bool) and isinstance(any_tripped, bool):
+                    expected_aggregate_tripped = bool(enabled and any_tripped)
+                    if tripped != expected_aggregate_tripped:
+                        errors.append(
+                            f"{path}: gates.aggregate.tripped must equal bool(gates.aggregate.enabled and gates.any_tripped)"
+                        )
                 exit_code = aggregate.get("exit_code")
                 if not isinstance(exit_code, int):
                     errors.append(f"{path}: gates.aggregate.exit_code must be an integer")
