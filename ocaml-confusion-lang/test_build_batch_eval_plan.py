@@ -176,6 +176,40 @@ def main() -> int:
     if capped.returncode == 0:
         raise AssertionError("expected max-total-runs cap violation to fail")
 
+    capped_mode_output = OUT / "batch-plan.max-total-cap-mode.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(TASK_SET),
+            "--models",
+            "gpt-5-mini,gpt-5-pro",
+            "--prompt-conditions",
+            "base,strict",
+            "--repeats",
+            "2",
+            "--cheap-first",
+            "--max-total-runs",
+            "10",
+            "--max-total-runs-mode",
+            "cap",
+            "--output",
+            str(capped_mode_output),
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    capped_mode_payload = json.loads(capped_mode_output.read_text(encoding="utf-8"))
+    capped_mode_summary = capped_mode_payload["summary"]
+    if capped_mode_payload["config"].get("max_total_runs_mode") != "cap":
+        raise AssertionError("expected max_total_runs_mode=cap in config")
+    if capped_mode_summary["planned_runs_total"] != 10:
+        raise AssertionError(
+            f"expected max-total-runs cap mode planned total=10, got {capped_mode_summary['planned_runs_total']}"
+        )
+
     per_model_capped_output = OUT / "batch-plan.per-model-capped.json"
     subprocess.run(
         [

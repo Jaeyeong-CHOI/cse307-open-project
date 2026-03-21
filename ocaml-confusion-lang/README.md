@@ -83,6 +83,8 @@ python3 scripts/emit_ci_result_snapshot.py ../docs/research/results/roundtrip-ba
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json
 # batch eval run plan 생성(offline, dedupe + cheap-first ordering + run cap)
 python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5-mini --prompt-conditions base,strict,base --repeats 2 --cheap-first --fair-model-allocation --max-total-runs 64 --max-runs-per-model 24 --max-runs-per-prompt-condition 16 --max-runs-per-task 12 --max-runs-per-task-model 8 -o ../docs/research/results/roundtrip-batch-v1.plan.json
+# max-total-runs 초과 시 fail 대신 앞부분만 cap(절단)하고 계속 진행
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro --prompt-conditions base,strict --repeats 3 --cheap-first --max-total-runs 20 --max-total-runs-mode cap -o ../docs/research/results/plan.capped.json
 
 # planner 운영 프리셋 예시 (cheap-first 권장)
 # 1) quick-smoke: 최소 비용/빠른 sanity check
@@ -295,3 +297,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 142. ~~planner(`build_batch_eval_plan.py`)에 task×model run cap(`--max-runs-per-task-model`)과 task×model 매트릭스 집계(`planned/potential/skipped_runs_by_task_model`)를 추가해 특정 과제-모델 조합 과샘플링을 사전 차단~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 143. ~~planner(`build_batch_eval_plan.py`)에 fair model allocation(`--fair-model-allocation`)을 추가해 per-prompt-condition cap 적용 시 모델 쏠림(예: 6:4)을 회전 배분으로 완화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 144. ~~planner cap 조합별 운영 프리셋(quick-smoke / balanced-ci / full-analysis)을 README 실행 예시로 정리해 실험 설정 시간을 줄이고 cheap-first 원칙을 즉시 적용 가능하게 개선~~ ✅ (`README.md`)
+145. ~~planner(`build_batch_eval_plan.py`)에 `--max-total-runs-mode cap`을 추가해 총 실행 상한 초과 시 fail 대신 deterministic prefix 절단으로 저비용 계획을 즉시 생성하고, 설정/회귀 테스트를 함께 확장~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
