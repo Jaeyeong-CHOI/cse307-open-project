@@ -27,7 +27,9 @@ jobs:
           ocaml-compiler: 5.1.1
 
       - name: Install dependencies
-        run: opam install . --deps-only --with-test -y
+        run: |
+          opam install dune -y
+          opam install . --deps-only --with-test -y
 
       - name: Run dune runtest
         run: opam exec -- dune runtest
