@@ -239,7 +239,47 @@ let escape_json s =
     s;
   Buffer.contents b
 
-let write_roundtrip_report out_path src restored =
+let uniq lst =
+  let rec loop seen = function
+    | [] -> List.rev seen
+    | x :: xs -> if List.mem x seen then loop seen xs else loop (x :: seen) xs
+  in
+  loop [] lst
+
+let classify_failure_taxonomy pairs src restored =
+  let src_lines = String.split_on_char '\n' src in
+  let rst_lines = String.split_on_char '\n' restored in
+  let tags = ref [] in
+  if List.length src_lines <> List.length rst_lines then
+    tags := "line_count_mismatch" :: !tags;
+
+  let keyword_reversion =
+    List.exists
+      (fun (_, alias) ->
+        let lowered = String.lowercase_ascii alias in
+        lowered = "if" || lowered = "elif" || lowered = "for"
+        || lowered = "in" || lowered = "def" || lowered = "return")
+      pairs
+  in
+  if keyword_reversion then tags := "alias_design_collision_risk" :: !tags;
+
+  (match first_diff src restored with
+  | Some (_, s, r) ->
+      if String.trim s = "" || String.trim r = "" then
+        tags := "whitespace_or_blankline_drift" :: !tags
+      else tags := "token_substitution_mismatch" :: !tags
+  | None -> ());
+
+  if !tags = [] then [ "unknown_mismatch" ] else uniq !tags
+
+let json_array_of_strings xs =
+  let body =
+    xs |> List.map (fun s -> Printf.sprintf "\"%s\"" (escape_json s))
+    |> String.concat ", "
+  in
+  Printf.sprintf "[%s]" body
+
+let write_roundtrip_report out_path pairs src restored =
   let src_lines = String.split_on_char '\n' src in
   let rst_lines = String.split_on_char '\n' restored in
   let exact = restored = src in
@@ -251,12 +291,18 @@ let write_roundtrip_report out_path src restored =
           line_no (escape_json s) (escape_json r)
     | None -> "\"first_diff\":null"
   in
+  let taxonomy_json =
+    if exact then "\"failure_taxonomy\":[]"
+    else
+      let tags = classify_failure_taxonomy pairs src restored in
+      Printf.sprintf "\"failure_taxonomy\":%s" (json_array_of_strings tags)
+  in
   let json =
     Printf.sprintf
-      "{\n  \"status\":\"%s\",\n  \"exact_match\":%s,\n  \"src_line_count\":%d,\n  \"restored_line_count\":%d,\n  %s\n}\n"
+      "{\n  \"status\":\"%s\",\n  \"exact_match\":%s,\n  \"src_line_count\":%d,\n  \"restored_line_count\":%d,\n  %s,\n  %s\n}\n"
       (if exact then "ok" else "mismatch")
       (if exact then "true" else "false")
-      (List.length src_lines) (List.length rst_lines) diff_json
+      (List.length src_lines) (List.length rst_lines) diff_json taxonomy_json
   in
   let oc = open_out out_path in
   output_string oc json;
@@ -302,7 +348,7 @@ let run_roundtrip_report alias_path source_path out_path =
     let src = read_file source_path in
     let alias_code = transform_text pairs src in
     let restored = transform_text (invert_pairs pairs) alias_code in
-    write_roundtrip_report out_path src restored;
+    write_roundtrip_report out_path pairs src restored;
     if restored = src then (
       Printf.printf "OK: report written to %s\n" out_path;
       0)
