@@ -54,6 +54,8 @@ def main() -> int:
     assert_contains(content, "- ok_cases: 1 (33.3%)")
     assert_contains(content, "- mismatch_cases: 2 (66.7%)")
     assert_contains(content, "- include_diff: true")
+    assert_contains(content, "- mismatch_severity_total: 130")
+    assert_contains(content, "- mismatch_severity_avg: 65.0")
 
     # taxonomy frequency block should include whitespace/line-count drift tags.
     assert_contains(content, "- line_count_mismatch: 1")

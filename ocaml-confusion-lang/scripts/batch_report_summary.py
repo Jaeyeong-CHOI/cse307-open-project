@@ -109,9 +109,20 @@ def build_summary(
     lines.append(f"- mismatch_cases: {mismatch_cases} ({pct(mismatch_cases, total)})")
     lines.append(f"- include_diff: {str(include_diff).lower()}")
     lines.append("")
+    mismatch_list = [c for c in cases if c.get("status") != "ok"]
+    mismatch_severity_total = sum(
+        _mismatch_severity_score(case, taxonomy_weights, default_weight)[0]
+        for case in mismatch_list
+    )
+    mismatch_severity_avg = (
+        mismatch_severity_total / len(mismatch_list) if mismatch_list else 0.0
+    )
+
     lines.append("## Quality Signals")
     lines.append(f"- token_equivalent=true: {token_equiv_true}/{total} ({pct(token_equiv_true, total)})")
     lines.append(f"- ast_equivalent=true: {ast_equiv_true}/{total} ({pct(ast_equiv_true, total)})")
+    lines.append(f"- mismatch_severity_total: {mismatch_severity_total}")
+    lines.append(f"- mismatch_severity_avg: {mismatch_severity_avg:.1f}")
     lines.append("")
 
     lines.append("## Failure Taxonomy (frequency)")
@@ -141,7 +152,6 @@ def build_summary(
     else:
         lines.append("- none")
 
-    mismatch_list = [c for c in cases if c.get("status") != "ok"]
     if mismatch_sort == "severity":
         mismatch_list = sorted(
             mismatch_list,
