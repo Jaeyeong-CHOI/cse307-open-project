@@ -152,6 +152,8 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 # - major 변경(키 삭제/의미 변경) 시 N 증가, minor 확장(새 optional key 추가)은 동일 vN 유지 가능
 # show-preset에서도 CLI override가 최종값에 어떻게 반영되는지 미리 확인
 python3 scripts/build_batch_eval_plan.py --show-preset balanced-ci --show-preset-format summary --repeats 1 --max-total-runs 12 --fair-model-allocation
+# show-preset text meta footer에 CLI override 컨텍스트(override_count/overrides) 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset balanced-ci --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-overrides --repeats 1 --max-total-runs 12
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 # optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
@@ -398,3 +400,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 181. ~~`--show-preset-with-meta` footer에도 list-presets와 동일한 카운터형 메타(`filtered_count=1`, `emitted_count=1`, `truncated=false`)를 추가해 text meta parser를 list/show 경로에서 동일 키셋으로 처리 가능하게 정렬~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 182. ~~list/show text meta footer schema id 패턴/버전 정책을 README 단일 블록으로 명시해 parser 구현체의 참고 지점을 일원화~~ ✅ (`README.md`)
 183. ~~planner `--list-presets` text meta footer에 optional 필터 컨텍스트(`tag_filter`, `tag_match`, `name_contains`, `limit`)를 노출하는 `--list-presets-meta-include-filters` 옵션을 추가해, 파서/운영 로그에서 "어떤 필터로 만들어진 메타인지"를 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+184. ~~planner `--show-preset` text meta footer에도 optional CLI override 컨텍스트(`override_count`, `overrides`)를 노출하는 `--show-preset-meta-include-overrides` 옵션을 추가해, 단일 preset preview 로그에서 최종값이 어떤 override로 형성됐는지 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

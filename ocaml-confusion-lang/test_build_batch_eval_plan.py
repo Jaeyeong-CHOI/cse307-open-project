@@ -1370,6 +1370,35 @@ def main() -> int:
             f"unexpected show-preset summary meta footer: {show_preset_summary_with_meta_lines}"
         )
 
+    show_preset_summary_with_meta_overrides = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-overrides",
+            "--repeats",
+            "2",
+            "--max-total-runs",
+            "12",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_summary_with_meta_overrides_lines = [
+        line.rstrip("\n") for line in show_preset_summary_with_meta_overrides.stdout.splitlines() if line.strip()
+    ]
+    if "\toverride_count=2\toverrides=repeats,max_total_runs" not in show_preset_summary_with_meta_overrides_lines[-1]:
+        raise AssertionError(
+            "unexpected show-preset override context in meta footer: "
+            f"{show_preset_summary_with_meta_overrides_lines}"
+        )
+
     show_preset_summary_with_meta_custom_schema = subprocess.run(
         [
             "python3",

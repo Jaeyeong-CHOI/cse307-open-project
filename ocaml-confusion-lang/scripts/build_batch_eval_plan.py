@@ -324,17 +324,21 @@ def _emit_show_preset_text_meta(
     output_format: str,
     preset_file: Path,
     schema_id: str,
+    extra_fields: dict[str, str] | None = None,
 ) -> None:
-    print(
-        "# meta\t"
-        f"schema={schema_id}\t"
-        f"filtered_count=1\t"
-        f"emitted_count=1\t"
-        f"truncated=false\t"
-        f"preset={preset_name}\t"
-        f"format={output_format}\t"
-        f"preset_file={preset_file}"
-    )
+    fields = [
+        f"schema={schema_id}",
+        "filtered_count=1",
+        "emitted_count=1",
+        "truncated=false",
+        f"preset={preset_name}",
+        f"format={output_format}",
+        f"preset_file={preset_file}",
+    ]
+    if extra_fields:
+        for key, value in extra_fields.items():
+            fields.append(f"{key}={value}")
+    print("# meta\t" + "\t".join(fields))
 
 
 def _dedupe_keep_order(values: list[str]) -> list[str]:
@@ -446,6 +450,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Schema id for --show-preset text meta footer "
             "(default: planner_preset_show_meta.v1)"
+        ),
+    )
+    parser.add_argument(
+        "--show-preset-meta-include-overrides",
+        action="store_true",
+        help=(
+            "Include CLI override context in --show-preset text meta footer "
+            "(override_count/overrides)."
         ),
     )
     parser.add_argument(
@@ -638,6 +650,25 @@ def main() -> int:
             if args.max_runs_per_task_prompt_condition is not None:
                 resolved["max_runs_per_task_prompt_condition"] = args.max_runs_per_task_prompt_condition
 
+            active_overrides: list[str] = []
+            override_checks = [
+                ("models", args.models),
+                ("prompt_conditions", args.prompt_conditions),
+                ("repeats", args.repeats),
+                ("cheap_first", args.cheap_first),
+                ("fair_model_allocation", args.fair_model_allocation),
+                ("max_total_runs", args.max_total_runs),
+                ("max_total_runs_mode", args.max_total_runs_mode),
+                ("max_runs_per_model", args.max_runs_per_model),
+                ("max_runs_per_prompt_condition", args.max_runs_per_prompt_condition),
+                ("max_runs_per_task", args.max_runs_per_task),
+                ("max_runs_per_task_model", args.max_runs_per_task_model),
+                ("max_runs_per_task_prompt_condition", args.max_runs_per_task_prompt_condition),
+            ]
+            for key, value in override_checks:
+                if value is not None:
+                    active_overrides.append(key)
+
             if resolved["repeats"] < 1:
                 raise ValueError("--repeats must be >= 1")
             if resolved["max_total_runs"] < 0:
@@ -661,6 +692,13 @@ def main() -> int:
                 "preset": args.show_preset,
                 "resolved": resolved,
             }
+            show_meta_extra_fields: dict[str, str] | None = None
+            if args.show_preset_meta_include_overrides:
+                show_meta_extra_fields = {
+                    "override_count": str(len(active_overrides)),
+                    "overrides": ",".join(active_overrides) if active_overrides else "none",
+                }
+
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
                 if args.show_preset_with_meta:
@@ -669,6 +707,7 @@ def main() -> int:
                         args.show_preset_format,
                         args.preset_file,
                         schema_id=show_meta_schema_id,
+                        extra_fields=show_meta_extra_fields,
                     )
                 return 0
             if args.show_preset_format == "summary-tsv":
@@ -694,6 +733,7 @@ def main() -> int:
                         args.show_preset_format,
                         args.preset_file,
                         schema_id=show_meta_schema_id,
+                        extra_fields=show_meta_extra_fields,
                     )
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
