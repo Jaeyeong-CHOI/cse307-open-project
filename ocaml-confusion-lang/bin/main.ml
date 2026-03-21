@@ -18,7 +18,7 @@ let read_file path = String.concat "\n" (read_lines path)
 
 let split_once_tab line =
   match String.split_on_char '\t' line with
-  | [k; v] -> Some (String.trim k, String.trim v)
+  | [ k; v ] -> Some (String.trim k, String.trim v)
   | _ -> None
 
 let load_alias_pairs path =
@@ -93,42 +93,108 @@ let replace_keyword_wordboundary line keyword repl =
   loop 0;
   Buffer.contents buf
 
-let split_code_and_comment line =
-  let n = String.length line in
-  let rec loop i in_single in_double escaped =
-    if i >= n then (line, "")
-    else
-      let c = line.[i] in
-      if escaped then loop (i + 1) in_single in_double false
-      else if c = '\\' && (in_single || in_double) then
-        loop (i + 1) in_single in_double true
-      else if c = '\'' && not in_double then loop (i + 1) (not in_single) in_double false
-      else if c = '"' && not in_single then loop (i + 1) in_single (not in_double) false
-      else if c = '#' && not in_single && not in_double then
-        (String.sub line 0 i, String.sub line i (n - i))
-      else loop (i + 1) in_single in_double false
-  in
-  loop 0 false false false
-
 let sort_pairs_by_key_length_desc pairs =
   List.sort
     (fun (k1, _) (k2, _) -> compare (String.length k2) (String.length k1))
     pairs
 
-let transform_line pairs line =
-  let code, comment = split_code_and_comment line in
-  let transformed =
-    List.fold_left
-      (fun acc (py_kw, alias) -> replace_keyword_wordboundary acc py_kw alias)
-      code (sort_pairs_by_key_length_desc pairs)
-  in
-  transformed ^ comment
+type scan_state =
+  | Normal
+  | InSingle
+  | InDouble
+  | InTripleSingle
+  | InTripleDouble
+  | InComment
 
-let invert_pairs pairs = List.map (fun (a, b) -> (b, a)) pairs
+let is_triple_quote text i quote =
+  let n = String.length text in
+  i + 2 < n && text.[i] = quote && text.[i + 1] = quote && text.[i + 2] = quote
 
 let transform_text pairs text =
-  text |> String.split_on_char '\n' |> List.map (transform_line pairs)
-  |> String.concat "\n"
+  let pairs_sorted = sort_pairs_by_key_length_desc pairs in
+  let n = String.length text in
+  let out = Buffer.create (n + 64) in
+  let code_buf = Buffer.create 128 in
+  let flush_code () =
+    if Buffer.length code_buf > 0 then (
+      let code = Buffer.contents code_buf in
+      Buffer.clear code_buf;
+      let transformed =
+        List.fold_left
+          (fun acc (py_kw, alias) -> replace_keyword_wordboundary acc py_kw alias)
+          code pairs_sorted
+      in
+      Buffer.add_string out transformed)
+  in
+  let rec loop i state escaped =
+    if i >= n then (
+      flush_code ();
+      Buffer.contents out)
+    else
+      match state with
+      | Normal ->
+          if is_triple_quote text i '\'' then (
+            flush_code ();
+            Buffer.add_substring out text i 3;
+            loop (i + 3) InTripleSingle false)
+          else if is_triple_quote text i '"' then (
+            flush_code ();
+            Buffer.add_substring out text i 3;
+            loop (i + 3) InTripleDouble false)
+          else
+            let c = text.[i] in
+            if c = '\'' then (
+              flush_code ();
+              Buffer.add_char out c;
+              loop (i + 1) InSingle false)
+            else if c = '"' then (
+              flush_code ();
+              Buffer.add_char out c;
+              loop (i + 1) InDouble false)
+            else if c = '#' then (
+              flush_code ();
+              Buffer.add_char out c;
+              loop (i + 1) InComment false)
+            else (
+              Buffer.add_char code_buf c;
+              loop (i + 1) Normal false)
+      | InSingle ->
+          let c = text.[i] in
+          Buffer.add_char out c;
+          if escaped then loop (i + 1) InSingle false
+          else if c = '\\' then loop (i + 1) InSingle true
+          else if c = '\'' then loop (i + 1) Normal false
+          else loop (i + 1) InSingle false
+      | InDouble ->
+          let c = text.[i] in
+          Buffer.add_char out c;
+          if escaped then loop (i + 1) InDouble false
+          else if c = '\\' then loop (i + 1) InDouble true
+          else if c = '"' then loop (i + 1) Normal false
+          else loop (i + 1) InDouble false
+      | InTripleSingle ->
+          if is_triple_quote text i '\'' then (
+            Buffer.add_substring out text i 3;
+            loop (i + 3) Normal false)
+          else (
+            Buffer.add_char out text.[i];
+            loop (i + 1) InTripleSingle false)
+      | InTripleDouble ->
+          if is_triple_quote text i '"' then (
+            Buffer.add_substring out text i 3;
+            loop (i + 3) Normal false)
+          else (
+            Buffer.add_char out text.[i];
+            loop (i + 1) InTripleDouble false)
+      | InComment ->
+          let c = text.[i] in
+          Buffer.add_char out c;
+          if c = '\n' then loop (i + 1) Normal false
+          else loop (i + 1) InComment false
+  in
+  loop 0 Normal false
+
+let invert_pairs pairs = List.map (fun (a, b) -> (b, a)) pairs
 
 let print_first_diff src restored =
   let src_lines = String.split_on_char '\n' src in

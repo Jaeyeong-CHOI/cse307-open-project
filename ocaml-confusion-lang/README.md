@@ -23,10 +23,12 @@ cd ocaml-confusion-lang
 dune exec confusionlang -- validate examples/case-c2.tsv
 dune exec confusionlang -- transform examples/case-c2.tsv examples/sample.py
 dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/sample.py
+# 문자열/주석 보호 확인용
+dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/protected_literals.py
 ```
 
 ## 다음 구현
-1. 문자열/주석 보호 토크나이저
-2. single-pass replace 엔진
-3. round-trip equivalence checker
+1. ~~문자열/주석 보호 토크나이저~~ ✅ (single/double/triple quote + line comment 보호)
+2. single-pass replace 엔진 고도화 (현재는 코드 span별 fold)
+3. round-trip equivalence checker 강화 (AST/토큰 단위 비교)
 4. failure taxonomy 자동 라벨링
