@@ -702,6 +702,48 @@ def main() -> int:
         if snippet not in quick_smoke_line:
             raise AssertionError(f"missing '{snippet}' in summary line: {quick_smoke_line}")
 
+    show_preset_json = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_payload = json.loads(show_preset_json.stdout)
+    if show_preset_payload.get("preset") != "quick-smoke":
+        raise AssertionError(f"unexpected show-preset name: {show_preset_payload}")
+    resolved = show_preset_payload.get("resolved")
+    if not isinstance(resolved, dict):
+        raise AssertionError(f"missing resolved preset payload: {show_preset_payload}")
+    if resolved.get("max_runs_per_task") != 0:
+        raise AssertionError(f"expected default max_runs_per_task=0 in resolved preset, got {resolved}")
+
+    show_preset_summary = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_line = show_preset_summary.stdout.strip()
+    if not show_preset_line.startswith("quick-smoke\t"):
+        raise AssertionError(f"unexpected show-preset summary output: {show_preset_line}")
+    for snippet in ["repeats=1", "max_total_runs_mode=cap", "max_runs_per_task=0"]:
+        if snippet not in show_preset_line:
+            raise AssertionError(f"missing '{snippet}' in show-preset summary output: {show_preset_line}")
+
     preset_output = OUT / "batch-plan.preset.quick-smoke.json"
     subprocess.run(
         [

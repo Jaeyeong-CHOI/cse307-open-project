@@ -56,6 +56,23 @@ def load_preset_config(preset_file: Path, preset_name: str) -> dict[str, Any]:
     return preset
 
 
+def resolve_preset_with_defaults(preset: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "models": str(preset.get("models", "")),
+        "prompt_conditions": str(preset.get("prompt_conditions", "")),
+        "repeats": int(preset.get("repeats", 1)),
+        "cheap_first": bool(preset.get("cheap_first", False)),
+        "fair_model_allocation": bool(preset.get("fair_model_allocation", False)),
+        "max_total_runs": int(preset.get("max_total_runs", 0)),
+        "max_total_runs_mode": str(preset.get("max_total_runs_mode", "fail")),
+        "max_runs_per_model": int(preset.get("max_runs_per_model", 0)),
+        "max_runs_per_prompt_condition": int(preset.get("max_runs_per_prompt_condition", 0)),
+        "max_runs_per_task": int(preset.get("max_runs_per_task", 0)),
+        "max_runs_per_task_model": int(preset.get("max_runs_per_task_model", 0)),
+        "max_runs_per_task_prompt_condition": int(preset.get("max_runs_per_task_prompt_condition", 0)),
+    }
+
+
 def _dedupe_keep_order(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -141,6 +158,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("task_set_json", nargs="?", type=Path, help="Path to task-set v1 JSON")
     parser.add_argument("--preset", default=None, help="Preset name from --preset-file")
     parser.add_argument(
+        "--show-preset",
+        default=None,
+        help="Show one preset resolved with planner defaults and exit",
+    )
+    parser.add_argument(
+        "--show-preset-format",
+        choices=("json", "summary"),
+        default="json",
+        help="Output format for --show-preset (default: json)",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -201,6 +229,31 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     try:
         args = parse_args()
+
+        if args.show_preset:
+            preset = load_preset_config(args.preset_file, args.show_preset)
+            resolved = resolve_preset_with_defaults(preset)
+            payload = {
+                "schema_version": "v1",
+                "preset_file": str(args.preset_file),
+                "preset": args.show_preset,
+                "resolved": resolved,
+            }
+            if args.show_preset_format == "summary":
+                print(
+                    f"{args.show_preset}\tmodels={resolved['models']}\tprompt_conditions={resolved['prompt_conditions']}\t"
+                    f"repeats={resolved['repeats']}\tcheap_first={str(resolved['cheap_first']).lower()}\t"
+                    f"fair_model_allocation={str(resolved['fair_model_allocation']).lower()}\t"
+                    f"max_total_runs={resolved['max_total_runs']}\tmax_total_runs_mode={resolved['max_total_runs_mode']}\t"
+                    f"max_runs_per_model={resolved['max_runs_per_model']}\t"
+                    f"max_runs_per_prompt_condition={resolved['max_runs_per_prompt_condition']}\t"
+                    f"max_runs_per_task={resolved['max_runs_per_task']}\t"
+                    f"max_runs_per_task_model={resolved['max_runs_per_task_model']}\t"
+                    f"max_runs_per_task_prompt_condition={resolved['max_runs_per_task_prompt_condition']}"
+                )
+                return 0
+            print(json.dumps(payload, ensure_ascii=False, indent=2))
+            return 0
 
         if args.list_presets:
             presets = load_preset_file(args.preset_file)
