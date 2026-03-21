@@ -20,6 +20,15 @@ on:
           - auto
           - lightweight
           - full
+      snapshot_top_k_mismatches:
+        description: "Top-K mismatch hints in step summary (default: 1)"
+        required: false
+        default: "1"
+        type: choice
+        options:
+          - "1"
+          - "2"
+          - "3"
 
 concurrency:
   group: ocaml-confusion-lang-ci-${{ github.workflow }}-${{ github.ref }}
@@ -32,6 +41,7 @@ jobs:
       full_ci: ${{ steps.resolve-mode.outputs.full_ci }}
       manual_mode: ${{ steps.resolve-mode.outputs.manual_mode }}
       detected_full_ci: ${{ steps.resolve-mode.outputs.detected_full_ci }}
+      snapshot_top_k_mismatches: ${{ steps.resolve-mode.outputs.snapshot_top_k_mismatches }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,6 +69,7 @@ jobs:
         env:
           FILTER_FULL_CI: ${{ steps.filter.outputs.full_ci }}
           MANUAL_MODE: ${{ github.event.inputs.ci_mode || 'auto' }}
+          MANUAL_SNAPSHOT_TOP_K: ${{ github.event.inputs.snapshot_top_k_mismatches || '1' }}
         run: |
           set -euo pipefail
           if [[ "${MANUAL_MODE}" == "full" ]]; then
@@ -68,10 +79,18 @@ jobs:
           else
             full_ci="${FILTER_FULL_CI}"
           fi
+
+          snapshot_top_k="${MANUAL_SNAPSHOT_TOP_K}"
+          if ! [[ "${snapshot_top_k}" =~ ^[1-3]$ ]]; then
+            echo "Invalid snapshot_top_k_mismatches='${snapshot_top_k}', fallback to 1"
+            snapshot_top_k=1
+          fi
+
           echo "full_ci=${full_ci}" >> "$GITHUB_OUTPUT"
           echo "manual_mode=${MANUAL_MODE}" >> "$GITHUB_OUTPUT"
           echo "detected_full_ci=${FILTER_FULL_CI}" >> "$GITHUB_OUTPUT"
-          echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI})"
+          echo "snapshot_top_k_mismatches=${snapshot_top_k}" >> "$GITHUB_OUTPUT"
+          echo "Resolved full_ci=${full_ci} (manual=${MANUAL_MODE}, detected=${FILTER_FULL_CI}, top_k=${snapshot_top_k})"
 
       - name: Publish CI mode decision summary
         shell: bash
@@ -79,12 +98,14 @@ jobs:
           RESOLVED_FULL_CI: ${{ steps.resolve-mode.outputs.full_ci }}
           MANUAL_MODE: ${{ steps.resolve-mode.outputs.manual_mode }}
           DETECTED_FULL_CI: ${{ steps.resolve-mode.outputs.detected_full_ci }}
+          SNAPSHOT_TOP_K: ${{ steps.resolve-mode.outputs.snapshot_top_k_mismatches }}
         run: |
           {
             echo "## CI mode resolution"
             echo "- manual_mode: ${MANUAL_MODE}"
             echo "- detected_full_ci: ${DETECTED_FULL_CI}"
             echo "- resolved_full_ci: ${RESOLVED_FULL_CI}"
+            echo "- snapshot_top_k_mismatches: ${SNAPSHOT_TOP_K}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   test-lightweight:
@@ -140,7 +161,8 @@ jobs:
           python3 scripts/emit_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
             --metric-json ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json \
-            --label "Lightweight CI result snapshot" >> "$GITHUB_STEP_SUMMARY"
+            --label "Lightweight CI result snapshot" \
+            --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload lightweight CI artifacts
         if: github.event_name != 'pull_request'
@@ -244,7 +266,8 @@ jobs:
           python3 scripts/emit_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json \
             --metric-json ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json \
-            --label "Full CI result snapshot" >> "$GITHUB_STEP_SUMMARY"
+            --label "Full CI result snapshot" \
+            --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload CI smoke artifacts
         if: github.event_name != 'pull_request'
