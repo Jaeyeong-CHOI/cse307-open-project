@@ -300,6 +300,49 @@ def main() -> int:
         if args.show_preset:
             preset = load_preset_config(args.preset_file, args.show_preset)
             resolved = resolve_preset_with_defaults(preset)
+            # Preview final values after optional CLI overrides, mirroring plan-generation precedence.
+            if args.models is not None:
+                resolved["models"] = args.models
+            if args.prompt_conditions is not None:
+                resolved["prompt_conditions"] = args.prompt_conditions
+            if args.repeats is not None:
+                resolved["repeats"] = args.repeats
+            if args.cheap_first is not None:
+                resolved["cheap_first"] = bool(args.cheap_first)
+            if args.fair_model_allocation is not None:
+                resolved["fair_model_allocation"] = bool(args.fair_model_allocation)
+            if args.max_total_runs is not None:
+                resolved["max_total_runs"] = args.max_total_runs
+            if args.max_total_runs_mode is not None:
+                resolved["max_total_runs_mode"] = args.max_total_runs_mode
+            if args.max_runs_per_model is not None:
+                resolved["max_runs_per_model"] = args.max_runs_per_model
+            if args.max_runs_per_prompt_condition is not None:
+                resolved["max_runs_per_prompt_condition"] = args.max_runs_per_prompt_condition
+            if args.max_runs_per_task is not None:
+                resolved["max_runs_per_task"] = args.max_runs_per_task
+            if args.max_runs_per_task_model is not None:
+                resolved["max_runs_per_task_model"] = args.max_runs_per_task_model
+            if args.max_runs_per_task_prompt_condition is not None:
+                resolved["max_runs_per_task_prompt_condition"] = args.max_runs_per_task_prompt_condition
+
+            if resolved["repeats"] < 1:
+                raise ValueError("--repeats must be >= 1")
+            if resolved["max_total_runs"] < 0:
+                raise ValueError("--max-total-runs must be >= 0")
+            if resolved["max_total_runs_mode"] not in {"fail", "cap"}:
+                raise ValueError("--max-total-runs-mode must be one of: fail, cap")
+            if resolved["max_runs_per_model"] < 0:
+                raise ValueError("--max-runs-per-model must be >= 0")
+            if resolved["max_runs_per_prompt_condition"] < 0:
+                raise ValueError("--max-runs-per-prompt-condition must be >= 0")
+            if resolved["max_runs_per_task"] < 0:
+                raise ValueError("--max-runs-per-task must be >= 0")
+            if resolved["max_runs_per_task_model"] < 0:
+                raise ValueError("--max-runs-per-task-model must be >= 0")
+            if resolved["max_runs_per_task_prompt_condition"] < 0:
+                raise ValueError("--max-runs-per-task-prompt-condition must be >= 0")
+
             payload = {
                 "schema_version": "v1",
                 "preset_file": str(args.preset_file),

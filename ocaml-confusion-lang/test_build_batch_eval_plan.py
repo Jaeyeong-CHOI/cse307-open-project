@@ -802,6 +802,38 @@ def main() -> int:
         if snippet not in show_preset_line:
             raise AssertionError(f"missing '{snippet}' in show-preset summary output: {show_preset_line}")
 
+    show_preset_overridden = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--models",
+            "gpt-5-mini,gpt-5-pro",
+            "--repeats",
+            "2",
+            "--max-total-runs",
+            "8",
+            "--fair-model-allocation",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_overridden_payload = json.loads(show_preset_overridden.stdout)
+    overridden = show_preset_overridden_payload.get("resolved", {})
+    if overridden.get("models") != "gpt-5-mini,gpt-5-pro":
+        raise AssertionError(f"show-preset override for models not applied: {overridden}")
+    if overridden.get("repeats") != 2:
+        raise AssertionError(f"show-preset override for repeats not applied: {overridden}")
+    if overridden.get("max_total_runs") != 8:
+        raise AssertionError(f"show-preset override for max_total_runs not applied: {overridden}")
+    if overridden.get("fair_model_allocation") is not True:
+        raise AssertionError(
+            f"show-preset override for fair_model_allocation not applied: {overridden}"
+        )
+
     preset_output = OUT / "batch-plan.preset.quick-smoke.json"
     subprocess.run(
         [

@@ -111,6 +111,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format re
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke
 # 특정 preset 1개의 resolved 설정을 compact summary 라인으로 확인
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary
+# show-preset에서도 CLI override가 최종값에 어떻게 반영되는지 미리 확인
+python3 scripts/build_batch_eval_plan.py --show-preset balanced-ci --show-preset-format summary --repeats 1 --max-total-runs 12 --fair-model-allocation
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
 # summary/task-set lineage 불일치 시 fail-fast
@@ -331,3 +333,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 156. ~~planner(`build_batch_eval_plan.py`) preset 파일 로더에 키/타입/range fail-fast 검증을 추가해(`unknown key`, cap 음수, repeats<1 등) 잘못된 preset이 계획 생성 단계까지 전파되는 것을 조기 차단~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 157. ~~planner preset 요약 출력(`--list-presets-format summary`)을 resolved-default 기반으로 확장해 models/prompt_conditions/repeats 및 task 축 cap(`max_runs_per_task`, `max_runs_per_task_model`, `max_runs_per_task_prompt_condition`)까지 한 줄에서 즉시 확인 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 158. ~~planner summary에 repeat 축 집계(`planned/potential/skipped_runs_by_repeat_index`, `planned_run_ratio_by_repeat_index`)를 추가해 `max-total-runs cap`/축별 cap 적용 시 특정 repeat index로 실행이 쏠리는지 즉시 진단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+159. ~~planner(`build_batch_eval_plan.py`)의 `--show-preset` 경로에 CLI override preview를 반영해(`models/repeats/cap/fair 등`) preset 선택 단계에서 실제 적용 최종값을 task set 없이 즉시 검증 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
