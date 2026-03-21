@@ -672,6 +672,30 @@ def main() -> int:
     if not isinstance(listed_presets, dict) or "quick-smoke" not in listed_presets:
         raise AssertionError(f"unexpected preset list json payload: {preset_list_payload}")
 
+    preset_list_resolved_json = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "resolved-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_resolved_payload = json.loads(preset_list_resolved_json.stdout)
+    resolved_presets = preset_list_resolved_payload.get("presets")
+    if not isinstance(resolved_presets, dict) or "quick-smoke" not in resolved_presets:
+        raise AssertionError(f"unexpected resolved-json payload: {preset_list_resolved_payload}")
+    quick_smoke_resolved = resolved_presets["quick-smoke"]
+    if quick_smoke_resolved.get("max_runs_per_task_prompt_condition") != 0:
+        raise AssertionError(
+            "expected default max_runs_per_task_prompt_condition=0 in resolved-json output, "
+            f"got {quick_smoke_resolved}"
+        )
+
     preset_list_summary = subprocess.run(
         [
             "python3",

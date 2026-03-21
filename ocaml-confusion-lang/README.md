@@ -105,6 +105,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset 핵심 cap/정책을 compact summary 라인으로 확인
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary
+# 모든 preset의 resolved 설정(기본값 포함)을 JSON으로 한번에 확인
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format resolved-json
 # 특정 preset 1개의 resolved 설정(기본값 포함) 확인(JSON)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke
 # 특정 preset 1개의 resolved 설정을 compact summary 라인으로 확인
@@ -323,3 +325,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 152. ~~planner(`build_batch_eval_plan.py`)의 preset discovery 경로에 JSON 출력 모드(`--list-presets-format json`)를 추가해 preset 자동화 소비 시 text 파싱 의존을 제거하고 저비용 오케스트레이션 연동을 단순화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 153. ~~planner(`build_batch_eval_plan.py`)에 preset compact 출력 모드(`--list-presets-format summary`)를 추가해 preset 선택 전 핵심 cap/정책(`max_total_runs`, per-model/per-condition cap, cheap/fair 토글)을 한눈에 확인 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 154. ~~planner(`build_batch_eval_plan.py`)에 단일 preset resolved 조회(`--show-preset`, `--show-preset-format json|summary`)를 추가해 운영자가 특정 preset의 기본값 보정 결과를 task set 없이 즉시 점검 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+155. ~~planner(`build_batch_eval_plan.py`)에 preset 목록 resolved 출력 모드(`--list-presets-format resolved-json`)를 추가해 모든 preset의 기본값 보정 결과를 단일 호출로 자동화 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

@@ -175,7 +175,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-format",
-        choices=("names", "json", "summary"),
+        choices=("names", "json", "resolved-json", "summary"),
         default="names",
         help="Output format for --list-presets (default: names)",
     )
@@ -261,6 +261,25 @@ def main() -> int:
                 print(json.dumps({"schema_version": "v1", "presets": presets}, ensure_ascii=False, indent=2))
                 return 0
             preset_names = sorted(presets.keys())
+            if args.list_presets_format == "resolved-json":
+                resolved_presets: dict[str, dict[str, Any]] = {}
+                for name in preset_names:
+                    preset = presets[name]
+                    if not isinstance(preset, dict):
+                        raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
+                    resolved_presets[name] = resolve_preset_with_defaults(preset)
+                print(
+                    json.dumps(
+                        {
+                            "schema_version": "v1",
+                            "preset_file": str(args.preset_file),
+                            "presets": resolved_presets,
+                        },
+                        ensure_ascii=False,
+                        indent=2,
+                    )
+                )
+                return 0
             if args.list_presets_format == "summary":
                 for name in preset_names:
                     preset = presets[name]
