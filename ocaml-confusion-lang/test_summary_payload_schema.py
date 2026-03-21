@@ -130,6 +130,35 @@ def main() -> int:
 
     _run_validator(invalid_aggregate_consistency, expect_ok=False)
 
+    valid_run_context_summary = OUT / "fixture.summary.schema-check.valid-run-ref-pull.json"
+    payload_valid_run_context = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload_valid_run_context["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+        "run_attempt": "2",
+        "event_name": "pull_request",
+        "repository": "Jaeyeong-CHOI/cse307-open-project",
+        "sha": "abcdef1",
+        "ref": "refs/pull/42/merge",
+        "workflow": "ocaml-confusion-lang-ci",
+        "job": "summary-regression",
+    }
+    payload_valid_run_context["run_context"]["run_url"] = (
+        "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789/attempts/2"
+    )
+    valid_run_context_summary.write_text(
+        json.dumps(payload_valid_run_context, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    _run_validator(valid_run_context_summary, expect_ok=True)
+
+    invalid_run_context_summary = OUT / "fixture.summary.schema-check.invalid-run-context-workflow.json"
+    payload_invalid_run_context = json.loads(valid_run_context_summary.read_text(encoding="utf-8"))
+    payload_invalid_run_context["run_context"]["workflow"] = "x" * 129
+    invalid_run_context_summary.write_text(
+        json.dumps(payload_invalid_run_context, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    _run_validator(invalid_run_context_summary, expect_ok=False)
+
     print("OK: summary payload schema regression passed")
     return 0
 
