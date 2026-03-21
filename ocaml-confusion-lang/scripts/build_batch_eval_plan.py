@@ -112,6 +112,12 @@ def parse_args() -> argparse.Namespace:
         help="Optional per-model cap for planned runs (0 disables cap)",
     )
     parser.add_argument(
+        "--max-runs-per-prompt-condition",
+        type=int,
+        default=0,
+        help="Optional per-prompt-condition cap for planned runs (0 disables cap)",
+    )
+    parser.add_argument(
         "--cheap-first",
         action="store_true",
         help="Order model runs using a cheap-first heuristic before expanding matrix",
@@ -136,6 +142,8 @@ def main() -> int:
             raise ValueError("--max-total-runs must be >= 0")
         if args.max_runs_per_model < 0:
             raise ValueError("--max-runs-per-model must be >= 0")
+        if args.max_runs_per_prompt_condition < 0:
+            raise ValueError("--max-runs-per-prompt-condition must be >= 0")
 
         task_set = load_json(args.task_set_json)
         task_set_id, tasks = validate_task_set(task_set, args.task_set_json)
@@ -153,26 +161,51 @@ def main() -> int:
         runs_by_model_prompt_condition: dict[str, dict[str, int]] = {
             model: {condition: 0 for condition in conditions} for model in models
         }
-        for model in models:
+        if args.max_runs_per_prompt_condition:
+            # Condition-first expansion keeps per-condition caps from starving later models.
             for condition in conditions:
                 for task in tasks:
                     for rep in range(1, args.repeats + 1):
-                        if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
-                            continue
-                        run_index += 1
-                        runs_per_model[model] += 1
-                        runs_per_prompt_condition[condition] += 1
-                        runs_by_model_prompt_condition[model][condition] += 1
-                        plan.append(
-                            {
-                                "run_id": f"run-{run_index:04d}",
-                                "task_id": task["task_id"],
-                                "source": task["source"],
-                                "model": model,
-                                "prompt_condition": condition,
-                                "repeat_index": rep,
-                            }
-                        )
+                        for model in models:
+                            if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
+                                continue
+                            if runs_per_prompt_condition[condition] >= args.max_runs_per_prompt_condition:
+                                continue
+                            run_index += 1
+                            runs_per_model[model] += 1
+                            runs_per_prompt_condition[condition] += 1
+                            runs_by_model_prompt_condition[model][condition] += 1
+                            plan.append(
+                                {
+                                    "run_id": f"run-{run_index:04d}",
+                                    "task_id": task["task_id"],
+                                    "source": task["source"],
+                                    "model": model,
+                                    "prompt_condition": condition,
+                                    "repeat_index": rep,
+                                }
+                            )
+        else:
+            for model in models:
+                for condition in conditions:
+                    for task in tasks:
+                        for rep in range(1, args.repeats + 1):
+                            if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
+                                continue
+                            run_index += 1
+                            runs_per_model[model] += 1
+                            runs_per_prompt_condition[condition] += 1
+                            runs_by_model_prompt_condition[model][condition] += 1
+                            plan.append(
+                                {
+                                    "run_id": f"run-{run_index:04d}",
+                                    "task_id": task["task_id"],
+                                    "source": task["source"],
+                                    "model": model,
+                                    "prompt_condition": condition,
+                                    "repeat_index": rep,
+                                }
+                            )
 
         if args.max_total_runs and len(plan) > args.max_total_runs:
             raise ValueError(
@@ -218,6 +251,7 @@ def main() -> int:
                 "cheap_first": bool(args.cheap_first),
                 "max_total_runs": args.max_total_runs,
                 "max_runs_per_model": args.max_runs_per_model,
+                "max_runs_per_prompt_condition": args.max_runs_per_prompt_condition,
             },
             "summary": {
                 "task_count": len(tasks),

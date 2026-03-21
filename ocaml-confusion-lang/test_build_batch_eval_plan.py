@@ -213,6 +213,60 @@ def main() -> int:
             f"{per_model_summary['skipped_runs_by_model_prompt_condition']}"
         )
 
+
+    per_prompt_capped_output = OUT / "batch-plan.per-prompt-capped.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(TASK_SET),
+            "--models",
+            "gpt-5-mini,gpt-5-pro",
+            "--prompt-conditions",
+            "base,strict",
+            "--repeats",
+            "3",
+            "--max-runs-per-prompt-condition",
+            "5",
+            "--cheap-first",
+            "--output",
+            str(per_prompt_capped_output),
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    per_prompt_capped_payload = json.loads(per_prompt_capped_output.read_text(encoding="utf-8"))
+    per_prompt_summary = per_prompt_capped_payload["summary"]
+    if per_prompt_summary["planned_runs_total"] != 10:
+        raise AssertionError(
+            f"expected per-prompt capped total=10, got {per_prompt_summary['planned_runs_total']}"
+        )
+    if per_prompt_summary["planned_runs_by_prompt_condition"] != {"base": 5, "strict": 5}:
+        raise AssertionError(
+            "unexpected per-prompt capped runs_by_prompt_condition: "
+            f"{per_prompt_summary['planned_runs_by_prompt_condition']}"
+        )
+    if per_prompt_summary["planned_runs_by_model"] != {"gpt-5-mini": 6, "gpt-5-pro": 4}:
+        raise AssertionError(
+            "unexpected per-prompt capped runs_by_model: "
+            f"{per_prompt_summary['planned_runs_by_model']}"
+        )
+    if per_prompt_summary["planned_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 3, "strict": 3},
+        "gpt-5-pro": {"base": 2, "strict": 2},
+    }:
+        raise AssertionError(
+            "unexpected per-prompt capped planned_runs_by_model_prompt_condition: "
+            f"{per_prompt_summary['planned_runs_by_model_prompt_condition']}"
+        )
+    if per_prompt_summary["skipped_runs_by_prompt_condition"] != {"base": 13, "strict": 13}:
+        raise AssertionError(
+            "unexpected per-prompt capped skipped_runs_by_prompt_condition: "
+            f"{per_prompt_summary['skipped_runs_by_prompt_condition']}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 

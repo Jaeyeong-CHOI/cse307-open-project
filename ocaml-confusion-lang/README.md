@@ -82,7 +82,7 @@ python3 scripts/emit_ci_result_snapshot.py ../docs/research/results/roundtrip-ba
 # summary JSON -> metric snapshot 생성 (task-set lineage 자동 포함)
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json
 # batch eval run plan 생성(offline, dedupe + cheap-first ordering + run cap)
-python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5-mini --prompt-conditions base,strict,base --repeats 2 --cheap-first --max-total-runs 64 --max-runs-per-model 24 -o ../docs/research/results/roundtrip-batch-v1.plan.json
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5-mini --prompt-conditions base,strict,base --repeats 2 --cheap-first --max-total-runs 64 --max-runs-per-model 24 --max-runs-per-prompt-condition 16 -o ../docs/research/results/roundtrip-batch-v1.plan.json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
 # run_context fallback event_name(unknown/derived) 차단(엄격 모드)
@@ -282,3 +282,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 137. ~~planner summary에 potential/skipped run 집계(`potential_runs_total`, `skipped_runs_total`, `potential_runs_by_model`, `skipped_runs_by_model`)를 추가해 per-model cap으로 인해 실제로 절감된 호출량을 사전 정량화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 138. ~~planner summary에 prompt_condition 축 집계(`planned/potential/skipped_runs_by_prompt_condition`)를 추가해 per-model cap 적용 시 특정 프롬프트 조건으로 실행이 편향되는지(coverage skew) 즉시 관측 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 139. ~~planner summary에 model×prompt_condition 매트릭스 집계(`planned/potential/skipped_runs_by_model_prompt_condition`)를 추가해 cap 적용 시 모델별 조건 커버리지 왜곡을 즉시 진단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+140. ~~planner(`build_batch_eval_plan.py`)에 프롬프트 조건별 run cap(`--max-runs-per-prompt-condition`)을 추가해 모델 축뿐 아니라 condition 축 과샘플링도 사전 차단하고 비용/커버리지 균형을 운영자가 직접 제어 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
