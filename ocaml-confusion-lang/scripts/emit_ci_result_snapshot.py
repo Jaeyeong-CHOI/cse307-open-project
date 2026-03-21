@@ -10,6 +10,8 @@ from typing import Any
 
 
 TOP_K_AUTO = "auto"
+TOP_K_MIN = 1
+TOP_K_MAX = 3
 
 
 def _mismatch_fields(item: Any) -> dict[str, Any]:
@@ -47,8 +49,8 @@ def _resolve_top_k(payload: dict[str, Any], requested: str) -> int:
         return 3
 
     top_k = int(requested)
-    if top_k < 1:
-        raise ValueError("--top-k-mismatches must be >= 1")
+    if top_k < TOP_K_MIN or top_k > TOP_K_MAX:
+        raise ValueError(f"--top-k-mismatches must be between {TOP_K_MIN} and {TOP_K_MAX}")
     return top_k
 
 
@@ -148,9 +150,13 @@ def main() -> None:
         try:
             parsed_top_k = int(args.top_k_mismatches)
         except ValueError as exc:
-            raise SystemExit("--top-k-mismatches must be an integer >= 1 or 'auto'") from exc
-        if parsed_top_k < 1:
-            raise SystemExit("--top-k-mismatches must be >= 1")
+            raise SystemExit(
+                f"--top-k-mismatches must be an integer between {TOP_K_MIN} and {TOP_K_MAX} or '{TOP_K_AUTO}'"
+            ) from exc
+        if parsed_top_k < TOP_K_MIN or parsed_top_k > TOP_K_MAX:
+            raise SystemExit(
+                f"--top-k-mismatches must be between {TOP_K_MIN} and {TOP_K_MAX}"
+            )
 
     payload = json.loads(args.summary_json.read_text(encoding="utf-8"))
     print(

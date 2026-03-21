@@ -75,6 +75,13 @@ def main() -> None:
                 "first_diff_line": 7,
                 "first_token_diff_index": 11,
             },
+            {
+                "source": "examples/extra-risk-case.py",
+                "failure_taxonomy": ["token_substitution_mismatch"],
+                "severity": 35,
+                "first_diff_line": 10,
+                "first_token_diff_index": 14,
+            },
         ],
     }
 
@@ -87,7 +94,7 @@ def main() -> None:
     )
     assert_contains(
         content,
-        "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+1 more)",
+        "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+2 more)",
     )
 
     payload_no_mismatch = {
@@ -113,8 +120,33 @@ def main() -> None:
     assert_contains(auto_mm, "## Auto top-k snapshot")
     assert_contains(
         auto_mm,
-        "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+1 more)",
+        "- top3_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | #3(severity=40, taxonomy=ast_equivalence_fail, source=examples/ast-risk-case.py, first_diff_line=7, first_token_diff_index=11) | ... (+1 more)",
     )
+
+    invalid_summary = OUT / "tmp.emit-ci-summary.invalid.json"
+    invalid_metric = OUT / "tmp.emit-ci-metric.invalid.json"
+    invalid_summary.write_text(json.dumps(payload_with_mismatch, ensure_ascii=False), encoding="utf-8")
+    invalid_metric.write_text("{}", encoding="utf-8")
+    invalid = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(invalid_summary),
+            "--metric-json",
+            str(invalid_metric),
+            "--label",
+            "Invalid top-k snapshot",
+            "--top-k-mismatches",
+            "4",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+    if invalid.returncode == 0:
+        raise AssertionError("expected non-zero exit for --top-k-mismatches=4")
+    assert_contains(invalid.stderr, "--top-k-mismatches must be between 1 and 3")
 
     auto_no_mm = _run(payload_no_mismatch, "Auto no mismatch snapshot", top_k_mismatches="auto")
     assert_contains(auto_no_mm, "## Auto no mismatch snapshot")
