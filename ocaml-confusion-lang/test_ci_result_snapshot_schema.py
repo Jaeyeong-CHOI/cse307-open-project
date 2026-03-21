@@ -55,6 +55,12 @@ def main() -> None:
         },
         "summary_json": "../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json",
         "metric_json": "../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json",
+        "run_context": {
+            "run_id": "123456789",
+            "run_url": "https://github.com/org/repo/actions/runs/123456789",
+            "sha": "abc123def456",
+            "ref": "refs/heads/main",
+        },
     }
 
     valid_path = _write(OUT / "snapshot.valid.json", valid_payload)
@@ -118,6 +124,17 @@ def main() -> None:
     _assert_contains(
         bad_schema_format.stderr,
         "schema_version must match 'ci_result_snapshot.vN'",
+    )
+
+    invalid_run_context = dict(valid_payload)
+    invalid_run_context["run_context"] = {"run_id": ""}
+    invalid_run_context_path = _write(OUT / "snapshot.invalid-run-context.json", invalid_run_context)
+    bad_run_context = _run(invalid_run_context_path)
+    if bad_run_context.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.run_id")
+    _assert_contains(
+        bad_run_context.stderr,
+        "run_context.run_id must be a non-empty string when present",
     )
 
 

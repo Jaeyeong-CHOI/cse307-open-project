@@ -164,7 +164,11 @@ jobs:
             --metric-json ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json \
             --json-output ../docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json \
             --label "Lightweight CI result snapshot" \
-            --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" >> "$GITHUB_STEP_SUMMARY"
+            --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" \
+            --run-id "${{ github.run_id }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --sha "${{ github.sha }}" \
+            --ref "${{ github.ref }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json
 
@@ -273,7 +277,11 @@ jobs:
             --metric-json ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json \
             --json-output ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json \
             --label "Full CI result snapshot" \
-            --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" >> "$GITHUB_STEP_SUMMARY"
+            --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" \
+            --run-id "${{ github.run_id }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --sha "${{ github.sha }}" \
+            --ref "${{ github.ref }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 

@@ -17,6 +17,7 @@ def _run(
     label: str,
     top_k_mismatches: int | str = 1,
     json_output: Path | None = None,
+    run_context: dict[str, str] | None = None,
 ) -> str:
     summary = OUT / "tmp.emit-ci-summary.json"
     metric = OUT / "tmp.emit-ci-metric.json"
@@ -36,6 +37,16 @@ def _run(
     ]
     if json_output is not None:
         cmd.extend(["--json-output", str(json_output)])
+    if run_context is not None:
+        for arg, key in [
+            ("--run-id", "run_id"),
+            ("--run-url", "run_url"),
+            ("--sha", "sha"),
+            ("--ref", "ref"),
+        ]:
+            value = run_context.get(key)
+            if isinstance(value, str):
+                cmd.extend([arg, value])
 
     proc = subprocess.run(
         cmd,
@@ -107,6 +118,12 @@ def main() -> None:
         "Full CI result snapshot",
         top_k_mismatches=2,
         json_output=snapshot_json,
+        run_context={
+            "run_id": "123456789",
+            "run_url": "https://github.com/org/repo/actions/runs/123456789",
+            "sha": "abc123def456",
+            "ref": "refs/heads/main",
+        },
     )
     assert_contains(content, "## Full CI result snapshot")
     assert_contains(content, "- tripped_list: mismatch, severity_total, severity_avg")
@@ -123,6 +140,10 @@ def main() -> None:
         content,
         "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+2 more)",
     )
+    assert_contains(
+        content,
+        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; sha=abc123def456; ref=refs/heads/main",
+    )
 
     snapshot_payload = json.loads(snapshot_json.read_text(encoding="utf-8"))
     if snapshot_payload.get("schema_version") != "ci_result_snapshot.v1":
@@ -134,6 +155,9 @@ def main() -> None:
         raise AssertionError("json snapshot top-k metadata mismatch")
     if "#1(severity=75" not in str(top_k_meta.get("compact")):
         raise AssertionError("json snapshot compact mismatch summary missing")
+    run_context_meta = snapshot_payload.get("run_context", {})
+    if run_context_meta.get("run_id") != "123456789":
+        raise AssertionError("json snapshot run_context.run_id mismatch")
 
     payload_no_mismatch = {
         "overview": {

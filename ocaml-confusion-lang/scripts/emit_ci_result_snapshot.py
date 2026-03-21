@@ -162,13 +162,14 @@ def build_snapshot_payload(
     summary_path: Path,
     metric_path: Path,
     top_k_mismatches: str = "1",
+    run_context: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     overview = payload.get("overview", {}) if isinstance(payload.get("overview"), dict) else {}
     gates = payload.get("gates", {}) if isinstance(payload.get("gates"), dict) else {}
     top1 = _top1_fields(payload)
     resolved_top_k = _resolve_top_k(payload, top_k_mismatches)
 
-    return {
+    snapshot = {
         "schema_version": SNAPSHOT_SCHEMA_VERSION,
         "label": label,
         "cases": {
@@ -192,6 +193,9 @@ def build_snapshot_payload(
         "summary_json": str(summary_path),
         "metric_json": str(metric_path),
     }
+    if run_context:
+        snapshot["run_context"] = run_context
+    return snapshot
 
 
 def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
@@ -205,6 +209,7 @@ def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
     )
 
     resolved_top_k = top_k.get("resolved")
+    run_context = snapshot.get("run_context") if isinstance(snapshot.get("run_context"), dict) else {}
 
     lines = [
         f"## {snapshot.get('label')}",
@@ -232,6 +237,13 @@ def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
             f"resolved={resolved_top_k}"
         ),
         f"- top{resolved_top_k}_mismatches_compact: {top_k.get('compact')}",
+        (
+            "- run_context: "
+            f"run_id={run_context.get('run_id', 'n/a')}; "
+            f"run_url={run_context.get('run_url', 'n/a')}; "
+            f"sha={run_context.get('sha', 'n/a')}; "
+            f"ref={run_context.get('ref', 'n/a')}"
+        ),
         f"- summary_json: `{snapshot.get('summary_json')}`",
         f"- metric_json: `{snapshot.get('metric_json')}`",
     ]
@@ -259,6 +271,10 @@ def main() -> None:
         default="1",
         help="number of mismatch hints to compact into one line (1-3) or 'auto' (default: 1)",
     )
+    parser.add_argument("--run-id", help="optional CI run id metadata")
+    parser.add_argument("--run-url", help="optional CI run URL metadata")
+    parser.add_argument("--sha", help="optional git SHA metadata")
+    parser.add_argument("--ref", help="optional git ref metadata")
     args = parser.parse_args()
 
     if args.top_k_mismatches != TOP_K_AUTO:
@@ -275,12 +291,23 @@ def main() -> None:
 
     payload = json.loads(args.summary_json.read_text(encoding="utf-8"))
     _validate_summary_payload(payload, input_path=args.summary_json)
+    run_context = {
+        key: value
+        for key, value in {
+            "run_id": args.run_id,
+            "run_url": args.run_url,
+            "sha": args.sha,
+            "ref": args.ref,
+        }.items()
+        if isinstance(value, str) and value.strip()
+    }
     snapshot = build_snapshot_payload(
         payload,
         label=args.label,
         summary_path=args.summary_json,
         metric_path=args.metric_json,
         top_k_mismatches=args.top_k_mismatches,
+        run_context=run_context or None,
     )
 
     if args.json_output is not None:

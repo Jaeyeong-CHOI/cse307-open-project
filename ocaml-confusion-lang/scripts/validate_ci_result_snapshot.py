@@ -128,6 +128,17 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
         if any_tripped != bool(tripped_list):
             errors.append(f"{path}: any_tripped must equal bool(tripped_list)")
 
+    run_context = payload.get("run_context")
+    if run_context is not None:
+        if not isinstance(run_context, dict):
+            errors.append(f"{path}: run_context must be an object when present")
+        else:
+            for key in ["run_id", "run_url", "sha", "ref"]:
+                if key in run_context and (
+                    not isinstance(run_context.get(key), str) or not run_context.get(key).strip()
+                ):
+                    errors.append(f"{path}: run_context.{key} must be a non-empty string when present")
+
     return errors
 
 
@@ -171,7 +182,7 @@ def main() -> int:
             hints=[
                 f"input={args.snapshot_json}",
                 f"supported_schema_versions=ci_result_snapshot.v{args.schema_version_min}..ci_result_snapshot.v{args.schema_version_max}",
-                "expected_keys=schema_version,label,cases,severity,any_tripped,tripped_list,gate_details_compact,top1_mismatch,top_k_mismatches,summary_json,metric_json",
+                "expected_keys=schema_version,label,cases,severity,any_tripped,tripped_list,gate_details_compact,top1_mismatch,top_k_mismatches,summary_json,metric_json[,run_context]",
             ],
         )
         return 1
