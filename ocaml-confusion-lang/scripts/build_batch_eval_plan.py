@@ -324,6 +324,9 @@ def _emit_show_preset_text_meta(
     print(
         "# meta\t"
         f"schema={schema_id}\t"
+        f"filtered_count=1\t"
+        f"emitted_count=1\t"
+        f"truncated=false\t"
         f"preset={preset_name}\t"
         f"format={output_format}\t"
         f"preset_file={preset_file}"

@@ -1331,7 +1331,7 @@ def main() -> int:
             f"unexpected show-preset summary with meta output: {show_preset_summary_with_meta_lines}"
         )
     if not show_preset_summary_with_meta_lines[1].startswith(
-        "# meta\tschema=planner_preset_show_meta.v1\tpreset=quick-smoke\tformat=summary\tpreset_file="
+        "# meta\tschema=planner_preset_show_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false\tpreset=quick-smoke\tformat=summary\tpreset_file="
     ):
         raise AssertionError(
             f"unexpected show-preset summary meta footer: {show_preset_summary_with_meta_lines}"
@@ -1358,7 +1358,7 @@ def main() -> int:
         line.rstrip("\n") for line in show_preset_summary_with_meta_custom_schema.stdout.splitlines() if line.strip()
     ]
     if not show_preset_summary_with_meta_custom_schema_lines[-1].startswith(
-        "# meta\tschema=planner_preset_show_meta.v2\tpreset=quick-smoke\tformat=summary\tpreset_file="
+        "# meta\tschema=planner_preset_show_meta.v2\tfiltered_count=1\temitted_count=1\ttruncated=false\tpreset=quick-smoke\tformat=summary\tpreset_file="
     ):
         raise AssertionError(
             "unexpected show-preset summary custom schema meta footer: "
@@ -1437,7 +1437,7 @@ def main() -> int:
             f"unexpected show-preset summary-tsv with meta output: {show_summary_tsv_with_meta_lines}"
         )
     if not show_summary_tsv_with_meta_lines[2].startswith(
-        "# meta\tschema=planner_preset_show_meta.v1\tpreset=quick-smoke\tformat=summary-tsv\tpreset_file="
+        "# meta\tschema=planner_preset_show_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false\tpreset=quick-smoke\tformat=summary-tsv\tpreset_file="
     ):
         raise AssertionError(
             f"unexpected show-preset summary-tsv meta footer: {show_summary_tsv_with_meta_lines}"
