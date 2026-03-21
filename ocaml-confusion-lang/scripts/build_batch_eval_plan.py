@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -34,6 +35,7 @@ PRESET_SUMMARY_TSV_BASE_COLUMNS = [
     "tags",
 ]
 PRESET_SUMMARY_TSV_SCHEMA = "planner_preset_summary_tsv.v1"
+PRESET_SUMMARY_TSV_SCHEMA_PATTERN = re.compile(r"^planner_preset_summary_tsv\.v[1-9][0-9]*$")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -236,9 +238,10 @@ def _emit_preset_summary_tsv_header(
     with_schema_header: bool,
     description_mode: str,
     with_schema_column: bool,
+    schema_id: str,
 ) -> None:
     if with_schema_header:
-        print(f"# schema={PRESET_SUMMARY_TSV_SCHEMA}")
+        print(f"# schema={schema_id}")
     description_column = "description_full" if description_mode == "full" else "description_preview"
     columns = [*PRESET_SUMMARY_TSV_BASE_COLUMNS, description_column]
     if with_schema_column:
@@ -251,6 +254,7 @@ def _format_preset_summary_tsv_row(
     resolved: dict[str, Any],
     description_mode: str = "preview",
     with_schema_column: bool = False,
+    schema_id: str = PRESET_SUMMARY_TSV_SCHEMA,
 ) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
@@ -277,7 +281,7 @@ def _format_preset_summary_tsv_row(
         description_value,
     ]
     if with_schema_column:
-        row.append(PRESET_SUMMARY_TSV_SCHEMA)
+        row.append(schema_id)
     return "\t".join(item.replace("\t", " ") for item in row)
 
 
@@ -430,6 +434,13 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--summary-tsv-schema-id",
+        default=PRESET_SUMMARY_TSV_SCHEMA,
+        help=(
+            "Schema id for summary-tsv outputs (default: planner_preset_summary_tsv.v1)"
+        ),
+    )
+    parser.add_argument(
         "--preset-file",
         type=Path,
         default=DEFAULT_PRESET_FILE,
@@ -479,6 +490,12 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     try:
         args = parse_args()
+
+        schema_id = str(args.summary_tsv_schema_id).strip()
+        if not PRESET_SUMMARY_TSV_SCHEMA_PATTERN.match(schema_id):
+            raise ValueError(
+                "--summary-tsv-schema-id must match planner_preset_summary_tsv.vN (N>=1)"
+            )
 
         if args.show_preset:
             preset = load_preset_config(args.preset_file, args.show_preset)
@@ -540,6 +557,7 @@ def main() -> int:
                     args.summary_tsv_with_schema_header,
                     args.summary_tsv_description,
                     args.summary_tsv_with_schema_column,
+                    schema_id,
                 )
                 print(
                     _format_preset_summary_tsv_row(
@@ -547,6 +565,7 @@ def main() -> int:
                         resolved,
                         description_mode=args.summary_tsv_description,
                         with_schema_column=args.summary_tsv_with_schema_column,
+                        schema_id=schema_id,
                     )
                 )
                 return 0
@@ -629,6 +648,7 @@ def main() -> int:
                     args.summary_tsv_with_schema_header,
                     args.summary_tsv_description,
                     args.summary_tsv_with_schema_column,
+                    schema_id,
                 )
                 for name in preset_names:
                     preset = filtered_presets[name]
@@ -641,6 +661,7 @@ def main() -> int:
                             resolved,
                             description_mode=args.summary_tsv_description,
                             with_schema_column=args.summary_tsv_with_schema_column,
+                            schema_id=schema_id,
                         )
                     )
                 return 0

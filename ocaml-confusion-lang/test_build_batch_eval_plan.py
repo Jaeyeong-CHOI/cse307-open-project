@@ -992,6 +992,65 @@ def main() -> int:
             f"summary-tsv schema-column row should end with schema id: {quick_smoke_tsv_schema_row}"
         )
 
+    preset_list_summary_tsv_custom_schema = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+            "--summary-tsv-with-schema-header",
+            "--summary-tsv-with-schema-column",
+            "--summary-tsv-schema-id",
+            "planner_preset_summary_tsv.v2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary_tsv_custom_schema_lines = [
+        line.rstrip("\n") for line in preset_list_summary_tsv_custom_schema.stdout.splitlines() if line.strip()
+    ]
+    if summary_tsv_custom_schema_lines[0] != "# schema=planner_preset_summary_tsv.v2":
+        raise AssertionError(f"unexpected custom schema header line: {summary_tsv_custom_schema_lines}")
+    if not summary_tsv_custom_schema_lines[1].endswith("\tschema"):
+        raise AssertionError(f"expected schema column in custom schema header: {summary_tsv_custom_schema_lines}")
+    quick_smoke_custom_schema_row = next(
+        (line for line in summary_tsv_custom_schema_lines[2:] if line.startswith("quick-smoke\t")),
+        None,
+    )
+    if quick_smoke_custom_schema_row is None or not quick_smoke_custom_schema_row.endswith("\tplanner_preset_summary_tsv.v2"):
+        raise AssertionError(
+            "expected custom schema id in summary-tsv row, got: "
+            f"{summary_tsv_custom_schema_lines}"
+        )
+
+    invalid_summary_tsv_schema_id_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+            "--summary-tsv-schema-id",
+            "planner_preset_summary_tsv.v0",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_summary_tsv_schema_id_run.returncode == 0:
+        raise AssertionError("expected invalid --summary-tsv-schema-id to fail-fast")
+    if "--summary-tsv-schema-id must match planner_preset_summary_tsv.vN (N>=1)" not in (
+        invalid_summary_tsv_schema_id_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected summary-tsv schema id validation error, got: "
+            f"{invalid_summary_tsv_schema_id_run.stderr}"
+        )
+
     preset_list_summary_tsv_full = subprocess.run(
         [
             "python3",
