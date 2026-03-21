@@ -1,0 +1,4 @@
+# Relative paths from ocaml-confusion-lang/
+examples/sample.py
+examples/protected_literals.py
+examples/triple_quote_stress.py

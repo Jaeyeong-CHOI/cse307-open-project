@@ -1,6 +1,6 @@
 let usage () =
   print_endline
-    "Usage:\n  confusionlang validate <alias_tsv>\n  confusionlang transform <alias_tsv> <source_file>\n  confusionlang roundtrip <alias_tsv> <source_file>\n  confusionlang roundtrip-report <alias_tsv> <source_file> <out_json>\n\nTSV format: <python_keyword>\\t<alias_phrase>";
+    "Usage:\n  confusionlang validate <alias_tsv>\n  confusionlang transform <alias_tsv> <source_file>\n  confusionlang roundtrip <alias_tsv> <source_file>\n  confusionlang roundtrip-report <alias_tsv> <source_file> <out_json>\n  confusionlang batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json>\n\nTSV format: <python_keyword>\\t<alias_phrase>";
   exit 1
 
 let read_lines path =
@@ -455,6 +455,65 @@ let write_roundtrip_report out_path pairs src restored =
   output_string oc json;
   close_out oc
 
+let parse_manifest path =
+  read_lines path
+  |> List.map String.trim
+  |> List.filter (fun line -> line <> "" && not (String.starts_with ~prefix:"#" line))
+
+let write_batch_roundtrip_report out_path pairs sources =
+  let cases =
+    sources
+    |> List.map (fun source_path ->
+           let src = read_file source_path in
+           let alias_code = transform_text pairs src in
+           let restored = transform_text (invert_pairs pairs) alias_code in
+           let src_tokens = tokenize_code_like src in
+           let rst_tokens = tokenize_code_like restored in
+           let token_equivalent = src_tokens = rst_tokens in
+           let src_ast = python_ast_dump_from_text src in
+           let restored_ast = python_ast_dump_from_text restored in
+           let ast_equivalent =
+             match (src_ast, restored_ast) with
+             | Ok a, Ok b -> Some (a = b)
+             | _ -> None
+           in
+           let exact = restored = src in
+           let taxonomy =
+             if exact then []
+             else classify_failure_taxonomy pairs src restored ast_equivalent
+           in
+           (source_path, exact, token_equivalent, ast_equivalent, taxonomy))
+  in
+  let case_jsons =
+    cases
+    |> List.map (fun (source_path, exact, token_equivalent, ast_equivalent, taxonomy) ->
+           let ast_equivalent_json =
+             match ast_equivalent with
+             | Some true -> "true"
+             | Some false -> "false"
+             | None -> "null"
+           in
+           Printf.sprintf
+             "{\"source\":\"%s\",\"status\":\"%s\",\"exact_match\":%s,\"token_equivalent\":%s,\"ast_equivalent\":%s,\"failure_taxonomy\":%s}"
+             (escape_json source_path)
+             (if exact then "ok" else "mismatch")
+             (if exact then "true" else "false")
+             (if token_equivalent then "true" else "false")
+             ast_equivalent_json
+             (json_array_of_strings taxonomy))
+  in
+  let total = List.length cases in
+  let ok_count =
+    cases |> List.fold_left (fun acc (_, exact, _, _, _) -> if exact then acc + 1 else acc) 0
+  in
+  let mismatch_count = total - ok_count in
+  let json =
+    Printf.sprintf
+      "{\n  \"total_cases\":%d,\n  \"ok_cases\":%d,\n  \"mismatch_cases\":%d,\n  \"cases\":[%s]\n}\n"
+      total ok_count mismatch_count (String.concat "," case_jsons)
+  in
+  write_file out_path json
+
 let run_transform alias_path source_path =
   let pairs = load_alias_pairs alias_path in
   let missing, dup = validate_pairs pairs in
@@ -503,6 +562,23 @@ let run_roundtrip_report alias_path source_path out_path =
       Printf.printf "WARN: mismatch report written to %s\n" out_path;
       3)
 
+let run_batch_roundtrip_report alias_path manifest_path out_path =
+  let pairs = load_alias_pairs alias_path in
+  let missing, dup = validate_pairs pairs in
+  if missing <> [] || dup <> None then (
+    ignore (validate_alias_tsv alias_path);
+    2)
+  else
+    let sources = parse_manifest manifest_path in
+    if sources = [] then (
+      Printf.printf "ERROR: manifest has no source entries: %s\n" manifest_path;
+      2)
+    else (
+      write_batch_roundtrip_report out_path pairs sources;
+      Printf.printf "OK: batch report written to %s (cases=%d)\n" out_path
+        (List.length sources);
+      0)
+
 let () =
   match Array.to_list Sys.argv with
   | [ _; "validate"; alias_path ] -> exit (validate_alias_tsv alias_path)
@@ -512,4 +588,6 @@ let () =
       exit (run_roundtrip alias_path source_path)
   | [ _; "roundtrip-report"; alias_path; source_path; out_path ] ->
       exit (run_roundtrip_report alias_path source_path out_path)
+  | [ _; "batch-roundtrip-report"; alias_path; manifest_path; out_path ] ->
+      exit (run_batch_roundtrip_report alias_path manifest_path out_path)
   | _ -> usage ()

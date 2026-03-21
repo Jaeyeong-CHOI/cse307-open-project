@@ -11,6 +11,7 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 - `transform <alias_tsv> <source_file>`: Python -> 혼동 언어 치환
 - `roundtrip <alias_tsv> <source_file>`: Python -> alias -> Python 복원 일치성 검사
 - `roundtrip-report <alias_tsv> <source_file> <out_json>`: roundtrip 결과 JSON 리포트 저장 (`first_diff`, `failure_taxonomy`, `ast_equivalent` 포함)
+- `batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json>`: 여러 소스 파일에 대한 일괄 roundtrip JSON 요약 (`total_cases`, `ok_cases`, `mismatch_cases`, `cases[]`) 생성
 
 ## Alias TSV 형식
 `<python_keyword>\t<alias_phrase>`
@@ -30,6 +31,8 @@ dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/protected_lit
 dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/triple_quote_stress.py
 # 결과 JSON 저장 (repo 루트 docs/research/results 권장)
 dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample.py ../docs/research/results/roundtrip-sample.json
+# manifest 기반 batch 리포트
+dune exec confusionlang -- batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt ../docs/research/results/roundtrip-batch-v1.json
 ```
 
 ## 다음 구현
@@ -42,3 +45,4 @@ dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample
 7. ~~`dune runtest` 회귀 테스트(리포트 스키마 assertion) 추가~~ ✅ (`test_roundtrip_report_schema.py`)
 8. ~~mismatch fixture 기반 `failure_taxonomy` assertion 확대~~ ✅ (`examples/collision-risk.tsv`, mismatch 케이스 검증)
 9. ~~CI smoke에 `dune runtest` + `roundtrip-report` 검사 추가~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`)
+10. ~~batch eval 스크립트 뼈대(`batch-roundtrip-report`) 추가~~ ✅ (manifest 기반 다중 소스 요약 리포트)
