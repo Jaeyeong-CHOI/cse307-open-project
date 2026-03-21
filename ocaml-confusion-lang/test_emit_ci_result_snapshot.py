@@ -12,7 +12,7 @@ OUT = ROOT / "_build"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def _run(payload: dict, label: str) -> str:
+def _run(payload: dict, label: str, top_k_mismatches: int = 1) -> str:
     summary = OUT / "tmp.emit-ci-summary.json"
     metric = OUT / "tmp.emit-ci-metric.json"
     summary.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
@@ -27,6 +27,8 @@ def _run(payload: dict, label: str) -> str:
             str(metric),
             "--label",
             label,
+            "--top-k-mismatches",
+            str(top_k_mismatches),
         ],
         check=True,
         capture_output=True,
@@ -58,16 +60,27 @@ def main() -> None:
                 "severity": 75,
                 "first_diff_line": 2,
                 "first_token_diff_index": 8,
-            }
+            },
+            {
+                "source": "examples/linecount-risk-case.py",
+                "failure_taxonomy": ["line_count_mismatch"],
+                "severity": 55,
+                "first_diff_line": 4,
+                "first_token_diff_index": "n/a",
+            },
         ],
     }
 
-    content = _run(payload_with_mismatch, "Full CI result snapshot")
+    content = _run(payload_with_mismatch, "Full CI result snapshot", top_k_mismatches=2)
     assert_contains(content, "## Full CI result snapshot")
     assert_contains(content, "- tripped_list: mismatch")
     assert_contains(
         content,
         "- top1_mismatch: severity=75; taxonomy=token_stream_mismatch; source=examples/collision-risk-case.py; first_diff_line=2; first_token_diff_index=8",
+    )
+    assert_contains(
+        content,
+        "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a)",
     )
 
     payload_no_mismatch = {
@@ -81,12 +94,13 @@ def main() -> None:
         "gates": {"any_tripped": False, "tripped_list": []},
         "top_mismatches": [],
     }
-    no_mm = _run(payload_no_mismatch, "Lightweight CI result snapshot")
+    no_mm = _run(payload_no_mismatch, "Lightweight CI result snapshot", top_k_mismatches=3)
     assert_contains(no_mm, "- tripped_list: []")
     assert_contains(
         no_mm,
         "- top1_mismatch: severity=n/a; taxonomy=n/a; source=n/a; first_diff_line=n/a; first_token_diff_index=n/a",
     )
+    assert_contains(no_mm, "- top3_mismatches_compact: n/a")
 
 
 if __name__ == "__main__":
