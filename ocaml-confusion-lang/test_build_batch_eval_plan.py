@@ -573,6 +573,38 @@ def main() -> int:
             f"{per_task_prompt_summary['skipped_runs_by_task_prompt_condition']}"
         )
 
+    fair_per_task_prompt_capped_output = OUT / "batch-plan.per-task-prompt-capped.fair.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(TASK_SET),
+            "--models",
+            "gpt-5-mini,gpt-5-pro",
+            "--prompt-conditions",
+            "base,strict",
+            "--repeats",
+            "2",
+            "--max-runs-per-task-prompt-condition",
+            "3",
+            "--cheap-first",
+            "--fair-model-allocation",
+            "--output",
+            str(fair_per_task_prompt_capped_output),
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    fair_per_task_prompt_payload = json.loads(fair_per_task_prompt_capped_output.read_text(encoding="utf-8"))
+    fair_per_task_prompt_summary = fair_per_task_prompt_payload["summary"]
+    if fair_per_task_prompt_summary["planned_runs_by_model"] != {"gpt-5-mini": 9, "gpt-5-pro": 9}:
+        raise AssertionError(
+            "unexpected fair per-task-prompt planned_runs_by_model: "
+            f"{fair_per_task_prompt_summary['planned_runs_by_model']}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 

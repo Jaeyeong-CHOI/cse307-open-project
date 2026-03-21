@@ -194,6 +194,8 @@ def main() -> int:
         model_cursor = 0
         stop_planning = False
 
+        runs_per_model: dict[str, int] = {model: 0 for model in models}
+
         def total_cap_reached() -> bool:
             return bool(args.max_total_runs and len(plan) >= args.max_total_runs)
 
@@ -201,11 +203,16 @@ def main() -> int:
             nonlocal model_cursor
             if not args.fair_model_allocation or len(models) <= 1:
                 return models
-            ordered = models[model_cursor:] + models[:model_cursor]
-            model_cursor = (model_cursor + 1) % len(models)
+            min_runs = min(runs_per_model.values())
+            # Prioritize currently under-allocated models first, then retain cheap-first/base order.
+            under_allocated = [m for m in models if runs_per_model[m] == min_runs]
+            if len(under_allocated) == len(models):
+                # All tied: rotate to avoid deterministic first-model stickiness.
+                ordered = models[model_cursor:] + models[:model_cursor]
+                model_cursor = (model_cursor + 1) % len(models)
+                return ordered
+            ordered = sorted(models, key=lambda m: (runs_per_model[m], models.index(m)))
             return ordered
-
-        runs_per_model: dict[str, int] = {model: 0 for model in models}
         runs_per_prompt_condition: dict[str, int] = {condition: 0 for condition in conditions}
         runs_per_task: dict[str, int] = {task["task_id"]: 0 for task in tasks}
         runs_by_task_model: dict[str, dict[str, int]] = {
@@ -267,16 +274,19 @@ def main() -> int:
                                 }
                             )
         else:
-            for model in iter_models():
+            # Default expansion order (no per-prompt cap): condition -> task -> repeat -> model.
+            # Keeping model iteration innermost lets fair_model_allocation rotate continuously,
+            # reducing model skew when other caps (e.g., task×prompt) truncate candidate runs.
+            for condition in conditions:
                 if stop_planning:
                     break
-                for condition in conditions:
+                for task in tasks:
                     if stop_planning:
                         break
-                    for task in tasks:
+                    for rep in range(1, args.repeats + 1):
                         if stop_planning:
                             break
-                        for rep in range(1, args.repeats + 1):
+                        for model in iter_models():
                             if total_cap_reached() and args.max_total_runs_mode == "cap":
                                 stop_planning = True
                                 break
