@@ -28,8 +28,8 @@ dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/sample.py
 dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/protected_literals.py
 # triple-quote 스트레스 케이스
 dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/triple_quote_stress.py
-# 결과 JSON 저장 (repo 루트 docs/results 권장)
-dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample.py ../docs/results/roundtrip-sample.json
+# 결과 JSON 저장 (repo 루트 docs/research/results 권장)
+dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample.py ../docs/research/results/roundtrip-sample.json
 ```
 
 ## 다음 구현

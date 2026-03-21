@@ -97,9 +97,9 @@
 - 작업 단위별 커밋(문서/코드/실험결과 분리)
 - 연속 작업 중에도 **의미 있는 변경 단위마다 즉시 커밋/푸시**
 - 주기적 스냅샷:
-  - `docs/research-log/YYYY-MM-DD.md`
-  - `docs/results/*.json`
-  - `docs/figures/*`
+  - `docs/research/log/YYYY-MM-DD.md`
+  - `docs/research/results/*.json`
+  - `docs/research/figures/*`
 
 ---
 

@@ -1,20 +1,29 @@
 # CSE307 Open Project
 
-Python 혼동 유도 언어(Confusion Language) 기반 LLM 코드 생성/준수율 연구 저장소.
+Python 혼동 유도 언어(Confusion Language) 기반 LLM 코드 준수율 연구 저장소.
 
-## 핵심 목표
-- Python 유사 변형 문법에서 LLM의 규칙 준수/회귀 패턴 분석
-- 교육 맥락에서 생성 코드 검수·수정 학습효과 검증
-- 재현 가능한 실험 파이프라인(도구 + 문서 + 로그) 구축
+## What this repo does
+- Python-like 변형 문법(alias)에서 LLM이 규칙을 지키는지 측정
+- Python 원문법 회귀 패턴을 실험적으로 분석
+- 교육 맥락에서 “생성코드 검수·수정” 학습효과를 연구
 
-## Project Structure
-- `web/` : 데모 UI (GitHub Pages)
-- `ocaml-confusion-lang/` : OCaml 기반 변환/검증 도구 체인
-- `scripts/` : 실험/평가 보조 스크립트
-- `docs/README.md` : 문서 허브 (연구, 프리셋, 아카이브)
+## Structure
+- `web/` : 시연 UI (GitHub Pages)
+- `ocaml-confusion-lang/` : OCaml 변환/검증 CLI
+- `scripts/` : 평가 보조 스크립트
+- `docs/` : 연구 문서 허브
 
-## Quick Links
-- 연구 로드맵: `docs/research/roadmap.md`
-- 연구 로그: `docs/research/log/`
-- 교수님 시연 프리셋: `docs/presets/final-demo-aliases.md`
-- 과거 프롬프트 실험 아카이브: `docs/archive/`
+## Start here
+1. 문서 허브: `docs/README.md`
+2. 연구 로드맵: `docs/research/roadmap.md`
+3. 시연용 alias 세트: `docs/presets/final-demo-aliases.md`
+4. OCaml 툴 빠른 실행:
+   ```bash
+   cd ocaml-confusion-lang
+   dune exec confusionlang -- validate examples/case-c2.tsv
+   dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/sample.py
+   ```
+
+## Notes
+- 과거 prompt 실험 기록은 `docs/archive/`에 보관
+- 현재 활성 연구/운영 기준은 `docs/research/` 기준으로 유지

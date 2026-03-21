@@ -2,7 +2,7 @@
 import random
 from pathlib import Path
 
-OUT_DIR = Path('docs/prompt-versions')
+OUT_DIR = Path('docs/archive/prompt-versions')
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 LANG = """[언어 설명]
@@ -76,8 +76,8 @@ def main(total=120, seed=307):
       readme.append(f"- `docs/prompt-versions/v{i}.md`")
     (OUT_DIR / 'README.md').write_text("\n".join(readme)+"\n")
 
-    root = Path('README.md')
-    root.write_text("# CSE307 Open Project\n\nAI-FAIL-PL 실험 저장소.\n\n## Prompt Versions\n- `docs/prompt-versions/README.md`\n")
+    # NOTE: do not overwrite repository root README from this script.
+    # Prompt versions are archived under docs/archive/prompt-versions.
 
 if __name__ == '__main__':
     main()
