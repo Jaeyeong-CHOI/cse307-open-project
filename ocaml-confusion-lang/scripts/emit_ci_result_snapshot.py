@@ -85,6 +85,36 @@ def _format_tripped_list(value: Any) -> str:
     return str(value)
 
 
+def _gate_details_compact(gates: dict[str, Any]) -> str:
+    gate_names = ["mismatch", "severity_total", "severity_avg", "aggregate"]
+    chunks: list[str] = []
+
+    for name in gate_names:
+        gate = gates.get(name)
+        if not isinstance(gate, dict):
+            continue
+
+        enabled = gate.get("enabled", "n/a")
+        tripped = gate.get("tripped", "n/a")
+        chunk = f"{name}(enabled={enabled},tripped={tripped}"
+
+        if "threshold" in gate:
+            chunk += f",threshold={gate.get('threshold')}"
+        if "observed" in gate:
+            chunk += f",observed={gate.get('observed')}"
+        if "observed_mismatch_cases" in gate:
+            chunk += f",observed_mismatch_cases={gate.get('observed_mismatch_cases')}"
+        if "exit_code" in gate:
+            chunk += f",exit_code={gate.get('exit_code')}"
+
+        chunk += ")"
+        chunks.append(chunk)
+
+    if not chunks:
+        return "n/a"
+    return " | ".join(chunks)
+
+
 def build_snapshot_markdown(
     payload: dict[str, Any],
     *,
@@ -113,6 +143,7 @@ def build_snapshot_markdown(
         ),
         f"- any_tripped: {gates.get('any_tripped')}",
         f"- tripped_list: {_format_tripped_list(gates.get('tripped_list'))}",
+        f"- gate_details: {_gate_details_compact(gates)}",
         (
             "- top1_mismatch: "
             f"severity={top1['severity']}; "

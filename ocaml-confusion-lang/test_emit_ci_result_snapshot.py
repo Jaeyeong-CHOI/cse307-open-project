@@ -52,7 +52,14 @@ def main() -> None:
             "mismatch_severity_total": 130,
             "mismatch_severity_avg": 65.0,
         },
-        "gates": {"any_tripped": True, "tripped_list": ["mismatch"]},
+        "gates": {
+            "mismatch": {"enabled": True, "tripped": True, "observed_mismatch_cases": 2},
+            "severity_total": {"enabled": True, "threshold": 120, "observed": 130, "tripped": True},
+            "severity_avg": {"enabled": True, "threshold": 60.0, "observed": 65.0, "tripped": True},
+            "aggregate": {"enabled": True, "exit_code": 4},
+            "any_tripped": True,
+            "tripped_list": ["mismatch", "severity_total", "severity_avg"],
+        },
         "top_mismatches": [
             {
                 "source": "examples/collision-risk-case.py",
@@ -87,7 +94,11 @@ def main() -> None:
 
     content = _run(payload_with_mismatch, "Full CI result snapshot", top_k_mismatches=2)
     assert_contains(content, "## Full CI result snapshot")
-    assert_contains(content, "- tripped_list: mismatch")
+    assert_contains(content, "- tripped_list: mismatch, severity_total, severity_avg")
+    assert_contains(
+        content,
+        "- gate_details: mismatch(enabled=True,tripped=True,observed_mismatch_cases=2) | severity_total(enabled=True,tripped=True,threshold=120,observed=130) | severity_avg(enabled=True,tripped=True,threshold=60.0,observed=65.0) | aggregate(enabled=True,tripped=n/a,exit_code=4)",
+    )
     assert_contains(
         content,
         "- top1_mismatch: severity=75; taxonomy=token_stream_mismatch; source=examples/collision-risk-case.py; first_diff_line=2; first_token_diff_index=8",
@@ -111,6 +122,7 @@ def main() -> None:
     }
     no_mm = _run(payload_no_mismatch, "Lightweight CI result snapshot", top_k_mismatches=3)
     assert_contains(no_mm, "- tripped_list: []")
+    assert_contains(no_mm, "- gate_details: n/a")
     assert_contains(
         no_mm,
         "- top1_mismatch: severity=n/a; taxonomy=n/a; source=n/a; first_diff_line=n/a; first_token_diff_index=n/a",
