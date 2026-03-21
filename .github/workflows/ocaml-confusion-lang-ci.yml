@@ -51,6 +51,12 @@ jobs:
             batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
             ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json --include-diff
 
+      - name: Summarize batch report to markdown
+        run: |
+          python3 scripts/batch_report_summary.py \
+            ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json \
+            -o ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.md
+
       - name: Upload CI smoke artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -59,4 +65,5 @@ jobs:
             docs/research/results/roundtrip-sample.ci.json
             docs/research/results/roundtrip-batch-v1.ci.json
             docs/research/results/roundtrip-batch-v1.include-diff.ci.json
+            docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.md
           if-no-files-found: error
