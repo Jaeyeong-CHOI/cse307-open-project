@@ -10,6 +10,9 @@ from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROFILE_DIR = SCRIPT_DIR.parent / "examples" / "weights"
+
 TAXONOMY_WEIGHTS: dict[str, int] = {
     "token_stream_mismatch": 40,
     "token_substitution_mismatch": 35,
@@ -47,6 +50,21 @@ def load_taxonomy_weights(path: Path | None) -> tuple[dict[str, int], int]:
         weights[str(k)] = int(v)
 
     return weights, default_weight
+
+
+def list_taxonomy_profiles(profile_dir: Path) -> list[str]:
+    if not profile_dir.exists():
+        return []
+    return sorted(p.stem for p in profile_dir.glob("*.json") if p.is_file())
+
+
+def resolve_taxonomy_profile(profile_name: str, profile_dir: Path) -> Path:
+    profile_path = profile_dir / f"{profile_name}.json"
+    if not profile_path.exists():
+        raise FileNotFoundError(
+            f"taxonomy profile '{profile_name}' not found in {profile_dir}"
+        )
+    return profile_path
 
 
 def _tag_weight(tag: str, taxonomy_weights: Mapping[str, int], default_weight: int) -> int:
@@ -246,7 +264,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Summarize batch-roundtrip-report JSON into markdown."
     )
-    parser.add_argument("input_json", type=Path, help="Path to batch report JSON")
+    parser.add_argument("input_json", type=Path, nargs="?", help="Path to batch report JSON")
     parser.add_argument(
         "-o",
         "--output",
@@ -286,15 +304,44 @@ def parse_args() -> argparse.Namespace:
             "Schema: {\"default_weight\": 15, \"weights\": {\"tag\": 40, ...}}"
         ),
     )
+    parser.add_argument(
+        "--taxonomy-weight-profile",
+        type=str,
+        default=None,
+        help=(
+            "Named taxonomy weight profile from examples/weights/<name>.json. "
+            "Ignored when --taxonomy-weights is explicitly provided."
+        ),
+    )
+    parser.add_argument(
+        "--list-taxonomy-profiles",
+        action="store_true",
+        help="List available named taxonomy weight profiles and exit",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+
+    if args.list_taxonomy_profiles:
+        profiles = list_taxonomy_profiles(PROFILE_DIR)
+        for name in profiles:
+            print(name)
+        return 0
+
+    if args.input_json is None:
+        raise ValueError("input_json is required unless --list-taxonomy-profiles is used")
+
     report = load_json(args.input_json)
     output = args.output or args.input_json.with_suffix("").with_suffix(".summary.md")
     top_k = max(0, int(args.top_k_mismatches))
-    taxonomy_weights, default_weight = load_taxonomy_weights(args.taxonomy_weights)
+
+    taxonomy_weight_path = args.taxonomy_weights
+    if taxonomy_weight_path is None and args.taxonomy_weight_profile is not None:
+        taxonomy_weight_path = resolve_taxonomy_profile(args.taxonomy_weight_profile, PROFILE_DIR)
+
+    taxonomy_weights, default_weight = load_taxonomy_weights(taxonomy_weight_path)
     summary = build_summary(
         report,
         args.input_json,

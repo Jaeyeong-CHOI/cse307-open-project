@@ -7,6 +7,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 FIXTURE = ROOT / "examples" / "batch-summary-fixture-whitespace-linecount.json"
 SCRIPT = ROOT / "scripts" / "batch_report_summary.py"
 ALT_WEIGHTS = ROOT / "examples" / "taxonomy-weights-severity-alt.json"
+PROFILE_V2 = "v2-education-risk"
 OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -17,6 +18,7 @@ def run_summary(
     include_diff_columns: bool,
     mismatch_sort: str,
     taxonomy_weights: pathlib.Path | None = None,
+    taxonomy_weight_profile: str | None = None,
 ) -> tuple[pathlib.Path, pathlib.Path]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
@@ -37,6 +39,8 @@ def run_summary(
         cmd.append("--include-diff-columns")
     if taxonomy_weights is not None:
         cmd.extend(["--taxonomy-weights", str(taxonomy_weights)])
+    if taxonomy_weight_profile is not None:
+        cmd.extend(["--taxonomy-weight-profile", taxonomy_weight_profile])
     subprocess.run(cmd, cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return summary_md, summary_csv
 
@@ -135,6 +139,28 @@ def main() -> int:
     )
     if alt_collision_idx == -1 or alt_drift_idx == -1 or alt_collision_idx > alt_drift_idx:
         raise AssertionError("expected collision-risk mismatch to remain above blankline drift with custom weights")
+
+    # Named taxonomy profile list should include versioned profile files.
+    list_profiles = subprocess.run(
+        ["python3", str(SCRIPT), "--list-taxonomy-profiles"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    profiles = set(list_profiles.stdout.split())
+    if "v1-default" not in profiles or PROFILE_V2 not in profiles:
+        raise AssertionError(f"expected v1-default and {PROFILE_V2} in profile list, got {sorted(profiles)}")
+
+    # Named profile execution should match explicit custom-weight behavior.
+    prof_summary_md, _ = run_summary(
+        top_k=2,
+        include_diff_columns=False,
+        mismatch_sort="severity",
+        taxonomy_weight_profile=PROFILE_V2,
+    )
+    prof_content = prof_summary_md.read_text(encoding="utf-8")
+    assert_contains(prof_content, "- token_substitution_mismatch: weighted_score=60 (count=1, weight=60)")
 
     print("OK: batch_report_summary fixture regression passed")
     return 0
