@@ -1,6 +1,6 @@
 let usage () =
   print_endline
-    "Usage:\n  confusionlang validate <alias_tsv>\n  confusionlang transform <alias_tsv> <source_file>\n  confusionlang roundtrip <alias_tsv> <source_file>\n\nTSV format: <python_keyword>\\t<alias_phrase>";
+    "Usage:\n  confusionlang validate <alias_tsv>\n  confusionlang transform <alias_tsv> <source_file>\n  confusionlang roundtrip <alias_tsv> <source_file>\n  confusionlang roundtrip-report <alias_tsv> <source_file> <out_json>\n\nTSV format: <python_keyword>\\t<alias_phrase>";
   exit 1
 
 let read_lines path =
@@ -196,22 +196,65 @@ let transform_text pairs text =
 
 let invert_pairs pairs = List.map (fun (a, b) -> (b, a)) pairs
 
-let print_first_diff src restored =
+let first_diff src restored =
   let src_lines = String.split_on_char '\n' src in
   let rst_lines = String.split_on_char '\n' restored in
   let rec loop i a b =
     match (a, b) with
-    | s :: sa, r :: rb ->
-        if s = r then loop (i + 1) sa rb
-        else (
-          Printf.printf "DIFF at line %d\n" i;
-          Printf.printf "SRC : %s\n" s;
-          Printf.printf "REST: %s\n" r)
-    | [], _ | _, [] ->
-        Printf.printf "DIFF: line count mismatch (src=%d, restored=%d)\n"
-          (List.length src_lines) (List.length rst_lines)
+    | s :: sa, r :: rb -> if s = r then loop (i + 1) sa rb else Some (i, s, r)
+    | [], _ | _, [] -> None
   in
   loop 1 src_lines rst_lines
+
+let print_first_diff src restored =
+  let src_lines = String.split_on_char '\n' src in
+  let rst_lines = String.split_on_char '\n' restored in
+  match first_diff src restored with
+  | Some (line_no, s, r) ->
+      Printf.printf "DIFF at line %d\n" line_no;
+      Printf.printf "SRC : %s\n" s;
+      Printf.printf "REST: %s\n" r
+  | None ->
+      if List.length src_lines <> List.length rst_lines then
+        Printf.printf "DIFF: line count mismatch (src=%d, restored=%d)\n"
+          (List.length src_lines) (List.length rst_lines)
+
+let escape_json s =
+  let b = Buffer.create (String.length s + 16) in
+  String.iter
+    (fun c ->
+      match c with
+      | '"' -> Buffer.add_string b "\\\""
+      | '\\' -> Buffer.add_string b "\\\\"
+      | '\n' -> Buffer.add_string b "\\n"
+      | '\r' -> Buffer.add_string b "\\r"
+      | '\t' -> Buffer.add_string b "\\t"
+      | _ -> Buffer.add_char b c)
+    s;
+  Buffer.contents b
+
+let write_roundtrip_report out_path src restored =
+  let src_lines = String.split_on_char '\n' src in
+  let rst_lines = String.split_on_char '\n' restored in
+  let exact = restored = src in
+  let diff_json =
+    match first_diff src restored with
+    | Some (line_no, s, r) ->
+        Printf.sprintf
+          "\"first_diff\":{\"line\":%d,\"src\":\"%s\",\"restored\":\"%s\"}"
+          line_no (escape_json s) (escape_json r)
+    | None -> "\"first_diff\":null"
+  in
+  let json =
+    Printf.sprintf
+      "{\n  \"status\":\"%s\",\n  \"exact_match\":%s,\n  \"src_line_count\":%d,\n  \"restored_line_count\":%d,\n  %s\n}\n"
+      (if exact then "ok" else "mismatch")
+      (if exact then "true" else "false")
+      (List.length src_lines) (List.length rst_lines) diff_json
+  in
+  let oc = open_out out_path in
+  output_string oc json;
+  close_out oc
 
 let run_transform alias_path source_path =
   let pairs = load_alias_pairs alias_path in
@@ -243,6 +286,24 @@ let run_roundtrip alias_path source_path =
       print_first_diff src restored;
       3)
 
+let run_roundtrip_report alias_path source_path out_path =
+  let pairs = load_alias_pairs alias_path in
+  let missing, dup = validate_pairs pairs in
+  if missing <> [] || dup <> None then (
+    ignore (validate_alias_tsv alias_path);
+    2)
+  else
+    let src = read_file source_path in
+    let alias_code = transform_text pairs src in
+    let restored = transform_text (invert_pairs pairs) alias_code in
+    write_roundtrip_report out_path src restored;
+    if restored = src then (
+      Printf.printf "OK: report written to %s\n" out_path;
+      0)
+    else (
+      Printf.printf "WARN: mismatch report written to %s\n" out_path;
+      3)
+
 let () =
   match Array.to_list Sys.argv with
   | [ _; "validate"; alias_path ] -> exit (validate_alias_tsv alias_path)
@@ -250,4 +311,6 @@ let () =
       exit (run_transform alias_path source_path)
   | [ _; "roundtrip"; alias_path; source_path ] ->
       exit (run_roundtrip alias_path source_path)
+  | [ _; "roundtrip-report"; alias_path; source_path; out_path ] ->
+      exit (run_roundtrip_report alias_path source_path out_path)
   | _ -> usage ()
