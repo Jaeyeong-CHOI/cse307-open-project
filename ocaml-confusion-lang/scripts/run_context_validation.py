@@ -20,6 +20,7 @@ ALLOWED_RUN_CONTEXT_KEYS = {
     "run_url",
     "run_attempt",
     "event_name",
+    "event_name_source",
     "repository",
     "sha",
     "ref",
@@ -128,6 +129,18 @@ def validate_run_context(
     if isinstance(event_name, str) and event_name.strip() and event_name.strip() not in ALLOWED_EVENT_NAMES:
         errors.append(
             f"{path}: run_context.event_name must be one of {sorted(ALLOWED_EVENT_NAMES)} when present"
+        )
+
+    event_name_source = run_context.get("event_name_source")
+    if isinstance(event_name_source, str) and event_name_source.strip() and event_name_source.strip() not in {"provided", "derived"}:
+        errors.append(
+            f"{path}: run_context.event_name_source must be one of ['derived', 'provided'] when present"
+        )
+    if isinstance(event_name_source, str) and event_name_source.strip() and not (
+        isinstance(event_name, str) and event_name.strip()
+    ):
+        errors.append(
+            f"{path}: run_context.event_name_source requires run_context.event_name when present"
         )
 
     for key in ["workflow", "job"]:

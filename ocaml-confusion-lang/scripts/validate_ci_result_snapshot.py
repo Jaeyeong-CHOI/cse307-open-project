@@ -188,7 +188,7 @@ def main() -> int:
             hints=[
                 f"input={args.snapshot_json}",
                 f"supported_schema_versions=ci_result_snapshot.v{args.schema_version_min}..ci_result_snapshot.v{args.schema_version_max}",
-                "expected_keys=schema_version,label,cases,severity,any_tripped,tripped_list,gate_details_compact,top1_mismatch,top_k_mismatches,summary_json,metric_json[,run_context(run_id,run_url,run_attempt,event_name,sha,ref,repository,actor,workflow,job)]",
+                "expected_keys=schema_version,label,cases,severity,any_tripped,tripped_list,gate_details_compact,top1_mismatch,top_k_mismatches,summary_json,metric_json[,run_context(run_id,run_url,run_attempt,event_name,event_name_source,sha,ref,repository,actor,workflow,job)]",
             ],
         )
         return 1

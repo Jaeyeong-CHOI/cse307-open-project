@@ -247,6 +247,7 @@ def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
             f"run_url={run_context.get('run_url', 'n/a')}; "
             f"run_attempt={run_context.get('run_attempt', 'n/a')}; "
             f"event_name={run_context.get('event_name', 'n/a')}; "
+            f"event_name_source={run_context.get('event_name_source', 'n/a')}; "
             f"sha={run_context.get('sha', 'n/a')}; "
             f"ref={run_context.get('ref', 'n/a')}; "
             f"repository={run_context.get('repository', 'n/a')}; "
@@ -337,8 +338,12 @@ def main() -> None:
         if isinstance(value, str) and value.strip()
     }
 
-    if run_context and "event_name" not in run_context:
-        run_context["event_name"] = "unknown"
+    if run_context:
+        if "event_name" in run_context:
+            run_context["event_name_source"] = "provided"
+        else:
+            run_context["event_name"] = "unknown"
+            run_context["event_name_source"] = "derived"
 
     event_name = run_context.get("event_name")
     if isinstance(event_name, str) and event_name not in ALLOWED_EVENT_NAMES:

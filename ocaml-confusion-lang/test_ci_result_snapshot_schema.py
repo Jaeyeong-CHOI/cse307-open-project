@@ -60,6 +60,7 @@ def main() -> None:
             "run_url": "https://github.com/org/repo/actions/runs/123456789/attempts/2",
             "run_attempt": "2",
             "event_name": "workflow_dispatch",
+            "event_name_source": "provided",
             "sha": "abc123def456",
             "ref": "refs/heads/main",
             "repository": "org/repo",
@@ -429,6 +430,25 @@ def main() -> None:
         raise AssertionError(
             f"expected success for run_context.event_name=pull_request_target, got rc={ok_pull_request_target_event.returncode}\n{ok_pull_request_target_event.stderr}"
         )
+
+
+    invalid_event_name_source = dict(valid_payload)
+    invalid_event_name_source["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "event_name": "workflow_dispatch",
+        "event_name_source": "inferred",
+    }
+    invalid_event_name_source_path = _write(
+        OUT / "snapshot.invalid-event-name-source.json", invalid_event_name_source
+    )
+    bad_event_name_source = _run(invalid_event_name_source_path)
+    if bad_event_name_source.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.event_name_source")
+    _assert_contains(
+        bad_event_name_source.stderr,
+        "run_context.event_name_source must be one of ['derived', 'provided'] when present",
+    )
 
     invalid_event_name = dict(valid_payload)
     invalid_event_name["run_context"] = {

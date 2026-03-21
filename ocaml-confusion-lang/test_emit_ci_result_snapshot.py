@@ -157,7 +157,7 @@ def main() -> None:
     )
     assert_contains(
         content,
-        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; run_attempt=2; event_name=workflow_dispatch; sha=abc123def456; ref=refs/heads/main; repository=org/repo; actor=octocat; workflow=ocaml-confusion-lang-ci; job=build-and-test",
+        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; run_attempt=2; event_name=workflow_dispatch; event_name_source=provided; sha=abc123def456; ref=refs/heads/main; repository=org/repo; actor=octocat; workflow=ocaml-confusion-lang-ci; job=build-and-test",
     )
 
     snapshot_payload = json.loads(snapshot_json.read_text(encoding="utf-8"))
@@ -175,6 +175,8 @@ def main() -> None:
         raise AssertionError("json snapshot run_context.run_id mismatch")
     if run_context_meta.get("event_name") != "workflow_dispatch":
         raise AssertionError("json snapshot run_context.event_name mismatch")
+    if run_context_meta.get("event_name_source") != "provided":
+        raise AssertionError("json snapshot run_context.event_name_source mismatch")
     if run_context_meta.get("repository") != "org/repo":
         raise AssertionError("json snapshot run_context.repository mismatch")
     if run_context_meta.get("actor") != "octocat":
@@ -331,6 +333,7 @@ def main() -> None:
         },
     )
     assert_contains(unknown_default_content, "event_name=unknown")
+    assert_contains(unknown_default_content, "event_name_source=derived")
 
     invalid_event = subprocess.run(
         [
