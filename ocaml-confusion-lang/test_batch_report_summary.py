@@ -506,6 +506,56 @@ def main() -> int:
     if "missing required key(s): failure_taxonomy" not in invalid_case_proc.stderr:
         raise AssertionError("expected missing key message for invalid case-shape fixture")
 
+    # Invalid case status should fail with enum guidance.
+    invalid_status_fixture = OUT / "fixture.invalid-status.json"
+    invalid_status_payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    invalid_status_payload["cases"][0]["status"] = "partial"
+    invalid_status_fixture.write_text(
+        json.dumps(invalid_status_payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    invalid_status_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(invalid_status_fixture),
+            "-o",
+            str(OUT / "fixture.invalid-status.summary.md"),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_status_proc.returncode == 0:
+        raise AssertionError("expected invalid status fixture to fail")
+    if "status must be one of: mismatch, ok" not in invalid_status_proc.stderr:
+        raise AssertionError("expected status enum guidance for invalid status fixture")
+
+    # Invalid root counter type should fail fast (string is not accepted).
+    invalid_counter_type_fixture = OUT / "fixture.invalid-counter-type.json"
+    invalid_counter_type_payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    invalid_counter_type_payload["total_cases"] = "3"
+    invalid_counter_type_fixture.write_text(
+        json.dumps(invalid_counter_type_payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    invalid_counter_type_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(invalid_counter_type_fixture),
+            "-o",
+            str(OUT / "fixture.invalid-counter-type.summary.md"),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_counter_type_proc.returncode == 0:
+        raise AssertionError("expected invalid counter type fixture to fail")
+    if "key 'total_cases' must be an integer" not in invalid_counter_type_proc.stderr:
+        raise AssertionError("expected integer type validation message for total_cases")
+
     print("OK: batch_report_summary fixture regression passed")
     return 0
 

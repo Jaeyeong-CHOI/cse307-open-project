@@ -38,6 +38,15 @@ def load_json(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
+def _read_non_negative_int_field(payload: Mapping[str, Any], key: str) -> int:
+    value = payload.get(key)
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"batch report key '{key}' must be an integer")
+    if value < 0:
+        raise ValueError(f"batch report key '{key}' must be >= 0")
+    return value
+
+
 def validate_batch_report_shape(report: dict[str, Any], input_path: Path) -> None:
     required_root_keys = {"total_cases", "ok_cases", "mismatch_cases", "cases"}
     missing = sorted(required_root_keys.difference(report.keys()))
@@ -58,6 +67,7 @@ def validate_batch_report_shape(report: dict[str, Any], input_path: Path) -> Non
         "ast_equivalent",
         "failure_taxonomy",
     }
+    allowed_case_statuses = {"ok", "mismatch"}
     for idx, case in enumerate(cases):
         if not isinstance(case, dict):
             raise ValueError(f"cases[{idx}] must be an object")
@@ -66,12 +76,26 @@ def validate_batch_report_shape(report: dict[str, Any], input_path: Path) -> Non
             raise ValueError(
                 f"cases[{idx}] missing required key(s): {', '.join(missing_case)}"
             )
+        source = case.get("source")
+        if not isinstance(source, str) or not source.strip():
+            raise ValueError(f"cases[{idx}].source must be a non-empty string")
+
+        status = case.get("status")
+        if status not in allowed_case_statuses:
+            raise ValueError(
+                f"cases[{idx}].status must be one of: {', '.join(sorted(allowed_case_statuses))}"
+            )
+
+        for bool_key in ("exact_match", "token_equivalent", "ast_equivalent"):
+            if not isinstance(case.get(bool_key), bool):
+                raise ValueError(f"cases[{idx}].{bool_key} must be a boolean")
+
         if not isinstance(case.get("failure_taxonomy"), list):
             raise ValueError(f"cases[{idx}].failure_taxonomy must be an array")
 
-    total_cases = int(report.get("total_cases", 0))
-    ok_cases = int(report.get("ok_cases", 0))
-    mismatch_cases = int(report.get("mismatch_cases", 0))
+    total_cases = _read_non_negative_int_field(report, "total_cases")
+    ok_cases = _read_non_negative_int_field(report, "ok_cases")
+    mismatch_cases = _read_non_negative_int_field(report, "mismatch_cases")
     observed_total = len(cases)
     observed_mismatch = sum(1 for c in cases if c.get("status") != "ok")
     observed_ok = observed_total - observed_mismatch
