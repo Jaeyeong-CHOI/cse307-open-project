@@ -195,7 +195,7 @@ jobs:
             if [[ "${METRIC_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
               metric_policy_mode="strict"
             fi
-            echo "- event_name_policy_modes: summary=${summary_policy_mode}, snapshot=${snapshot_policy_mode}, metric=${metric_policy_mode}"
+            echo "- event_name_policy_modes: S=${summary_policy_mode}, P=${snapshot_policy_mode}, M=${metric_policy_mode}"
             if [[ "${summary_policy_mode}${snapshot_policy_mode}${metric_policy_mode}" == *"strict"* ]]; then
               echo "- event_name_policy_note: strict mode disables fallback event_name=unknown"
             fi
