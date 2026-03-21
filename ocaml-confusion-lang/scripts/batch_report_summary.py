@@ -101,6 +101,7 @@ def build_summary_payload(
     taxonomy_weights: Mapping[str, int],
     default_weight: int,
     taxonomy_weight_source: str,
+    only_mismatches: bool,
 ) -> dict[str, Any]:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
@@ -121,6 +122,7 @@ def build_summary_payload(
             taxonomy_counts[str(tag)] += 1
 
     mismatch_list = [c for c in cases if c.get("status") != "ok"]
+    visible_cases = mismatch_list if only_mismatches else cases
     mismatch_severity_total = sum(
         _mismatch_severity_score(case, taxonomy_weights, default_weight)[0]
         for case in mismatch_list
@@ -179,6 +181,7 @@ def build_summary_payload(
             "mismatch_cases_pct": pct(mismatch_cases, total),
             "include_diff": include_diff,
             "taxonomy_weight_source": taxonomy_weight_source,
+            "cases_scope": "mismatches-only" if only_mismatches else "all",
         },
         "quality_signals": {
             "token_equivalent_true": token_equiv_true,
@@ -194,7 +197,7 @@ def build_summary_payload(
         },
         "top_mismatches": top_mismatches,
         "mismatch_sort": mismatch_sort,
-        "cases": cases,
+        "cases": visible_cases,
     }
 
 
@@ -212,6 +215,7 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
     )
     lines.append(f"- include_diff: {str(overview['include_diff']).lower()}")
     lines.append(f"- taxonomy_weight_source: {overview['taxonomy_weight_source']}")
+    lines.append(f"- cases_scope: {overview['cases_scope']}")
     lines.append("")
 
     lines.append("## Quality Signals")
@@ -271,8 +275,12 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
     return "\n".join(lines)
 
 
-def write_csv(report: dict[str, Any], output_csv: Path, include_diff_columns: bool) -> None:
+def write_csv(
+    report: dict[str, Any], output_csv: Path, include_diff_columns: bool, only_mismatches: bool
+) -> None:
     cases = report.get("cases", []) or []
+    if only_mismatches:
+        cases = [c for c in cases if c.get("status") != "ok"]
     fieldnames = [
         "source",
         "status",
@@ -387,6 +395,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="List available named taxonomy weight profiles and exit",
     )
+    parser.add_argument(
+        "--only-mismatches",
+        action="store_true",
+        help="Limit Cases section and CSV/JSON case rows to mismatches only",
+    )
     return parser.parse_args()
 
 
@@ -425,6 +438,7 @@ def main() -> int:
         taxonomy_weights,
         default_weight,
         taxonomy_weight_source,
+        args.only_mismatches,
     )
     summary = build_summary(payload, top_k)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -432,7 +446,12 @@ def main() -> int:
 
     outputs: list[Path] = [output]
     if args.csv_output is not None:
-        write_csv(report, args.csv_output, include_diff_columns=args.include_diff_columns)
+        write_csv(
+            report,
+            args.csv_output,
+            include_diff_columns=args.include_diff_columns,
+            only_mismatches=args.only_mismatches,
+        )
         outputs.append(args.csv_output)
     if args.json_output is not None:
         args.json_output.parent.mkdir(parents=True, exist_ok=True)

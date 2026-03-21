@@ -48,6 +48,7 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
             "mismatch_cases_pct",
             "include_diff",
             "taxonomy_weight_source",
+            "cases_scope",
         ]:
             if key not in overview:
                 errors.append(f"{path}: overview missing '{key}'")

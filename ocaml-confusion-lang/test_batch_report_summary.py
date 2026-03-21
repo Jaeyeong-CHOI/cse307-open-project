@@ -21,6 +21,7 @@ def run_summary(
     taxonomy_weights: pathlib.Path | None = None,
     taxonomy_weight_profile: str | None = None,
     json_output: bool = False,
+    only_mismatches: bool = False,
 ) -> tuple[pathlib.Path, pathlib.Path, pathlib.Path | None]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
@@ -46,6 +47,8 @@ def run_summary(
         cmd.extend(["--taxonomy-weight-profile", taxonomy_weight_profile])
     if summary_json is not None:
         cmd.extend(["--json-output", str(summary_json)])
+    if only_mismatches:
+        cmd.append("--only-mismatches")
     subprocess.run(cmd, cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return summary_md, summary_csv, summary_json
 
@@ -69,6 +72,7 @@ def main() -> int:
     assert_contains(content, "- mismatch_cases: 2 (66.7%)")
     assert_contains(content, "- include_diff: true")
     assert_contains(content, "- taxonomy_weight_source: default:built-in")
+    assert_contains(content, "- cases_scope: all")
     assert_contains(content, "- mismatch_severity_total: 130")
     assert_contains(content, "- mismatch_severity_avg: 65.0")
 
@@ -191,6 +195,30 @@ def main() -> int:
     prof_content = prof_summary_md.read_text(encoding="utf-8")
     assert_contains(prof_content, f"- taxonomy_weight_source: profile:{PROFILE_V2} ({ROOT / 'examples' / 'weights' / f'{PROFILE_V2}.json'})")
     assert_contains(prof_content, "- token_substitution_mismatch: weighted_score=60 (count=1, weight=60)")
+
+    # --only-mismatches should reduce cases in markdown/json/csv to mismatch rows only.
+    mm_summary_md, mm_summary_csv, mm_summary_json = run_summary(
+        top_k=2,
+        include_diff_columns=False,
+        mismatch_sort="severity",
+        json_output=True,
+        only_mismatches=True,
+    )
+    mm_content = mm_summary_md.read_text(encoding="utf-8")
+    assert_contains(mm_content, "- cases_scope: mismatches-only")
+    if "examples/clean-pass.py" in mm_content:
+        raise AssertionError("expected clean-pass case to be excluded with --only-mismatches")
+
+    if mm_summary_json is None:
+        raise AssertionError("expected mismatch-only JSON summary output path")
+    mm_payload = json.loads(mm_summary_json.read_text(encoding="utf-8"))
+    if len(mm_payload.get("cases", [])) != 2:
+        raise AssertionError("expected exactly 2 mismatch cases in JSON payload with --only-mismatches")
+
+    with mm_summary_csv.open("r", encoding="utf-8", newline="") as f:
+        mm_rows = list(csv.DictReader(f))
+    if len(mm_rows) != 2:
+        raise AssertionError(f"expected 2 CSV rows with --only-mismatches, got {len(mm_rows)}")
 
     print("OK: batch_report_summary fixture regression passed")
     return 0
