@@ -112,6 +112,7 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 # text 출력(names/summary/summary-tsv)에서도 필터/절단 메타데이터 footer를 함께 출력
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --list-presets-limit 2 --list-presets-with-meta
 # list-presets meta를 JSON 한 줄로 출력(텍스트 key=value split 없이 parser-friendly)
+# JSON meta line은 wrapper 버전 식별용 schema_version(v1) 필드를 포함
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-format json
 # list-presets text meta footer schema id를 버전 실험용으로 override
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-schema-id planner_preset_list_meta.v2
@@ -152,6 +153,7 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 # show-preset text 출력(summary/summary-tsv)에도 parser-friendly 메타 footer를 함께 출력
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary-tsv --show-preset-with-meta
 # show-preset meta를 JSON 한 줄로 출력(자동화 parser 친화)
+# JSON meta line은 schema id와 별도로 wrapper schema_version(v1)을 함께 제공
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json
 # show-preset text meta footer schema id를 버전 실험용으로 override
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-schema-id planner_preset_show_meta.v2
@@ -421,3 +423,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 186. ~~planner list/show meta footer에 optional 생성 시각(`generated_at_utc`) 주입 옵션(`--list-presets-meta-include-generated-at`, `--show-preset-meta-include-generated-at`)을 추가해 운영 로그/파서가 메타 스냅샷 시점을 텍스트/JSON 공통 키로 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 187. ~~planner list/show meta footer에 optional 실행 디렉터리(`cwd`) 주입 옵션(`--list-presets-meta-include-cwd`, `--show-preset-meta-include-cwd`)을 추가해 동일 preset 출력이 어떤 작업 경로에서 생성됐는지 텍스트/JSON 공통 키로 즉시 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 188. ~~planner list/show meta footer에 optional Python 런타임 버전(`python_version`) 주입 옵션(`--list-presets-meta-include-python-version`, `--show-preset-meta-include-python-version`)을 추가해 parser/운영 로그에서 메타 생성 환경을 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+189. ~~planner list/show JSON meta line에 wrapper 버전 식별 필드(`schema_version`)를 추가해, 기존 `schema`(도메인 payload id)와 독립적으로 JSON envelope 버전 진화를 관리할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

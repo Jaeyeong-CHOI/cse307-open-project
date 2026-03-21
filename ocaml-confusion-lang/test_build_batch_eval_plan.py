@@ -979,6 +979,7 @@ def main() -> int:
     names_meta_payload = json.loads(names_with_meta_json_lines[-1])
     if names_meta_payload != {
         "meta": True,
+        "schema_version": "v1",
         "schema": "planner_preset_list_meta.v1",
         "filtered_count": "3",
         "emitted_count": "2",
@@ -1556,7 +1557,11 @@ def main() -> int:
         line.rstrip("\n") for line in show_preset_summary_with_meta_json.stdout.splitlines() if line.strip()
     ]
     show_meta_payload = json.loads(show_preset_with_meta_json_lines[-1])
-    if show_meta_payload.get("meta") is not True or show_meta_payload.get("schema") != "planner_preset_show_meta.v1":
+    if (
+        show_meta_payload.get("meta") is not True
+        or show_meta_payload.get("schema_version") != "v1"
+        or show_meta_payload.get("schema") != "planner_preset_show_meta.v1"
+    ):
         raise AssertionError(f"unexpected show-preset json meta payload: {show_meta_payload}")
     if show_meta_payload.get("preset") != "quick-smoke" or show_meta_payload.get("format") != "summary":
         raise AssertionError(f"unexpected show-preset json meta payload core fields: {show_meta_payload}")

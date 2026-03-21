@@ -43,6 +43,7 @@ PRESET_LIST_TEXT_META_SCHEMA = "planner_preset_list_meta.v1"
 PRESET_LIST_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_list_meta\.v[1-9][0-9]*$")
 PRESET_SHOW_TEXT_META_SCHEMA = "planner_preset_show_meta.v1"
 PRESET_SHOW_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_show_meta\.v[1-9][0-9]*$")
+PRESET_TEXT_META_JSON_SCHEMA_VERSION = "v1"
 
 
 def _utc_now_iso() -> str:
@@ -308,7 +309,10 @@ def _format_preset_summary_tsv_row(
 
 def _emit_text_or_json_meta(fields: dict[str, str], meta_format: str = "text") -> None:
     if meta_format == "json":
-        payload: dict[str, Any] = {"meta": True}
+        payload: dict[str, Any] = {
+            "meta": True,
+            "schema_version": PRESET_TEXT_META_JSON_SCHEMA_VERSION,
+        }
         payload.update(fields)
         print(json.dumps(payload, ensure_ascii=False))
         return
