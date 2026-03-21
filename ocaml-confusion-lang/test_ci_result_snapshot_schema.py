@@ -57,7 +57,7 @@ def main() -> None:
         "metric_json": "../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json",
         "run_context": {
             "run_id": "123456789",
-            "run_url": "https://github.com/org/repo/actions/runs/123456789",
+            "run_url": "https://github.com/org/repo/actions/runs/123456789/attempts/2",
             "run_attempt": "2",
             "event_name": "workflow_dispatch",
             "sha": "abc123def456",
@@ -234,6 +234,59 @@ def main() -> None:
     _assert_contains(
         bad_run_attempt.stderr,
         "run_context.run_attempt must be a numeric string when present",
+    )
+
+    invalid_run_attempt_missing_url_segment = dict(valid_payload)
+    invalid_run_attempt_missing_url_segment["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789/attempts/2",
+    }
+    invalid_run_attempt_missing_url_segment_path = _write(
+        OUT / "snapshot.invalid-run-attempt-missing-url-segment.json",
+        invalid_run_attempt_missing_url_segment,
+    )
+    bad_run_attempt_missing_url_segment = _run(invalid_run_attempt_missing_url_segment_path)
+    if bad_run_attempt_missing_url_segment.returncode == 0:
+        raise AssertionError("expected failure when run_url has attempt segment but run_attempt is missing")
+    _assert_contains(
+        bad_run_attempt_missing_url_segment.stderr,
+        "run_context.run_attempt must be provided when run_context.run_url contains '/attempts/<n>'",
+    )
+
+    invalid_run_attempt_missing_in_url = dict(valid_payload)
+    invalid_run_attempt_missing_in_url["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "run_attempt": "2",
+    }
+    invalid_run_attempt_missing_in_url_path = _write(
+        OUT / "snapshot.invalid-run-attempt-missing-in-url.json",
+        invalid_run_attempt_missing_in_url,
+    )
+    bad_run_attempt_missing_in_url = _run(invalid_run_attempt_missing_in_url_path)
+    if bad_run_attempt_missing_in_url.returncode == 0:
+        raise AssertionError("expected failure when run_attempt is set but run_url lacks attempt segment")
+    _assert_contains(
+        bad_run_attempt_missing_in_url.stderr,
+        "run_context.run_url must include '/attempts/<n>' when run_context.run_attempt is provided",
+    )
+
+    invalid_run_attempt_mismatch = dict(valid_payload)
+    invalid_run_attempt_mismatch["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789/attempts/3",
+        "run_attempt": "2",
+    }
+    invalid_run_attempt_mismatch_path = _write(
+        OUT / "snapshot.invalid-run-attempt-mismatch.json",
+        invalid_run_attempt_mismatch,
+    )
+    bad_run_attempt_mismatch = _run(invalid_run_attempt_mismatch_path)
+    if bad_run_attempt_mismatch.returncode == 0:
+        raise AssertionError("expected failure for run_attempt/run_url attempt mismatch")
+    _assert_contains(
+        bad_run_attempt_mismatch.stderr,
+        "run_context.run_url attempt segment must equal run_context.run_attempt",
     )
 
     invalid_repository_format = dict(valid_payload)

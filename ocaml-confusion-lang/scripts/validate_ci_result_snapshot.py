@@ -193,8 +193,24 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
                     errors.append(f"{path}: run_context.run_url run_id segment must equal run_context.run_id")
 
             run_attempt = run_context.get("run_attempt")
-            if isinstance(run_attempt, str) and run_attempt.strip() and not run_attempt.isdigit():
+            has_run_attempt = isinstance(run_attempt, str) and bool(run_attempt.strip())
+            if has_run_attempt and not str(run_attempt).strip().isdigit():
                 errors.append(f"{path}: run_context.run_attempt must be a numeric string when present")
+
+            if parsed_run_url:
+                parsed_attempt = parsed_run_url.group("attempt")
+                if parsed_attempt and not has_run_attempt:
+                    errors.append(
+                        f"{path}: run_context.run_attempt must be provided when run_context.run_url contains '/attempts/<n>'"
+                    )
+                if has_run_attempt and not parsed_attempt:
+                    errors.append(
+                        f"{path}: run_context.run_url must include '/attempts/<n>' when run_context.run_attempt is provided"
+                    )
+                if parsed_attempt and has_run_attempt and str(run_attempt).strip() != parsed_attempt:
+                    errors.append(
+                        f"{path}: run_context.run_url attempt segment must equal run_context.run_attempt"
+                    )
 
             repository = run_context.get("repository")
             if isinstance(repository, str) and repository.strip() and not REPOSITORY_PATTERN.match(repository.strip()):
