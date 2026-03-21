@@ -193,6 +193,23 @@ def main() -> int:
             "unexpected skipped_runs_by_task_prompt_condition: "
             f"{summary['skipped_runs_by_task_prompt_condition']}"
         )
+    if summary["planned_runs_by_repeat_index"] != {"1": 12, "2": 12}:
+        raise AssertionError(
+            f"unexpected planned_runs_by_repeat_index: {summary['planned_runs_by_repeat_index']}"
+        )
+    if summary["potential_runs_by_repeat_index"] != {"1": 12, "2": 12}:
+        raise AssertionError(
+            f"unexpected potential_runs_by_repeat_index: {summary['potential_runs_by_repeat_index']}"
+        )
+    if summary["skipped_runs_by_repeat_index"] != {"1": 0, "2": 0}:
+        raise AssertionError(
+            f"unexpected skipped_runs_by_repeat_index: {summary['skipped_runs_by_repeat_index']}"
+        )
+    if summary.get("planned_run_ratio_by_repeat_index") != {"1": 1.0, "2": 1.0}:
+        raise AssertionError(
+            "unexpected planned_run_ratio_by_repeat_index: "
+            f"{summary.get('planned_run_ratio_by_repeat_index')}"
+        )
 
     capped = subprocess.run(
         [
@@ -253,6 +270,16 @@ def main() -> int:
         raise AssertionError(
             "unexpected capped planned_run_ratio_total: "
             f"{capped_mode_summary.get('planned_run_ratio_total')}"
+        )
+    if capped_mode_summary["planned_runs_by_repeat_index"] != {"1": 6, "2": 4}:
+        raise AssertionError(
+            "unexpected capped planned_runs_by_repeat_index: "
+            f"{capped_mode_summary['planned_runs_by_repeat_index']}"
+        )
+    if capped_mode_summary["skipped_runs_by_repeat_index"] != {"1": 6, "2": 8}:
+        raise AssertionError(
+            "unexpected capped skipped_runs_by_repeat_index: "
+            f"{capped_mode_summary['skipped_runs_by_repeat_index']}"
         )
 
     per_model_capped_output = OUT / "batch-plan.per-model-capped.json"

@@ -485,6 +485,7 @@ def main() -> int:
         runs_by_task_prompt_condition: dict[str, dict[str, int]] = {
             task["task_id"]: {condition: 0 for condition in conditions} for task in tasks
         }
+        runs_by_repeat_index: dict[str, int] = {str(rep): 0 for rep in range(1, repeats + 1)}
         if max_runs_per_prompt_condition:
             # Condition-first expansion keeps per-condition caps from starving later models.
             for condition in conditions:
@@ -524,6 +525,7 @@ def main() -> int:
                             runs_by_task_model[task["task_id"]][model] += 1
                             runs_by_model_prompt_condition[model][condition] += 1
                             runs_by_task_prompt_condition[task["task_id"]][condition] += 1
+                            runs_by_repeat_index[str(rep)] += 1
                             plan.append(
                                 {
                                     "run_id": f"run-{run_index:04d}",
@@ -573,6 +575,7 @@ def main() -> int:
                             runs_by_task_model[task["task_id"]][model] += 1
                             runs_by_model_prompt_condition[model][condition] += 1
                             runs_by_task_prompt_condition[task["task_id"]][condition] += 1
+                            runs_by_repeat_index[str(rep)] += 1
                             plan.append(
                                 {
                                     "run_id": f"run-{run_index:04d}",
@@ -649,6 +652,14 @@ def main() -> int:
             }
             for task_id in runs_by_task_prompt_condition
         }
+        potential_runs_per_repeat_index = len(tasks) * len(models) * len(conditions)
+        potential_runs_by_repeat_index = {
+            str(rep): potential_runs_per_repeat_index for rep in range(1, repeats + 1)
+        }
+        skipped_runs_by_repeat_index = {
+            repeat_key: max(0, potential_runs_by_repeat_index[repeat_key] - runs_by_repeat_index[repeat_key])
+            for repeat_key in runs_by_repeat_index
+        }
 
         planned_run_ratio_total = _safe_ratio(len(plan), potential_runs_total)
         planned_run_ratio_by_model = _ratio_map_1d(runs_per_model, {model: potential_runs_per_model for model in models})
@@ -665,6 +676,10 @@ def main() -> int:
         planned_run_ratio_by_task_prompt_condition = _ratio_map_2d(
             runs_by_task_prompt_condition,
             potential_runs_by_task_prompt_condition,
+        )
+        planned_run_ratio_by_repeat_index = _ratio_map_1d(
+            runs_by_repeat_index,
+            potential_runs_by_repeat_index,
         )
 
         payload: dict[str, Any] = {
@@ -702,12 +717,14 @@ def main() -> int:
                 "planned_run_ratio_by_model_prompt_condition": planned_run_ratio_by_model_prompt_condition,
                 "planned_run_ratio_by_task_model": planned_run_ratio_by_task_model,
                 "planned_run_ratio_by_task_prompt_condition": planned_run_ratio_by_task_prompt_condition,
+                "planned_run_ratio_by_repeat_index": planned_run_ratio_by_repeat_index,
                 "planned_runs_by_model": runs_per_model,
                 "planned_runs_by_prompt_condition": runs_per_prompt_condition,
                 "planned_runs_by_task": runs_per_task,
                 "planned_runs_by_model_prompt_condition": runs_by_model_prompt_condition,
                 "planned_runs_by_task_model": runs_by_task_model,
                 "planned_runs_by_task_prompt_condition": runs_by_task_prompt_condition,
+                "planned_runs_by_repeat_index": runs_by_repeat_index,
                 "potential_runs_by_model": {model: potential_runs_per_model for model in models},
                 "potential_runs_by_prompt_condition": {
                     condition: potential_runs_per_condition for condition in conditions
@@ -716,12 +733,14 @@ def main() -> int:
                 "potential_runs_by_model_prompt_condition": potential_runs_by_model_prompt_condition,
                 "potential_runs_by_task_model": potential_runs_by_task_model,
                 "potential_runs_by_task_prompt_condition": potential_runs_by_task_prompt_condition,
+                "potential_runs_by_repeat_index": potential_runs_by_repeat_index,
                 "skipped_runs_by_model": skipped_runs_by_model,
                 "skipped_runs_by_prompt_condition": skipped_runs_by_prompt_condition,
                 "skipped_runs_by_task": skipped_runs_by_task,
                 "skipped_runs_by_model_prompt_condition": skipped_runs_by_model_prompt_condition,
                 "skipped_runs_by_task_model": skipped_runs_by_task_model,
                 "skipped_runs_by_task_prompt_condition": skipped_runs_by_task_prompt_condition,
+                "skipped_runs_by_repeat_index": skipped_runs_by_repeat_index,
             },
             "plan": plan,
         }
