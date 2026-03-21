@@ -118,6 +118,12 @@ def parse_args() -> argparse.Namespace:
         help="Optional per-prompt-condition cap for planned runs (0 disables cap)",
     )
     parser.add_argument(
+        "--max-runs-per-task",
+        type=int,
+        default=0,
+        help="Optional per-task cap for planned runs (0 disables cap)",
+    )
+    parser.add_argument(
         "--cheap-first",
         action="store_true",
         help="Order model runs using a cheap-first heuristic before expanding matrix",
@@ -144,6 +150,8 @@ def main() -> int:
             raise ValueError("--max-runs-per-model must be >= 0")
         if args.max_runs_per_prompt_condition < 0:
             raise ValueError("--max-runs-per-prompt-condition must be >= 0")
+        if args.max_runs_per_task < 0:
+            raise ValueError("--max-runs-per-task must be >= 0")
 
         task_set = load_json(args.task_set_json)
         task_set_id, tasks = validate_task_set(task_set, args.task_set_json)
@@ -158,6 +166,7 @@ def main() -> int:
         run_index = 0
         runs_per_model: dict[str, int] = {model: 0 for model in models}
         runs_per_prompt_condition: dict[str, int] = {condition: 0 for condition in conditions}
+        runs_per_task: dict[str, int] = {task["task_id"]: 0 for task in tasks}
         runs_by_model_prompt_condition: dict[str, dict[str, int]] = {
             model: {condition: 0 for condition in conditions} for model in models
         }
@@ -171,9 +180,12 @@ def main() -> int:
                                 continue
                             if runs_per_prompt_condition[condition] >= args.max_runs_per_prompt_condition:
                                 continue
+                            if args.max_runs_per_task and runs_per_task[task["task_id"]] >= args.max_runs_per_task:
+                                continue
                             run_index += 1
                             runs_per_model[model] += 1
                             runs_per_prompt_condition[condition] += 1
+                            runs_per_task[task["task_id"]] += 1
                             runs_by_model_prompt_condition[model][condition] += 1
                             plan.append(
                                 {
@@ -192,9 +204,12 @@ def main() -> int:
                         for rep in range(1, args.repeats + 1):
                             if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
                                 continue
+                            if args.max_runs_per_task and runs_per_task[task["task_id"]] >= args.max_runs_per_task:
+                                continue
                             run_index += 1
                             runs_per_model[model] += 1
                             runs_per_prompt_condition[condition] += 1
+                            runs_per_task[task["task_id"]] += 1
                             runs_by_model_prompt_condition[model][condition] += 1
                             plan.append(
                                 {
@@ -216,12 +231,17 @@ def main() -> int:
         potential_runs_per_model = len(tasks) * len(conditions) * args.repeats
         potential_runs_total = potential_runs_per_model * len(models)
         potential_runs_per_condition = len(tasks) * len(models) * args.repeats
+        potential_runs_per_task = len(models) * len(conditions) * args.repeats
         skipped_runs_by_model = {
             model: max(0, potential_runs_per_model - runs_per_model[model]) for model in models
         }
         skipped_runs_by_prompt_condition = {
             condition: max(0, potential_runs_per_condition - runs_per_prompt_condition[condition])
             for condition in conditions
+        }
+        skipped_runs_by_task = {
+            task_id: max(0, potential_runs_per_task - runs_per_task[task_id])
+            for task_id in runs_per_task
         }
         potential_runs_per_model_prompt_condition = len(tasks) * args.repeats
         potential_runs_by_model_prompt_condition = {
@@ -252,6 +272,7 @@ def main() -> int:
                 "max_total_runs": args.max_total_runs,
                 "max_runs_per_model": args.max_runs_per_model,
                 "max_runs_per_prompt_condition": args.max_runs_per_prompt_condition,
+                "max_runs_per_task": args.max_runs_per_task,
             },
             "summary": {
                 "task_count": len(tasks),
@@ -263,14 +284,17 @@ def main() -> int:
                 "skipped_runs_total": max(0, potential_runs_total - len(plan)),
                 "planned_runs_by_model": runs_per_model,
                 "planned_runs_by_prompt_condition": runs_per_prompt_condition,
+                "planned_runs_by_task": runs_per_task,
                 "planned_runs_by_model_prompt_condition": runs_by_model_prompt_condition,
                 "potential_runs_by_model": {model: potential_runs_per_model for model in models},
                 "potential_runs_by_prompt_condition": {
                     condition: potential_runs_per_condition for condition in conditions
                 },
+                "potential_runs_by_task": {task_id: potential_runs_per_task for task_id in runs_per_task},
                 "potential_runs_by_model_prompt_condition": potential_runs_by_model_prompt_condition,
                 "skipped_runs_by_model": skipped_runs_by_model,
                 "skipped_runs_by_prompt_condition": skipped_runs_by_prompt_condition,
+                "skipped_runs_by_task": skipped_runs_by_task,
                 "skipped_runs_by_model_prompt_condition": skipped_runs_by_model_prompt_condition,
             },
             "plan": plan,
