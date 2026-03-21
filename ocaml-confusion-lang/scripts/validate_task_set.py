@@ -11,6 +11,8 @@ from typing import Any
 REQUIRED_ROOT_KEYS = ["schema_version", "task_set_id", "tasks"]
 REQUIRED_TASK_KEYS = ["task_id", "source"]
 ALLOWED_DIFFICULTIES = {"easy", "medium", "hard"}
+OPTIONAL_ROOT_PATH_KEYS = ["manifest_path"]
+OPTIONAL_ROOT_TEXT_KEYS = ["alias_set_id"]
 
 
 def load_json(path: Path) -> Any:
@@ -26,6 +28,20 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
     for key in REQUIRED_ROOT_KEYS:
         if key not in payload:
             errors.append(f"{path}: missing required key '{key}'")
+
+    for key in OPTIONAL_ROOT_TEXT_KEYS:
+        if key in payload:
+            value = payload[key]
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"{path}: key '{key}' must be a non-empty string when present")
+
+    for key in OPTIONAL_ROOT_PATH_KEYS:
+        if key in payload:
+            value = payload[key]
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"{path}: key '{key}' must be a non-empty string when present")
+            elif not value.endswith(".txt"):
+                errors.append(f"{path}: key '{key}' must point to a .txt manifest when present")
 
     tasks = payload.get("tasks")
     if not isinstance(tasks, list) or not tasks:

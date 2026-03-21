@@ -85,6 +85,16 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - `failure_taxonomy.severity_weighted[*]`는 `tag/count/weight/weighted_score` 필수
 - `top_mismatches[*]`는 `source/failure_taxonomy/severity` 필수
 
+`validate_task_set.py` 스키마 규칙:
+- 루트는 JSON object
+- 필수 root key: `schema_version`, `task_set_id`, `tasks`
+- optional root key: `alias_set_id`(non-empty string), `manifest_path`(`.txt` 경로 문자열)
+- `tasks`는 non-empty array
+- `tasks[*]` 필수 key: `task_id`, `source` (`.py`)
+- `task_id` 중복 금지
+- optional `difficulty`: `easy|medium|hard`
+- optional `tags`: non-empty string array
+
 ## 다음 구현
 1. ~~문자열/주석 보호 토크나이저~~ ✅ (single/double/triple quote + line comment 보호)
 2. ~~single-pass replace 엔진 고도화 (현재는 코드 span별 fold)~~ ✅ (코드 span에서 keyword 매칭 1-pass 스캐너로 대체)
@@ -125,3 +135,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 37. ~~summary JSON → metric snapshot 생성 스크립트 + schema 검증/회귀 테스트/CI artifact 연동~~ ✅ (`scripts/generate_metric_snapshot.py`, `test_generate_metric_snapshot.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`)
 38. ~~실험 task set v1 fixture + schema validator/회귀 테스트/CI smoke 연동~~ ✅ (`examples/task-set-v1.json`, `scripts/validate_task_set.py`, `test_task_set_schema.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`)
 39. ~~metric snapshot 생성 단계에 `--task-set-json` 일관성 검증(아이디/케이스 소스/총량) 추가~~ ✅ (`scripts/generate_metric_snapshot.py`, `examples/task-set-fixture-whitespace-linecount-v1.json`, `test_generate_metric_snapshot.py`)
+40. ~~task set 스키마에 `alias_set_id`/`manifest_path` 메타데이터 확장 + validator/회귀 테스트 반영~~ ✅ (`examples/task-set-v1.json`, `scripts/validate_task_set.py`, `test_task_set_schema.py`)

@@ -23,6 +23,8 @@ def main() -> int:
         """{
   \"schema_version\": \"v1\",
   \"task_set_id\": \"broken\",
+  \"alias_set_id\": \"\",
+  \"manifest_path\": \"examples/manifest-v1.csv\",
   \"tasks\": [
     {
       \"task_id\": \"dup\",

@@ -1,6 +1,8 @@
 {
   "schema_version": "v1",
   "task_set_id": "cse307-task-set-v1",
+  "alias_set_id": "case-c2",
+  "manifest_path": "examples/manifest-v1.txt",
   "description": "Confusion-language baseline task set v1 for regression and batch evaluation",
   "tasks": [
     {
