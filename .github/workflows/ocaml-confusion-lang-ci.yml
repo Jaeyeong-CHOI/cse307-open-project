@@ -47,6 +47,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate event_name against shared run_context schema
+        run: |
+          python3 ocaml-confusion-lang/scripts/validate_run_context_event_name.py "${{ github.event_name }}"
+
       - name: Detect OCaml-engine changes
         id: filter
         uses: dorny/paths-filter@v3
