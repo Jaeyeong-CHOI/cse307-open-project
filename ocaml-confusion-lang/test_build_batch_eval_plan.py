@@ -1184,6 +1184,76 @@ def main() -> int:
             f"{invalid_empty_tag_filter_run.stderr}"
         )
 
+    name_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "ci",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if name_filtered_run.stdout.strip().splitlines() != ["balanced-ci"]:
+        raise AssertionError(
+            f"unexpected preset name substring filter output: {name_filtered_run.stdout!r}"
+        )
+
+    name_and_tag_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "analysis",
+            "--list-presets-tag",
+            "high-coverage",
+            "--list-presets-format",
+            "summary-tsv",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    name_and_tag_filtered_lines = name_and_tag_filtered_run.stdout.strip().splitlines()
+    if len(name_and_tag_filtered_lines) != 2:
+        raise AssertionError(
+            "expected summary-tsv output to contain header and one filtered row, got: "
+            f"{name_and_tag_filtered_lines}"
+        )
+    if not name_and_tag_filtered_lines[1].startswith("full-analysis\t"):
+        raise AssertionError(
+            "unexpected combined name/tag filtered summary-tsv row: "
+            f"{name_and_tag_filtered_lines}"
+        )
+
+    invalid_empty_name_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "   ",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_empty_name_filter_run.returncode == 0:
+        raise AssertionError("expected empty --list-presets-name-contains to fail-fast")
+    if "--list-presets-name-contains must include at least one non-empty character" not in (
+        invalid_empty_name_filter_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected empty name filter validation error, got: "
+            f"{invalid_empty_name_filter_run.stderr}"
+        )
+
     invalid_preset_file = OUT / "invalid-batch-plan-presets.v1.json"
     invalid_preset_file.write_text(
         json.dumps(

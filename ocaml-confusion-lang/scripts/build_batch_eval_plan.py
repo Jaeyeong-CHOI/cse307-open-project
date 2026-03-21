@@ -192,6 +192,12 @@ def _matches_preset_tags(
     return required_tags.issubset(preset_tags)
 
 
+def _matches_preset_name(name: str, name_filter: str | None) -> bool:
+    if not name_filter:
+        return True
+    return name_filter.lower() in name.lower()
+
+
 def _preset_description_text(raw_description: str) -> str:
     normalized = " ".join(str(raw_description).replace("\t", " ").split())
     if not normalized:
@@ -393,6 +399,11 @@ def parse_args() -> argparse.Namespace:
         help="Tag match mode for --list-presets-tag: all (default, AND) or any (OR)",
     )
     parser.add_argument(
+        "--list-presets-name-contains",
+        default=None,
+        help="Optional case-insensitive substring filter for preset names in --list-presets",
+    )
+    parser.add_argument(
         "--summary-tsv-with-schema-header",
         action="store_true",
         help=(
@@ -543,10 +554,14 @@ def main() -> int:
                 required_tags = {tag.strip().lower() for tag in args.list_presets_tag.split(",") if tag.strip()}
                 if not required_tags:
                     raise ValueError("--list-presets-tag must include at least one non-empty tag")
+            name_filter = args.list_presets_name_contains.strip() if args.list_presets_name_contains else None
+            if args.list_presets_name_contains is not None and not name_filter:
+                raise ValueError("--list-presets-name-contains must include at least one non-empty character")
             filtered_presets = {
                 name: preset
                 for name, preset in presets.items()
                 if isinstance(preset, dict)
+                and _matches_preset_name(name, name_filter)
                 and _matches_preset_tags(
                     preset,
                     required_tags,
