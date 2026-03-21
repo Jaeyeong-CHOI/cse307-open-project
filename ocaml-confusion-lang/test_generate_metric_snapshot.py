@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 import pathlib
 import subprocess
 
@@ -149,6 +150,32 @@ def main() -> int:
     assert lineage_fail.returncode != 0, "expected lineage consistency fail mode to fail"
     assert "alias_set_id" in lineage_fail_output
     assert "Traceback" not in lineage_fail_output
+
+    gh_annotated = subprocess.run(
+        [
+            "python3",
+            str(METRIC_SCRIPT),
+            str(lineage_mismatch_summary),
+            "--task-set-id",
+            "fixture-task-set-v1",
+            "--prompt-condition",
+            "strict",
+            "--model",
+            "gpt-5.3-codex",
+            "--task-set-json",
+            str(TASK_SET_FIXTURE),
+            "--lineage-consistency",
+            "fail",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        env={**os.environ, "GITHUB_ACTIONS": "true"},
+    )
+    gh_output = gh_annotated.stderr + gh_annotated.stdout
+    assert gh_annotated.returncode != 0
+    assert "::error::" in gh_output
 
     subprocess.run(
         ["python3", str(METRIC_VALIDATOR), str(metric_json)],

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,13 @@ from typing import Any
 LINEAGE_KEYS = ("task_set_id", "alias_set_id", "manifest_path")
 
 ALLOWED_DIFFICULTIES = {"easy", "medium", "hard"}
+
+
+def emit_error(message: str) -> None:
+    print(f"ERROR: {message}", file=sys.stderr)
+    if os.getenv("GITHUB_ACTIONS", "").lower() == "true":
+        safe = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+        print(f"::error::{safe}", file=sys.stderr)
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -251,7 +259,7 @@ def main() -> int:
             errors = validate_task_set_payload(task_set, args.task_set_json)
             if errors:
                 for err in errors:
-                    print(f"ERROR: {err}", file=sys.stderr)
+                    emit_error(err)
                 return 1
             assert_task_set_consistency(
                 summary,
@@ -284,7 +292,7 @@ def main() -> int:
         print(output)
         return 0
     except (ValueError, OSError, json.JSONDecodeError) as exc:
-        print(f"ERROR: {exc}", file=sys.stderr)
+        emit_error(str(exc))
         return 1
 
 
