@@ -51,6 +51,19 @@ def main() -> int:
         raise AssertionError(
             f"unexpected planned_runs_by_model: {summary['planned_runs_by_model']}"
         )
+    if summary["potential_runs_total"] != expected_total or summary["skipped_runs_total"] != 0:
+        raise AssertionError(
+            "expected uncapped run counters to match planned total: "
+            f"{summary['potential_runs_total']=}, {summary['skipped_runs_total']=}"
+        )
+    if summary["potential_runs_by_model"] != {"gpt-5-mini": 12, "gpt-5-pro": 12}:
+        raise AssertionError(
+            f"unexpected potential_runs_by_model: {summary['potential_runs_by_model']}"
+        )
+    if summary["skipped_runs_by_model"] != {"gpt-5-mini": 0, "gpt-5-pro": 0}:
+        raise AssertionError(
+            f"unexpected skipped_runs_by_model: {summary['skipped_runs_by_model']}"
+        )
 
     capped = subprocess.run(
         [
@@ -107,6 +120,19 @@ def main() -> int:
         raise AssertionError(
             "unexpected per-model capped runs_by_model: "
             f"{per_model_summary['planned_runs_by_model']}"
+        )
+    if per_model_summary["potential_runs_total"] != 36:
+        raise AssertionError(
+            f"expected per-model potential total=36, got {per_model_summary['potential_runs_total']}"
+        )
+    if per_model_summary["skipped_runs_total"] != 26:
+        raise AssertionError(
+            f"expected per-model skipped total=26, got {per_model_summary['skipped_runs_total']}"
+        )
+    if per_model_summary["skipped_runs_by_model"] != {"gpt-5-mini": 13, "gpt-5-pro": 13}:
+        raise AssertionError(
+            "unexpected per-model capped skipped_runs_by_model: "
+            f"{per_model_summary['skipped_runs_by_model']}"
         )
 
     print("OK: build_batch_eval_plan regression passed")

@@ -174,6 +174,12 @@ def main() -> int:
                 "reduce models/conditions/repeats or increase cap"
             )
 
+        potential_runs_per_model = len(tasks) * len(conditions) * args.repeats
+        potential_runs_total = potential_runs_per_model * len(models)
+        skipped_runs_by_model = {
+            model: max(0, potential_runs_per_model - runs_per_model[model]) for model in models
+        }
+
         payload: dict[str, Any] = {
             "schema_version": "v1",
             "task_set_id": task_set_id,
@@ -192,7 +198,11 @@ def main() -> int:
                 "prompt_condition_count": len(conditions),
                 "unique_call_units": len(tasks) * len(models) * len(conditions),
                 "planned_runs_total": len(plan),
+                "potential_runs_total": potential_runs_total,
+                "skipped_runs_total": max(0, potential_runs_total - len(plan)),
                 "planned_runs_by_model": runs_per_model,
+                "potential_runs_by_model": {model: potential_runs_per_model for model in models},
+                "skipped_runs_by_model": skipped_runs_by_model,
             },
             "plan": plan,
         }
