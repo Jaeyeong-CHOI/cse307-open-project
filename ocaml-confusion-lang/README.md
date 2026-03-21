@@ -184,3 +184,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 71. ~~Step Summary에 `top1_mismatch_source` 단일 디버그 힌트를 추가해 PR 실패 triage 시작점을 즉시 노출~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
 72. ~~Step Summary에 `top1_mismatch_taxonomy` 단일 힌트를 추가해 triage 분기(토큰/라인카운트/치환)를 즉시 파악 가능하게 개선~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
 73. ~~Step Summary에 `top1_mismatch_severity`를 추가해 triage 우선순위(리스크 크기) 판단을 artifact 없이도 즉시 가능하게 개선~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`, `README.md`)
+74. ~~Step Summary에 `top1_mismatch_first_diff_line`/`top1_mismatch_first_token_diff_index`를 추가해 실패 지점(라인/토큰 인덱스)을 artifact 다운로드 없이 즉시 확인 가능하게 개선~~ ✅ (`scripts/batch_report_summary.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `test_batch_report_summary.py`)

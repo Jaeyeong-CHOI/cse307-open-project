@@ -260,13 +260,20 @@ def build_summary_payload(
     if top_k_mismatches > 0:
         for case in mismatch_list[:top_k_mismatches]:
             tags = [str(t) for t in (case.get("failure_taxonomy") or [])]
-            top_mismatches.append(
-                {
-                    "source": case.get("source", "<unknown>"),
-                    "failure_taxonomy": tags,
-                    "severity": _mismatch_severity_score(case, taxonomy_weights, default_weight)[0],
-                }
+            first_diff = case.get("first_diff") if isinstance(case.get("first_diff"), dict) else {}
+            first_token_diff = (
+                case.get("first_token_diff") if isinstance(case.get("first_token_diff"), dict) else {}
             )
+            top_mismatch: dict[str, Any] = {
+                "source": case.get("source", "<unknown>"),
+                "failure_taxonomy": tags,
+                "severity": _mismatch_severity_score(case, taxonomy_weights, default_weight)[0],
+            }
+            if "line" in first_diff:
+                top_mismatch["first_diff_line"] = first_diff.get("line")
+            if "index" in first_token_diff:
+                top_mismatch["first_token_diff_index"] = first_token_diff.get("index")
+            top_mismatches.append(top_mismatch)
 
     generated_at_utc = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 

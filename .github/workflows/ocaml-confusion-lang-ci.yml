@@ -151,6 +151,8 @@ jobs:
           top1_source = top1.get("source")
           top1_taxonomy = (top1.get("failure_taxonomy") or [None])[0]
           top1_severity = top1.get("severity")
+          top1_first_diff_line = top1.get("first_diff_line")
+          top1_first_token_diff_index = top1.get("first_token_diff_index")
 
           print("## Lightweight CI result snapshot")
           print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
@@ -160,6 +162,8 @@ jobs:
           print(f"- top1_mismatch_source: {top1_source}")
           print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
           print(f"- top1_mismatch_severity: {top1_severity}")
+          print(f"- top1_mismatch_first_diff_line: {top1_first_diff_line}")
+          print(f"- top1_mismatch_first_token_diff_index: {top1_first_token_diff_index}")
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY
@@ -277,6 +281,8 @@ jobs:
           top1_source = top1.get("source")
           top1_taxonomy = (top1.get("failure_taxonomy") or [None])[0]
           top1_severity = top1.get("severity")
+          top1_first_diff_line = top1.get("first_diff_line")
+          top1_first_token_diff_index = top1.get("first_token_diff_index")
 
           print("## Full CI result snapshot")
           print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
@@ -286,6 +292,8 @@ jobs:
           print(f"- top1_mismatch_source: {top1_source}")
           print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
           print(f"- top1_mismatch_severity: {top1_severity}")
+          print(f"- top1_mismatch_first_diff_line: {top1_first_diff_line}")
+          print(f"- top1_mismatch_first_token_diff_index: {top1_first_token_diff_index}")
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY

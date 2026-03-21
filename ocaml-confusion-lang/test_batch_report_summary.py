@@ -109,6 +109,10 @@ def main() -> int:
         raise AssertionError("expected mismatch_severity_total=130 in JSON summary")
     if payload["top_mismatches"][0]["source"] != "examples/collision-risk-case.py":
         raise AssertionError("expected collision-risk case to be first top mismatch in JSON summary")
+    if payload["top_mismatches"][0].get("first_diff_line") != 2:
+        raise AssertionError("expected top mismatch first_diff_line=2 in JSON summary")
+    if payload["top_mismatches"][0].get("first_token_diff_index") != 8:
+        raise AssertionError("expected top mismatch first_token_diff_index=8 in JSON summary")
     gates = payload.get("gates")
     if not isinstance(gates, dict):
         raise AssertionError("expected gates object in JSON summary")
