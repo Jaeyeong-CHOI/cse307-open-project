@@ -150,6 +150,7 @@ jobs:
           top1 = mismatches[0] if mismatches else {}
           top1_source = top1.get("source")
           top1_taxonomy = (top1.get("failure_taxonomy") or [None])[0]
+          top1_severity = top1.get("severity")
 
           print("## Lightweight CI result snapshot")
           print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
@@ -158,6 +159,7 @@ jobs:
           print(f"- tripped_list: {gates.get('tripped_list')}")
           print(f"- top1_mismatch_source: {top1_source}")
           print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
+          print(f"- top1_mismatch_severity: {top1_severity}")
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY
@@ -274,6 +276,7 @@ jobs:
           top1 = mismatches[0] if mismatches else {}
           top1_source = top1.get("source")
           top1_taxonomy = (top1.get("failure_taxonomy") or [None])[0]
+          top1_severity = top1.get("severity")
 
           print("## Full CI result snapshot")
           print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
@@ -282,6 +285,7 @@ jobs:
           print(f"- tripped_list: {gates.get('tripped_list')}")
           print(f"- top1_mismatch_source: {top1_source}")
           print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
+          print(f"- top1_mismatch_severity: {top1_severity}")
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY
