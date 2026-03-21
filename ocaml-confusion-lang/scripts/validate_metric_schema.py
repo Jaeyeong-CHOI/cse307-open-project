@@ -75,7 +75,10 @@ def main() -> int:
     payload = load_json(args.metric_json)
     errors = validate_payload(payload, args.metric_json)
     if errors:
-        emit_error("Metric schema validation failed:\n" + "\n".join(f"- {err}" for err in errors))
+        emit_error(
+            "Metric schema validation failed:\n" + "\n".join(f"- {err}" for err in errors),
+            hints=[f"input={args.metric_json}", "schema=examples/metric-schema-v1.json"],
+        )
         return 1
     print(f"OK: metric schema valid ({args.metric_json})")
     return 0

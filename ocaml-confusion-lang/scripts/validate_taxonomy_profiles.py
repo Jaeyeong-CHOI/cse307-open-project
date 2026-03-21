@@ -77,7 +77,10 @@ def main() -> int:
         all_errors.extend(validate_profile(payload, profile_path))
 
     if all_errors:
-        emit_error("Taxonomy profile schema validation failed:\n" + "\n".join(f"- {err}" for err in all_errors))
+        emit_error(
+            "Taxonomy profile schema validation failed:\n" + "\n".join(f"- {err}" for err in all_errors),
+            hints=[f"profile_dir={args.profile_dir}", "required_keys=default_weight,weights"],
+        )
         return 1
 
     print(f"OK: validated {len(profile_paths)} taxonomy profile file(s)")

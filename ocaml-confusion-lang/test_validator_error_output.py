@@ -45,6 +45,10 @@ def main() -> int:
         raise AssertionError(f"missing concise ERROR prefix: {stderr!r}")
     if "::error::Metric schema validation failed:" not in stderr:
         raise AssertionError(f"missing GitHub annotation: {stderr!r}")
+    if "HINT: input=" not in stderr:
+        raise AssertionError(f"missing structured hint line: {stderr!r}")
+    if "::error::" in stderr and "HINT: input=" not in stderr.split("::error::", 1)[1]:
+        raise AssertionError(f"missing hint in GitHub annotation payload: {stderr!r}")
     if "Traceback" in stderr:
         raise AssertionError(f"unexpected traceback noise: {stderr!r}")
 

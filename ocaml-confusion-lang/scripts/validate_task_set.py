@@ -106,7 +106,10 @@ def main() -> int:
     payload = load_json(args.task_set_json)
     errors = validate_payload(payload, args.task_set_json)
     if errors:
-        emit_error("Task-set schema validation failed:\n" + "\n".join(f"- {err}" for err in errors))
+        emit_error(
+            "Task-set schema validation failed:\n" + "\n".join(f"- {err}" for err in errors),
+            hints=[f"input={args.task_set_json}", "required_root_keys=schema_version,task_set_id,tasks"],
+        )
         return 1
     print(f"OK: task-set schema valid ({args.task_set_json})")
     return 0

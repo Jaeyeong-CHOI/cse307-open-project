@@ -137,7 +137,10 @@ def main() -> int:
     payload = load_json(args.summary_json)
     errors = validate_payload(payload, args.summary_json)
     if errors:
-        emit_error("Summary payload schema validation failed:\n" + "\n".join(f"- {err}" for err in errors))
+        emit_error(
+            "Summary payload schema validation failed:\n" + "\n".join(f"- {err}" for err in errors),
+            hints=[f"input={args.summary_json}", "expected_keys=metadata,title,overview,quality_signals,failure_taxonomy,top_mismatches,mismatch_sort,cases"],
+        )
         return 1
     print(f"OK: summary payload schema valid ({args.summary_json})")
     return 0
