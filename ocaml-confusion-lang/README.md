@@ -83,6 +83,14 @@ python3 scripts/emit_ci_result_snapshot.py ../docs/research/results/roundtrip-ba
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json
 # batch eval run plan 생성(offline, dedupe + cheap-first ordering + run cap)
 python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5-mini --prompt-conditions base,strict,base --repeats 2 --cheap-first --fair-model-allocation --max-total-runs 64 --max-runs-per-model 24 --max-runs-per-prompt-condition 16 --max-runs-per-task 12 --max-runs-per-task-model 8 -o ../docs/research/results/roundtrip-batch-v1.plan.json
+
+# planner 운영 프리셋 예시 (cheap-first 권장)
+# 1) quick-smoke: 최소 비용/빠른 sanity check
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini --prompt-conditions base,strict --repeats 1 --cheap-first --max-total-runs 8 --max-runs-per-model 8 --max-runs-per-prompt-condition 4 --max-runs-per-task 2 --max-runs-per-task-model 1 -o ../docs/research/results/plan.quick-smoke.json
+# 2) balanced-ci: 경량 회귀 + 조건/태스크 편향 억제
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro --prompt-conditions base,strict --repeats 2 --cheap-first --fair-model-allocation --max-total-runs 24 --max-runs-per-model 14 --max-runs-per-prompt-condition 12 --max-runs-per-task 4 --max-runs-per-task-model 2 -o ../docs/research/results/plan.balanced-ci.json
+# 3) full-analysis: 분석용 고커버리지(여전히 cap 유지)
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5.3-codex --prompt-conditions base,strict,few-shot,two-step --repeats 2 --cheap-first --fair-model-allocation --max-total-runs 64 --max-runs-per-model 24 --max-runs-per-prompt-condition 20 --max-runs-per-task 6 --max-runs-per-task-model 3 -o ../docs/research/results/plan.full-analysis.json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
 # run_context fallback event_name(unknown/derived) 차단(엄격 모드)
@@ -286,3 +294,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 141. ~~planner(`build_batch_eval_plan.py`)에 task별 run cap(`--max-runs-per-task`)과 task 축 집계(`planned/potential/skipped_runs_by_task`)를 추가해 특정 과제가 과도하게 반복 호출되는 비용 편향을 사전 차단~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 142. ~~planner(`build_batch_eval_plan.py`)에 task×model run cap(`--max-runs-per-task-model`)과 task×model 매트릭스 집계(`planned/potential/skipped_runs_by_task_model`)를 추가해 특정 과제-모델 조합 과샘플링을 사전 차단~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 143. ~~planner(`build_batch_eval_plan.py`)에 fair model allocation(`--fair-model-allocation`)을 추가해 per-prompt-condition cap 적용 시 모델 쏠림(예: 6:4)을 회전 배분으로 완화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+144. ~~planner cap 조합별 운영 프리셋(quick-smoke / balanced-ci / full-analysis)을 README 실행 예시로 정리해 실험 설정 시간을 줄이고 cheap-first 원칙을 즉시 적용 가능하게 개선~~ ✅ (`README.md`)
