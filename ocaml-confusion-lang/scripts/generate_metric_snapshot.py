@@ -201,6 +201,10 @@ def build_metric_payload(
     if task_set_lineage:
         source_summary["task_set_lineage"] = task_set_lineage
 
+    run_context = summary.get("run_context")
+    if isinstance(run_context, dict):
+        source_summary["run_context"] = run_context
+
     return {
         "schema_version": "v1",
         "task_set_id": task_set_id,

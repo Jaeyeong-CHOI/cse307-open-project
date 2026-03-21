@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from error_utils import emit_error
+from run_context_validation import validate_run_context
 
 REQUIRED_ROOT_KEYS = [
     "schema_version",
@@ -60,6 +61,41 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
 
     if "lgp" in metrics and not isinstance(metrics["lgp"], (int, float)):
         errors.append(f"{path}: metrics.lgp must be numeric when present")
+
+    source_summary = payload.get("source_summary")
+    if source_summary is not None:
+        if not isinstance(source_summary, dict):
+            errors.append(f"{path}: source_summary must be an object when present")
+        else:
+            for key in ["input_report", "generated_at_utc"]:
+                if key in source_summary and (
+                    not isinstance(source_summary[key], str) or not source_summary[key].strip()
+                ):
+                    errors.append(f"{path}: source_summary.{key} must be a non-empty string when present")
+
+            task_set_lineage = source_summary.get("task_set_lineage")
+            if task_set_lineage is not None:
+                if not isinstance(task_set_lineage, dict):
+                    errors.append(f"{path}: source_summary.task_set_lineage must be an object when present")
+                else:
+                    for key in ["task_set_id", "alias_set_id", "manifest_path"]:
+                        if key in task_set_lineage and (
+                            not isinstance(task_set_lineage[key], str)
+                            or not task_set_lineage[key].strip()
+                        ):
+                            errors.append(
+                                f"{path}: source_summary.task_set_lineage.{key} must be a non-empty string when present"
+                            )
+
+            run_context = source_summary.get("run_context")
+            if run_context is not None:
+                validate_run_context(
+                    {"run_context": run_context},
+                    path,
+                    errors,
+                    run_url_label="source_summary.run_context.run_url",
+                    run_url_suffix="",
+                )
 
     return errors
 

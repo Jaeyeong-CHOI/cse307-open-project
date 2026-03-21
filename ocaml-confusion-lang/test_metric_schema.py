@@ -46,6 +46,40 @@ def main() -> int:
     if failed.returncode == 0:
         raise AssertionError("expected invalid metric payload to fail validation")
 
+    invalid_run_context = OUT / "metric.invalid.run-context.json"
+    invalid_run_context.write_text(
+        """{
+  \"schema_version\": \"v1\",
+  \"task_set_id\": \"task-set-v1-sample\",
+  \"prompt_condition\": \"strict\",
+  \"model\": \"gpt-5.3-codex\",
+  \"metrics\": {
+    \"acr\": 0.8,
+    \"prr\": 0.2,
+    \"esr\": 0.7,
+    \"mfb\": 1.0
+  },
+  \"source_summary\": {
+    \"run_context\": {
+      \"run_id\": \"123\",
+      \"event_name\": \"workflow_dispatch\"
+    }
+  }
+}
+""",
+        encoding="utf-8",
+    )
+
+    failed_run_context = subprocess.run(
+        ["python3", str(VALIDATOR), str(invalid_run_context)],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if failed_run_context.returncode == 0:
+        raise AssertionError("expected invalid run_context pair to fail validation")
+
     print("OK: metric schema regression passed")
     return 0
 

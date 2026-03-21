@@ -28,6 +28,24 @@ def main() -> int:
             str(summary_json),
             "--top-k-mismatches",
             "0",
+            "--run-id",
+            "123456789",
+            "--run-url",
+            "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+            "--event-name",
+            "workflow_dispatch",
+            "--repository",
+            "Jaeyeong-CHOI/cse307-open-project",
+            "--sha",
+            "abcdef1",
+            "--ref",
+            "refs/heads/main",
+            "--workflow",
+            "ocaml-confusion-lang-ci",
+            "--job",
+            "summary-regression",
+            "--actor",
+            "github-actions",
         ],
         cwd=ROOT,
         check=True,
@@ -190,10 +208,15 @@ def main() -> int:
     metrics = payload["metrics"]
     source_summary = payload.get("source_summary") or {}
     lineage = source_summary.get("task_set_lineage") or {}
+    run_context = source_summary.get("run_context") or {}
 
     assert lineage.get("task_set_id") == "fixture-task-set-v1", lineage
     assert lineage.get("alias_set_id") == "fixture-alias-v1", lineage
     assert lineage.get("manifest_path") == "examples/manifest-v1.txt", lineage
+
+    assert run_context.get("run_id") == "123456789", run_context
+    assert run_context.get("run_url") == "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789", run_context
+    assert run_context.get("event_name") == "workflow_dispatch", run_context
 
     # fixture totals: total=3, ok=1, mismatch=2, ast_true=2,
     # line-gap proxy tags(line_count + whitespace)=2

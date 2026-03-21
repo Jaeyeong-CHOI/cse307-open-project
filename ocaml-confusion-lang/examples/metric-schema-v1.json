@@ -9,5 +9,25 @@
     "esr": 0.76,
     "mfb": 2.4,
     "lgp": 0.31
+  },
+  "source_summary": {
+    "input_report": "../docs/research/results/roundtrip-batch-v1.diff.summary.json",
+    "generated_at_utc": "2026-03-21T19:00:00Z",
+    "task_set_lineage": {
+      "task_set_id": "task-set-v1-sample",
+      "alias_set_id": "case-c2-v1",
+      "manifest_path": "examples/manifest-v1.txt"
+    },
+    "run_context": {
+      "run_id": "123456789",
+      "run_url": "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+      "event_name": "workflow_dispatch",
+      "repository": "Jaeyeong-CHOI/cse307-open-project",
+      "sha": "abcdef1",
+      "ref": "refs/heads/main",
+      "workflow": "ocaml-confusion-lang-ci",
+      "job": "summary-regression",
+      "actor": "github-actions"
+    }
   }
 }
