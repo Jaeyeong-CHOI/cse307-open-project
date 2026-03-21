@@ -101,6 +101,8 @@ python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset quic
 python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset balanced-ci --repeats 2 -o ../docs/research/results/plan.balanced-ci.override.json
 # preset 목록 확인(task set 없이 빠른 탐색)
 python3 scripts/build_batch_eval_plan.py --list-presets
+# preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
 # run_context fallback event_name(unknown/derived) 차단(엄격 모드)
@@ -312,3 +314,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 149. ~~planner summary에 축별 활용률 지표(`planned_run_ratio_by_model/prompt_condition/task` + 2D 매트릭스 비율)를 추가해 cap 병목 구간을 aggregate 외 단면에서도 즉시 진단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 150. ~~planner(`build_batch_eval_plan.py`)에 `--preset/--preset-file`을 추가하고 `examples/batch-plan-presets.v1.json`을 도입해 cap 조합 프리셋을 재사용 가능하게 만들며, CLI override 우선순위를 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `examples/batch-plan-presets.v1.json`, `test_build_batch_eval_plan.py`, `README.md`)
 151. ~~planner(`build_batch_eval_plan.py`)에 `--list-presets`를 추가해 task set 인자 없이도 preset 이름을 즉시 확인할 수 있게 하여 운영자가 cheap-first preset 후보를 빠르게 탐색~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+152. ~~planner(`build_batch_eval_plan.py`)의 preset discovery 경로에 JSON 출력 모드(`--list-presets-format json`)를 추가해 preset 자동화 소비 시 text 파싱 의존을 제거하고 저비용 오케스트레이션 연동을 단순화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

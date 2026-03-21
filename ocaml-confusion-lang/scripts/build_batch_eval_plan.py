@@ -143,7 +143,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--list-presets",
         action="store_true",
-        help="List available preset names from --preset-file and exit",
+        help="List available presets from --preset-file and exit",
+    )
+    parser.add_argument(
+        "--list-presets-format",
+        choices=("names", "json"),
+        default="names",
+        help="Output format for --list-presets (default: names)",
     )
     parser.add_argument(
         "--preset-file",
@@ -197,7 +203,11 @@ def main() -> int:
         args = parse_args()
 
         if args.list_presets:
-            preset_names = sorted(load_preset_file(args.preset_file).keys())
+            presets = load_preset_file(args.preset_file)
+            if args.list_presets_format == "json":
+                print(json.dumps({"schema_version": "v1", "presets": presets}, ensure_ascii=False, indent=2))
+                return 0
+            preset_names = sorted(presets.keys())
             for name in preset_names:
                 print(name)
             return 0

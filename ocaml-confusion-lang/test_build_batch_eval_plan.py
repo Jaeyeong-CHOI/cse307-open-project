@@ -652,6 +652,26 @@ def main() -> int:
     if preset_names != ["balanced-ci", "full-analysis", "quick-smoke"]:
         raise AssertionError(f"unexpected preset list output: {preset_names}")
 
+    preset_list_json = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_payload = json.loads(preset_list_json.stdout)
+    if preset_list_payload.get("schema_version") != "v1":
+        raise AssertionError(f"unexpected preset list schema_version: {preset_list_payload.get('schema_version')}")
+    listed_presets = preset_list_payload.get("presets")
+    if not isinstance(listed_presets, dict) or "quick-smoke" not in listed_presets:
+        raise AssertionError(f"unexpected preset list json payload: {preset_list_payload}")
+
     preset_output = OUT / "batch-plan.preset.quick-smoke.json"
     subprocess.run(
         [
