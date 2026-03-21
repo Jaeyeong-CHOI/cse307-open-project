@@ -1,5 +1,8 @@
 # ocaml-confusion-lang
 
+[![OCaml confusion-lang CI](https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/workflows/ocaml-confusion-lang-ci.yml/badge.svg?branch=main)](https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/workflows/ocaml-confusion-lang-ci.yml)
+[최근 CI 실행 확인](https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/workflows/ocaml-confusion-lang-ci.yml)
+
 OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대).
 
 ## 목표
@@ -58,6 +61,6 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 14. ~~`batch-roundtrip-report --include-diff` 스키마 회귀 assertion 추가~~ ✅ (`test_roundtrip_report_schema.py`)
 15. ~~`batch-roundtrip-report` 기본 모드 vs `--include-diff` 모드 스키마 차이 분리 assertion 추가~~ ✅ (`test_roundtrip_report_schema.py`)
 16. ~~batch 결과 post-processing 스크립트(요약 표 생성) 초안 추가~~ ✅ (`scripts/batch_report_summary.py`)
-17. README 상단에 CI 배지/최근 실행 링크 노출
+17. ~~README 상단에 CI 배지/최근 실행 링크 노출~~ ✅
 18. whitespace/line-count drift 유도 fixture 추가로 taxonomy/배치 회귀 커버리지 확장
 19. ~~summary 스크립트에 CSV export + top-k mismatch view 옵션 추가~~ ✅ (`--csv-output`, `--top-k-mismatches`)
