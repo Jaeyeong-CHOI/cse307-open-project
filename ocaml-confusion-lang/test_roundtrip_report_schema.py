@@ -191,10 +191,30 @@ def run_batch_include_diff_mismatch_case() -> None:
         raise AssertionError(f"expected at least one diff payload in {out_json.name}: {case_report}")
 
 
+def run_batch_default_mode_schema_case() -> None:
+    out_json = OUT / "batch-default-mode.json"
+    report = run_batch_report(ALIAS, MANIFEST, out_json, include_diff=False)
+    assert_batch_required_schema(report, out_json.name)
+
+    if report["include_diff"] is not False:
+        raise AssertionError("expected include_diff=false for default batch report")
+    if not isinstance(report["cases"], list) or len(report["cases"]) != len(CASES):
+        raise AssertionError("expected default batch cases list to match manifest case count")
+
+    for case_report in report["cases"]:
+        assert_batch_case_schema(case_report, out_json.name, include_diff=False)
+        forbidden = BATCH_CASE_DIFF_KEYS & case_report.keys()
+        if forbidden:
+            raise AssertionError(
+                f"default batch mode should omit diff keys, but found {sorted(forbidden)} in {case_report}"
+            )
+
+
 if __name__ == "__main__":
     for case in CASES:
         run_ok_case(case)
     run_mismatch_case()
     run_batch_include_diff_ok_case()
     run_batch_include_diff_mismatch_case()
-    print("OK: roundtrip-report + batch include-diff schema assertions passed")
+    run_batch_default_mode_schema_case()
+    print("OK: roundtrip-report + batch schema assertions passed")
