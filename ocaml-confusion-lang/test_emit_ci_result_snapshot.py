@@ -317,6 +317,21 @@ def main() -> None:
     assert_contains(invalid_shape.stderr, "CI snapshot emit input validation failed")
     assert_contains(invalid_shape.stderr, "overview.mismatch_cases must be an integer")
 
+    unknown_default_content = _run(
+        payload_with_mismatch,
+        "Unknown default event snapshot",
+        run_context={
+            "run_id": "987654321",
+            "run_url": "https://github.com/org/repo/actions/runs/987654321",
+            "run_attempt": "1",
+            "repository": "org/repo",
+            "actor": "octocat",
+            "workflow": "ocaml-confusion-lang-ci",
+            "job": "build-and-test",
+        },
+    )
+    assert_contains(unknown_default_content, "event_name=unknown")
+
     invalid_event = subprocess.run(
         [
             sys.executable,

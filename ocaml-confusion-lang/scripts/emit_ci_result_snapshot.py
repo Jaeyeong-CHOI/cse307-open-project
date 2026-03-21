@@ -337,6 +337,9 @@ def main() -> None:
         if isinstance(value, str) and value.strip()
     }
 
+    if run_context and "event_name" not in run_context:
+        run_context["event_name"] = "unknown"
+
     event_name = run_context.get("event_name")
     if isinstance(event_name, str) and event_name not in ALLOWED_EVENT_NAMES:
         emit_error(

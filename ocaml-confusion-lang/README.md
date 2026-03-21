@@ -115,7 +115,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - optional `run_context.repository`는 `<owner>/<repo>` 형식이어야 하며, `run_url`이 있을 때 URL의 repository segment와 일치해야 함
 - optional `run_context.sha`는 7~40 길이 hex 문자열이어야 함 (short/full SHA 허용)
 - optional `run_context.ref`는 `refs/heads/*`, `refs/tags/*`, `refs/pull/*` 중 하나의 네임스페이스를 따라야 함 (예: `refs/heads/main`, `refs/tags/v1.0.0`, `refs/pull/123/merge`)
-- optional `run_context.event_name`는 `push|pull_request|pull_request_target|merge_group|workflow_dispatch|schedule|workflow_run|repository_dispatch` 중 하나여야 함
+- optional `run_context.event_name`는 `push|pull_request|pull_request_target|merge_group|workflow_dispatch|schedule|workflow_run|repository_dispatch|unknown` 중 하나여야 함 (`unknown`은 event 메타데이터를 확보하지 못한 fallback)
 - optional `run_context.workflow`/`run_context.job`은 non-empty string이어야 하며 길이는 1~128자로 제한됨 (비정상적으로 긴 메타데이터 fail-fast 차단)
 - optional `run_context.actor`는 `^[A-Za-z0-9-]+$` 패턴이어야 함 (다운스트림 파서 입력 오염 차단)
 
@@ -243,3 +243,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 111. ~~`batch_report_summary.py`가 optional `run_context`(run_id/run_url/run_attempt/event/repository/sha/ref/workflow/job/actor)를 직접 주입할 수 있도록 CLI 플래그를 추가하고, summary validator에 `actor` 패턴 검증을 확장해 summary 생성기↔validator 간 규칙 parity를 강화~~ ✅ (`scripts/batch_report_summary.py`, `scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
 112. ~~`run_context` 검증 로직을 공통 모듈(`scripts/run_context_validation.py`)로 추출해 `validate_summary_payload.py`/`validate_ci_result_snapshot.py` 간 규칙 drift와 중복 유지보수 비용을 줄이기~~ ✅ (`scripts/run_context_validation.py`, `scripts/validate_summary_payload.py`, `scripts/validate_ci_result_snapshot.py`)
 113. ~~`run_context` payload에 허용 키 화이트리스트 검증(unknown key fail-fast)을 공통 validator에 추가해 오타/스키마 드리프트를 조기 차단~~ ✅ (`scripts/run_context_validation.py`, `test_summary_payload_schema.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
+114. ~~snapshot emitter에서 `event_name` 미지정 시 `unknown` fallback을 자동 주입하고 공용 enum에 포함해 summary/snapshot 경로의 run_context 정책(`n/a` vs `unknown`)을 명시적으로 통일~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/run_context_schema.py`, `test_emit_ci_result_snapshot.py`, `test_run_context_event_name_schema.py`, `test_run_context_schema_export.py`, `README.md`)

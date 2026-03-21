@@ -8,5 +8,6 @@ Shared single source from `scripts/run_context_schema.py`.
 - `push`
 - `repository_dispatch`
 - `schedule`
+- `unknown`
 - `workflow_dispatch`
 - `workflow_run`

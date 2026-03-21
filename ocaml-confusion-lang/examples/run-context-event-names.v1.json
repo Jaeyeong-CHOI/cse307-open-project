@@ -1,6 +1,6 @@
 {
   "schema_version": "run_context_event_names.v1",
-  "count": 8,
+  "count": 9,
   "allowed_event_names": [
     "merge_group",
     "pull_request",
@@ -8,6 +8,7 @@
     "push",
     "repository_dispatch",
     "schedule",
+    "unknown",
     "workflow_dispatch",
     "workflow_run"
   ]

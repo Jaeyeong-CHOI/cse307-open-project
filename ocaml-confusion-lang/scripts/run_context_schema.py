@@ -9,4 +9,5 @@ ALLOWED_EVENT_NAMES = {
     "schedule",
     "workflow_run",
     "repository_dispatch",
+    "unknown",
 }

@@ -37,6 +37,7 @@ def test_export_outputs_match_shared_schema() -> None:
     assert names == sorted(names)
     assert "pull_request_target" in names
     assert "merge_group" in names
+    assert "unknown" in names
 
     md = md_path.read_text(encoding="utf-8")
     assert "# run_context.event_name allowed values" in md
