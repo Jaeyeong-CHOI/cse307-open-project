@@ -175,6 +175,23 @@ def _matches_preset_tags(
     return required_tags.issubset(preset_tags)
 
 
+def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
+    tags = resolved.get("tags", [])
+    tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
+    return (
+        f"{name}\tmodels={resolved['models']}\tprompt_conditions={resolved['prompt_conditions']}\t"
+        f"repeats={resolved['repeats']}\tcheap_first={str(resolved['cheap_first']).lower()}\t"
+        f"fair_model_allocation={str(resolved['fair_model_allocation']).lower()}\t"
+        f"max_total_runs={resolved['max_total_runs']}\tmax_total_runs_mode={resolved['max_total_runs_mode']}\t"
+        f"max_runs_per_model={resolved['max_runs_per_model']}\t"
+        f"max_runs_per_prompt_condition={resolved['max_runs_per_prompt_condition']}\t"
+        f"max_runs_per_task={resolved['max_runs_per_task']}\t"
+        f"max_runs_per_task_model={resolved['max_runs_per_task_model']}\t"
+        f"max_runs_per_task_prompt_condition={resolved['max_runs_per_task_prompt_condition']}\t"
+        f"tags={tag_value}"
+    )
+
+
 def _dedupe_keep_order(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -396,17 +413,7 @@ def main() -> int:
                 "resolved": resolved,
             }
             if args.show_preset_format == "summary":
-                print(
-                    f"{args.show_preset}\tmodels={resolved['models']}\tprompt_conditions={resolved['prompt_conditions']}\t"
-                    f"repeats={resolved['repeats']}\tcheap_first={str(resolved['cheap_first']).lower()}\t"
-                    f"fair_model_allocation={str(resolved['fair_model_allocation']).lower()}\t"
-                    f"max_total_runs={resolved['max_total_runs']}\tmax_total_runs_mode={resolved['max_total_runs_mode']}\t"
-                    f"max_runs_per_model={resolved['max_runs_per_model']}\t"
-                    f"max_runs_per_prompt_condition={resolved['max_runs_per_prompt_condition']}\t"
-                    f"max_runs_per_task={resolved['max_runs_per_task']}\t"
-                    f"max_runs_per_task_model={resolved['max_runs_per_task_model']}\t"
-                    f"max_runs_per_task_prompt_condition={resolved['max_runs_per_task_prompt_condition']}"
-                )
+                print(_format_preset_summary_line(args.show_preset, resolved))
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0
@@ -457,17 +464,7 @@ def main() -> int:
                     if not isinstance(preset, dict):
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
                     resolved = resolve_preset_with_defaults(preset)
-                    print(
-                        f"{name}\tmodels={resolved['models']}\tprompt_conditions={resolved['prompt_conditions']}\t"
-                        f"repeats={resolved['repeats']}\tcheap_first={str(resolved['cheap_first']).lower()}\t"
-                        f"fair_model_allocation={str(resolved['fair_model_allocation']).lower()}\t"
-                        f"max_total_runs={resolved['max_total_runs']}\tmax_total_runs_mode={resolved['max_total_runs_mode']}\t"
-                        f"max_runs_per_model={resolved['max_runs_per_model']}\t"
-                        f"max_runs_per_prompt_condition={resolved['max_runs_per_prompt_condition']}\t"
-                        f"max_runs_per_task={resolved['max_runs_per_task']}\t"
-                        f"max_runs_per_task_model={resolved['max_runs_per_task_model']}\t"
-                        f"max_runs_per_task_prompt_condition={resolved['max_runs_per_task_prompt_condition']}"
-                    )
+                    print(_format_preset_summary_line(name, resolved))
                 return 0
             for name in preset_names:
                 print(name)

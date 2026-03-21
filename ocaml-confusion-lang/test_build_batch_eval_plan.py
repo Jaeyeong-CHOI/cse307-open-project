@@ -830,6 +830,7 @@ def main() -> int:
         "max_runs_per_task_prompt_condition=0",
         "cheap_first=true",
         "fair_model_allocation=false",
+        "tags=cheap-first,smoke",
     ]
     for snippet in expected_snippets:
         if snippet not in quick_smoke_line:
@@ -875,7 +876,7 @@ def main() -> int:
     show_preset_line = show_preset_summary.stdout.strip()
     if not show_preset_line.startswith("quick-smoke\t"):
         raise AssertionError(f"unexpected show-preset summary output: {show_preset_line}")
-    for snippet in ["repeats=1", "max_total_runs_mode=cap", "max_runs_per_task=0"]:
+    for snippet in ["repeats=1", "max_total_runs_mode=cap", "max_runs_per_task=0", "tags=cheap-first,smoke"]:
         if snippet not in show_preset_line:
             raise AssertionError(f"missing '{snippet}' in show-preset summary output: {show_preset_line}")
 
