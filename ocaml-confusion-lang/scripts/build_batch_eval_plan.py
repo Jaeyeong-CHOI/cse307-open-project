@@ -17,7 +17,7 @@ from error_utils import emit_error
 
 
 DEFAULT_PRESET_FILE = Path(__file__).resolve().parent.parent / "examples" / "batch-plan-presets.v1.json"
-PRESET_SUMMARY_TSV_COLUMNS = [
+PRESET_SUMMARY_TSV_BASE_COLUMNS = [
     "preset",
     "models",
     "prompt_conditions",
@@ -32,7 +32,6 @@ PRESET_SUMMARY_TSV_COLUMNS = [
     "max_runs_per_task_model",
     "max_runs_per_task_prompt_condition",
     "tags",
-    "description_preview",
 ]
 PRESET_SUMMARY_TSV_SCHEMA = "planner_preset_summary_tsv.v1"
 
@@ -193,10 +192,17 @@ def _matches_preset_tags(
     return required_tags.issubset(preset_tags)
 
 
-def _preset_description_preview(raw_description: str, max_len: int = 60) -> str:
+def _preset_description_text(raw_description: str) -> str:
     normalized = " ".join(str(raw_description).replace("\t", " ").split())
     if not normalized:
         return "-"
+    return normalized
+
+
+def _preset_description_preview(raw_description: str, max_len: int = 60) -> str:
+    normalized = _preset_description_text(raw_description)
+    if normalized == "-":
+        return normalized
     if len(normalized) <= max_len:
         return normalized
     return f"{normalized[: max_len - 3].rstrip()}..."
@@ -220,15 +226,23 @@ def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
     )
 
 
-def _emit_preset_summary_tsv_header(with_schema_header: bool) -> None:
+def _emit_preset_summary_tsv_header(with_schema_header: bool, description_mode: str) -> None:
     if with_schema_header:
         print(f"# schema={PRESET_SUMMARY_TSV_SCHEMA}")
-    print("\t".join(PRESET_SUMMARY_TSV_COLUMNS))
+    description_column = "description_full" if description_mode == "full" else "description_preview"
+    print("\t".join([*PRESET_SUMMARY_TSV_BASE_COLUMNS, description_column]))
 
 
-def _format_preset_summary_tsv_row(name: str, resolved: dict[str, Any]) -> str:
+def _format_preset_summary_tsv_row(
+    name: str, resolved: dict[str, Any], description_mode: str = "preview"
+) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
+    description_value = (
+        _preset_description_text(resolved.get("description", ""))
+        if description_mode == "full"
+        else _preset_description_preview(resolved.get("description", ""))
+    )
     row = [
         name,
         str(resolved["models"]),
@@ -244,7 +258,7 @@ def _format_preset_summary_tsv_row(name: str, resolved: dict[str, Any]) -> str:
         str(resolved["max_runs_per_task_model"]),
         str(resolved["max_runs_per_task_prompt_condition"]),
         tag_value,
-        _preset_description_preview(resolved.get("description", "")),
+        description_value,
     ]
     return "\t".join(item.replace("\t", " ") for item in row)
 
@@ -374,6 +388,12 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--summary-tsv-description",
+        choices=("preview", "full"),
+        default="preview",
+        help="summary-tsv description column mode: preview (default) or full",
+    )
+    parser.add_argument(
         "--preset-file",
         type=Path,
         default=DEFAULT_PRESET_FILE,
@@ -480,8 +500,17 @@ def main() -> int:
                 print(_format_preset_summary_line(args.show_preset, resolved))
                 return 0
             if args.show_preset_format == "summary-tsv":
-                _emit_preset_summary_tsv_header(args.summary_tsv_with_schema_header)
-                print(_format_preset_summary_tsv_row(args.show_preset, resolved))
+                _emit_preset_summary_tsv_header(
+                    args.summary_tsv_with_schema_header,
+                    args.summary_tsv_description,
+                )
+                print(
+                    _format_preset_summary_tsv_row(
+                        args.show_preset,
+                        resolved,
+                        description_mode=args.summary_tsv_description,
+                    )
+                )
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0
@@ -535,13 +564,22 @@ def main() -> int:
                     print(_format_preset_summary_line(name, resolved))
                 return 0
             if args.list_presets_format == "summary-tsv":
-                _emit_preset_summary_tsv_header(args.summary_tsv_with_schema_header)
+                _emit_preset_summary_tsv_header(
+                    args.summary_tsv_with_schema_header,
+                    args.summary_tsv_description,
+                )
                 for name in preset_names:
                     preset = filtered_presets[name]
                     if not isinstance(preset, dict):
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
                     resolved = resolve_preset_with_defaults(preset)
-                    print(_format_preset_summary_tsv_row(name, resolved))
+                    print(
+                        _format_preset_summary_tsv_row(
+                            name,
+                            resolved,
+                            description_mode=args.summary_tsv_description,
+                        )
+                    )
                 return 0
             for name in preset_names:
                 print(name)

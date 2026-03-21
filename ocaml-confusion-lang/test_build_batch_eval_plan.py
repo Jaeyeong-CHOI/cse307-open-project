@@ -851,13 +851,13 @@ def main() -> int:
         text=True,
     )
     summary_tsv_lines = [line.rstrip("\n") for line in preset_list_summary_tsv.stdout.splitlines() if line.strip()]
-    expected_tsv_header = (
+    expected_tsv_header_preview = (
         "preset\tmodels\tprompt_conditions\trepeats\tcheap_first\tfair_model_allocation\t"
         "max_total_runs\tmax_total_runs_mode\tmax_runs_per_model\tmax_runs_per_prompt_condition\t"
         "max_runs_per_task\tmax_runs_per_task_model\tmax_runs_per_task_prompt_condition\t"
         "tags\tdescription_preview"
     )
-    if not summary_tsv_lines or summary_tsv_lines[0] != expected_tsv_header:
+    if not summary_tsv_lines or summary_tsv_lines[0] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected summary-tsv header: {summary_tsv_lines}")
     quick_smoke_tsv_row = next((line for line in summary_tsv_lines[1:] if line.startswith("quick-smoke\t")), None)
     if quick_smoke_tsv_row is None:
@@ -893,8 +893,28 @@ def main() -> int:
         raise AssertionError(f"summary-tsv with schema header should include comment+header+rows: {summary_tsv_schema_lines}")
     if summary_tsv_schema_lines[0] != "# schema=planner_preset_summary_tsv.v1":
         raise AssertionError(f"unexpected schema header line: {summary_tsv_schema_lines}")
-    if summary_tsv_schema_lines[1] != expected_tsv_header:
+    if summary_tsv_schema_lines[1] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected summary-tsv header with schema preface: {summary_tsv_schema_lines}")
+
+    preset_list_summary_tsv_full = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+            "--summary-tsv-description",
+            "full",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary_tsv_full_lines = [line.rstrip("\n") for line in preset_list_summary_tsv_full.stdout.splitlines() if line.strip()]
+    expected_tsv_header_full = expected_tsv_header_preview.replace("description_preview", "description_full")
+    if not summary_tsv_full_lines or summary_tsv_full_lines[0] != expected_tsv_header_full:
+        raise AssertionError(f"unexpected summary-tsv(full) header: {summary_tsv_full_lines}")
 
     show_preset_json = subprocess.run(
         [
@@ -963,10 +983,32 @@ def main() -> int:
     show_summary_tsv_lines = [line.rstrip("\n") for line in show_preset_summary_tsv.stdout.splitlines() if line.strip()]
     if len(show_summary_tsv_lines) != 2:
         raise AssertionError(f"unexpected show-preset summary-tsv output lines: {show_summary_tsv_lines}")
-    if show_summary_tsv_lines[0] != expected_tsv_header:
+    if show_summary_tsv_lines[0] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected show-preset summary-tsv header: {show_summary_tsv_lines}")
     if not show_summary_tsv_lines[1].startswith("quick-smoke\tgpt-5-mini\tbase\t1\ttrue\t"):
         raise AssertionError(f"unexpected show-preset summary-tsv row: {show_summary_tsv_lines}")
+
+    show_preset_summary_tsv_full = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary-tsv",
+            "--summary-tsv-description",
+            "full",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_summary_tsv_full_lines = [line.rstrip("\n") for line in show_preset_summary_tsv_full.stdout.splitlines() if line.strip()]
+    if len(show_summary_tsv_full_lines) != 2:
+        raise AssertionError(f"unexpected show-preset summary-tsv(full) output lines: {show_summary_tsv_full_lines}")
+    if show_summary_tsv_full_lines[0] != expected_tsv_header_preview.replace("description_preview", "description_full"):
+        raise AssertionError(f"unexpected show-preset summary-tsv(full) header: {show_summary_tsv_full_lines}")
 
     show_preset_summary_tsv_with_schema = subprocess.run(
         [
@@ -992,7 +1034,7 @@ def main() -> int:
         )
     if show_summary_tsv_schema_lines[0] != "# schema=planner_preset_summary_tsv.v1":
         raise AssertionError(f"unexpected show-preset schema header: {show_summary_tsv_schema_lines}")
-    if show_summary_tsv_schema_lines[1] != expected_tsv_header:
+    if show_summary_tsv_schema_lines[1] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected show-preset summary-tsv header with schema preface: {show_summary_tsv_schema_lines}")
 
     show_preset_overridden = subprocess.run(
