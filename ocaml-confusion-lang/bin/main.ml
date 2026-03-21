@@ -1,6 +1,6 @@
 let usage () =
   print_endline
-    "Usage:\n  confusionlang validate <alias_tsv>\n  confusionlang transform <alias_tsv> <source_file>\n  confusionlang roundtrip <alias_tsv> <source_file>\n  confusionlang roundtrip-report <alias_tsv> <source_file> <out_json>\n  confusionlang batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json>\n\nTSV format: <python_keyword>\\t<alias_phrase>";
+    "Usage:\n  confusionlang validate <alias_tsv>\n  confusionlang transform <alias_tsv> <source_file>\n  confusionlang roundtrip <alias_tsv> <source_file>\n  confusionlang roundtrip-report <alias_tsv> <source_file> <out_json>\n  confusionlang batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json> [--include-diff]\n\nTSV format: <python_keyword>\\t<alias_phrase>";
   exit 1
 
 let read_lines path =
@@ -460,7 +460,7 @@ let parse_manifest path =
   |> List.map String.trim
   |> List.filter (fun line -> line <> "" && not (String.starts_with ~prefix:"#" line))
 
-let write_batch_roundtrip_report out_path pairs sources =
+let write_batch_roundtrip_report ?(include_diff = false) out_path pairs sources =
   let cases =
     sources
     |> List.map (fun source_path ->
@@ -482,35 +482,79 @@ let write_batch_roundtrip_report out_path pairs sources =
              if exact then []
              else classify_failure_taxonomy pairs src restored ast_equivalent
            in
-           (source_path, exact, token_equivalent, ast_equivalent, taxonomy))
+           let line_diff = first_diff src restored in
+           let token_diff = first_token_diff src_tokens rst_tokens in
+           ( source_path,
+             exact,
+             token_equivalent,
+             ast_equivalent,
+             taxonomy,
+             line_diff,
+             token_diff ))
   in
   let case_jsons =
     cases
-    |> List.map (fun (source_path, exact, token_equivalent, ast_equivalent, taxonomy) ->
+    |> List.map
+         (fun
+           ( source_path,
+             exact,
+             token_equivalent,
+             ast_equivalent,
+             taxonomy,
+             line_diff,
+             token_diff ) ->
            let ast_equivalent_json =
              match ast_equivalent with
              | Some true -> "true"
              | Some false -> "false"
              | None -> "null"
            in
-           Printf.sprintf
-             "{\"source\":\"%s\",\"status\":\"%s\",\"exact_match\":%s,\"token_equivalent\":%s,\"ast_equivalent\":%s,\"failure_taxonomy\":%s}"
-             (escape_json source_path)
-             (if exact then "ok" else "mismatch")
-             (if exact then "true" else "false")
-             (if token_equivalent then "true" else "false")
-             ast_equivalent_json
-             (json_array_of_strings taxonomy))
+           let base_json =
+             Printf.sprintf
+               "{\"source\":\"%s\",\"status\":\"%s\",\"exact_match\":%s,\"token_equivalent\":%s,\"ast_equivalent\":%s,\"failure_taxonomy\":%s"
+               (escape_json source_path)
+               (if exact then "ok" else "mismatch")
+               (if exact then "true" else "false")
+               (if token_equivalent then "true" else "false")
+               ast_equivalent_json
+               (json_array_of_strings taxonomy)
+           in
+           if include_diff then
+             let first_diff_json =
+               match line_diff with
+               | Some (line_no, s, r) ->
+                   Printf.sprintf
+                     "\"first_diff\":{\"line\":%d,\"src\":\"%s\",\"restored\":\"%s\"}"
+                     line_no (escape_json s) (escape_json r)
+               | None -> "\"first_diff\":null"
+             in
+             let first_token_diff_json =
+               match token_diff with
+               | Some (idx, a, b) ->
+                   Printf.sprintf
+                     "\"first_token_diff\":{\"index\":%d,\"src\":\"%s\",\"restored\":\"%s\"}"
+                     idx (escape_json (token_to_string a))
+                     (escape_json (token_to_string b))
+               | None -> "\"first_token_diff\":null"
+             in
+             Printf.sprintf "%s,%s,%s}" base_json first_diff_json
+               first_token_diff_json
+           else Printf.sprintf "%s}" base_json)
   in
   let total = List.length cases in
   let ok_count =
-    cases |> List.fold_left (fun acc (_, exact, _, _, _) -> if exact then acc + 1 else acc) 0
+    cases
+    |> List.fold_left
+         (fun acc (_, exact, _, _, _, _, _) -> if exact then acc + 1 else acc)
+         0
   in
   let mismatch_count = total - ok_count in
   let json =
     Printf.sprintf
-      "{\n  \"total_cases\":%d,\n  \"ok_cases\":%d,\n  \"mismatch_cases\":%d,\n  \"cases\":[%s]\n}\n"
-      total ok_count mismatch_count (String.concat "," case_jsons)
+      "{\n  \"total_cases\":%d,\n  \"ok_cases\":%d,\n  \"mismatch_cases\":%d,\n  \"include_diff\":%s,\n  \"cases\":[%s]\n}\n"
+      total ok_count mismatch_count
+      (if include_diff then "true" else "false")
+      (String.concat "," case_jsons)
   in
   write_file out_path json
 
@@ -562,7 +606,8 @@ let run_roundtrip_report alias_path source_path out_path =
       Printf.printf "WARN: mismatch report written to %s\n" out_path;
       3)
 
-let run_batch_roundtrip_report alias_path manifest_path out_path =
+let run_batch_roundtrip_report ?(include_diff = false) alias_path manifest_path
+    out_path =
   let pairs = load_alias_pairs alias_path in
   let missing, dup = validate_pairs pairs in
   if missing <> [] || dup <> None then (
@@ -574,9 +619,9 @@ let run_batch_roundtrip_report alias_path manifest_path out_path =
       Printf.printf "ERROR: manifest has no source entries: %s\n" manifest_path;
       2)
     else (
-      write_batch_roundtrip_report out_path pairs sources;
-      Printf.printf "OK: batch report written to %s (cases=%d)\n" out_path
-        (List.length sources);
+      write_batch_roundtrip_report ~include_diff out_path pairs sources;
+      Printf.printf "OK: batch report written to %s (cases=%d, include_diff=%b)\n"
+        out_path (List.length sources) include_diff;
       0)
 
 let () =
@@ -590,4 +635,9 @@ let () =
       exit (run_roundtrip_report alias_path source_path out_path)
   | [ _; "batch-roundtrip-report"; alias_path; manifest_path; out_path ] ->
       exit (run_batch_roundtrip_report alias_path manifest_path out_path)
+  | [ _; "batch-roundtrip-report"; alias_path; manifest_path; out_path;
+      "--include-diff" ] ->
+      exit
+        (run_batch_roundtrip_report ~include_diff:true alias_path manifest_path
+           out_path)
   | _ -> usage ()
