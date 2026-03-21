@@ -119,6 +119,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-filters --list-presets-tag cheap-first --list-presets-name-contains smoke --list-presets-limit 1
 # list-presets meta footer에 생성 시각(generated_at_utc)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-generated-at
+# list-presets meta footer에 실행 작업 디렉터리(cwd)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-cwd
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
@@ -162,6 +164,8 @@ python3 scripts/build_batch_eval_plan.py --show-preset balanced-ci --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset balanced-ci --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-overrides --repeats 1 --max-total-runs 12
 # show-preset meta footer에 생성 시각(generated_at_utc)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-generated-at
+# show-preset meta footer에 실행 작업 디렉터리(cwd)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-cwd
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 # optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
@@ -411,3 +415,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 184. ~~planner `--show-preset` text meta footer에도 optional CLI override 컨텍스트(`override_count`, `overrides`)를 노출하는 `--show-preset-meta-include-overrides` 옵션을 추가해, 단일 preset preview 로그에서 최종값이 어떤 override로 형성됐는지 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 185. ~~planner list/show text meta footer에 출력 포맷 옵션(`--list-presets-meta-format`, `--show-preset-meta-format`)을 추가해 기존 `# meta\t...` 텍스트와 JSON line을 런타임 선택 가능하게 확장, parser가 key=value split 없이 메타데이터를 직접 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 186. ~~planner list/show meta footer에 optional 생성 시각(`generated_at_utc`) 주입 옵션(`--list-presets-meta-include-generated-at`, `--show-preset-meta-include-generated-at`)을 추가해 운영 로그/파서가 메타 스냅샷 시점을 텍스트/JSON 공통 키로 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+187. ~~planner list/show meta footer에 optional 실행 디렉터리(`cwd`) 주입 옵션(`--list-presets-meta-include-cwd`, `--show-preset-meta-include-cwd`)을 추가해 동일 preset 출력이 어떤 작업 경로에서 생성됐는지 텍스트/JSON 공통 키로 즉시 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

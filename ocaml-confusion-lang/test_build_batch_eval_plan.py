@@ -1018,6 +1018,27 @@ def main() -> int:
             f"{generated_at_value}"
         )
 
+    preset_list_names_with_meta_cwd = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-cwd",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_cwd_lines = [
+        line.strip() for line in preset_list_names_with_meta_cwd.stdout.splitlines() if line.strip()
+    ]
+    if f"\tcwd={ROOT}" not in names_with_meta_cwd_lines[-1]:
+        raise AssertionError(f"missing cwd in list-presets meta footer: {names_with_meta_cwd_lines}")
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -1545,6 +1566,30 @@ def main() -> int:
         raise AssertionError(
             "unexpected generated_at_utc timestamp format in show-preset meta footer: "
             f"{show_generated_at_value}"
+        )
+
+    show_preset_summary_with_meta_cwd = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-cwd",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_cwd_lines = [
+        line.rstrip("\n") for line in show_preset_summary_with_meta_cwd.stdout.splitlines() if line.strip()
+    ]
+    if f"\tcwd={ROOT}" not in show_preset_with_meta_cwd_lines[-1]:
+        raise AssertionError(
+            f"missing cwd in show-preset meta footer: {show_preset_with_meta_cwd_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(
