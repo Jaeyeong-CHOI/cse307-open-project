@@ -8,12 +8,14 @@ import json
 from pathlib import Path
 from typing import Any
 
+ALLOWED_DIFFICULTIES = {"easy", "medium", "hard"}
+
 
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         payload = json.load(f)
     if not isinstance(payload, dict):
-        raise ValueError(f"{path}: summary root must be a JSON object")
+        raise ValueError(f"{path}: root must be a JSON object")
     return payload
 
 
@@ -25,6 +27,95 @@ def _safe_ratio(numer: float, denom: float) -> float:
 
 def _round3(value: float) -> float:
     return round(float(value), 3)
+
+
+def validate_task_set_payload(payload: Any, path: Path) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return [f"{path}: root must be a JSON object"]
+
+    for key in ["schema_version", "task_set_id", "tasks"]:
+        if key not in payload:
+            errors.append(f"{path}: missing required key '{key}'")
+
+    tasks = payload.get("tasks")
+    if not isinstance(tasks, list) or not tasks:
+        errors.append(f"{path}: key 'tasks' must be a non-empty array")
+        return errors
+
+    seen_task_ids: set[str] = set()
+    for idx, task in enumerate(tasks):
+        where = f"{path}: tasks[{idx}]"
+        if not isinstance(task, dict):
+            errors.append(f"{where} must be an object")
+            continue
+
+        task_id = task.get("task_id")
+        if not isinstance(task_id, str) or not task_id.strip():
+            errors.append(f"{where}: task_id must be a non-empty string")
+        elif task_id in seen_task_ids:
+            errors.append(f"{where}: duplicate task_id '{task_id}'")
+        else:
+            seen_task_ids.add(task_id)
+
+        source = task.get("source")
+        if not isinstance(source, str) or not source.strip():
+            errors.append(f"{where}: source must be a non-empty string")
+        elif not source.endswith(".py"):
+            errors.append(f"{where}: source must point to a .py file")
+
+        if "difficulty" in task and task["difficulty"] not in ALLOWED_DIFFICULTIES:
+            errors.append(
+                f"{where}: difficulty must be one of {sorted(ALLOWED_DIFFICULTIES)} when present"
+            )
+
+        if "tags" in task:
+            tags = task["tags"]
+            if not isinstance(tags, list) or any(not isinstance(t, str) or not t.strip() for t in tags):
+                errors.append(f"{where}: tags must be an array of non-empty strings when present")
+
+    return errors
+
+
+def assert_task_set_consistency(
+    summary: dict[str, Any],
+    task_set: dict[str, Any],
+    task_set_path: Path,
+    task_set_id: str,
+) -> None:
+    expected_id = task_set.get("task_set_id")
+    if expected_id != task_set_id:
+        raise ValueError(
+            f"task-set id mismatch: --task-set-id='{task_set_id}' but {task_set_path} has '{expected_id}'"
+        )
+
+    overview = summary.get("overview") or {}
+    scope = overview.get("cases_scope")
+    if scope != "all":
+        raise ValueError(
+            "summary overview.cases_scope must be 'all' when using --task-set-json "
+            f"(got '{scope}')"
+        )
+
+    tasks = task_set.get("tasks") or []
+    cases = summary.get("cases") or []
+
+    total_cases = int(overview.get("total_cases", 0) or 0)
+    if total_cases != len(tasks):
+        raise ValueError(
+            f"task count mismatch: summary total_cases={total_cases}, task_set tasks={len(tasks)}"
+        )
+
+    case_sources = {c.get("source") for c in cases if isinstance(c, dict) and isinstance(c.get("source"), str)}
+    task_sources = {t.get("source") for t in tasks if isinstance(t, dict) and isinstance(t.get("source"), str)}
+
+    if case_sources != task_sources:
+        missing_in_summary = sorted(task_sources - case_sources)
+        extra_in_summary = sorted(case_sources - task_sources)
+        raise ValueError(
+            "task source mismatch between summary and task set: "
+            f"missing_in_summary={missing_in_summary}, extra_in_summary={extra_in_summary}"
+        )
 
 
 def build_metric_payload(
@@ -85,12 +176,33 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--task-set-id", required=True, help="Experiment task set id")
     parser.add_argument("--prompt-condition", required=True, help="Prompt condition label")
     parser.add_argument("--model", required=True, help="Model identifier")
+    parser.add_argument(
+        "--task-set-json",
+        type=Path,
+        default=None,
+        help="Optional task-set JSON to validate id/source consistency against summary",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     summary = load_json(args.summary_json)
+
+    if args.task_set_json is not None:
+        task_set = load_json(args.task_set_json)
+        errors = validate_task_set_payload(task_set, args.task_set_json)
+        if errors:
+            for err in errors:
+                print(err)
+            return 1
+        assert_task_set_consistency(
+            summary,
+            task_set,
+            task_set_path=args.task_set_json,
+            task_set_id=args.task_set_id,
+        )
+
     payload = build_metric_payload(
         summary,
         task_set_id=args.task_set_id,

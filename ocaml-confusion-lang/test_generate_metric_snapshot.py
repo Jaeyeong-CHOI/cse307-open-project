@@ -5,6 +5,8 @@ import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parent
 FIXTURE = ROOT / "examples" / "batch-summary-fixture-whitespace-linecount.json"
+TASK_SET_FIXTURE = ROOT / "examples" / "task-set-fixture-whitespace-linecount-v1.json"
+MISMATCH_TASK_SET = ROOT / "examples" / "task-set-v1.json"
 SUMMARY_SCRIPT = ROOT / "scripts" / "batch_report_summary.py"
 METRIC_SCRIPT = ROOT / "scripts" / "generate_metric_snapshot.py"
 METRIC_VALIDATOR = ROOT / "scripts" / "validate_metric_schema.py"
@@ -45,12 +47,36 @@ def main() -> int:
             "strict",
             "--model",
             "gpt-5.3-codex",
+            "--task-set-json",
+            str(TASK_SET_FIXTURE),
         ],
         cwd=ROOT,
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
+
+    # Intentional mismatch fixture should fail consistency checks.
+    mismatch = subprocess.run(
+        [
+            "python3",
+            str(METRIC_SCRIPT),
+            str(summary_json),
+            "--task-set-id",
+            "cse307-task-set-v1",
+            "--prompt-condition",
+            "strict",
+            "--model",
+            "gpt-5.3-codex",
+            "--task-set-json",
+            str(MISMATCH_TASK_SET),
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    assert mismatch.returncode != 0, "expected mismatched task-set consistency check to fail"
 
     subprocess.run(
         ["python3", str(METRIC_VALIDATOR), str(metric_json)],

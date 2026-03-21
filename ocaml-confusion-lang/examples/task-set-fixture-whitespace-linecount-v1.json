@@ -1,0 +1,25 @@
+{
+  "schema_version": "v1",
+  "task_set_id": "fixture-task-set-v1",
+  "description": "Task-set fixture aligned with batch-summary-fixture-whitespace-linecount",
+  "tasks": [
+    {
+      "task_id": "sample-basic-loop",
+      "source": "examples/sample.py",
+      "difficulty": "easy",
+      "tags": ["loop", "return"]
+    },
+    {
+      "task_id": "blankline-drift",
+      "source": "examples/blankline-drift.py",
+      "difficulty": "medium",
+      "tags": ["whitespace", "line-count"]
+    },
+    {
+      "task_id": "collision-risk",
+      "source": "examples/collision-risk-case.py",
+      "difficulty": "hard",
+      "tags": ["token-stream", "substitution"]
+    }
+  ]
+}
