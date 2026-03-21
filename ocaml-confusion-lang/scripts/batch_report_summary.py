@@ -206,6 +206,7 @@ def build_summary_payload(
     taxonomy_weight_source: str,
     only_mismatches: bool,
     task_set_lineage: dict[str, str] | None = None,
+    run_context: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
@@ -285,7 +286,7 @@ def build_summary_payload(
     if task_set_lineage:
         metadata["task_set_lineage"] = task_set_lineage
 
-    return {
+    payload = {
         "metadata": metadata,
         "title": f"Batch Roundtrip Summary ({source_path.name})",
         "overview": {
@@ -314,6 +315,34 @@ def build_summary_payload(
         "mismatch_sort": mismatch_sort,
         "cases": visible_cases,
     }
+    if run_context:
+        payload["run_context"] = run_context
+
+    return payload
+
+
+def build_run_context_from_args(args: argparse.Namespace) -> dict[str, str] | None:
+    key_map = {
+        "run_id": "run_id",
+        "run_url": "run_url",
+        "run_attempt": "run_attempt",
+        "event_name": "event_name",
+        "repository": "repository",
+        "sha": "sha",
+        "ref": "ref",
+        "workflow": "workflow",
+        "job": "job",
+        "actor": "actor",
+    }
+    run_context: dict[str, str] = {}
+    for arg_name, key in key_map.items():
+        value = getattr(args, arg_name, None)
+        if value is None:
+            continue
+        stripped = str(value).strip()
+        if stripped:
+            run_context[key] = stripped
+    return run_context or None
 
 
 def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
@@ -611,6 +640,16 @@ def parse_args() -> argparse.Namespace:
             "Works with --fail-on-mismatch / --fail-on-severity-* flags."
         ),
     )
+    parser.add_argument("--run-id", type=str, default=None, help="Optional run_context.run_id")
+    parser.add_argument("--run-url", type=str, default=None, help="Optional run_context.run_url")
+    parser.add_argument("--run-attempt", type=str, default=None, help="Optional run_context.run_attempt")
+    parser.add_argument("--event-name", type=str, default=None, help="Optional run_context.event_name")
+    parser.add_argument("--repository", type=str, default=None, help="Optional run_context.repository")
+    parser.add_argument("--sha", type=str, default=None, help="Optional run_context.sha")
+    parser.add_argument("--ref", type=str, default=None, help="Optional run_context.ref")
+    parser.add_argument("--workflow", type=str, default=None, help="Optional run_context.workflow")
+    parser.add_argument("--job", type=str, default=None, help="Optional run_context.job")
+    parser.add_argument("--actor", type=str, default=None, help="Optional run_context.actor")
     return parser.parse_args()
 
 
@@ -643,6 +682,7 @@ def main() -> int:
 
     taxonomy_weights, default_weight = load_taxonomy_weights(taxonomy_weight_path)
     task_set_lineage = load_task_set_lineage(args.task_set_json)
+    run_context = build_run_context_from_args(args)
     payload = build_summary_payload(
         report,
         args.input_json,
@@ -653,6 +693,7 @@ def main() -> int:
         taxonomy_weight_source,
         args.only_mismatches,
         task_set_lineage=task_set_lineage,
+        run_context=run_context,
     )
 
     observed_mismatch = int(payload["overview"]["mismatch_cases"])

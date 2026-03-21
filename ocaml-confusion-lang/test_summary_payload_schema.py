@@ -142,6 +142,7 @@ def main() -> int:
         "ref": "refs/pull/42/merge",
         "workflow": "ocaml-confusion-lang-ci",
         "job": "summary-regression",
+        "actor": "github-actions",
     }
     payload_valid_run_context["run_context"]["run_url"] = (
         "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789/attempts/2"
@@ -158,6 +159,14 @@ def main() -> int:
         json.dumps(payload_invalid_run_context, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     _run_validator(invalid_run_context_summary, expect_ok=False)
+
+    invalid_run_context_actor = OUT / "fixture.summary.schema-check.invalid-run-context-actor.json"
+    payload_invalid_run_context_actor = json.loads(valid_run_context_summary.read_text(encoding="utf-8"))
+    payload_invalid_run_context_actor["run_context"]["actor"] = "bad actor"
+    invalid_run_context_actor.write_text(
+        json.dumps(payload_invalid_run_context_actor, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    _run_validator(invalid_run_context_actor, expect_ok=False)
 
     print("OK: summary payload schema regression passed")
     return 0

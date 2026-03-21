@@ -25,6 +25,7 @@ def run_summary(
     json_output: bool = False,
     only_mismatches: bool = False,
     task_set_json: pathlib.Path | None = None,
+    extra_args: list[str] | None = None,
 ) -> tuple[pathlib.Path, pathlib.Path, pathlib.Path | None]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
@@ -54,6 +55,8 @@ def run_summary(
         cmd.append("--only-mismatches")
     if task_set_json is not None:
         cmd.extend(["--task-set-json", str(task_set_json)])
+    if extra_args:
+        cmd.extend(extra_args)
     subprocess.run(cmd, cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return summary_md, summary_csv, summary_json
 
@@ -563,6 +566,34 @@ def main() -> int:
         raise AssertionError("expected invalid counter type fixture to fail")
     if "key 'total_cases' must be an integer" not in invalid_counter_type_proc.stderr:
         raise AssertionError("expected integer type validation message for total_cases")
+
+    run_context_summary_md, _, run_context_summary_json = run_summary(
+        top_k=1,
+        include_diff_columns=False,
+        mismatch_sort="input",
+        json_output=True,
+        extra_args=[
+            "--run-id", "123456789",
+            "--run-url", "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+            "--run-attempt", "2",
+            "--event-name", "workflow_dispatch",
+            "--repository", "Jaeyeong-CHOI/cse307-open-project",
+            "--sha", "abcdef1",
+            "--ref", "refs/heads/main",
+            "--workflow", "ocaml-confusion-lang-ci",
+            "--job", "summary-regression",
+            "--actor", "github-actions",
+        ],
+    )
+    if run_context_summary_json is None:
+        raise AssertionError("expected run-context JSON summary output path")
+    run_context_payload = json.loads(run_context_summary_json.read_text(encoding="utf-8"))
+    run_context = run_context_payload.get("run_context")
+    if not isinstance(run_context, dict):
+        raise AssertionError("expected run_context object in JSON summary when run_context flags are provided")
+    if run_context.get("actor") != "github-actions":
+        raise AssertionError("expected run_context.actor to be serialized from CLI flags")
+    _ = run_context_summary_md
 
     print("OK: batch_report_summary fixture regression passed")
     return 0

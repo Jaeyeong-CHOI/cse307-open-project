@@ -18,6 +18,7 @@ SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
 RUN_ID_PATTERN = re.compile(r"^\d+$")
 REPOSITORY_PATTERN = re.compile(r"^[^/\s]+/[^/\s]+$")
 REF_PATTERN = re.compile(r"^refs/(heads|tags|pull)/.+$")
+ACTOR_PATTERN = re.compile(r"^[A-Za-z0-9-]+$")
 RUN_CONTEXT_TEXT_MAX_LEN = 128
 GITHUB_RUN_URL_PATTERN = re.compile(
     r"^https://github\.com/(?P<repository>[^/\s]+/[^/\s]+)/actions/runs/(?P<run_id>\d+)(?:/attempts/(?P<attempt>\d+))?/?$"
@@ -204,7 +205,7 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
         if not isinstance(run_context, dict):
             errors.append(f"{path}: run_context must be an object when present")
         else:
-            for key in ["run_id", "run_url", "run_attempt", "event_name", "repository", "sha", "ref", "workflow", "job"]:
+            for key in ["run_id", "run_url", "run_attempt", "event_name", "repository", "sha", "ref", "workflow", "job", "actor"]:
                 if key in run_context and (
                     not isinstance(run_context.get(key), str) or not run_context.get(key).strip()
                 ):
@@ -286,6 +287,12 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
                     errors.append(
                         f"{path}: run_context.{key} length must be <= {RUN_CONTEXT_TEXT_MAX_LEN} when present"
                     )
+
+            actor = run_context.get("actor")
+            if isinstance(actor, str) and actor.strip() and not ACTOR_PATTERN.match(actor.strip()):
+                errors.append(
+                    f"{path}: run_context.actor must match pattern '^[A-Za-z0-9-]+$' when present"
+                )
 
     return errors
 

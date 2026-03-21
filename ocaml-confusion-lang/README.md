@@ -49,6 +49,8 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json --json-output ../docs/research/results/roundtrip-batch-v1.diff.summary.json
 # task-set lineage(task_set_id/alias_set_id/manifest_path)를 요약 metadata에 포함
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json --json-output ../docs/research/results/roundtrip-batch-v1.diff.summary.with-lineage.json --task-set-json examples/task-set-v1.json
+# run_context 메타데이터를 summary JSON에 주입 (run_id/run_url/event/repo/sha/ref/workflow/job/actor)
+python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json --json-output ../docs/research/results/roundtrip-batch-v1.diff.summary.with-run-context.json --run-id 123456789 --run-url https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789 --event-name workflow_dispatch --repository Jaeyeong-CHOI/cse307-open-project --sha abcdef1 --ref refs/heads/main --workflow ocaml-confusion-lang-ci --job summary-regression --actor github-actions
 # mismatch 하이라이트를 severity 기반으로 정렬
 python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.severity.md --mismatch-sort severity
 # taxonomy severity 가중치를 외부 JSON으로 주입
@@ -114,6 +116,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - optional `run_context.ref`는 `refs/heads/*`, `refs/tags/*`, `refs/pull/*` 중 하나의 네임스페이스를 따라야 함 (예: `refs/heads/main`, `refs/tags/v1.0.0`, `refs/pull/123/merge`)
 - optional `run_context.event_name`는 `push|pull_request|pull_request_target|merge_group|workflow_dispatch|schedule|workflow_run|repository_dispatch` 중 하나여야 함
 - optional `run_context.workflow`/`run_context.job`은 non-empty string이어야 하며 길이는 1~128자로 제한됨 (비정상적으로 긴 메타데이터 fail-fast 차단)
+- optional `run_context.actor`는 `^[A-Za-z0-9-]+$` 패턴이어야 함 (다운스트림 파서 입력 오염 차단)
 
 `validate_task_set.py` 스키마 규칙:
 - 루트는 JSON object
@@ -236,3 +239,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 108. ~~workflow 시작 단계에서 `github.event_name`을 공용 schema(`run_context_schema`)로 즉시 검증해 워크플로우 trigger/validator enum drift를 fail-fast 차단~~ ✅ (`scripts/validate_run_context_event_name.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `test_run_context_event_name_schema.py`)
 109. ~~`run_context_schema` event enum을 JSON/Markdown으로 export하는 스크립트(`scripts/export_run_context_event_names.py`)와 회귀 테스트를 추가해 문서/자동화 소비 경로에서 enum drift를 단일 소스로 고정~~ ✅ (`scripts/export_run_context_event_names.py`, `test_run_context_schema_export.py`, `examples/run-context-event-names.v1.json`, `docs/run-context-event-names.v1.md`)
 110. ~~summary payload validator(`validate_summary_payload.py`)에도 optional `run_context`(run_url/repository/ref/event_name/workflow/job) 형식 검증을 추가해 summary↔snapshot 메타데이터 무결성 규칙을 정렬~~ ✅ (`scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
+111. ~~`batch_report_summary.py`가 optional `run_context`(run_id/run_url/run_attempt/event/repository/sha/ref/workflow/job/actor)를 직접 주입할 수 있도록 CLI 플래그를 추가하고, summary validator에 `actor` 패턴 검증을 확장해 summary 생성기↔validator 간 규칙 parity를 강화~~ ✅ (`scripts/batch_report_summary.py`, `scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
