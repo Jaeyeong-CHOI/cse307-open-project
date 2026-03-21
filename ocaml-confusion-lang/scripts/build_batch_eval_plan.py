@@ -305,6 +305,15 @@ def _emit_list_presets_text_meta(filtered_count: int, emitted_count: int, trunca
     )
 
 
+def _emit_show_preset_text_meta(preset_name: str, output_format: str, preset_file: Path) -> None:
+    print(
+        "# meta\t"
+        f"preset={preset_name}\t"
+        f"format={output_format}\t"
+        f"preset_file={preset_file}"
+    )
+
+
 def _dedupe_keep_order(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -399,6 +408,14 @@ def parse_args() -> argparse.Namespace:
         choices=("json", "summary", "summary-tsv"),
         default="json",
         help="Output format for --show-preset (default: json)",
+    )
+    parser.add_argument(
+        "--show-preset-with-meta",
+        action="store_true",
+        help=(
+            "Emit preset/format/preset_file metadata footer for text show-preset formats "
+            "(summary/summary-tsv)."
+        ),
     )
     parser.add_argument(
         "--list-presets",
@@ -590,6 +607,8 @@ def main() -> int:
             }
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
+                if args.show_preset_with_meta:
+                    _emit_show_preset_text_meta(args.show_preset, args.show_preset_format, args.preset_file)
                 return 0
             if args.show_preset_format == "summary-tsv":
                 _emit_preset_summary_tsv_header(
@@ -608,6 +627,8 @@ def main() -> int:
                         description_max_len=args.summary_tsv_description_max_len,
                     )
                 )
+                if args.show_preset_with_meta:
+                    _emit_show_preset_text_meta(args.show_preset, args.show_preset_format, args.preset_file)
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0

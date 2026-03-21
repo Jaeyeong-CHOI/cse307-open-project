@@ -1282,6 +1282,33 @@ def main() -> int:
         if snippet not in show_preset_line:
             raise AssertionError(f"missing '{snippet}' in show-preset summary output: {show_preset_line}")
 
+    show_preset_summary_with_meta = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_summary_with_meta_lines = [
+        line.rstrip("\n") for line in show_preset_summary_with_meta.stdout.splitlines() if line.strip()
+    ]
+    if len(show_preset_summary_with_meta_lines) != 2:
+        raise AssertionError(
+            f"unexpected show-preset summary with meta output: {show_preset_summary_with_meta_lines}"
+        )
+    if not show_preset_summary_with_meta_lines[1].startswith("# meta\tpreset=quick-smoke\tformat=summary\tpreset_file="):
+        raise AssertionError(
+            f"unexpected show-preset summary meta footer: {show_preset_summary_with_meta_lines}"
+        )
+
     show_preset_summary_tsv = subprocess.run(
         [
             "python3",
@@ -1303,6 +1330,35 @@ def main() -> int:
         raise AssertionError(f"unexpected show-preset summary-tsv header: {show_summary_tsv_lines}")
     if not show_summary_tsv_lines[1].startswith("quick-smoke\tgpt-5-mini\tbase\t1\ttrue\t"):
         raise AssertionError(f"unexpected show-preset summary-tsv row: {show_summary_tsv_lines}")
+
+    show_preset_summary_tsv_with_meta = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary-tsv",
+            "--show-preset-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_summary_tsv_with_meta_lines = [
+        line.rstrip("\n") for line in show_preset_summary_tsv_with_meta.stdout.splitlines() if line.strip()
+    ]
+    if len(show_summary_tsv_with_meta_lines) != 3:
+        raise AssertionError(
+            f"unexpected show-preset summary-tsv with meta output: {show_summary_tsv_with_meta_lines}"
+        )
+    if not show_summary_tsv_with_meta_lines[2].startswith(
+        "# meta\tpreset=quick-smoke\tformat=summary-tsv\tpreset_file="
+    ):
+        raise AssertionError(
+            f"unexpected show-preset summary-tsv meta footer: {show_summary_tsv_with_meta_lines}"
+        )
 
     show_preset_summary_tsv_full = subprocess.run(
         [
