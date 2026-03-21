@@ -220,6 +220,70 @@ def main() -> int:
     if len(mm_rows) != 2:
         raise AssertionError(f"expected 2 CSV rows with --only-mismatches, got {len(mm_rows)}")
 
+    # --fail-on-mismatch should return exit code 2 when mismatches exist.
+    fail_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.fail-on-mismatch.md"),
+            "--fail-on-mismatch",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if fail_proc.returncode != 2:
+        raise AssertionError(
+            f"expected --fail-on-mismatch to exit 2 for mismatch fixture, got {fail_proc.returncode}"
+        )
+
+    # --fail-on-mismatch should succeed (0) when mismatch_cases == 0.
+    clean_fixture = OUT / "fixture.clean.json"
+    clean_fixture.write_text(
+        json.dumps(
+            {
+                "total_cases": 1,
+                "ok_cases": 1,
+                "mismatch_cases": 0,
+                "include_diff": False,
+                "cases": [
+                    {
+                        "source": "examples/clean-pass.py",
+                        "status": "ok",
+                        "exact_match": True,
+                        "token_equivalent": True,
+                        "ast_equivalent": True,
+                        "failure_taxonomy": [],
+                    }
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    pass_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(clean_fixture),
+            "-o",
+            str(OUT / "fixture.clean.summary.md"),
+            "--fail-on-mismatch",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if pass_proc.returncode != 0:
+        raise AssertionError(
+            f"expected --fail-on-mismatch to exit 0 for clean fixture, got {pass_proc.returncode}"
+        )
+
     print("OK: batch_report_summary fixture regression passed")
     return 0
 

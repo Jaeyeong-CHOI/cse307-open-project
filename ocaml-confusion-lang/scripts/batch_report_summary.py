@@ -400,6 +400,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Limit Cases section and CSV/JSON case rows to mismatches only",
     )
+    parser.add_argument(
+        "--fail-on-mismatch",
+        action="store_true",
+        help="Exit with code 2 when mismatch_cases > 0 (useful for CI gating)",
+    )
     return parser.parse_args()
 
 
@@ -459,6 +464,9 @@ def main() -> int:
         outputs.append(args.json_output)
 
     print("\n".join(str(p) for p in outputs))
+
+    if args.fail_on_mismatch and int(payload["overview"]["mismatch_cases"]) > 0:
+        return 2
     return 0
 
 
