@@ -109,6 +109,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary
+# preset summary를 downstream parser 친화 TSV(header+rows)로 출력
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv
 # 모든 preset의 resolved 설정(기본값 포함)을 JSON으로 한번에 확인
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format resolved-json
 # 특정 preset 1개의 resolved 설정(기본값 포함) 확인(JSON)
@@ -344,3 +346,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 162. ~~planner preset 태그 필터에 매칭 모드(`--list-presets-tag-match all|any`)를 추가해 strict 교집합 탐색(AND)과 느슨한 합집합 탐색(OR)을 런타임으로 전환 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 163. ~~planner preset summary 출력(`--list-presets-format summary`, `--show-preset-format summary`)에 `tags` 컬럼을 추가해 preset 선택/리뷰 시 분류 메타데이터를 JSON 모드 없이 즉시 확인 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 164. ~~planner preset summary 출력(`--list-presets-format summary`, `--show-preset-format summary`)에 `description` preview 컬럼(길이 cap + ellipsis)을 추가해 JSON 모드 없이도 preset 의도를 한 줄에서 빠르게 파악 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+165. ~~planner preset summary를 downstream parser 친화적으로 소비할 수 있도록 header 포함 TSV 출력 모드(`--list-presets-format summary-tsv`, `--show-preset-format summary-tsv`)를 추가해 key=value 재파싱 의존을 제거~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

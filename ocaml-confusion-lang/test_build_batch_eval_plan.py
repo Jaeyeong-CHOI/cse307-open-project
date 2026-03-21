@@ -837,6 +837,41 @@ def main() -> int:
         if snippet not in quick_smoke_line:
             raise AssertionError(f"missing '{snippet}' in summary line: {quick_smoke_line}")
 
+    preset_list_summary_tsv = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary_tsv_lines = [line.rstrip("\n") for line in preset_list_summary_tsv.stdout.splitlines() if line.strip()]
+    expected_tsv_header = (
+        "preset\tmodels\tprompt_conditions\trepeats\tcheap_first\tfair_model_allocation\t"
+        "max_total_runs\tmax_total_runs_mode\tmax_runs_per_model\tmax_runs_per_prompt_condition\t"
+        "max_runs_per_task\tmax_runs_per_task_model\tmax_runs_per_task_prompt_condition\t"
+        "tags\tdescription_preview"
+    )
+    if not summary_tsv_lines or summary_tsv_lines[0] != expected_tsv_header:
+        raise AssertionError(f"unexpected summary-tsv header: {summary_tsv_lines}")
+    quick_smoke_tsv_row = next((line for line in summary_tsv_lines[1:] if line.startswith("quick-smoke\t")), None)
+    if quick_smoke_tsv_row is None:
+        raise AssertionError(f"missing quick-smoke summary-tsv row: {summary_tsv_lines}")
+    if "\ttags=cheap-first,smoke\t" in quick_smoke_tsv_row:
+        raise AssertionError(
+            f"summary-tsv row should be raw TSV values (not key=value pairs): {quick_smoke_tsv_row}"
+        )
+    quick_smoke_tsv_cells = quick_smoke_tsv_row.split("\t")
+    if len(quick_smoke_tsv_cells) != 15:
+        raise AssertionError(f"unexpected summary-tsv column count: {quick_smoke_tsv_cells}")
+    if quick_smoke_tsv_cells[13] != "cheap-first,smoke":
+        raise AssertionError(f"unexpected summary-tsv tags cell: {quick_smoke_tsv_cells}")
+
     show_preset_json = subprocess.run(
         [
             "python3",
@@ -886,6 +921,28 @@ def main() -> int:
     ]:
         if snippet not in show_preset_line:
             raise AssertionError(f"missing '{snippet}' in show-preset summary output: {show_preset_line}")
+
+    show_preset_summary_tsv = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary-tsv",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_summary_tsv_lines = [line.rstrip("\n") for line in show_preset_summary_tsv.stdout.splitlines() if line.strip()]
+    if len(show_summary_tsv_lines) != 2:
+        raise AssertionError(f"unexpected show-preset summary-tsv output lines: {show_summary_tsv_lines}")
+    if show_summary_tsv_lines[0] != expected_tsv_header:
+        raise AssertionError(f"unexpected show-preset summary-tsv header: {show_summary_tsv_lines}")
+    if not show_summary_tsv_lines[1].startswith("quick-smoke\tgpt-5-mini\tbase\t1\ttrue\t"):
+        raise AssertionError(f"unexpected show-preset summary-tsv row: {show_summary_tsv_lines}")
 
     show_preset_overridden = subprocess.run(
         [

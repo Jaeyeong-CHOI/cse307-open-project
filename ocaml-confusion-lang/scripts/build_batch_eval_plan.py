@@ -17,6 +17,23 @@ from error_utils import emit_error
 
 
 DEFAULT_PRESET_FILE = Path(__file__).resolve().parent.parent / "examples" / "batch-plan-presets.v1.json"
+PRESET_SUMMARY_TSV_COLUMNS = [
+    "preset",
+    "models",
+    "prompt_conditions",
+    "repeats",
+    "cheap_first",
+    "fair_model_allocation",
+    "max_total_runs",
+    "max_total_runs_mode",
+    "max_runs_per_model",
+    "max_runs_per_prompt_condition",
+    "max_runs_per_task",
+    "max_runs_per_task_model",
+    "max_runs_per_task_prompt_condition",
+    "tags",
+    "description_preview",
+]
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -175,16 +192,19 @@ def _matches_preset_tags(
     return required_tags.issubset(preset_tags)
 
 
+def _preset_description_preview(raw_description: str, max_len: int = 60) -> str:
+    normalized = " ".join(str(raw_description).replace("\t", " ").split())
+    if not normalized:
+        return "-"
+    if len(normalized) <= max_len:
+        return normalized
+    return f"{normalized[: max_len - 3].rstrip()}..."
+
+
 def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
-    raw_description = str(resolved.get("description", "")).strip()
-    if not raw_description:
-        description_preview = "-"
-    elif len(raw_description) <= 60:
-        description_preview = raw_description
-    else:
-        description_preview = f"{raw_description[:57].rstrip()}..."
+    description_preview = _preset_description_preview(resolved.get("description", ""))
     return (
         f"{name}\tmodels={resolved['models']}\tprompt_conditions={resolved['prompt_conditions']}\t"
         f"repeats={resolved['repeats']}\tcheap_first={str(resolved['cheap_first']).lower()}\t"
@@ -197,6 +217,29 @@ def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
         f"max_runs_per_task_prompt_condition={resolved['max_runs_per_task_prompt_condition']}\t"
         f"tags={tag_value}\tdescription={description_preview}"
     )
+
+
+def _format_preset_summary_tsv_row(name: str, resolved: dict[str, Any]) -> str:
+    tags = resolved.get("tags", [])
+    tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
+    row = [
+        name,
+        str(resolved["models"]),
+        str(resolved["prompt_conditions"]),
+        str(resolved["repeats"]),
+        str(resolved["cheap_first"]).lower(),
+        str(resolved["fair_model_allocation"]).lower(),
+        str(resolved["max_total_runs"]),
+        str(resolved["max_total_runs_mode"]),
+        str(resolved["max_runs_per_model"]),
+        str(resolved["max_runs_per_prompt_condition"]),
+        str(resolved["max_runs_per_task"]),
+        str(resolved["max_runs_per_task_model"]),
+        str(resolved["max_runs_per_task_prompt_condition"]),
+        tag_value,
+        _preset_description_preview(resolved.get("description", "")),
+    ]
+    return "\t".join(item.replace("\t", " ") for item in row)
 
 
 def _dedupe_keep_order(values: list[str]) -> list[str]:
@@ -290,7 +333,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--show-preset-format",
-        choices=("json", "summary"),
+        choices=("json", "summary", "summary-tsv"),
         default="json",
         help="Output format for --show-preset (default: json)",
     )
@@ -301,7 +344,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-format",
-        choices=("names", "json", "resolved-json", "summary"),
+        choices=("names", "json", "resolved-json", "summary", "summary-tsv"),
         default="names",
         help="Output format for --list-presets (default: names)",
     )
@@ -422,6 +465,10 @@ def main() -> int:
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
                 return 0
+            if args.show_preset_format == "summary-tsv":
+                print("\t".join(PRESET_SUMMARY_TSV_COLUMNS))
+                print(_format_preset_summary_tsv_row(args.show_preset, resolved))
+                return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0
 
@@ -472,6 +519,15 @@ def main() -> int:
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
                     resolved = resolve_preset_with_defaults(preset)
                     print(_format_preset_summary_line(name, resolved))
+                return 0
+            if args.list_presets_format == "summary-tsv":
+                print("\t".join(PRESET_SUMMARY_TSV_COLUMNS))
+                for name in preset_names:
+                    preset = filtered_presets[name]
+                    if not isinstance(preset, dict):
+                        raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
+                    resolved = resolve_preset_with_defaults(preset)
+                    print(_format_preset_summary_tsv_row(name, resolved))
                 return 0
             for name in preset_names:
                 print(name)
