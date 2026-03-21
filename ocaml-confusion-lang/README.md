@@ -65,6 +65,8 @@ python3 scripts/validate_summary_payload.py ../docs/research/results/roundtrip-b
 python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json
 # task set schema JSON lint
 python3 scripts/validate_task_set.py examples/task-set-v1.json
+# CI step snapshot JSON schema lint
+python3 scripts/validate_ci_result_snapshot.py ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 # summary JSON -> metric snapshot 생성 (task-set lineage 자동 포함)
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json
 # summary/task-set lineage 불일치 시 fail-fast
@@ -196,3 +198,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 83. ~~Step Summary에 `top_k_mismatches` 요청값/해결값(`requested`, `resolved`)을 함께 기록해 `auto` 해석 결과를 실행 로그만으로 즉시 관측 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`)
 84. ~~Step Summary에 `gate_details` compact 라인(mismatch/severity_total/severity_avg/aggregate)을 추가해 gate 설정/관측값/trip 상태를 artifact 없이 즉시 파악 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`)
 85. ~~`emit_ci_result_snapshot.py`에 `--json-output` 옵션을 추가해 동일 스냅샷을 machine-readable JSON으로도 저장하고, 오케스트레이터/후속 자동화에서 markdown 재파싱 없이 직접 소비 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`)
+86. ~~CI snapshot JSON 전용 schema validator(`validate_ci_result_snapshot.py`)와 회귀 테스트를 추가하고, lightweight/full 워크플로우에서 `--json-output` 산출물을 즉시 검증해 Step Summary↔JSON 드리프트를 fail-fast로 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`)

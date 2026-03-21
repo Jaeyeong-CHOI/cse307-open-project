@@ -162,8 +162,11 @@ jobs:
           python3 scripts/emit_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
             --metric-json ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json \
+            --json-output ../docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json \
             --label "Lightweight CI result snapshot" \
             --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" >> "$GITHUB_STEP_SUMMARY"
+          python3 scripts/validate_ci_result_snapshot.py \
+            ../docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json
 
       - name: Upload lightweight CI artifacts
         if: github.event_name != 'pull_request'
@@ -175,6 +178,7 @@ jobs:
             docs/research/results/roundtrip-batch-v1.fixture.summary.ci.csv
             docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json
             docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json
+            docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json
           if-no-files-found: error
 
   test-full:
@@ -267,8 +271,11 @@ jobs:
           python3 scripts/emit_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json \
             --metric-json ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json \
+            --json-output ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json \
             --label "Full CI result snapshot" \
             --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" >> "$GITHUB_STEP_SUMMARY"
+          python3 scripts/validate_ci_result_snapshot.py \
+            ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 
       - name: Upload CI smoke artifacts
         if: github.event_name != 'pull_request'
@@ -283,4 +290,5 @@ jobs:
             docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.csv
             docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json
             docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json
+            docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
           if-no-files-found: error
