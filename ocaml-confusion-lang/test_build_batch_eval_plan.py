@@ -1071,6 +1071,64 @@ def main() -> int:
     if not summary_tsv_full_lines or summary_tsv_full_lines[0] != expected_tsv_header_full:
         raise AssertionError(f"unexpected summary-tsv(full) header: {summary_tsv_full_lines}")
 
+    preset_list_summary_tsv_full_soft_cap = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+            "--summary-tsv-description",
+            "full",
+            "--summary-tsv-description-max-len",
+            "24",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary_tsv_full_soft_cap_lines = [
+        line.rstrip("\n") for line in preset_list_summary_tsv_full_soft_cap.stdout.splitlines() if line.strip()
+    ]
+    full_analysis_soft_cap_row = next(
+        (line for line in summary_tsv_full_soft_cap_lines[1:] if line.startswith("full-analysis\t")),
+        None,
+    )
+    if full_analysis_soft_cap_row is None:
+        raise AssertionError(f"missing full-analysis row in summary-tsv(full+cap): {summary_tsv_full_soft_cap_lines}")
+    if not full_analysis_soft_cap_row.endswith("..."):
+        raise AssertionError(
+            f"expected truncated full description with ellipsis in summary-tsv(full+cap), got: {full_analysis_soft_cap_row}"
+        )
+
+    invalid_summary_tsv_description_max_len_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "summary-tsv",
+            "--summary-tsv-description",
+            "full",
+            "--summary-tsv-description-max-len",
+            "3",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_summary_tsv_description_max_len_run.returncode == 0:
+        raise AssertionError("expected summary-tsv description max len validation failure")
+    if "--summary-tsv-description-max-len must be >= 4" not in (
+        invalid_summary_tsv_description_max_len_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected summary-tsv description max len validation error, got: "
+            f"{invalid_summary_tsv_description_max_len_run.stderr}"
+        )
+
     show_preset_json = subprocess.run(
         [
             "python3",

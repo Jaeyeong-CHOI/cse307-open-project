@@ -255,6 +255,7 @@ def _format_preset_summary_tsv_row(
     description_mode: str = "preview",
     with_schema_column: bool = False,
     schema_id: str = PRESET_SUMMARY_TSV_SCHEMA,
+    description_max_len: int | None = None,
 ) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
@@ -263,6 +264,8 @@ def _format_preset_summary_tsv_row(
         if description_mode == "full"
         else _preset_description_preview(resolved.get("description", ""))
     )
+    if description_mode == "full" and description_max_len:
+        description_value = _preset_description_preview(description_value, description_max_len)
     row = [
         name,
         str(resolved["models"]),
@@ -427,6 +430,15 @@ def parse_args() -> argparse.Namespace:
         help="summary-tsv description column mode: preview (default) or full",
     )
     parser.add_argument(
+        "--summary-tsv-description-max-len",
+        type=int,
+        default=None,
+        help=(
+            "Optional soft cap for summary-tsv full description length (>=4). "
+            "Ignored in preview mode."
+        ),
+    )
+    parser.add_argument(
         "--summary-tsv-with-schema-column",
         action="store_true",
         help=(
@@ -496,6 +508,8 @@ def main() -> int:
             raise ValueError(
                 "--summary-tsv-schema-id must match planner_preset_summary_tsv.vN (N>=1)"
             )
+        if args.summary_tsv_description_max_len is not None and args.summary_tsv_description_max_len < 4:
+            raise ValueError("--summary-tsv-description-max-len must be >= 4")
 
         if args.show_preset:
             preset = load_preset_config(args.preset_file, args.show_preset)
@@ -566,6 +580,7 @@ def main() -> int:
                         description_mode=args.summary_tsv_description,
                         with_schema_column=args.summary_tsv_with_schema_column,
                         schema_id=schema_id,
+                        description_max_len=args.summary_tsv_description_max_len,
                     )
                 )
                 return 0
@@ -662,6 +677,7 @@ def main() -> int:
                             description_mode=args.summary_tsv_description,
                             with_schema_column=args.summary_tsv_with_schema_column,
                             schema_id=schema_id,
+                            description_max_len=args.summary_tsv_description_max_len,
                         )
                     )
                 return 0
