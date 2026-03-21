@@ -317,6 +317,48 @@ def main() -> int:
             f"{per_prompt_summary['skipped_runs_by_prompt_condition']}"
         )
 
+    fair_per_prompt_output = OUT / "batch-plan.per-prompt-capped.fair.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(TASK_SET),
+            "--models",
+            "gpt-5-mini,gpt-5-pro",
+            "--prompt-conditions",
+            "base,strict",
+            "--repeats",
+            "3",
+            "--max-runs-per-prompt-condition",
+            "5",
+            "--cheap-first",
+            "--fair-model-allocation",
+            "--output",
+            str(fair_per_prompt_output),
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    fair_per_prompt_payload = json.loads(fair_per_prompt_output.read_text(encoding="utf-8"))
+    fair_per_prompt_summary = fair_per_prompt_payload["summary"]
+    if fair_per_prompt_payload["config"].get("fair_model_allocation") is not True:
+        raise AssertionError("expected fair_model_allocation=true in config")
+    if fair_per_prompt_summary["planned_runs_by_model"] != {"gpt-5-mini": 5, "gpt-5-pro": 5}:
+        raise AssertionError(
+            "unexpected fair per-prompt runs_by_model: "
+            f"{fair_per_prompt_summary['planned_runs_by_model']}"
+        )
+    if fair_per_prompt_summary["planned_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 3, "strict": 2},
+        "gpt-5-pro": {"base": 2, "strict": 3},
+    }:
+        raise AssertionError(
+            "unexpected fair per-prompt planned_runs_by_model_prompt_condition: "
+            f"{fair_per_prompt_summary['planned_runs_by_model_prompt_condition']}"
+        )
+
     per_task_capped_output = OUT / "batch-plan.per-task-capped.json"
     subprocess.run(
         [

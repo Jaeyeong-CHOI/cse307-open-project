@@ -135,6 +135,11 @@ def parse_args() -> argparse.Namespace:
         help="Order model runs using a cheap-first heuristic before expanding matrix",
     )
     parser.add_argument(
+        "--fair-model-allocation",
+        action="store_true",
+        help="Rotate model iteration order per expansion step to reduce cap-induced model skew",
+    )
+    parser.add_argument(
         "-o",
         "--output",
         type=Path,
@@ -172,6 +177,16 @@ def main() -> int:
 
         plan: list[dict[str, Any]] = []
         run_index = 0
+        model_cursor = 0
+
+        def iter_models() -> list[str]:
+            nonlocal model_cursor
+            if not args.fair_model_allocation or len(models) <= 1:
+                return models
+            ordered = models[model_cursor:] + models[:model_cursor]
+            model_cursor = (model_cursor + 1) % len(models)
+            return ordered
+
         runs_per_model: dict[str, int] = {model: 0 for model in models}
         runs_per_prompt_condition: dict[str, int] = {condition: 0 for condition in conditions}
         runs_per_task: dict[str, int] = {task["task_id"]: 0 for task in tasks}
@@ -186,7 +201,7 @@ def main() -> int:
             for condition in conditions:
                 for task in tasks:
                     for rep in range(1, args.repeats + 1):
-                        for model in models:
+                        for model in iter_models():
                             if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
                                 continue
                             if runs_per_prompt_condition[condition] >= args.max_runs_per_prompt_condition:
@@ -215,7 +230,7 @@ def main() -> int:
                                 }
                             )
         else:
-            for model in models:
+            for model in iter_models():
                 for condition in conditions:
                     for task in tasks:
                         for rep in range(1, args.repeats + 1):
@@ -304,6 +319,7 @@ def main() -> int:
                 "prompt_conditions": conditions,
                 "repeats": args.repeats,
                 "cheap_first": bool(args.cheap_first),
+                "fair_model_allocation": bool(args.fair_model_allocation),
                 "max_total_runs": args.max_total_runs,
                 "max_runs_per_model": args.max_runs_per_model,
                 "max_runs_per_prompt_condition": args.max_runs_per_prompt_condition,
