@@ -107,7 +107,8 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - optional `gates.aggregate`가 존재하면 object여야 하며 `enabled`(bool), `tripped`(bool), `exit_code`(int) 필드를 가져야 함 (`--fail-on-any-tripped` 실행 정책 노출)
 - optional `run_context`가 존재하면 `run_id`/`run_url`은 함께 제공되어야 하며(`pair`), `run_url`은 `http(s)` 형식이고 `run_id`를 포함해야 함(실행 역추적성 보장)
 - optional `run_context.run_id`/`run_attempt`는 숫자 문자열이어야 함
-- optional `run_context.repository`는 `<owner>/<repo>` 형식이어야 함
+- optional `run_context.run_url`은 `https://github.com/<owner>/<repo>/actions/runs/<run_id>[/attempts/<n>]` 형식이어야 함
+- optional `run_context.repository`는 `<owner>/<repo>` 형식이어야 하며, `run_url`이 있을 때 URL의 repository segment와 일치해야 함
 - optional `run_context.sha`는 7~40 길이 hex 문자열이어야 함 (short/full SHA 허용)
 - optional `run_context.ref`는 `refs/` prefix를 가져야 함 (`refs/heads/main`, `refs/pull/123/merge` 등)
 - optional `run_context.workflow`/`run_context.job`은 non-empty string이어야 하며, Step Summary/JSON에서 워크플로우 이름과 잡 식별자를 함께 노출함
@@ -222,3 +223,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 97. ~~snapshot validator에 `run_context.sha` 형식 검증(7~40 hex)을 추가해 잘못된 commit 메타데이터를 조기 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 98. ~~snapshot validator에 `run_context.ref` 형식 검증(`refs/` prefix)을 추가해 브랜치/PR ref 메타데이터 손상을 조기 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 99. ~~snapshot validator에 `run_context.run_id` 숫자 형식 및 `run_context.repository` `<owner>/<repo>` 패턴 검증을 추가해 실행/저장소 메타데이터 오염을 조기 차단~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
+100. ~~snapshot validator에 `run_context.run_url` GitHub Actions canonical 형식 검증과 `run_url`↔`run_id`/`repository` segment 일치 검증을 추가해 실행 링크 메타데이터 무결성을 강화~~ ✅ (`scripts/validate_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)

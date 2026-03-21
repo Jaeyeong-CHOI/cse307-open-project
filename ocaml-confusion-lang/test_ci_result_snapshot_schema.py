@@ -190,7 +190,21 @@ def main() -> None:
         raise AssertionError("expected failure when run_url does not contain run_id")
     _assert_contains(
         bad_run_context_traceability.stderr,
-        "run_context.run_url must include run_context.run_id for traceability",
+        "run_context.run_url run_id segment must equal run_context.run_id",
+    )
+
+    invalid_run_url_shape = dict(valid_payload)
+    invalid_run_url_shape["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://example.com/org/repo/actions/runs/123456789",
+    }
+    invalid_run_url_shape_path = _write(OUT / "snapshot.invalid-run-url-shape.json", invalid_run_url_shape)
+    bad_run_url_shape = _run(invalid_run_url_shape_path)
+    if bad_run_url_shape.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.run_url shape")
+    _assert_contains(
+        bad_run_url_shape.stderr,
+        "run_context.run_url must match 'https://github.com/<owner>/<repo>/actions/runs/<run_id>[/attempts/<n>]'",
     )
 
     invalid_run_id = dict(valid_payload)
@@ -237,6 +251,23 @@ def main() -> None:
     _assert_contains(
         bad_repository_format.stderr,
         "run_context.repository must match '<owner>/<repo>' when present",
+    )
+
+    invalid_repository_mismatch = dict(valid_payload)
+    invalid_repository_mismatch["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "repository": "org/another-repo",
+    }
+    invalid_repository_mismatch_path = _write(
+        OUT / "snapshot.invalid-repository-mismatch.json", invalid_repository_mismatch
+    )
+    bad_repository_mismatch = _run(invalid_repository_mismatch_path)
+    if bad_repository_mismatch.returncode == 0:
+        raise AssertionError("expected failure for run_context repository/run_url mismatch")
+    _assert_contains(
+        bad_repository_mismatch.stderr,
+        "run_context.repository must match run_context.run_url repository segment",
     )
 
     invalid_sha = dict(valid_payload)

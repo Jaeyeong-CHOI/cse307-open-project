@@ -18,6 +18,9 @@ SCHEMA_VERSION_PATTERN = re.compile(r"^ci_result_snapshot\.v(\d+)$")
 SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
 RUN_ID_PATTERN = re.compile(r"^\d+$")
 REPOSITORY_PATTERN = re.compile(r"^[^/\s]+/[^/\s]+$")
+GITHUB_RUN_URL_PATTERN = re.compile(
+    r"^https://github\.com/(?P<repository>[^/\s]+/[^/\s]+)/actions/runs/(?P<run_id>\d+)(?:/attempts/(?P<attempt>\d+))?/?$"
+)
 
 
 def load_json(path: Path) -> Any:
@@ -164,12 +167,22 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
             if has_run_url and not str(run_url).startswith(("http://", "https://")):
                 errors.append(f"{path}: run_context.run_url must start with http:// or https://")
 
-            if has_run_id and has_run_url and str(run_id) not in str(run_url):
-                errors.append(f"{path}: run_context.run_url must include run_context.run_id for traceability")
+            parsed_run_url = None
+            if has_run_url:
+                parsed_run_url = GITHUB_RUN_URL_PATTERN.match(str(run_url).strip())
+                if not parsed_run_url:
+                    errors.append(
+                        f"{path}: run_context.run_url must match 'https://github.com/<owner>/<repo>/actions/runs/<run_id>[/attempts/<n>]'"
+                    )
 
             run_id = run_context.get("run_id")
             if isinstance(run_id, str) and run_id.strip() and not RUN_ID_PATTERN.match(run_id.strip()):
                 errors.append(f"{path}: run_context.run_id must be a numeric string when present")
+
+            if has_run_id and has_run_url and parsed_run_url:
+                parsed_run_id = parsed_run_url.group("run_id")
+                if str(run_id).strip() != parsed_run_id:
+                    errors.append(f"{path}: run_context.run_url run_id segment must equal run_context.run_id")
 
             run_attempt = run_context.get("run_attempt")
             if isinstance(run_attempt, str) and run_attempt.strip() and not run_attempt.isdigit():
@@ -180,6 +193,12 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
                 errors.append(
                     f"{path}: run_context.repository must match '<owner>/<repo>' when present"
                 )
+            if parsed_run_url and isinstance(repository, str) and repository.strip():
+                parsed_repository = parsed_run_url.group("repository")
+                if repository.strip() != parsed_repository:
+                    errors.append(
+                        f"{path}: run_context.repository must match run_context.run_url repository segment"
+                    )
 
             sha = run_context.get("sha")
             if isinstance(sha, str) and sha.strip() and not SHA_PATTERN.match(sha.strip()):
