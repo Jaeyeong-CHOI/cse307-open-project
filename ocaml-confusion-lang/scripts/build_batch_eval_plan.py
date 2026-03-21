@@ -82,6 +82,21 @@ def _git_branch_name(cwd: str | None = None) -> str:
         return "unknown"
 
 
+def _git_remote_origin_url(cwd: str | None = None) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            cwd=cwd,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        value = completed.stdout.strip()
+        return value or "unknown"
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         payload = json.load(f)
@@ -554,6 +569,11 @@ def parse_args() -> argparse.Namespace:
         help="Include git_branch (current branch name) in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-git-remote",
+        action="store_true",
+        help="Include git_remote (origin URL) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -649,6 +669,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-git-branch",
         action="store_true",
         help="Include git_branch (current branch name) in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-git-remote",
+        action="store_true",
+        help="Include git_remote (origin URL) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -860,6 +885,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["git_branch"] = _git_branch_name(cwd=os.getcwd())
+            if args.show_preset_meta_include_git_remote:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["git_remote"] = _git_remote_origin_url(cwd=os.getcwd())
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -975,6 +1004,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["git_branch"] = _git_branch_name(cwd=os.getcwd())
+            if args.list_presets_meta_include_git_remote:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["git_remote"] = _git_remote_origin_url(cwd=os.getcwd())
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}

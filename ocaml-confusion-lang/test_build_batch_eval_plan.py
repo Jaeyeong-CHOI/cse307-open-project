@@ -1165,6 +1165,31 @@ def main() -> int:
             f"{names_with_meta_git_branch_lines}"
         )
 
+    preset_list_names_with_meta_git_remote = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-git-remote",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_git_remote_lines = [
+        line.strip() for line in preset_list_names_with_meta_git_remote.stdout.splitlines() if line.strip()
+    ]
+    git_remote_value = names_with_meta_git_remote_lines[-1].rsplit("git_remote=", 1)[-1]
+    if re.fullmatch(r"\S+|unknown", git_remote_value) is None:
+        raise AssertionError(
+            "unexpected git_remote format in list-presets meta footer: "
+            f"{names_with_meta_git_remote_lines}"
+        )
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -1861,6 +1886,34 @@ def main() -> int:
         raise AssertionError(
             "unexpected git_branch format in show-preset meta footer: "
             f"{show_preset_with_meta_git_branch_lines}"
+        )
+
+    show_preset_summary_with_meta_git_remote = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-git-remote",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_git_remote_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_git_remote.stdout.splitlines()
+        if line.strip()
+    ]
+    show_git_remote_value = show_preset_with_meta_git_remote_lines[-1].rsplit("git_remote=", 1)[-1]
+    if re.fullmatch(r"\S+|unknown", show_git_remote_value) is None:
+        raise AssertionError(
+            "unexpected git_remote format in show-preset meta footer: "
+            f"{show_preset_with_meta_git_remote_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(
