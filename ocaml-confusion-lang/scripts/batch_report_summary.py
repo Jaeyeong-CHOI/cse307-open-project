@@ -332,6 +332,13 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
         if isinstance(tripped_list, list):
             rendered = ", ".join(str(item) for item in tripped_list) if tripped_list else "none"
             lines.append(f"- tripped_list: {rendered}")
+        aggregate_gate = gates.get("aggregate") if isinstance(gates.get("aggregate"), dict) else None
+        if isinstance(aggregate_gate, dict):
+            lines.append(
+                "- aggregate gate: "
+                f"enabled={aggregate_gate.get('enabled')}, "
+                f"exit_code={aggregate_gate.get('exit_code')}"
+            )
         mismatch_gate = gates.get("mismatch") if isinstance(gates.get("mismatch"), dict) else None
         if isinstance(mismatch_gate, dict):
             lines.append(
@@ -564,6 +571,14 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Optional task-set JSON; embed task-set lineage metadata into summary outputs",
     )
+    parser.add_argument(
+        "--fail-on-any-tripped",
+        action="store_true",
+        help=(
+            "Exit with code 4 when any enabled gate is tripped (aggregate gate for automation). "
+            "Works with --fail-on-mismatch / --fail-on-severity-* flags."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -657,6 +672,10 @@ def main() -> int:
         },
         "any_tripped": bool(tripped_gate_names),
         "tripped_list": tripped_gate_names,
+        "aggregate": {
+            "enabled": bool(args.fail_on_any_tripped),
+            "exit_code": 4,
+        },
     }
 
     summary = build_summary(payload, top_k)
@@ -678,6 +697,17 @@ def main() -> int:
         outputs.append(args.json_output)
 
     print("\n".join(str(p) for p in outputs))
+
+    if args.fail_on_any_tripped and tripped_gate_names:
+        emit_error(
+            "aggregate gate tripped",
+            hints=[
+                f"input={args.input_json}",
+                f"tripped={','.join(tripped_gate_names)}",
+                "gate=--fail-on-any-tripped",
+            ],
+        )
+        return 4
 
     if mismatch_gate_tripped:
         emit_error(

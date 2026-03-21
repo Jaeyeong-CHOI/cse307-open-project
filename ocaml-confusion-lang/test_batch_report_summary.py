@@ -86,6 +86,7 @@ def main() -> int:
     assert_contains(content, "- mismatch_severity_avg: 65.0")
     assert_contains(content, "- any_tripped: False")
     assert_contains(content, "- tripped_list: none")
+    assert_contains(content, "- aggregate gate: enabled=False, exit_code=4")
 
     if summary_json is None:
         raise AssertionError("expected JSON summary output path")
@@ -115,6 +116,11 @@ def main() -> int:
         raise AssertionError("expected any_tripped=False without gate flags")
     if gates.get("tripped_list") != []:
         raise AssertionError("expected empty tripped_list without gate flags")
+    aggregate_gate = gates.get("aggregate")
+    if not isinstance(aggregate_gate, dict):
+        raise AssertionError("expected aggregate gate object in JSON summary")
+    if aggregate_gate.get("enabled") is not False or aggregate_gate.get("exit_code") != 4:
+        raise AssertionError("expected aggregate gate defaults to enabled=False exit_code=4")
 
     # taxonomy frequency block should include whitespace/line-count drift tags.
     assert_contains(content, "- line_count_mismatch: 1")
@@ -267,6 +273,29 @@ def main() -> int:
     fail_gate_md = (OUT / "fixture.fail-on-mismatch.md").read_text(encoding="utf-8")
     assert_contains(fail_gate_md, "- any_tripped: True")
     assert_contains(fail_gate_md, "- tripped_list: mismatch")
+
+    # --fail-on-any-tripped should return exit code 4 with aggregate hint.
+    any_gate_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.fail-on-any-tripped.md"),
+            "--fail-on-mismatch",
+            "--fail-on-any-tripped",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if any_gate_proc.returncode != 4:
+        raise AssertionError(
+            f"expected --fail-on-any-tripped to exit 4 when mismatch gate trips, got {any_gate_proc.returncode}"
+        )
+    if "gate=--fail-on-any-tripped" not in any_gate_proc.stderr:
+        raise AssertionError("expected aggregate gate failure hint in stderr")
 
     # --fail-on-mismatch should succeed (0) when mismatch_cases == 0.
     clean_fixture = OUT / "fixture.clean.json"
