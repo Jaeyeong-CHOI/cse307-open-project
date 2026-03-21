@@ -13,4 +13,5 @@
     (run python3 test_batch_report_summary.py)
     (run python3 test_taxonomy_profile_schema.py)
     (run python3 test_summary_payload_schema.py)
-    (run python3 test_metric_schema.py)))))
+    (run python3 test_metric_schema.py)
+    (run python3 test_generate_metric_snapshot.py)))))

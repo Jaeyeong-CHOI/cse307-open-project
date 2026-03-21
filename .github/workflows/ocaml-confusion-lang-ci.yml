@@ -74,12 +74,24 @@ jobs:
       - name: Validate metric schema (smoke)
         run: python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json
 
+      - name: Generate metric snapshot from summary JSON + validate
+        run: |
+          python3 scripts/generate_metric_snapshot.py \
+            ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json \
+            -o ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json \
+            --task-set-id cse307-roundtrip-batch-v1 \
+            --prompt-condition strict \
+            --model gpt-5.3-codex
+          python3 scripts/validate_metric_schema.py \
+            ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json
+
       - name: Python regression checks (summary + taxonomy schema + summary schema + metric schema)
         run: |
           python3 test_batch_report_summary.py
           python3 test_taxonomy_profile_schema.py
           python3 test_summary_payload_schema.py
           python3 test_metric_schema.py
+          python3 test_generate_metric_snapshot.py
 
       - name: Upload CI smoke artifacts
         uses: actions/upload-artifact@v4
@@ -92,4 +104,5 @@ jobs:
             docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.md
             docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.csv
             docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json
+            docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json
           if-no-files-found: error
