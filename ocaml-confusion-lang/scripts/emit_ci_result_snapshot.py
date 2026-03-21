@@ -121,6 +121,11 @@ def build_snapshot_markdown(
             f"first_diff_line={top1['first_diff_line']}; "
             f"first_token_diff_index={top1['first_token_diff_index']}"
         ),
+        (
+            "- top_k_mismatches: "
+            f"requested={top_k_mismatches}; "
+            f"resolved={resolved_top_k}"
+        ),
         f"- top{resolved_top_k}_mismatches_compact: {_topk_compact(payload, top_k=resolved_top_k)}",
         f"- summary_json: `{summary_path}`",
         f"- metric_json: `{metric_path}`",

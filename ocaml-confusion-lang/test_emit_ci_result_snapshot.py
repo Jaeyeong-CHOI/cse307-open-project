@@ -92,6 +92,7 @@ def main() -> None:
         content,
         "- top1_mismatch: severity=75; taxonomy=token_stream_mismatch; source=examples/collision-risk-case.py; first_diff_line=2; first_token_diff_index=8",
     )
+    assert_contains(content, "- top_k_mismatches: requested=2; resolved=2")
     assert_contains(
         content,
         "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+2 more)",
@@ -114,10 +115,12 @@ def main() -> None:
         no_mm,
         "- top1_mismatch: severity=n/a; taxonomy=n/a; source=n/a; first_diff_line=n/a; first_token_diff_index=n/a",
     )
+    assert_contains(no_mm, "- top_k_mismatches: requested=3; resolved=3")
     assert_contains(no_mm, "- top3_mismatches_compact: n/a")
 
     auto_mm = _run(payload_with_mismatch, "Auto top-k snapshot", top_k_mismatches="auto")
     assert_contains(auto_mm, "## Auto top-k snapshot")
+    assert_contains(auto_mm, "- top_k_mismatches: requested=auto; resolved=3")
     assert_contains(
         auto_mm,
         "- top3_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | #3(severity=40, taxonomy=ast_equivalence_fail, source=examples/ast-risk-case.py, first_diff_line=7, first_token_diff_index=11) | ... (+1 more)",
@@ -150,6 +153,7 @@ def main() -> None:
 
     auto_no_mm = _run(payload_no_mismatch, "Auto no mismatch snapshot", top_k_mismatches="auto")
     assert_contains(auto_no_mm, "## Auto no mismatch snapshot")
+    assert_contains(auto_no_mm, "- top_k_mismatches: requested=auto; resolved=1")
     assert_contains(auto_no_mm, "- top1_mismatches_compact: n/a")
 
 
