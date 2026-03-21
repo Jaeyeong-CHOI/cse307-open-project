@@ -20,4 +20,5 @@ python3 test_format_event_name_policy_modes.py
 python3 test_resolve_event_name_mode.py
 python3 test_resolve_event_name_modes.py
 python3 test_task_set_schema.py
+python3 test_build_batch_eval_plan.py
 python3 test_validator_error_output.py
