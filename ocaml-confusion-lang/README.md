@@ -107,6 +107,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - `gates`는 object여야 하며 aggregate 필드 `any_tripped`(bool), `tripped_list`(array)와 `mismatch`, `severity_total`, `severity_avg` 서브 오브젝트(각각 `enabled`, `tripped`)를 포함해야 함
 - `gates.any_tripped`는 `bool(gates.tripped_list)`와 일치해야 하며 `gates.tripped_list`는 실제 `tripped=true` gate 이름 집합과 동일해야 함
 - optional `gates.aggregate`가 존재하면 object여야 하며 `enabled`(bool), `tripped`(bool), `exit_code`(int) 필드를 가져야 함 (`--fail-on-any-tripped` 실행 정책 노출)
+- optional `run_context`가 존재하면 허용 키(`run_id`, `run_url`, `run_attempt`, `event_name`, `repository`, `sha`, `ref`, `workflow`, `job`, `actor`)만 포함해야 함 (typo/드리프트 fail-fast)
 - optional `run_context`가 존재하면 `run_id`/`run_url`은 함께 제공되어야 하며(`pair`), `run_url`은 `http(s)` 형식이고 `run_id`를 포함해야 함(실행 역추적성 보장)
 - optional `run_context.run_id`/`run_attempt`는 숫자 문자열이어야 함
 - optional `run_context.run_url`은 `https://github.com/<owner>/<repo>/actions/runs/<run_id>[/attempts/<n>]` 형식이어야 함
@@ -241,3 +242,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 110. ~~summary payload validator(`validate_summary_payload.py`)에도 optional `run_context`(run_url/repository/ref/event_name/workflow/job) 형식 검증을 추가해 summary↔snapshot 메타데이터 무결성 규칙을 정렬~~ ✅ (`scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
 111. ~~`batch_report_summary.py`가 optional `run_context`(run_id/run_url/run_attempt/event/repository/sha/ref/workflow/job/actor)를 직접 주입할 수 있도록 CLI 플래그를 추가하고, summary validator에 `actor` 패턴 검증을 확장해 summary 생성기↔validator 간 규칙 parity를 강화~~ ✅ (`scripts/batch_report_summary.py`, `scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
 112. ~~`run_context` 검증 로직을 공통 모듈(`scripts/run_context_validation.py`)로 추출해 `validate_summary_payload.py`/`validate_ci_result_snapshot.py` 간 규칙 drift와 중복 유지보수 비용을 줄이기~~ ✅ (`scripts/run_context_validation.py`, `scripts/validate_summary_payload.py`, `scripts/validate_ci_result_snapshot.py`)
+113. ~~`run_context` payload에 허용 키 화이트리스트 검증(unknown key fail-fast)을 공통 validator에 추가해 오타/스키마 드리프트를 조기 차단~~ ✅ (`scripts/run_context_validation.py`, `test_summary_payload_schema.py`, `test_ci_result_snapshot_schema.py`, `README.md`)

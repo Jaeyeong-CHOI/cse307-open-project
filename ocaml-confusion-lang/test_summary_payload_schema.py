@@ -168,6 +168,14 @@ def main() -> int:
     )
     _run_validator(invalid_run_context_actor, expect_ok=False)
 
+    invalid_run_context_unknown = OUT / "fixture.summary.schema-check.invalid-run-context-unknown-key.json"
+    payload_invalid_run_context_unknown = json.loads(valid_run_context_summary.read_text(encoding="utf-8"))
+    payload_invalid_run_context_unknown["run_context"]["branch"] = "main"
+    invalid_run_context_unknown.write_text(
+        json.dumps(payload_invalid_run_context_unknown, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    _run_validator(invalid_run_context_unknown, expect_ok=False)
+
     print("OK: summary payload schema regression passed")
     return 0
 

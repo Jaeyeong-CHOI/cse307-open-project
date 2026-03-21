@@ -182,6 +182,23 @@ def main() -> None:
         "run_context.workflow must be a non-empty string when present",
     )
 
+    invalid_run_context_unknown_key = dict(valid_payload)
+    invalid_run_context_unknown_key["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "branch": "main",
+    }
+    invalid_run_context_unknown_key_path = _write(
+        OUT / "snapshot.invalid-run-context-unknown-key.json", invalid_run_context_unknown_key
+    )
+    bad_run_context_unknown_key = _run(invalid_run_context_unknown_key_path)
+    if bad_run_context_unknown_key.returncode == 0:
+        raise AssertionError("expected failure for unknown run_context key")
+    _assert_contains(
+        bad_run_context_unknown_key.stderr,
+        "run_context contains unknown key(s): branch",
+    )
+
     invalid_run_context_pair = dict(valid_payload)
     invalid_run_context_pair["run_context"] = {
         "run_id": "123456789",

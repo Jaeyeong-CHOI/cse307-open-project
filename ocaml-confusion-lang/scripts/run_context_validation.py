@@ -15,6 +15,18 @@ REPOSITORY_PATTERN = re.compile(r"^[^/\s]+/[^/\s]+$")
 REF_PATTERN = re.compile(r"^refs/(heads|tags|pull)/.+$")
 ACTOR_PATTERN = re.compile(r"^[A-Za-z0-9-]+$")
 RUN_CONTEXT_TEXT_MAX_LEN = 128
+ALLOWED_RUN_CONTEXT_KEYS = {
+    "run_id",
+    "run_url",
+    "run_attempt",
+    "event_name",
+    "repository",
+    "sha",
+    "ref",
+    "workflow",
+    "job",
+    "actor",
+}
 GITHUB_RUN_URL_PATTERN = re.compile(
     r"^https://github\.com/(?P<repository>[^/\s]+/[^/\s]+)/actions/runs/(?P<run_id>\d+)(?:/attempts/(?P<attempt>\d+))?/?$"
 )
@@ -36,18 +48,13 @@ def validate_run_context(
         errors.append(f"{path}: run_context must be an object when present")
         return
 
-    for key in [
-        "run_id",
-        "run_url",
-        "run_attempt",
-        "event_name",
-        "repository",
-        "sha",
-        "ref",
-        "workflow",
-        "job",
-        "actor",
-    ]:
+    unknown_keys = sorted(set(run_context.keys()) - ALLOWED_RUN_CONTEXT_KEYS)
+    if unknown_keys:
+        errors.append(
+            f"{path}: run_context contains unknown key(s): {', '.join(unknown_keys)}"
+        )
+
+    for key in sorted(ALLOWED_RUN_CONTEXT_KEYS):
         if key in run_context and (
             not isinstance(run_context.get(key), str) or not run_context.get(key).strip()
         ):
