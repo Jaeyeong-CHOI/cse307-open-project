@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+LINEAGE_KEYS = ("task_set_id", "alias_set_id", "manifest_path")
+
 ALLOWED_DIFFICULTIES = {"easy", "medium", "hard"}
 
 
@@ -118,6 +120,42 @@ def assert_task_set_consistency(
         )
 
 
+def check_summary_lineage_consistency(
+    summary: dict[str, Any],
+    task_set: dict[str, Any],
+    mode: str,
+) -> None:
+    metadata = summary.get("metadata") or {}
+    summary_lineage = metadata.get("task_set_lineage")
+    if summary_lineage is None:
+        return
+    if not isinstance(summary_lineage, dict):
+        message = "summary metadata.task_set_lineage must be an object when present"
+        if mode == "fail":
+            raise ValueError(message)
+        if mode == "warn":
+            print(f"WARN: {message}")
+        return
+
+    mismatches: list[str] = []
+    for key in LINEAGE_KEYS:
+        summary_value = summary_lineage.get(key)
+        task_set_value = task_set.get(key)
+        if summary_value is None or task_set_value is None:
+            continue
+        if summary_value != task_set_value:
+            mismatches.append(
+                f"{key}: summary='{summary_value}' task_set='{task_set_value}'"
+            )
+
+    if mismatches:
+        message = "summary/task-set lineage mismatch: " + "; ".join(mismatches)
+        if mode == "fail":
+            raise ValueError(message)
+        if mode == "warn":
+            print(f"WARN: {message}")
+
+
 def build_metric_payload(
     summary: dict[str, Any],
     task_set_id: str,
@@ -187,6 +225,12 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Optional task-set JSON to validate id/source consistency against summary",
     )
+    parser.add_argument(
+        "--lineage-consistency",
+        choices=["off", "warn", "fail"],
+        default="warn",
+        help="How to handle summary/task-set lineage mismatches when --task-set-json is used",
+    )
     return parser.parse_args()
 
 
@@ -209,13 +253,14 @@ def main() -> int:
             task_set_id=args.task_set_id,
         )
 
-        lineage: dict[str, str] = {}
+        lineage: dict[str, str] = {"task_set_id": args.task_set_id}
         alias_set_id = task_set.get("alias_set_id")
         manifest_path = task_set.get("manifest_path")
         if isinstance(alias_set_id, str) and alias_set_id.strip():
             lineage["alias_set_id"] = alias_set_id
         if isinstance(manifest_path, str) and manifest_path.strip():
             lineage["manifest_path"] = manifest_path
+        check_summary_lineage_consistency(summary, task_set, args.lineage_consistency)
         task_set_lineage = lineage or None
 
     payload = build_metric_payload(

@@ -78,6 +78,34 @@ def main() -> int:
     )
     assert mismatch.returncode != 0, "expected mismatched task-set consistency check to fail"
 
+    lineage_mismatch_summary = OUT / "fixture.summary.lineage-mismatch.json"
+    payload = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload.setdefault("metadata", {}).setdefault("task_set_lineage", {})["alias_set_id"] = "tampered-alias"
+    lineage_mismatch_summary.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    lineage_fail = subprocess.run(
+        [
+            "python3",
+            str(METRIC_SCRIPT),
+            str(lineage_mismatch_summary),
+            "--task-set-id",
+            "fixture-task-set-v1",
+            "--prompt-condition",
+            "strict",
+            "--model",
+            "gpt-5.3-codex",
+            "--task-set-json",
+            str(TASK_SET_FIXTURE),
+            "--lineage-consistency",
+            "fail",
+        ],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    assert lineage_fail.returncode != 0, "expected lineage consistency fail mode to fail"
+
     subprocess.run(
         ["python3", str(METRIC_VALIDATOR), str(metric_json)],
         cwd=ROOT,
@@ -91,6 +119,7 @@ def main() -> int:
     source_summary = payload.get("source_summary") or {}
     lineage = source_summary.get("task_set_lineage") or {}
 
+    assert lineage.get("task_set_id") == "fixture-task-set-v1", lineage
     assert lineage.get("alias_set_id") == "fixture-alias-v1", lineage
     assert lineage.get("manifest_path") == "examples/manifest-v1.txt", lineage
 
