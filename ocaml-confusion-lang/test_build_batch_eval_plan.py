@@ -956,6 +956,39 @@ def main() -> int:
             f"unexpected names-with-meta custom schema footer: {names_with_meta_custom_schema_lines}"
         )
 
+    preset_list_names_with_filter_meta = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "1",
+            "--list-presets-tag",
+            "cheap-first,smoke",
+            "--list-presets-tag-match",
+            "all",
+            "--list-presets-name-contains",
+            "quick",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-filters",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_filter_meta_lines = [
+        line.strip() for line in preset_list_names_with_filter_meta.stdout.splitlines() if line.strip()
+    ]
+    expected_filter_meta_footer = (
+        "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
+        "\ttag_filter=cheap-first,smoke\ttag_match=all\tname_contains=quick\tlimit=1"
+    )
+    if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
+        raise AssertionError(
+            f"unexpected names-with-filter-meta footer: {names_with_filter_meta_lines}"
+        )
+
     preset_list_summary = subprocess.run(
         [
             "python3",

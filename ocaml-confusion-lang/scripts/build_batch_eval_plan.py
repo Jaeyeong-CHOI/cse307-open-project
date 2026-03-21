@@ -305,14 +305,18 @@ def _emit_list_presets_text_meta(
     emitted_count: int,
     truncated: bool,
     schema_id: str,
+    extra_fields: dict[str, str] | None = None,
 ) -> None:
-    print(
-        "# meta\t"
-        f"schema={schema_id}\t"
-        f"filtered_count={filtered_count}\t"
-        f"emitted_count={emitted_count}\t"
-        f"truncated={str(truncated).lower()}"
-    )
+    fields = [
+        f"schema={schema_id}",
+        f"filtered_count={filtered_count}",
+        f"emitted_count={emitted_count}",
+        f"truncated={str(truncated).lower()}",
+    ]
+    if extra_fields:
+        for key, value in extra_fields.items():
+            fields.append(f"{key}={value}")
+    print("# meta\t" + "\t".join(fields))
 
 
 def _emit_show_preset_text_meta(
@@ -490,6 +494,14 @@ def parse_args() -> argparse.Namespace:
         default=PRESET_LIST_TEXT_META_SCHEMA,
         help=(
             "Schema id for --list-presets text meta footer (default: planner_preset_list_meta.v1)"
+        ),
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-filters",
+        action="store_true",
+        help=(
+            "Include active filter context in --list-presets text meta footer "
+            "(tag/name_contains/limit/tag_match)."
         ),
     )
     parser.add_argument(
@@ -715,6 +727,23 @@ def main() -> int:
             if args.list_presets_limit is not None and len(preset_names) > args.list_presets_limit:
                 preset_names = preset_names[: args.list_presets_limit]
                 truncated = True
+            list_meta_extra_fields: dict[str, str] | None = None
+            if args.list_presets_meta_include_filters:
+                tag_filter = args.list_presets_tag.strip() if isinstance(args.list_presets_tag, str) else ""
+                name_contains = (
+                    args.list_presets_name_contains.strip()
+                    if isinstance(args.list_presets_name_contains, str)
+                    else ""
+                )
+                list_meta_extra_fields = {
+                    "tag_filter": tag_filter or "none",
+                    "tag_match": args.list_presets_tag_match,
+                    "name_contains": name_contains or "none",
+                    "limit": str(args.list_presets_limit)
+                    if args.list_presets_limit is not None
+                    else "none",
+                }
+
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}
                 print(
@@ -766,6 +795,7 @@ def main() -> int:
                         len(preset_names),
                         truncated,
                         schema_id=list_meta_schema_id,
+                        extra_fields=list_meta_extra_fields,
                     )
                 return 0
             if args.list_presets_format == "summary-tsv":
@@ -796,6 +826,7 @@ def main() -> int:
                         len(preset_names),
                         truncated,
                         schema_id=list_meta_schema_id,
+                        extra_fields=list_meta_extra_fields,
                     )
                 return 0
             for name in preset_names:
@@ -806,6 +837,7 @@ def main() -> int:
                     len(preset_names),
                     truncated,
                     schema_id=list_meta_schema_id,
+                    extra_fields=list_meta_extra_fields,
                 )
             return 0
 
