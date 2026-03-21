@@ -130,6 +130,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-hostname
 # list-presets meta footer에 현재 Git HEAD short SHA(git_head)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-head
+# list-presets meta footer에 현재 Git branch 이름(git_branch)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-branch
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
@@ -184,6 +186,8 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-hostname
 # show-preset meta footer에 현재 Git HEAD short SHA(git_head)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-head
+# show-preset meta footer에 현재 Git branch 이름(git_branch)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-branch
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 # optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
@@ -440,3 +444,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 191. ~~planner list/show text/json meta footer에 optional 실행 호스트 이름(`hostname`) 주입 옵션(`--list-presets-meta-include-hostname`, `--show-preset-meta-include-hostname`)을 추가해 멀티 호스트 환경에서 로그 출처 식별/상관관계를 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 192. ~~roadmap immediate action #4(연구 로그 템플릿) 반영: `docs/research/log/TEMPLATE.md` + `docs/research/log/README.md`를 추가해 반복 실험 checkpoint 기록 형식을 표준화~~ ✅ (`docs/research/log/TEMPLATE.md`, `docs/research/log/README.md`)
 193. ~~planner list/show meta footer에 optional `git_head`(short SHA) 주입 옵션(`--list-presets-meta-include-git-head`, `--show-preset-meta-include-git-head`)을 추가해 로그/자동화 결과를 코드 리비전과 즉시 매핑 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+194. ~~planner list/show meta footer에 optional `git_branch` 주입 옵션(`--list-presets-meta-include-git-branch`, `--show-preset-meta-include-git-branch`)을 추가해 detached HEAD 이외 일반 브랜치 실행에서 로그 컨텍스트(리비전 + 브랜치)를 즉시 파악 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
