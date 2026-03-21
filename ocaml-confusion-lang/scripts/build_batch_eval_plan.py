@@ -34,6 +34,7 @@ PRESET_SUMMARY_TSV_COLUMNS = [
     "tags",
     "description_preview",
 ]
+PRESET_SUMMARY_TSV_SCHEMA = "planner_preset_summary_tsv.v1"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -219,6 +220,12 @@ def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
     )
 
 
+def _emit_preset_summary_tsv_header(with_schema_header: bool) -> None:
+    if with_schema_header:
+        print(f"# schema={PRESET_SUMMARY_TSV_SCHEMA}")
+    print("\t".join(PRESET_SUMMARY_TSV_COLUMNS))
+
+
 def _format_preset_summary_tsv_row(name: str, resolved: dict[str, Any]) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
@@ -360,6 +367,13 @@ def parse_args() -> argparse.Namespace:
         help="Tag match mode for --list-presets-tag: all (default, AND) or any (OR)",
     )
     parser.add_argument(
+        "--summary-tsv-with-schema-header",
+        action="store_true",
+        help=(
+            "Prefix summary-tsv output with '# schema=<id>' comment for parser-friendly format versioning"
+        ),
+    )
+    parser.add_argument(
         "--preset-file",
         type=Path,
         default=DEFAULT_PRESET_FILE,
@@ -466,7 +480,7 @@ def main() -> int:
                 print(_format_preset_summary_line(args.show_preset, resolved))
                 return 0
             if args.show_preset_format == "summary-tsv":
-                print("\t".join(PRESET_SUMMARY_TSV_COLUMNS))
+                _emit_preset_summary_tsv_header(args.summary_tsv_with_schema_header)
                 print(_format_preset_summary_tsv_row(args.show_preset, resolved))
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -521,7 +535,7 @@ def main() -> int:
                     print(_format_preset_summary_line(name, resolved))
                 return 0
             if args.list_presets_format == "summary-tsv":
-                print("\t".join(PRESET_SUMMARY_TSV_COLUMNS))
+                _emit_preset_summary_tsv_header(args.summary_tsv_with_schema_header)
                 for name in preset_names:
                     preset = filtered_presets[name]
                     if not isinstance(preset, dict):
