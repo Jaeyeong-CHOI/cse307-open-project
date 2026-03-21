@@ -243,7 +243,7 @@ def _emit_preset_summary_tsv_header(
     if with_schema_header:
         print(f"# schema={schema_id}")
     description_column = "description_full" if description_mode == "full" else "description_preview"
-    columns = [*PRESET_SUMMARY_TSV_BASE_COLUMNS, description_column]
+    columns = [*PRESET_SUMMARY_TSV_BASE_COLUMNS, "description_mode", description_column]
     if with_schema_column:
         columns.append("schema")
     print("\t".join(columns))
@@ -281,6 +281,7 @@ def _format_preset_summary_tsv_row(
         str(resolved["max_runs_per_task_model"]),
         str(resolved["max_runs_per_task_prompt_condition"]),
         tag_value,
+        description_mode,
         description_value,
     ]
     if with_schema_column:

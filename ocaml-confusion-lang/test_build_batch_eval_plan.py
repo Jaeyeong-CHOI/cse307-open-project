@@ -918,7 +918,7 @@ def main() -> int:
         "preset\tmodels\tprompt_conditions\trepeats\tcheap_first\tfair_model_allocation\t"
         "max_total_runs\tmax_total_runs_mode\tmax_runs_per_model\tmax_runs_per_prompt_condition\t"
         "max_runs_per_task\tmax_runs_per_task_model\tmax_runs_per_task_prompt_condition\t"
-        "tags\tdescription_preview"
+        "tags\tdescription_mode\tdescription_preview"
     )
     if not summary_tsv_lines or summary_tsv_lines[0] != expected_tsv_header_preview:
         raise AssertionError(f"unexpected summary-tsv header: {summary_tsv_lines}")
@@ -930,10 +930,12 @@ def main() -> int:
             f"summary-tsv row should be raw TSV values (not key=value pairs): {quick_smoke_tsv_row}"
         )
     quick_smoke_tsv_cells = quick_smoke_tsv_row.split("\t")
-    if len(quick_smoke_tsv_cells) != 15:
+    if len(quick_smoke_tsv_cells) != 16:
         raise AssertionError(f"unexpected summary-tsv column count: {quick_smoke_tsv_cells}")
     if quick_smoke_tsv_cells[13] != "cheap-first,smoke":
         raise AssertionError(f"unexpected summary-tsv tags cell: {quick_smoke_tsv_cells}")
+    if quick_smoke_tsv_cells[14] != "preview":
+        raise AssertionError(f"unexpected summary-tsv description_mode cell: {quick_smoke_tsv_cells}")
 
     preset_list_summary_tsv_with_schema = subprocess.run(
         [
@@ -1097,6 +1099,10 @@ def main() -> int:
     )
     if full_analysis_soft_cap_row is None:
         raise AssertionError(f"missing full-analysis row in summary-tsv(full+cap): {summary_tsv_full_soft_cap_lines}")
+    if "\tfull\t" not in full_analysis_soft_cap_row:
+        raise AssertionError(
+            f"expected description_mode=full in summary-tsv(full+cap) row, got: {full_analysis_soft_cap_row}"
+        )
     if not full_analysis_soft_cap_row.endswith("..."):
         raise AssertionError(
             f"expected truncated full description with ellipsis in summary-tsv(full+cap), got: {full_analysis_soft_cap_row}"
