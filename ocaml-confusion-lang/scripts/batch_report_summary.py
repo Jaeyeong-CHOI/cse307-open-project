@@ -92,7 +92,7 @@ def _mismatch_severity_score(
     return (severity, len(tags), 1 if case.get("status") != "ok" else 0, str(case.get("source", "")))
 
 
-def build_summary(
+def build_summary_payload(
     report: dict[str, Any],
     source_path: Path,
     top_k_mismatches: int,
@@ -100,7 +100,7 @@ def build_summary(
     taxonomy_weights: Mapping[str, int],
     default_weight: int,
     taxonomy_weight_source: str,
-) -> str:
+) -> dict[str, Any]:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
     mismatch_cases = int(report.get("mismatch_cases", 0))
@@ -119,16 +119,6 @@ def build_summary(
         for tag in case.get("failure_taxonomy") or []:
             taxonomy_counts[str(tag)] += 1
 
-    lines: list[str] = []
-    lines.append(f"# Batch Roundtrip Summary ({source_path.name})")
-    lines.append("")
-    lines.append("## Overview")
-    lines.append(f"- total_cases: {total}")
-    lines.append(f"- ok_cases: {ok_cases} ({pct(ok_cases, total)})")
-    lines.append(f"- mismatch_cases: {mismatch_cases} ({pct(mismatch_cases, total)})")
-    lines.append(f"- include_diff: {str(include_diff).lower()}")
-    lines.append(f"- taxonomy_weight_source: {taxonomy_weight_source}")
-    lines.append("")
     mismatch_list = [c for c in cases if c.get("status") != "ok"]
     mismatch_severity_total = sum(
         _mismatch_severity_score(case, taxonomy_weights, default_weight)[0]
@@ -138,39 +128,19 @@ def build_summary(
         mismatch_severity_total / len(mismatch_list) if mismatch_list else 0.0
     )
 
-    lines.append("## Quality Signals")
-    lines.append(f"- token_equivalent=true: {token_equiv_true}/{total} ({pct(token_equiv_true, total)})")
-    lines.append(f"- ast_equivalent=true: {ast_equiv_true}/{total} ({pct(ast_equiv_true, total)})")
-    lines.append(f"- mismatch_severity_total: {mismatch_severity_total}")
-    lines.append(f"- mismatch_severity_avg: {mismatch_severity_avg:.1f}")
-    lines.append("")
-
-    lines.append("## Failure Taxonomy (frequency)")
-    if taxonomy_counts:
-        for tag, count in taxonomy_counts.most_common():
-            lines.append(f"- {tag}: {count}")
-
-        lines.append("")
-        lines.append("### Failure Taxonomy (severity-weighted)")
-        weighted_rows = sorted(
-            (
-                (
-                    tag,
-                    count,
-                    _tag_weight(tag, taxonomy_weights, default_weight),
-                    count * _tag_weight(tag, taxonomy_weights, default_weight),
-                )
-                for tag, count in taxonomy_counts.items()
-            ),
-            key=lambda item: (item[3], item[1], item[0]),
-            reverse=True,
-        )
-        for tag, count, weight, weighted_score in weighted_rows:
-            lines.append(
-                f"- {tag}: weighted_score={weighted_score} (count={count}, weight={weight})"
-            )
-    else:
-        lines.append("- none")
+    weighted_rows = sorted(
+        (
+            {
+                "tag": tag,
+                "count": count,
+                "weight": _tag_weight(tag, taxonomy_weights, default_weight),
+                "weighted_score": count * _tag_weight(tag, taxonomy_weights, default_weight),
+            }
+            for tag, count in taxonomy_counts.items()
+        ),
+        key=lambda item: (item["weighted_score"], item["count"], item["tag"]),
+        reverse=True,
+    )
 
     if mismatch_sort == "severity":
         mismatch_list = sorted(
@@ -178,23 +148,106 @@ def build_summary(
             key=lambda c: _mismatch_severity_score(c, taxonomy_weights, default_weight),
             reverse=True,
         )
+
+    top_mismatches: list[dict[str, Any]] = []
+    if top_k_mismatches > 0:
+        for case in mismatch_list[:top_k_mismatches]:
+            tags = [str(t) for t in (case.get("failure_taxonomy") or [])]
+            top_mismatches.append(
+                {
+                    "source": case.get("source", "<unknown>"),
+                    "failure_taxonomy": tags,
+                    "severity": _mismatch_severity_score(case, taxonomy_weights, default_weight)[0],
+                }
+            )
+
+    return {
+        "title": f"Batch Roundtrip Summary ({source_path.name})",
+        "overview": {
+            "total_cases": total,
+            "ok_cases": ok_cases,
+            "ok_cases_pct": pct(ok_cases, total),
+            "mismatch_cases": mismatch_cases,
+            "mismatch_cases_pct": pct(mismatch_cases, total),
+            "include_diff": include_diff,
+            "taxonomy_weight_source": taxonomy_weight_source,
+        },
+        "quality_signals": {
+            "token_equivalent_true": token_equiv_true,
+            "token_equivalent_pct": pct(token_equiv_true, total),
+            "ast_equivalent_true": ast_equiv_true,
+            "ast_equivalent_pct": pct(ast_equiv_true, total),
+            "mismatch_severity_total": mismatch_severity_total,
+            "mismatch_severity_avg": round(mismatch_severity_avg, 1),
+        },
+        "failure_taxonomy": {
+            "frequency": dict(taxonomy_counts),
+            "severity_weighted": weighted_rows,
+        },
+        "top_mismatches": top_mismatches,
+        "mismatch_sort": mismatch_sort,
+        "cases": cases,
+    }
+
+
+def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
+    overview = payload["overview"]
+    quality = payload["quality_signals"]
+    lines: list[str] = []
+    lines.append(f"# {payload['title']}")
+    lines.append("")
+    lines.append("## Overview")
+    lines.append(f"- total_cases: {overview['total_cases']}")
+    lines.append(f"- ok_cases: {overview['ok_cases']} ({overview['ok_cases_pct']})")
+    lines.append(
+        f"- mismatch_cases: {overview['mismatch_cases']} ({overview['mismatch_cases_pct']})"
+    )
+    lines.append(f"- include_diff: {str(overview['include_diff']).lower()}")
+    lines.append(f"- taxonomy_weight_source: {overview['taxonomy_weight_source']}")
+    lines.append("")
+
+    lines.append("## Quality Signals")
+    lines.append(
+        f"- token_equivalent=true: {quality['token_equivalent_true']}/{overview['total_cases']} ({quality['token_equivalent_pct']})"
+    )
+    lines.append(
+        f"- ast_equivalent=true: {quality['ast_equivalent_true']}/{overview['total_cases']} ({quality['ast_equivalent_pct']})"
+    )
+    lines.append(f"- mismatch_severity_total: {quality['mismatch_severity_total']}")
+    lines.append(f"- mismatch_severity_avg: {quality['mismatch_severity_avg']:.1f}")
+    lines.append("")
+
+    lines.append("## Failure Taxonomy (frequency)")
+    freq = payload["failure_taxonomy"]["frequency"]
+    if freq:
+        for tag, count in sorted(freq.items(), key=lambda kv: kv[1], reverse=True):
+            lines.append(f"- {tag}: {count}")
+
+        lines.append("")
+        lines.append("### Failure Taxonomy (severity-weighted)")
+        for row in payload["failure_taxonomy"]["severity_weighted"]:
+            lines.append(
+                f"- {row['tag']}: weighted_score={row['weighted_score']} (count={row['count']}, weight={row['weight']})"
+            )
+    else:
+        lines.append("- none")
+
     if top_k_mismatches > 0:
         lines.append("")
         lines.append(
-            f"## Top {min(top_k_mismatches, len(mismatch_list))} Mismatch Cases (sort={mismatch_sort})"
+            f"## Top {min(top_k_mismatches, len(payload['top_mismatches']))} Mismatch Cases (sort={payload['mismatch_sort']})"
         )
-        if mismatch_list:
-            for case in mismatch_list[:top_k_mismatches]:
-                path = case.get("source", "<unknown>")
+        if payload["top_mismatches"]:
+            for case in payload["top_mismatches"]:
                 tags = case.get("failure_taxonomy") or []
                 tags_str = ", ".join(str(t) for t in tags) if tags else "none"
-                lines.append(f"- {path} (failure_taxonomy={tags_str})")
+                lines.append(f"- {case['source']} (failure_taxonomy={tags_str})")
         else:
             lines.append("- none")
 
     lines.append("")
     lines.append("## Cases")
-    for case in cases:
+    for case in payload["cases"]:
         path = case.get("source", "<unknown>")
         status = case.get("status", "<unknown>")
         exact = case.get("exact_match")
@@ -281,6 +334,12 @@ def parse_args() -> argparse.Namespace:
         help="Optional CSV export for case-level rows",
     )
     parser.add_argument(
+        "--json-output",
+        type=Path,
+        default=None,
+        help="Optional machine-readable JSON summary output",
+    )
+    parser.add_argument(
         "--top-k-mismatches",
         type=int,
         default=5,
@@ -350,7 +409,7 @@ def main() -> int:
         taxonomy_weight_source = f"profile:{args.taxonomy_weight_profile} ({taxonomy_weight_path})"
 
     taxonomy_weights, default_weight = load_taxonomy_weights(taxonomy_weight_path)
-    summary = build_summary(
+    payload = build_summary_payload(
         report,
         args.input_json,
         top_k,
@@ -359,14 +418,20 @@ def main() -> int:
         default_weight,
         taxonomy_weight_source,
     )
+    summary = build_summary(payload, top_k)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(summary, encoding="utf-8")
 
+    outputs: list[Path] = [output]
     if args.csv_output is not None:
         write_csv(report, args.csv_output, include_diff_columns=args.include_diff_columns)
-        print(f"{output}\n{args.csv_output}")
-    else:
-        print(output)
+        outputs.append(args.csv_output)
+    if args.json_output is not None:
+        args.json_output.parent.mkdir(parents=True, exist_ok=True)
+        args.json_output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        outputs.append(args.json_output)
+
+    print("\n".join(str(p) for p in outputs))
     return 0
 
 

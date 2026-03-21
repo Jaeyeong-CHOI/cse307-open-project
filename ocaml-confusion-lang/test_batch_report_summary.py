@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import csv
+import json
 import pathlib
 import subprocess
 
@@ -19,9 +20,11 @@ def run_summary(
     mismatch_sort: str,
     taxonomy_weights: pathlib.Path | None = None,
     taxonomy_weight_profile: str | None = None,
-) -> tuple[pathlib.Path, pathlib.Path]:
+    json_output: bool = False,
+) -> tuple[pathlib.Path, pathlib.Path, pathlib.Path | None]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
+    summary_json = OUT / "fixture.summary.json" if json_output else None
     cmd = [
         "python3",
         str(SCRIPT),
@@ -41,8 +44,10 @@ def run_summary(
         cmd.extend(["--taxonomy-weights", str(taxonomy_weights)])
     if taxonomy_weight_profile is not None:
         cmd.extend(["--taxonomy-weight-profile", taxonomy_weight_profile])
+    if summary_json is not None:
+        cmd.extend(["--json-output", str(summary_json)])
     subprocess.run(cmd, cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return summary_md, summary_csv
+    return summary_md, summary_csv, summary_json
 
 
 def assert_contains(content: str, needle: str) -> None:
@@ -51,7 +56,12 @@ def assert_contains(content: str, needle: str) -> None:
 
 
 def main() -> int:
-    summary_md, summary_csv = run_summary(top_k=2, include_diff_columns=True, mismatch_sort="severity")
+    summary_md, summary_csv, summary_json = run_summary(
+        top_k=2,
+        include_diff_columns=True,
+        mismatch_sort="severity",
+        json_output=True,
+    )
 
     content = summary_md.read_text(encoding="utf-8")
     assert_contains(content, "- total_cases: 3")
@@ -61,6 +71,16 @@ def main() -> int:
     assert_contains(content, "- taxonomy_weight_source: default:built-in")
     assert_contains(content, "- mismatch_severity_total: 130")
     assert_contains(content, "- mismatch_severity_avg: 65.0")
+
+    if summary_json is None:
+        raise AssertionError("expected JSON summary output path")
+    payload = json.loads(summary_json.read_text(encoding="utf-8"))
+    if payload["overview"]["total_cases"] != 3:
+        raise AssertionError("expected total_cases=3 in JSON summary")
+    if payload["quality_signals"]["mismatch_severity_total"] != 130:
+        raise AssertionError("expected mismatch_severity_total=130 in JSON summary")
+    if payload["top_mismatches"][0]["source"] != "examples/collision-risk-case.py":
+        raise AssertionError("expected collision-risk case to be first top mismatch in JSON summary")
 
     # taxonomy frequency block should include whitespace/line-count drift tags.
     assert_contains(content, "- line_count_mismatch: 1")
@@ -124,7 +144,7 @@ def main() -> int:
         )
 
     # Custom taxonomy weight config should affect severity-weighted section and ordering.
-    alt_summary_md, _ = run_summary(
+    alt_summary_md, _, _ = run_summary(
         top_k=2,
         include_diff_columns=False,
         mismatch_sort="severity",
@@ -155,7 +175,7 @@ def main() -> int:
         raise AssertionError(f"expected v1-default and {PROFILE_V2} in profile list, got {sorted(profiles)}")
 
     # Named profile execution should match explicit custom-weight behavior.
-    prof_summary_md, _ = run_summary(
+    prof_summary_md, _, _ = run_summary(
         top_k=2,
         include_diff_columns=False,
         mismatch_sort="severity",
