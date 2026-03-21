@@ -119,6 +119,20 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
 
     gates = _expect_type(payload, "gates", dict, errors, path)
     if isinstance(gates, dict):
+        any_tripped = gates.get("any_tripped")
+        if not isinstance(any_tripped, bool):
+            errors.append(f"{path}: gates.any_tripped must be a boolean")
+
+        tripped_list = gates.get("tripped_list")
+        if not isinstance(tripped_list, list):
+            errors.append(f"{path}: gates.tripped_list must be an array")
+        else:
+            for idx, gate_name in enumerate(tripped_list):
+                if gate_name not in {"mismatch", "severity_total", "severity_avg"}:
+                    errors.append(
+                        f"{path}: gates.tripped_list[{idx}] must be one of ['mismatch', 'severity_total', 'severity_avg']"
+                    )
+
         for gate_key in ["mismatch", "severity_total", "severity_avg"]:
             gate_value = gates.get(gate_key)
             if not isinstance(gate_value, dict):

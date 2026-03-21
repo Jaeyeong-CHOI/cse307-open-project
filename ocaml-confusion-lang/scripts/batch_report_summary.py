@@ -325,6 +325,13 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
 
     if gates:
         lines.append("## Gate Signals")
+        lines.append(
+            f"- any_tripped: {gates.get('any_tripped')}"
+        )
+        tripped_list = gates.get("tripped_list")
+        if isinstance(tripped_list, list):
+            rendered = ", ".join(str(item) for item in tripped_list) if tripped_list else "none"
+            lines.append(f"- tripped_list: {rendered}")
         mismatch_gate = gates.get("mismatch") if isinstance(gates.get("mismatch"), dict) else None
         if isinstance(mismatch_gate, dict):
             lines.append(
@@ -622,6 +629,14 @@ def main() -> int:
         severity_avg_gate_enabled and severity_avg >= float(args.fail_on_severity_avg_ge)
     )
 
+    tripped_gate_names: list[str] = []
+    if mismatch_gate_tripped:
+        tripped_gate_names.append("mismatch")
+    if severity_total_gate_tripped:
+        tripped_gate_names.append("severity_total")
+    if severity_avg_gate_tripped:
+        tripped_gate_names.append("severity_avg")
+
     payload["gates"] = {
         "mismatch": {
             "enabled": bool(args.fail_on_mismatch),
@@ -640,6 +655,8 @@ def main() -> int:
             "observed": severity_avg,
             "tripped": severity_avg_gate_tripped,
         },
+        "any_tripped": bool(tripped_gate_names),
+        "tripped_list": tripped_gate_names,
     }
 
     summary = build_summary(payload, top_k)

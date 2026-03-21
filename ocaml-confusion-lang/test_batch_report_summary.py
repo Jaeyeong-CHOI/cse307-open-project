@@ -84,6 +84,8 @@ def main() -> int:
     assert_contains(content, "- manifest_path: examples/manifest-v1.txt")
     assert_contains(content, "- mismatch_severity_total: 130")
     assert_contains(content, "- mismatch_severity_avg: 65.0")
+    assert_contains(content, "- any_tripped: False")
+    assert_contains(content, "- tripped_list: none")
 
     if summary_json is None:
         raise AssertionError("expected JSON summary output path")
@@ -106,6 +108,13 @@ def main() -> int:
         raise AssertionError("expected mismatch_severity_total=130 in JSON summary")
     if payload["top_mismatches"][0]["source"] != "examples/collision-risk-case.py":
         raise AssertionError("expected collision-risk case to be first top mismatch in JSON summary")
+    gates = payload.get("gates")
+    if not isinstance(gates, dict):
+        raise AssertionError("expected gates object in JSON summary")
+    if gates.get("any_tripped") is not False:
+        raise AssertionError("expected any_tripped=False without gate flags")
+    if gates.get("tripped_list") != []:
+        raise AssertionError("expected empty tripped_list without gate flags")
 
     # taxonomy frequency block should include whitespace/line-count drift tags.
     assert_contains(content, "- line_count_mismatch: 1")
@@ -255,6 +264,9 @@ def main() -> int:
         )
     if "HINT: input=" not in fail_proc.stderr:
         raise AssertionError("expected mismatch gate failure to include structured HINT input")
+    fail_gate_md = (OUT / "fixture.fail-on-mismatch.md").read_text(encoding="utf-8")
+    assert_contains(fail_gate_md, "- any_tripped: True")
+    assert_contains(fail_gate_md, "- tripped_list: mismatch")
 
     # --fail-on-mismatch should succeed (0) when mismatch_cases == 0.
     clean_fixture = OUT / "fixture.clean.json"
