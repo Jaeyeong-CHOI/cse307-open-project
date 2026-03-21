@@ -53,22 +53,29 @@ jobs:
             batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt \
             ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json --include-diff
 
-      - name: Summarize batch report to markdown/csv (severity-first)
+      - name: Summarize batch report to markdown/csv/json (severity-first)
         run: |
           python3 scripts/batch_report_summary.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.ci.json \
             -o ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.md \
             --csv-output ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.csv \
+            --json-output ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json \
             --include-diff-columns \
             --mismatch-sort severity
 
       - name: Validate taxonomy weight profile schema
         run: python3 scripts/validate_taxonomy_profiles.py
 
-      - name: Python regression checks (summary + taxonomy schema)
+      - name: Validate summary payload schema
+        run: |
+          python3 scripts/validate_summary_payload.py \
+            ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json
+
+      - name: Python regression checks (summary + taxonomy schema + summary schema)
         run: |
           python3 test_batch_report_summary.py
           python3 test_taxonomy_profile_schema.py
+          python3 test_summary_payload_schema.py
 
       - name: Upload CI smoke artifacts
         uses: actions/upload-artifact@v4
@@ -80,4 +87,5 @@ jobs:
             docs/research/results/roundtrip-batch-v1.include-diff.ci.json
             docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.md
             docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.csv
+            docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json
           if-no-files-found: error
