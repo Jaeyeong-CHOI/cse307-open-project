@@ -147,7 +147,9 @@ jobs:
           overview = payload.get("overview", {})
           gates = payload.get("gates", {})
           mismatches = payload.get("top_mismatches", [])
-          top1_source = mismatches[0].get("source") if mismatches else None
+          top1 = mismatches[0] if mismatches else {}
+          top1_source = top1.get("source")
+          top1_taxonomy = (top1.get("failure_taxonomy") or [None])[0]
 
           print("## Lightweight CI result snapshot")
           print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
@@ -155,6 +157,7 @@ jobs:
           print(f"- any_tripped: {gates.get('any_tripped')}")
           print(f"- tripped_list: {gates.get('tripped_list')}")
           print(f"- top1_mismatch_source: {top1_source}")
+          print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY
@@ -268,7 +271,9 @@ jobs:
           overview = payload.get("overview", {})
           gates = payload.get("gates", {})
           mismatches = payload.get("top_mismatches", [])
-          top1_source = mismatches[0].get("source") if mismatches else None
+          top1 = mismatches[0] if mismatches else {}
+          top1_source = top1.get("source")
+          top1_taxonomy = (top1.get("failure_taxonomy") or [None])[0]
 
           print("## Full CI result snapshot")
           print(f"- cases: {overview.get('total_cases')} total / {overview.get('ok_cases')} ok / {overview.get('mismatch_cases')} mismatch")
@@ -276,6 +281,7 @@ jobs:
           print(f"- any_tripped: {gates.get('any_tripped')}")
           print(f"- tripped_list: {gates.get('tripped_list')}")
           print(f"- top1_mismatch_source: {top1_source}")
+          print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY
