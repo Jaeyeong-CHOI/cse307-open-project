@@ -4,6 +4,7 @@
 - `research/roadmap.md` : 연구 전체 설계/운영 정책
 - `research/log/` : 일자별 진행 로그
 - `research/results/` : 결과 산출물(JSON/표/요약)
+- `research/papers/` : 버전별 논문형 분석 문서
 
 ## 2) Presets
 - `presets/final-demo-aliases.md` : 교수님 시연용 alias 세트 모음
