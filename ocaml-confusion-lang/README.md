@@ -71,6 +71,8 @@ python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json
 python3 scripts/validate_metric_schema.py examples/metric-schema-v1.json --schema-version-min 1 --schema-version-max 2
 # task set schema JSON lint
 python3 scripts/validate_task_set.py examples/task-set-v1.json
+# task set schema version range 허용 (예: v1~v2)
+python3 scripts/validate_task_set.py examples/task-set-v1.json --schema-version-min 1 --schema-version-max 2
 # CI step snapshot JSON schema lint
 python3 scripts/validate_ci_result_snapshot.py ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 # snapshot schema version range 허용 (예: v1~v2)
@@ -127,6 +129,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 `validate_task_set.py` 스키마 규칙:
 - 루트는 JSON object
 - 필수 root key: `schema_version`, `task_set_id`, `tasks`
+- `schema_version`은 `vN` 형식이어야 하며 validator의 `--schema-version-min/max` 범위 내여야 함 (기본: v1 고정)
 - optional root key: `alias_set_id`(non-empty string), `manifest_path`(`.txt` 경로 문자열)
 - `tasks`는 non-empty array
 - `tasks[*]` 필수 key: `task_id`, `source` (`.py`)
@@ -252,3 +255,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 115. ~~metric snapshot `source_summary`에 `run_context`를 전달하고 metric validator가 해당 run_context 규칙을 동일하게 검증하도록 확장해 summary→metric→snapshot 추적 체인의 metadata parity를 강화~~ ✅ (`scripts/generate_metric_snapshot.py`, `scripts/validate_metric_schema.py`, `examples/metric-schema-v1.json`, `test_generate_metric_snapshot.py`, `test_metric_schema.py`)
 116. ~~summary payload validator에 schema version range 옵션(`--schema-version-min/--schema-version-max`)을 추가해 v1 고정 검증과 향후 v2 점진 도입 검증을 모두 지원~~ ✅ (`scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`, `README.md`)
 117. ~~metric schema validator(`validate_metric_schema.py`)에도 schema version range 옵션(`--schema-version-min/--schema-version-max`)을 추가해 summary/snapshot과 동일한 점진 버전 검증 흐름을 지원~~ ✅ (`scripts/validate_metric_schema.py`, `test_metric_schema.py`, `README.md`)
+118. ~~task-set schema validator(`validate_task_set.py`)에도 schema version range 옵션(`--schema-version-min/--schema-version-max`)을 추가해 validator 계열의 버전 정책 인터페이스를 통일~~ ✅ (`scripts/validate_task_set.py`, `test_task_set_schema.py`, `README.md`)

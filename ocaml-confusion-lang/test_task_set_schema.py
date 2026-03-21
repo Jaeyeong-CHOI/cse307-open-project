@@ -11,12 +11,22 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 def main() -> int:
     subprocess.run(
-        ["python3", str(VALIDATOR), str(FIXTURE)],
+        ["python3", str(VALIDATOR), str(FIXTURE), "--schema-version-min", "1", "--schema-version-max", "2"],
         cwd=ROOT,
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
+
+    out_of_range = subprocess.run(
+        ["python3", str(VALIDATOR), str(FIXTURE), "--schema-version-min", "2", "--schema-version-max", "2"],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if out_of_range.returncode == 0:
+        raise AssertionError("expected schema-version range mismatch to fail validation")
 
     invalid = OUT / "task-set.invalid.json"
     invalid.write_text(
