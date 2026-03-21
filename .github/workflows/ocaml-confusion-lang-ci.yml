@@ -183,22 +183,10 @@ jobs:
             echo "- summary_require_explicit_event_name: ${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}"
             echo "- snapshot_require_explicit_event_name: ${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}"
             echo "- metric_require_explicit_event_name: ${METRIC_REQUIRE_EXPLICIT_EVENT_NAME}"
-            summary_policy_mode="permissive"
-            snapshot_policy_mode="permissive"
-            metric_policy_mode="permissive"
-            if [[ "${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
-              summary_policy_mode="strict"
-            fi
-            if [[ "${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
-              snapshot_policy_mode="strict"
-            fi
-            if [[ "${METRIC_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
-              metric_policy_mode="strict"
-            fi
-            echo "- event_name_policy_modes: S=${summary_policy_mode}, P=${snapshot_policy_mode}, M=${metric_policy_mode}"
-            if [[ "${summary_policy_mode}${snapshot_policy_mode}${metric_policy_mode}" == *"strict"* ]]; then
-              echo "- event_name_policy_note: strict mode disables fallback event_name=unknown"
-            fi
+            python3 ocaml-confusion-lang/scripts/format_event_name_policy_modes.py \
+              --summary "${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}" \
+              --snapshot "${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}" \
+              --metric "${METRIC_REQUIRE_EXPLICIT_EVENT_NAME}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   test-lightweight:
