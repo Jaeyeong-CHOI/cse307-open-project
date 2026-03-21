@@ -41,6 +41,8 @@ def _run(
         for arg, key in [
             ("--run-id", "run_id"),
             ("--run-url", "run_url"),
+            ("--run-attempt", "run_attempt"),
+            ("--event-name", "event_name"),
             ("--sha", "sha"),
             ("--ref", "ref"),
         ]:
@@ -121,6 +123,8 @@ def main() -> None:
         run_context={
             "run_id": "123456789",
             "run_url": "https://github.com/org/repo/actions/runs/123456789",
+            "run_attempt": "2",
+            "event_name": "workflow_dispatch",
             "sha": "abc123def456",
             "ref": "refs/heads/main",
         },
@@ -142,7 +146,7 @@ def main() -> None:
     )
     assert_contains(
         content,
-        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; sha=abc123def456; ref=refs/heads/main",
+        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; run_attempt=2; event_name=workflow_dispatch; sha=abc123def456; ref=refs/heads/main",
     )
 
     snapshot_payload = json.loads(snapshot_json.read_text(encoding="utf-8"))
@@ -158,6 +162,8 @@ def main() -> None:
     run_context_meta = snapshot_payload.get("run_context", {})
     if run_context_meta.get("run_id") != "123456789":
         raise AssertionError("json snapshot run_context.run_id mismatch")
+    if run_context_meta.get("event_name") != "workflow_dispatch":
+        raise AssertionError("json snapshot run_context.event_name mismatch")
 
     payload_no_mismatch = {
         "overview": {

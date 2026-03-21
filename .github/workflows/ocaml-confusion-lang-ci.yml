@@ -167,6 +167,8 @@ jobs:
             --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" \
             --run-id "${{ github.run_id }}" \
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --run-attempt "${{ github.run_attempt }}" \
+            --event-name "${{ github.event_name }}" \
             --sha "${{ github.sha }}" \
             --ref "${{ github.ref }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
@@ -280,6 +282,8 @@ jobs:
             --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" \
             --run-id "${{ github.run_id }}" \
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --run-attempt "${{ github.run_attempt }}" \
+            --event-name "${{ github.event_name }}" \
             --sha "${{ github.sha }}" \
             --ref "${{ github.ref }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
