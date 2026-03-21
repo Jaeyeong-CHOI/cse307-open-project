@@ -136,6 +136,12 @@ def parse_args() -> argparse.Namespace:
         help="Optional per-task×model cap for planned runs (0 disables cap)",
     )
     parser.add_argument(
+        "--max-runs-per-task-prompt-condition",
+        type=int,
+        default=0,
+        help="Optional per-task×prompt-condition cap for planned runs (0 disables cap)",
+    )
+    parser.add_argument(
         "--cheap-first",
         action="store_true",
         help="Order model runs using a cheap-first heuristic before expanding matrix",
@@ -171,6 +177,8 @@ def main() -> int:
             raise ValueError("--max-runs-per-task must be >= 0")
         if args.max_runs_per_task_model < 0:
             raise ValueError("--max-runs-per-task-model must be >= 0")
+        if args.max_runs_per_task_prompt_condition < 0:
+            raise ValueError("--max-runs-per-task-prompt-condition must be >= 0")
 
         task_set = load_json(args.task_set_json)
         task_set_id, tasks = validate_task_set(task_set, args.task_set_json)
@@ -206,6 +214,9 @@ def main() -> int:
         runs_by_model_prompt_condition: dict[str, dict[str, int]] = {
             model: {condition: 0 for condition in conditions} for model in models
         }
+        runs_by_task_prompt_condition: dict[str, dict[str, int]] = {
+            task["task_id"]: {condition: 0 for condition in conditions} for task in tasks
+        }
         if args.max_runs_per_prompt_condition:
             # Condition-first expansion keeps per-condition caps from starving later models.
             for condition in conditions:
@@ -232,12 +243,19 @@ def main() -> int:
                                 and runs_by_task_model[task["task_id"]][model] >= args.max_runs_per_task_model
                             ):
                                 continue
+                            if (
+                                args.max_runs_per_task_prompt_condition
+                                and runs_by_task_prompt_condition[task["task_id"]][condition]
+                                >= args.max_runs_per_task_prompt_condition
+                            ):
+                                continue
                             run_index += 1
                             runs_per_model[model] += 1
                             runs_per_prompt_condition[condition] += 1
                             runs_per_task[task["task_id"]] += 1
                             runs_by_task_model[task["task_id"]][model] += 1
                             runs_by_model_prompt_condition[model][condition] += 1
+                            runs_by_task_prompt_condition[task["task_id"]][condition] += 1
                             plan.append(
                                 {
                                     "run_id": f"run-{run_index:04d}",
@@ -271,12 +289,19 @@ def main() -> int:
                                 and runs_by_task_model[task["task_id"]][model] >= args.max_runs_per_task_model
                             ):
                                 continue
+                            if (
+                                args.max_runs_per_task_prompt_condition
+                                and runs_by_task_prompt_condition[task["task_id"]][condition]
+                                >= args.max_runs_per_task_prompt_condition
+                            ):
+                                continue
                             run_index += 1
                             runs_per_model[model] += 1
                             runs_per_prompt_condition[condition] += 1
                             runs_per_task[task["task_id"]] += 1
                             runs_by_task_model[task["task_id"]][model] += 1
                             runs_by_model_prompt_condition[model][condition] += 1
+                            runs_by_task_prompt_condition[task["task_id"]][condition] += 1
                             plan.append(
                                 {
                                     "run_id": f"run-{run_index:04d}",
@@ -337,6 +362,22 @@ def main() -> int:
             }
             for task_id in runs_by_task_model
         }
+        potential_runs_per_task_prompt_condition = len(models) * args.repeats
+        potential_runs_by_task_prompt_condition = {
+            task["task_id"]: {condition: potential_runs_per_task_prompt_condition for condition in conditions}
+            for task in tasks
+        }
+        skipped_runs_by_task_prompt_condition = {
+            task_id: {
+                condition: max(
+                    0,
+                    potential_runs_by_task_prompt_condition[task_id][condition]
+                    - runs_by_task_prompt_condition[task_id][condition],
+                )
+                for condition in conditions
+            }
+            for task_id in runs_by_task_prompt_condition
+        }
 
         payload: dict[str, Any] = {
             "schema_version": "v1",
@@ -354,6 +395,7 @@ def main() -> int:
                 "max_runs_per_prompt_condition": args.max_runs_per_prompt_condition,
                 "max_runs_per_task": args.max_runs_per_task,
                 "max_runs_per_task_model": args.max_runs_per_task_model,
+                "max_runs_per_task_prompt_condition": args.max_runs_per_task_prompt_condition,
             },
             "summary": {
                 "task_count": len(tasks),
@@ -368,6 +410,7 @@ def main() -> int:
                 "planned_runs_by_task": runs_per_task,
                 "planned_runs_by_model_prompt_condition": runs_by_model_prompt_condition,
                 "planned_runs_by_task_model": runs_by_task_model,
+                "planned_runs_by_task_prompt_condition": runs_by_task_prompt_condition,
                 "potential_runs_by_model": {model: potential_runs_per_model for model in models},
                 "potential_runs_by_prompt_condition": {
                     condition: potential_runs_per_condition for condition in conditions
@@ -375,11 +418,13 @@ def main() -> int:
                 "potential_runs_by_task": {task_id: potential_runs_per_task for task_id in runs_per_task},
                 "potential_runs_by_model_prompt_condition": potential_runs_by_model_prompt_condition,
                 "potential_runs_by_task_model": potential_runs_by_task_model,
+                "potential_runs_by_task_prompt_condition": potential_runs_by_task_prompt_condition,
                 "skipped_runs_by_model": skipped_runs_by_model,
                 "skipped_runs_by_prompt_condition": skipped_runs_by_prompt_condition,
                 "skipped_runs_by_task": skipped_runs_by_task,
                 "skipped_runs_by_model_prompt_condition": skipped_runs_by_model_prompt_condition,
                 "skipped_runs_by_task_model": skipped_runs_by_task_model,
+                "skipped_runs_by_task_prompt_condition": skipped_runs_by_task_prompt_condition,
             },
             "plan": plan,
         }
