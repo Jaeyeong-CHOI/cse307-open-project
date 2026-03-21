@@ -9,6 +9,9 @@ from pathlib import Path
 from typing import Any
 
 
+TOP_K_AUTO = "auto"
+
+
 def _mismatch_fields(item: Any) -> dict[str, Any]:
     top = item if isinstance(item, dict) else {}
     taxonomy = top.get("failure_taxonomy")
@@ -30,6 +33,23 @@ def _top1_fields(payload: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(mismatches, list) or not mismatches:
         return _mismatch_fields({})
     return _mismatch_fields(mismatches[0])
+
+
+def _resolve_top_k(payload: dict[str, Any], requested: str) -> int:
+    mismatches = payload.get("top_mismatches")
+    mismatch_count = len(mismatches) if isinstance(mismatches, list) else 0
+
+    if requested == TOP_K_AUTO:
+        if mismatch_count <= 1:
+            return 1
+        if mismatch_count <= 3:
+            return 2
+        return 3
+
+    top_k = int(requested)
+    if top_k < 1:
+        raise ValueError("--top-k-mismatches must be >= 1")
+    return top_k
 
 
 def _topk_compact(payload: dict[str, Any], *, top_k: int) -> str:
@@ -69,11 +89,12 @@ def build_snapshot_markdown(
     label: str,
     summary_path: Path,
     metric_path: Path,
-    top_k_mismatches: int = 1,
+    top_k_mismatches: str = "1",
 ) -> str:
     overview = payload.get("overview", {}) if isinstance(payload.get("overview"), dict) else {}
     gates = payload.get("gates", {}) if isinstance(payload.get("gates"), dict) else {}
     top1 = _top1_fields(payload)
+    resolved_top_k = _resolve_top_k(payload, top_k_mismatches)
 
     lines = [
         f"## {label}",
@@ -98,7 +119,7 @@ def build_snapshot_markdown(
             f"first_diff_line={top1['first_diff_line']}; "
             f"first_token_diff_index={top1['first_token_diff_index']}"
         ),
-        f"- top{top_k_mismatches}_mismatches_compact: {_topk_compact(payload, top_k=top_k_mismatches)}",
+        f"- top{resolved_top_k}_mismatches_compact: {_topk_compact(payload, top_k=resolved_top_k)}",
         f"- summary_json: `{summary_path}`",
         f"- metric_json: `{metric_path}`",
     ]
@@ -118,14 +139,18 @@ def main() -> None:
     )
     parser.add_argument(
         "--top-k-mismatches",
-        type=int,
-        default=1,
-        help="number of mismatch hints to compact into one line (default: 1)",
+        default="1",
+        help="number of mismatch hints to compact into one line (1-3) or 'auto' (default: 1)",
     )
     args = parser.parse_args()
 
-    if args.top_k_mismatches < 1:
-        raise SystemExit("--top-k-mismatches must be >= 1")
+    if args.top_k_mismatches != TOP_K_AUTO:
+        try:
+            parsed_top_k = int(args.top_k_mismatches)
+        except ValueError as exc:
+            raise SystemExit("--top-k-mismatches must be an integer >= 1 or 'auto'") from exc
+        if parsed_top_k < 1:
+            raise SystemExit("--top-k-mismatches must be >= 1")
 
     payload = json.loads(args.summary_json.read_text(encoding="utf-8"))
     print(

@@ -191,3 +191,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 78. ~~`emit_ci_result_snapshot.py`에 `--top-k-mismatches` 옵션을 추가해 Step Summary에서 top-1 외 다중 mismatch 힌트를 compact 1-line으로 노출~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`)
 79. ~~`workflow_dispatch` 입력에 `snapshot_top_k_mismatches`(1~3)를 추가하고 lightweight/full Step Summary 생성 단계에 전달해 운영자가 mismatch 힌트 밀도를 실행 단위로 조절 가능하게 개선~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`)
 80. ~~`emit_ci_result_snapshot.py` top-k compact 출력에 truncation 힌트(`... (+N more)`)를 추가해 `snapshot_top_k_mismatches`로 일부만 노출할 때도 남은 mismatch 개수를 즉시 파악 가능하게 개선~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`)
+81. ~~`snapshot_top_k_mismatches=auto` 모드를 추가해 mismatch 수에 따라 Step Summary 힌트 밀도를 자동 조정(0~1→top1, 2~3→top2, 4+→top3)~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`, `scripts/emit_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`)

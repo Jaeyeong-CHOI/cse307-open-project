@@ -12,7 +12,7 @@ OUT = ROOT / "_build"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def _run(payload: dict, label: str, top_k_mismatches: int = 1) -> str:
+def _run(payload: dict, label: str, top_k_mismatches: int | str = 1) -> str:
     summary = OUT / "tmp.emit-ci-summary.json"
     metric = OUT / "tmp.emit-ci-metric.json"
     summary.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
@@ -108,6 +108,17 @@ def main() -> None:
         "- top1_mismatch: severity=n/a; taxonomy=n/a; source=n/a; first_diff_line=n/a; first_token_diff_index=n/a",
     )
     assert_contains(no_mm, "- top3_mismatches_compact: n/a")
+
+    auto_mm = _run(payload_with_mismatch, "Auto top-k snapshot", top_k_mismatches="auto")
+    assert_contains(auto_mm, "## Auto top-k snapshot")
+    assert_contains(
+        auto_mm,
+        "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+1 more)",
+    )
+
+    auto_no_mm = _run(payload_no_mismatch, "Auto no mismatch snapshot", top_k_mismatches="auto")
+    assert_contains(auto_no_mm, "## Auto no mismatch snapshot")
+    assert_contains(auto_no_mm, "- top1_mismatches_compact: n/a")
 
 
 if __name__ == "__main__":

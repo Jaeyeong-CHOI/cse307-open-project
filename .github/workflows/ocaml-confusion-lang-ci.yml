@@ -21,7 +21,7 @@ on:
           - lightweight
           - full
       snapshot_top_k_mismatches:
-        description: "Top-K mismatch hints in step summary (default: 1)"
+        description: "Top-K mismatch hints in step summary (1-3 or auto, default: 1)"
         required: false
         default: "1"
         type: choice
@@ -29,6 +29,7 @@ on:
           - "1"
           - "2"
           - "3"
+          - auto
 
 concurrency:
   group: ocaml-confusion-lang-ci-${{ github.workflow }}-${{ github.ref }}
@@ -81,7 +82,7 @@ jobs:
           fi
 
           snapshot_top_k="${MANUAL_SNAPSHOT_TOP_K}"
-          if ! [[ "${snapshot_top_k}" =~ ^[1-3]$ ]]; then
+          if ! [[ "${snapshot_top_k}" =~ ^([1-3]|auto)$ ]]; then
             echo "Invalid snapshot_top_k_mismatches='${snapshot_top_k}', fallback to 1"
             snapshot_top_k=1
           fi
