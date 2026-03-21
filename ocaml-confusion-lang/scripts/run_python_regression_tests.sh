@@ -12,5 +12,6 @@ python3 test_taxonomy_profile_schema.py
 python3 test_summary_payload_schema.py
 python3 test_metric_schema.py
 python3 test_generate_metric_snapshot.py
+python3 test_emit_ci_result_snapshot.py
 python3 test_task_set_schema.py
 python3 test_validator_error_output.py

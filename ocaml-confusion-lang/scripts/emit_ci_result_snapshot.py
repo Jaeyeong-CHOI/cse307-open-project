@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+"""Emit compact markdown snapshot lines for GitHub Actions step summary."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+
+def _top1_fields(payload: dict[str, Any]) -> dict[str, Any]:
+    mismatches = payload.get("top_mismatches")
+    if not isinstance(mismatches, list) or not mismatches:
+        return {
+            "severity": "n/a",
+            "taxonomy": "n/a",
+            "source": "n/a",
+            "first_diff_line": "n/a",
+            "first_token_diff_index": "n/a",
+        }
+
+    top1 = mismatches[0] if isinstance(mismatches[0], dict) else {}
+    taxonomy = top1.get("failure_taxonomy")
+    taxonomy_value = "n/a"
+    if isinstance(taxonomy, list) and taxonomy:
+        taxonomy_value = taxonomy[0]
+
+    return {
+        "severity": top1.get("severity", "n/a"),
+        "taxonomy": taxonomy_value,
+        "source": top1.get("source", "n/a"),
+        "first_diff_line": top1.get("first_diff_line", "n/a"),
+        "first_token_diff_index": top1.get("first_token_diff_index", "n/a"),
+    }
+
+
+def _format_tripped_list(value: Any) -> str:
+    if isinstance(value, list):
+        return ", ".join(str(item) for item in value) if value else "[]"
+    return str(value)
+
+
+def build_snapshot_markdown(
+    payload: dict[str, Any],
+    *,
+    label: str,
+    summary_path: Path,
+    metric_path: Path,
+) -> str:
+    overview = payload.get("overview", {}) if isinstance(payload.get("overview"), dict) else {}
+    gates = payload.get("gates", {}) if isinstance(payload.get("gates"), dict) else {}
+    top1 = _top1_fields(payload)
+
+    lines = [
+        f"## {label}",
+        (
+            "- cases: "
+            f"{overview.get('total_cases')} total / "
+            f"{overview.get('ok_cases')} ok / "
+            f"{overview.get('mismatch_cases')} mismatch"
+        ),
+        (
+            "- severity_total: "
+            f"{overview.get('mismatch_severity_total')} "
+            f"(avg={overview.get('mismatch_severity_avg')})"
+        ),
+        f"- any_tripped: {gates.get('any_tripped')}",
+        f"- tripped_list: {_format_tripped_list(gates.get('tripped_list'))}",
+        (
+            "- top1_mismatch: "
+            f"severity={top1['severity']}; "
+            f"taxonomy={top1['taxonomy']}; "
+            f"source={top1['source']}; "
+            f"first_diff_line={top1['first_diff_line']}; "
+            f"first_token_diff_index={top1['first_token_diff_index']}"
+        ),
+        f"- summary_json: `{summary_path}`",
+        f"- metric_json: `{metric_path}`",
+    ]
+    return "\n".join(lines)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Emit compact CI snapshot markdown from summary JSON payload"
+    )
+    parser.add_argument("summary_json", type=Path, help="summary JSON payload path")
+    parser.add_argument("--metric-json", required=True, type=Path, help="metric JSON path")
+    parser.add_argument(
+        "--label",
+        default="CI result snapshot",
+        help="section header label (default: CI result snapshot)",
+    )
+    args = parser.parse_args()
+
+    payload = json.loads(args.summary_json.read_text(encoding="utf-8"))
+    print(
+        build_snapshot_markdown(
+            payload,
+            label=args.label,
+            summary_path=args.summary_json,
+            metric_path=args.metric_json,
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

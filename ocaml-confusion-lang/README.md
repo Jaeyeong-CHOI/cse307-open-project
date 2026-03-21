@@ -187,3 +187,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 74. ~~Step Summary에 `top1_mismatch_first_diff_line`/`top1_mismatch_first_token_diff_index`를 추가해 실패 지점(라인/토큰 인덱스)을 artifact 다운로드 없이 즉시 확인 가능하게 개선~~ ✅ (`scripts/batch_report_summary.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `test_batch_report_summary.py`)
 75. ~~Step Summary의 top-1 mismatch 힌트를 단일 compact key-value 라인으로 통합해 모바일/PR 뷰에서 세로 길이를 줄이고 triage 가독성을 개선~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`)
 76. ~~Step Summary compact `top1_mismatch` key 순서를 `severity -> taxonomy -> source -> diff`로 재정렬해 triage 우선순위(리스크 먼저) 파악 속도 개선~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`)
+77. ~~Step Summary 스냅샷 생성 로직을 공용 스크립트(`scripts/emit_ci_result_snapshot.py`)로 추출해 lightweight/full CI 간 중복을 제거하고, no-mismatch 케이스 출력(`n/a`)을 일관화~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `.github/workflows/ocaml-confusion-lang-ci.yml`, `test_emit_ci_result_snapshot.py`)
