@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from error_utils import emit_error
+from run_context_schema import ALLOWED_EVENT_NAMES
 
 
 TOP_K_AUTO = "auto"
@@ -335,6 +336,14 @@ def main() -> None:
         }.items()
         if isinstance(value, str) and value.strip()
     }
+
+    event_name = run_context.get("event_name")
+    if isinstance(event_name, str) and event_name not in ALLOWED_EVENT_NAMES:
+        emit_error(
+            f"--event-name must be one of {sorted(ALLOWED_EVENT_NAMES)}",
+            hints=[f"event_name={event_name}"],
+        )
+        raise SystemExit(1)
     snapshot = build_snapshot_payload(
         payload,
         label=args.label,

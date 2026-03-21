@@ -11,19 +11,10 @@ from pathlib import Path
 from typing import Any
 
 from error_utils import emit_error
+from run_context_schema import ALLOWED_EVENT_NAMES
 
 
 EXPECTED_GATES = {"mismatch", "severity_total", "severity_avg"}
-ALLOWED_EVENT_NAMES = {
-    "push",
-    "pull_request",
-    "pull_request_target",
-    "merge_group",
-    "workflow_dispatch",
-    "schedule",
-    "workflow_run",
-    "repository_dispatch",
-}
 SCHEMA_VERSION_PATTERN = re.compile(r"^ci_result_snapshot\.v(\d+)$")
 SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
 RUN_ID_PATTERN = re.compile(r"^\d+$")

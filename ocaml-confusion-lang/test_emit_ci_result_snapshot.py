@@ -317,6 +317,27 @@ def main() -> None:
     assert_contains(invalid_shape.stderr, "CI snapshot emit input validation failed")
     assert_contains(invalid_shape.stderr, "overview.mismatch_cases must be an integer")
 
+    invalid_event = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(invalid_summary),
+            "--metric-json",
+            str(invalid_metric),
+            "--label",
+            "Invalid event snapshot",
+            "--event-name",
+            "manual",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+    if invalid_event.returncode == 0:
+        raise AssertionError("expected non-zero exit for invalid --event-name")
+    assert_contains(invalid_event.stderr, "--event-name must be one of")
+
 
 if __name__ == "__main__":
     main()
