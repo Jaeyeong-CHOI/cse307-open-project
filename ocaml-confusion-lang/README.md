@@ -107,6 +107,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match any
 # preset 이름 substring 필터(대소문자 무시)로 후보 빠르게 좁히기
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains ci
+# preset 탐색 결과를 상위 N개로 제한(정렬 기준: preset 이름 오름차순)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
@@ -359,3 +361,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 167. ~~planner summary-tsv 설명 컬럼 모드(`--summary-tsv-description preview|full`)를 추가해 사람 친화 프리뷰와 parser용 원문 전달을 런타임에서 분리~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 168. ~~planner summary-tsv에 optional schema 컬럼(`--summary-tsv-with-schema-column`)을 추가해 주석 헤더가 제거된 row-only 소비 경로에서도 포맷 버전을 fail-fast로 식별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 169. ~~planner preset discovery에 이름 substring 필터(`--list-presets-name-contains`)를 추가해 태그를 모르는 경우에도 preset 후보를 빠르게 좁히고, tag filter와 조합해 탐색 노이즈를 줄이기~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+170. ~~planner preset discovery에 결과 상한(`--list-presets-limit`)을 추가해 preset 탐색/자동화 출력 크기를 제어하고, JSON 모드에는 `filtered_count`/`emitted_count`/`truncated` 메타데이터를 노출해 절단 여부를 명시~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

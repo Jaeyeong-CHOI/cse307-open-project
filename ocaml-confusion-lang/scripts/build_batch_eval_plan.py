@@ -404,6 +404,12 @@ def parse_args() -> argparse.Namespace:
         help="Optional case-insensitive substring filter for preset names in --list-presets",
     )
     parser.add_argument(
+        "--list-presets-limit",
+        type=int,
+        default=None,
+        help="Optional max number of presets to emit after filtering (sorted by name)",
+    )
+    parser.add_argument(
         "--summary-tsv-with-schema-header",
         action="store_true",
         help=(
@@ -557,6 +563,8 @@ def main() -> int:
             name_filter = args.list_presets_name_contains.strip() if args.list_presets_name_contains else None
             if args.list_presets_name_contains is not None and not name_filter:
                 raise ValueError("--list-presets-name-contains must include at least one non-empty character")
+            if args.list_presets_limit is not None and args.list_presets_limit < 1:
+                raise ValueError("--list-presets-limit must be >= 1")
             filtered_presets = {
                 name: preset
                 for name, preset in presets.items()
@@ -568,10 +576,27 @@ def main() -> int:
                     match_mode=args.list_presets_tag_match,
                 )
             }
-            if args.list_presets_format == "json":
-                print(json.dumps({"schema_version": "v1", "presets": filtered_presets}, ensure_ascii=False, indent=2))
-                return 0
             preset_names = sorted(filtered_presets.keys())
+            truncated = False
+            if args.list_presets_limit is not None and len(preset_names) > args.list_presets_limit:
+                preset_names = preset_names[: args.list_presets_limit]
+                truncated = True
+            if args.list_presets_format == "json":
+                limited_presets = {name: filtered_presets[name] for name in preset_names}
+                print(
+                    json.dumps(
+                        {
+                            "schema_version": "v1",
+                            "presets": limited_presets,
+                            "filtered_count": len(filtered_presets),
+                            "emitted_count": len(limited_presets),
+                            "truncated": truncated,
+                        },
+                        ensure_ascii=False,
+                        indent=2,
+                    )
+                )
+                return 0
             if args.list_presets_format == "resolved-json":
                 resolved_presets: dict[str, dict[str, Any]] = {}
                 for name in preset_names:

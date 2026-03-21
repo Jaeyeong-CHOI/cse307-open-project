@@ -679,6 +679,23 @@ def main() -> int:
     if preset_names != ["balanced-ci", "full-analysis", "quick-smoke"]:
         raise AssertionError(f"unexpected preset list output: {preset_names}")
 
+    preset_list_limited = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_limited = [line.strip() for line in preset_list_limited.stdout.splitlines() if line.strip()]
+    if preset_names_limited != ["balanced-ci", "full-analysis"]:
+        raise AssertionError(f"unexpected limited preset list output: {preset_names_limited}")
+
     preset_list_tag_filtered = subprocess.run(
         [
             "python3",
@@ -719,6 +736,12 @@ def main() -> int:
     listed_presets = preset_list_payload.get("presets")
     if not isinstance(listed_presets, dict) or "quick-smoke" not in listed_presets:
         raise AssertionError(f"unexpected preset list json payload: {preset_list_payload}")
+    if preset_list_payload.get("filtered_count") != 3:
+        raise AssertionError(f"unexpected filtered_count in preset json payload: {preset_list_payload}")
+    if preset_list_payload.get("emitted_count") != 3:
+        raise AssertionError(f"unexpected emitted_count in preset json payload: {preset_list_payload}")
+    if preset_list_payload.get("truncated") is not False:
+        raise AssertionError(f"unexpected truncated flag in preset json payload: {preset_list_payload}")
 
     preset_list_json_tag_filtered = subprocess.run(
         [
@@ -740,6 +763,46 @@ def main() -> int:
         raise AssertionError(
             "unexpected tag-filtered preset json payload: "
             f"{preset_list_json_tag_filtered_payload}"
+        )
+
+    preset_list_json_limited = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+            "--list-presets-limit",
+            "2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_json_limited_payload = json.loads(preset_list_json_limited.stdout)
+    if sorted(preset_list_json_limited_payload.get("presets", {}).keys()) != [
+        "balanced-ci",
+        "full-analysis",
+    ]:
+        raise AssertionError(
+            "unexpected limited preset json payload: "
+            f"{preset_list_json_limited_payload}"
+        )
+    if preset_list_json_limited_payload.get("filtered_count") != 3:
+        raise AssertionError(
+            "unexpected filtered_count for limited preset json payload: "
+            f"{preset_list_json_limited_payload}"
+        )
+    if preset_list_json_limited_payload.get("emitted_count") != 2:
+        raise AssertionError(
+            "unexpected emitted_count for limited preset json payload: "
+            f"{preset_list_json_limited_payload}"
+        )
+    if preset_list_json_limited_payload.get("truncated") is not True:
+        raise AssertionError(
+            "unexpected truncated flag for limited preset json payload: "
+            f"{preset_list_json_limited_payload}"
         )
 
     preset_list_json_tag_filtered_any = subprocess.run(
@@ -1182,6 +1245,27 @@ def main() -> int:
         raise AssertionError(
             "expected empty tag filter validation error, got: "
             f"{invalid_empty_tag_filter_run.stderr}"
+        )
+
+    invalid_preset_limit_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "0",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_preset_limit_run.returncode == 0:
+        raise AssertionError("expected invalid --list-presets-limit to fail-fast")
+    if "--list-presets-limit must be >= 1" not in (invalid_preset_limit_run.stderr or ""):
+        raise AssertionError(
+            "expected list-presets-limit validation error, got: "
+            f"{invalid_preset_limit_run.stderr}"
         )
 
     name_filtered_run = subprocess.run(
