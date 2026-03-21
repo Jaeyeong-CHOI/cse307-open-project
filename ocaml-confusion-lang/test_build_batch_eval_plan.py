@@ -2,6 +2,7 @@
 import json
 import pathlib
 import re
+import socket
 import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -1090,6 +1091,30 @@ def main() -> int:
             f"{names_with_meta_pid_lines}"
         )
 
+    preset_list_names_with_meta_hostname = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-hostname",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_hostname_lines = [
+        line.strip() for line in preset_list_names_with_meta_hostname.stdout.splitlines() if line.strip()
+    ]
+    if f"\thostname={socket.gethostname()}" not in names_with_meta_hostname_lines[-1]:
+        raise AssertionError(
+            "missing hostname in list-presets meta footer: "
+            f"{names_with_meta_hostname_lines}"
+        )
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -1703,6 +1728,33 @@ def main() -> int:
         raise AssertionError(
             "unexpected pid format in show-preset meta footer: "
             f"{show_preset_with_meta_pid_lines}"
+        )
+
+    show_preset_summary_with_meta_hostname = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-hostname",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_hostname_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_hostname.stdout.splitlines()
+        if line.strip()
+    ]
+    if f"\thostname={socket.gethostname()}" not in show_preset_with_meta_hostname_lines[-1]:
+        raise AssertionError(
+            "missing hostname in show-preset meta footer: "
+            f"{show_preset_with_meta_hostname_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(

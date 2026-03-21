@@ -126,6 +126,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-python-version
 # list-presets meta footer에 실행 프로세스 pid도 함께 기록
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-pid
+# list-presets meta footer에 실행 호스트 이름(hostname)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-hostname
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
@@ -176,6 +178,8 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-python-version
 # show-preset meta footer에 실행 프로세스 pid도 함께 기록
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-pid
+# show-preset meta footer에 실행 호스트 이름(hostname)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-hostname
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 # optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
@@ -429,3 +433,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 188. ~~planner list/show meta footer에 optional Python 런타임 버전(`python_version`) 주입 옵션(`--list-presets-meta-include-python-version`, `--show-preset-meta-include-python-version`)을 추가해 parser/운영 로그에서 메타 생성 환경을 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 189. ~~planner list/show JSON meta line에 wrapper 버전 식별 필드(`schema_version`)를 추가해, 기존 `schema`(도메인 payload id)와 독립적으로 JSON envelope 버전 진화를 관리할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 190. ~~planner list/show text/json meta footer에 optional 실행 프로세스 식별자(`pid`) 주입 옵션(`--list-presets-meta-include-pid`, `--show-preset-meta-include-pid`)을 추가해 로그 상관관계/디버깅(동시 실행 구분)을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+191. ~~planner list/show text/json meta footer에 optional 실행 호스트 이름(`hostname`) 주입 옵션(`--list-presets-meta-include-hostname`, `--show-preset-meta-include-hostname`)을 추가해 멀티 호스트 환경에서 로그 출처 식별/상관관계를 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
