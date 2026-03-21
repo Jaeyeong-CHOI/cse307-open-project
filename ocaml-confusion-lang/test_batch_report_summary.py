@@ -10,7 +10,7 @@ OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def run_summary(*, top_k: int) -> tuple[pathlib.Path, pathlib.Path]:
+def run_summary(*, top_k: int, include_diff_columns: bool) -> tuple[pathlib.Path, pathlib.Path]:
     summary_md = OUT / "fixture.summary.md"
     summary_csv = OUT / "fixture.csv"
     cmd = [
@@ -24,6 +24,8 @@ def run_summary(*, top_k: int) -> tuple[pathlib.Path, pathlib.Path]:
         "--top-k-mismatches",
         str(top_k),
     ]
+    if include_diff_columns:
+        cmd.append("--include-diff-columns")
     subprocess.run(cmd, cwd=ROOT, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return summary_md, summary_csv
 
@@ -34,7 +36,7 @@ def assert_contains(content: str, needle: str) -> None:
 
 
 def main() -> int:
-    summary_md, summary_csv = run_summary(top_k=2)
+    summary_md, summary_csv = run_summary(top_k=2, include_diff_columns=True)
 
     content = summary_md.read_text(encoding="utf-8")
     assert_contains(content, "- total_cases: 3")
@@ -65,6 +67,28 @@ def main() -> int:
         raise AssertionError(
             "unexpected failure_taxonomy CSV encoding for blankline drift row: "
             f"{drift_row['failure_taxonomy']}"
+        )
+
+    # Optional diff columns should be present and populated for mismatch rows.
+    expected_extra_cols = {
+        "first_diff_line",
+        "first_diff_src",
+        "first_diff_restored",
+        "first_token_diff_index",
+        "first_token_diff_src",
+        "first_token_diff_restored",
+    }
+    missing_cols = expected_extra_cols.difference(rows[0].keys())
+    if missing_cols:
+        raise AssertionError(f"missing CSV diff columns: {sorted(missing_cols)}")
+
+    collision_row = row_by_source.get("examples/collision-risk-case.py")
+    if collision_row is None:
+        raise AssertionError("missing collision-risk row in CSV output")
+    if collision_row["first_token_diff_index"] != "8":
+        raise AssertionError(
+            "expected first_token_diff_index=8 for collision-risk row, got "
+            f"{collision_row['first_token_diff_index']}"
         )
 
     print("OK: batch_report_summary fixture regression passed")

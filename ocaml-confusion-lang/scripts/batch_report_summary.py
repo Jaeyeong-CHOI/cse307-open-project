@@ -93,34 +93,56 @@ def build_summary(report: dict[str, Any], source_path: Path, top_k_mismatches: i
     return "\n".join(lines)
 
 
-def write_csv(report: dict[str, Any], output_csv: Path) -> None:
+def write_csv(report: dict[str, Any], output_csv: Path, include_diff_columns: bool) -> None:
     cases = report.get("cases", []) or []
+    fieldnames = [
+        "source",
+        "status",
+        "exact_match",
+        "token_equivalent",
+        "ast_equivalent",
+        "failure_taxonomy",
+    ]
+    if include_diff_columns:
+        fieldnames.extend(
+            [
+                "first_diff_line",
+                "first_diff_src",
+                "first_diff_restored",
+                "first_token_diff_index",
+                "first_token_diff_src",
+                "first_token_diff_restored",
+            ]
+        )
+
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     with output_csv.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(
-            f,
-            fieldnames=[
-                "source",
-                "status",
-                "exact_match",
-                "token_equivalent",
-                "ast_equivalent",
-                "failure_taxonomy",
-            ],
-        )
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for case in cases:
             tags = case.get("failure_taxonomy") or []
-            writer.writerow(
-                {
-                    "source": case.get("source", ""),
-                    "status": case.get("status", ""),
-                    "exact_match": case.get("exact_match", ""),
-                    "token_equivalent": case.get("token_equivalent", ""),
-                    "ast_equivalent": case.get("ast_equivalent", ""),
-                    "failure_taxonomy": "|".join(str(t) for t in tags),
-                }
-            )
+            row = {
+                "source": case.get("source", ""),
+                "status": case.get("status", ""),
+                "exact_match": case.get("exact_match", ""),
+                "token_equivalent": case.get("token_equivalent", ""),
+                "ast_equivalent": case.get("ast_equivalent", ""),
+                "failure_taxonomy": "|".join(str(t) for t in tags),
+            }
+            if include_diff_columns:
+                first_diff = case.get("first_diff") or {}
+                first_token_diff = case.get("first_token_diff") or {}
+                row.update(
+                    {
+                        "first_diff_line": first_diff.get("line", ""),
+                        "first_diff_src": first_diff.get("src", ""),
+                        "first_diff_restored": first_diff.get("restored", ""),
+                        "first_token_diff_index": first_token_diff.get("index", ""),
+                        "first_token_diff_src": first_token_diff.get("src", ""),
+                        "first_token_diff_restored": first_token_diff.get("restored", ""),
+                    }
+                )
+            writer.writerow(row)
 
 
 def parse_args() -> argparse.Namespace:
@@ -147,6 +169,11 @@ def parse_args() -> argparse.Namespace:
         default=5,
         help="How many mismatch cases to show in the summary highlight section (default: 5)",
     )
+    parser.add_argument(
+        "--include-diff-columns",
+        action="store_true",
+        help="Include first_diff/first_token_diff detail columns in CSV export",
+    )
     return parser.parse_args()
 
 
@@ -160,7 +187,7 @@ def main() -> int:
     output.write_text(summary, encoding="utf-8")
 
     if args.csv_output is not None:
-        write_csv(report, args.csv_output)
+        write_csv(report, args.csv_output, include_diff_columns=args.include_diff_columns)
         print(f"{output}\n{args.csv_output}")
     else:
         print(output)
