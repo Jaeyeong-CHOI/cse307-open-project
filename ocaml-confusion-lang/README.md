@@ -13,7 +13,7 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 - `roundtrip-report <alias_tsv> <source_file> <out_json>`: roundtrip 결과 JSON 리포트 저장 (`first_diff`, `failure_taxonomy`, `ast_equivalent` 포함)
 - `batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json> [--include-diff]`: 여러 소스 파일에 대한 일괄 roundtrip JSON 요약 (`total_cases`, `ok_cases`, `mismatch_cases`, `cases[]`) 생성
   - `--include-diff` 사용 시 각 케이스에 `first_diff`, `first_token_diff` 포함
-- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환
+- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md] [--csv-output output.csv] [--top-k-mismatches 5]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환하고(선택) case-level CSV로 내보냄
 
 ## Alias TSV 형식
 `<python_keyword>\t<alias_phrase>`
@@ -38,7 +38,7 @@ dune exec confusionlang -- batch-roundtrip-report examples/case-c2.tsv examples/
 # mismatch 디버깅용 상세 diff 포함
 dune exec confusionlang -- batch-roundtrip-report examples/case-c2.tsv examples/manifest-v1.txt ../docs/research/results/roundtrip-batch-v1.diff.json --include-diff
 # batch 결과 Markdown 요약 생성
-python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.md
+python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch-v1.diff.json -o ../docs/research/results/roundtrip-batch-v1.diff.summary.md --csv-output ../docs/research/results/roundtrip-batch-v1.diff.csv --top-k-mismatches 10
 ```
 
 ## 다음 구현
@@ -60,3 +60,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 16. ~~batch 결과 post-processing 스크립트(요약 표 생성) 초안 추가~~ ✅ (`scripts/batch_report_summary.py`)
 17. README 상단에 CI 배지/최근 실행 링크 노출
 18. whitespace/line-count drift 유도 fixture 추가로 taxonomy/배치 회귀 커버리지 확장
+19. ~~summary 스크립트에 CSV export + top-k mismatch view 옵션 추가~~ ✅ (`--csv-output`, `--top-k-mismatches`)

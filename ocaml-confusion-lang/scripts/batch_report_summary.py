@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Generate a concise markdown summary from batch-roundtrip-report JSON."""
+"""Generate human-friendly summaries from batch-roundtrip-report JSON."""
 
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from collections import Counter
 from pathlib import Path
@@ -21,7 +22,7 @@ def load_json(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
-def build_summary(report: dict[str, Any], source_path: Path) -> str:
+def build_summary(report: dict[str, Any], source_path: Path, top_k_mismatches: int) -> str:
     total = int(report.get("total_cases", 0))
     ok_cases = int(report.get("ok_cases", 0))
     mismatch_cases = int(report.get("mismatch_cases", 0))
@@ -61,6 +62,19 @@ def build_summary(report: dict[str, Any], source_path: Path) -> str:
     else:
         lines.append("- none")
 
+    mismatch_list = [c for c in cases if c.get("status") != "ok"]
+    if top_k_mismatches > 0:
+        lines.append("")
+        lines.append(f"## Top {min(top_k_mismatches, len(mismatch_list))} Mismatch Cases")
+        if mismatch_list:
+            for case in mismatch_list[:top_k_mismatches]:
+                path = case.get("source", "<unknown>")
+                tags = case.get("failure_taxonomy") or []
+                tags_str = ", ".join(str(t) for t in tags) if tags else "none"
+                lines.append(f"- {path} (failure_taxonomy={tags_str})")
+        else:
+            lines.append("- none")
+
     lines.append("")
     lines.append("## Cases")
     for case in cases:
@@ -79,6 +93,36 @@ def build_summary(report: dict[str, Any], source_path: Path) -> str:
     return "\n".join(lines)
 
 
+def write_csv(report: dict[str, Any], output_csv: Path) -> None:
+    cases = report.get("cases", []) or []
+    output_csv.parent.mkdir(parents=True, exist_ok=True)
+    with output_csv.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "source",
+                "status",
+                "exact_match",
+                "token_equivalent",
+                "ast_equivalent",
+                "failure_taxonomy",
+            ],
+        )
+        writer.writeheader()
+        for case in cases:
+            tags = case.get("failure_taxonomy") or []
+            writer.writerow(
+                {
+                    "source": case.get("source", ""),
+                    "status": case.get("status", ""),
+                    "exact_match": case.get("exact_match", ""),
+                    "token_equivalent": case.get("token_equivalent", ""),
+                    "ast_equivalent": case.get("ast_equivalent", ""),
+                    "failure_taxonomy": "|".join(str(t) for t in tags),
+                }
+            )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Summarize batch-roundtrip-report JSON into markdown."
@@ -91,6 +135,18 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Output markdown path (default: <input>.summary.md)",
     )
+    parser.add_argument(
+        "--csv-output",
+        type=Path,
+        default=None,
+        help="Optional CSV export for case-level rows",
+    )
+    parser.add_argument(
+        "--top-k-mismatches",
+        type=int,
+        default=5,
+        help="How many mismatch cases to show in the summary highlight section (default: 5)",
+    )
     return parser.parse_args()
 
 
@@ -98,10 +154,16 @@ def main() -> int:
     args = parse_args()
     report = load_json(args.input_json)
     output = args.output or args.input_json.with_suffix("").with_suffix(".summary.md")
-    summary = build_summary(report, args.input_json)
+    top_k = max(0, int(args.top_k_mismatches))
+    summary = build_summary(report, args.input_json, top_k)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(summary, encoding="utf-8")
-    print(output)
+
+    if args.csv_output is not None:
+        write_csv(report, args.csv_output)
+        print(f"{output}\n{args.csv_output}")
+    else:
+        print(output)
     return 0
 
 
