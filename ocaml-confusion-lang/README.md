@@ -8,7 +8,8 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 
 ## 현재 지원
 - `validate <alias_tsv>`: 필수 키 존재 + 중복 alias 감지
-- `roundtrip <source_file>`: 스텁 (다음 단계 구현 예정)
+- `transform <alias_tsv> <source_file>`: Python -> 혼동 언어 치환
+- `roundtrip <alias_tsv> <source_file>`: Python -> alias -> Python 복원 일치성 검사
 
 ## Alias TSV 형식
 `<python_keyword>\t<alias_phrase>`
@@ -20,6 +21,8 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 ```bash
 cd ocaml-confusion-lang
 dune exec confusionlang -- validate examples/case-c2.tsv
+dune exec confusionlang -- transform examples/case-c2.tsv examples/sample.py
+dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/sample.py
 ```
 
 ## 다음 구현
