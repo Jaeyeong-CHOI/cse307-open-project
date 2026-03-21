@@ -121,32 +121,18 @@ jobs:
             snapshot_top_k=1
           fi
 
-          summary_mode_resolution=$(python3 ocaml-confusion-lang/scripts/resolve_event_name_mode.py \
-            --mode "${MANUAL_SUMMARY_EVENT_NAME_MODE}" \
-            --field-name "summary_event_name_mode")
-          if echo "${summary_mode_resolution}" | head -n 1 | grep -q "^Invalid "; then
-            echo "${summary_mode_resolution}" | head -n 1
-          fi
-          summary_event_name_mode=$(echo "${summary_mode_resolution}" | grep '^mode=' | cut -d= -f2)
-          summary_require_explicit_event_name=$(echo "${summary_mode_resolution}" | grep '^require_explicit_event_name=' | cut -d= -f2)
+          mode_resolution=$(python3 ocaml-confusion-lang/scripts/resolve_event_name_modes.py \
+            --summary-mode "${MANUAL_SUMMARY_EVENT_NAME_MODE}" \
+            --snapshot-mode "${MANUAL_SNAPSHOT_EVENT_NAME_MODE}" \
+            --metric-mode "${MANUAL_METRIC_EVENT_NAME_MODE}")
+          echo "${mode_resolution}" | grep '^Invalid ' || true
 
-          snapshot_mode_resolution=$(python3 ocaml-confusion-lang/scripts/resolve_event_name_mode.py \
-            --mode "${MANUAL_SNAPSHOT_EVENT_NAME_MODE}" \
-            --field-name "snapshot_event_name_mode")
-          if echo "${snapshot_mode_resolution}" | head -n 1 | grep -q "^Invalid "; then
-            echo "${snapshot_mode_resolution}" | head -n 1
-          fi
-          snapshot_event_name_mode=$(echo "${snapshot_mode_resolution}" | grep '^mode=' | cut -d= -f2)
-          snapshot_require_explicit_event_name=$(echo "${snapshot_mode_resolution}" | grep '^require_explicit_event_name=' | cut -d= -f2)
-
-          metric_mode_resolution=$(python3 ocaml-confusion-lang/scripts/resolve_event_name_mode.py \
-            --mode "${MANUAL_METRIC_EVENT_NAME_MODE}" \
-            --field-name "metric_event_name_mode")
-          if echo "${metric_mode_resolution}" | head -n 1 | grep -q "^Invalid "; then
-            echo "${metric_mode_resolution}" | head -n 1
-          fi
-          metric_event_name_mode=$(echo "${metric_mode_resolution}" | grep '^mode=' | cut -d= -f2)
-          metric_require_explicit_event_name=$(echo "${metric_mode_resolution}" | grep '^require_explicit_event_name=' | cut -d= -f2)
+          summary_event_name_mode=$(echo "${mode_resolution}" | grep '^summary_mode=' | cut -d= -f2)
+          summary_require_explicit_event_name=$(echo "${mode_resolution}" | grep '^summary_require_explicit_event_name=' | cut -d= -f2)
+          snapshot_event_name_mode=$(echo "${mode_resolution}" | grep '^snapshot_mode=' | cut -d= -f2)
+          snapshot_require_explicit_event_name=$(echo "${mode_resolution}" | grep '^snapshot_require_explicit_event_name=' | cut -d= -f2)
+          metric_event_name_mode=$(echo "${mode_resolution}" | grep '^metric_mode=' | cut -d= -f2)
+          metric_require_explicit_event_name=$(echo "${mode_resolution}" | grep '^metric_require_explicit_event_name=' | cut -d= -f2)
 
           echo "full_ci=${full_ci}" >> "$GITHUB_OUTPUT"
           echo "manual_mode=${MANUAL_MODE}" >> "$GITHUB_OUTPUT"
