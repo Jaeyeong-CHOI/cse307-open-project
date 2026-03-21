@@ -159,11 +159,14 @@ jobs:
           print(f"- severity_total: {overview.get('mismatch_severity_total')} (avg={overview.get('mismatch_severity_avg')})")
           print(f"- any_tripped: {gates.get('any_tripped')}")
           print(f"- tripped_list: {gates.get('tripped_list')}")
-          print(f"- top1_mismatch_source: {top1_source}")
-          print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
-          print(f"- top1_mismatch_severity: {top1_severity}")
-          print(f"- top1_mismatch_first_diff_line: {top1_first_diff_line}")
-          print(f"- top1_mismatch_first_token_diff_index: {top1_first_token_diff_index}")
+          print(
+            "- top1_mismatch: "
+            f"source={top1_source}; "
+            f"taxonomy={top1_taxonomy}; "
+            f"severity={top1_severity}; "
+            f"first_diff_line={top1_first_diff_line}; "
+            f"first_token_diff_index={top1_first_token_diff_index}"
+          )
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY
@@ -289,11 +292,14 @@ jobs:
           print(f"- severity_total: {overview.get('mismatch_severity_total')} (avg={overview.get('mismatch_severity_avg')})")
           print(f"- any_tripped: {gates.get('any_tripped')}")
           print(f"- tripped_list: {gates.get('tripped_list')}")
-          print(f"- top1_mismatch_source: {top1_source}")
-          print(f"- top1_mismatch_taxonomy: {top1_taxonomy}")
-          print(f"- top1_mismatch_severity: {top1_severity}")
-          print(f"- top1_mismatch_first_diff_line: {top1_first_diff_line}")
-          print(f"- top1_mismatch_first_token_diff_index: {top1_first_token_diff_index}")
+          print(
+            "- top1_mismatch: "
+            f"source={top1_source}; "
+            f"taxonomy={top1_taxonomy}; "
+            f"severity={top1_severity}; "
+            f"first_diff_line={top1_first_diff_line}; "
+            f"first_token_diff_index={top1_first_token_diff_index}"
+          )
           print(f"- summary_json: `{summary_path}`")
           print(f"- metric_json: `{metric_path}`")
           PY
