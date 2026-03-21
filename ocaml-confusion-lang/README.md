@@ -26,6 +26,8 @@ dune exec confusionlang -- transform examples/case-c2.tsv examples/sample.py
 dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/sample.py
 # 문자열/주석 보호 확인용
 dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/protected_literals.py
+# triple-quote 스트레스 케이스
+dune exec confusionlang -- roundtrip examples/case-c2.tsv examples/triple_quote_stress.py
 # 결과 JSON 저장 (repo 루트 docs/results 권장)
 dune exec confusionlang -- roundtrip-report examples/case-c2.tsv examples/sample.py ../docs/results/roundtrip-sample.json
 ```
