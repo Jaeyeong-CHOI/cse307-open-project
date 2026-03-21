@@ -30,6 +30,12 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
     if not isinstance(payload, dict):
         return [f"{path}: root must be a JSON object"]
 
+    metadata = _expect_type(payload, "metadata", dict, errors, path)
+    if isinstance(metadata, dict):
+        for key in ["schema_version", "generated_at_utc", "input_report"]:
+            if key not in metadata:
+                errors.append(f"{path}: metadata missing '{key}'")
+
     _expect_type(payload, "title", str, errors, path)
 
     overview = _expect_type(payload, "overview", dict, errors, path)

@@ -7,6 +7,7 @@ import argparse
 import csv
 import json
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -161,7 +162,14 @@ def build_summary_payload(
                 }
             )
 
+    generated_at_utc = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
     return {
+        "metadata": {
+            "schema_version": "v1",
+            "generated_at_utc": generated_at_utc,
+            "input_report": str(source_path),
+        },
         "title": f"Batch Roundtrip Summary ({source_path.name})",
         "overview": {
             "total_cases": total,

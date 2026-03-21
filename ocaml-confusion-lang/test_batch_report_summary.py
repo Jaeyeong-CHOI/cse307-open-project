@@ -75,6 +75,13 @@ def main() -> int:
     if summary_json is None:
         raise AssertionError("expected JSON summary output path")
     payload = json.loads(summary_json.read_text(encoding="utf-8"))
+    metadata = payload.get("metadata")
+    if not isinstance(metadata, dict):
+        raise AssertionError("expected metadata object in JSON summary")
+    for key in ["schema_version", "generated_at_utc", "input_report"]:
+        if key not in metadata:
+            raise AssertionError(f"expected metadata.{key} in JSON summary")
+
     if payload["overview"]["total_cases"] != 3:
         raise AssertionError("expected total_cases=3 in JSON summary")
     if payload["quality_signals"]["mismatch_severity_total"] != 130:

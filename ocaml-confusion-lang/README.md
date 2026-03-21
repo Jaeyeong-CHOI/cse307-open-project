@@ -68,7 +68,8 @@ python3 scripts/validate_summary_payload.py ../docs/research/results/roundtrip-b
 
 `validate_summary_payload.py` 스키마 규칙:
 - 루트는 JSON object
-- 필수 top-level key: `title`, `overview`, `quality_signals`, `failure_taxonomy`, `top_mismatches`, `mismatch_sort`, `cases`
+- 필수 top-level key: `metadata`, `title`, `overview`, `quality_signals`, `failure_taxonomy`, `top_mismatches`, `mismatch_sort`, `cases`
+- `metadata`는 `schema_version`, `generated_at_utc`, `input_report` 필수
 - `failure_taxonomy.severity_weighted[*]`는 `tag/count/weight/weighted_score` 필수
 - `top_mismatches[*]`는 `source/failure_taxonomy/severity` 필수
 
@@ -103,3 +104,4 @@ python3 scripts/validate_summary_payload.py ../docs/research/results/roundtrip-b
 28. ~~summary Markdown 헤더에 적용된 taxonomy weight source(기본/파일/프로파일) 기록~~ ✅ (`taxonomy_weight_source`)
 29. ~~summary 스크립트에 machine-readable JSON 출력 옵션(`--json-output`) 추가~~ ✅ (overview/quality/taxonomy/top_mismatches payload + 회귀 테스트)
 30. ~~summary JSON payload schema validator + 회귀 테스트/CI 단계 추가~~ ✅ (`scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`)
+31. ~~summary JSON payload에 재현성 메타데이터(`metadata.schema_version/generated_at_utc/input_report`) 추가~~ ✅ (`scripts/batch_report_summary.py`, `validate_summary_payload.py`, 회귀 테스트 반영)
