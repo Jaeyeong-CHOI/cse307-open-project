@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import csv
 import json
+import os
 import pathlib
 import subprocess
 
@@ -364,6 +365,49 @@ def main() -> int:
             "expected severity gates to pass with thresholds above fixture metrics, got "
             f"{severity_pass_proc.returncode}"
         )
+
+    # Invalid taxonomy weight path should fail without traceback noise.
+    missing_weights_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.missing-weights.summary.md"),
+            "--taxonomy-weights",
+            str(OUT / "missing.weights.json"),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if missing_weights_proc.returncode == 0:
+        raise AssertionError("expected missing taxonomy weight file to fail")
+    if "ERROR:" not in missing_weights_proc.stderr:
+        raise AssertionError("expected concise ERROR: message for missing taxonomy weight file")
+    if "Traceback" in missing_weights_proc.stderr:
+        raise AssertionError("did not expect Python traceback in concise failure path")
+
+    # GitHub Actions mode should emit ::error:: annotation alongside ERROR line.
+    gha_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.missing-weights-gha.summary.md"),
+            "--taxonomy-weights",
+            str(OUT / "missing.weights.json"),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        env={**os.environ, "GITHUB_ACTIONS": "true"},
+    )
+    if "::error::" not in gha_proc.stderr:
+        raise AssertionError("expected ::error:: annotation in GITHUB_ACTIONS mode")
 
     print("OK: batch_report_summary fixture regression passed")
     return 0
