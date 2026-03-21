@@ -115,51 +115,84 @@ def _gate_details_compact(gates: dict[str, Any]) -> str:
     return " | ".join(chunks)
 
 
-def build_snapshot_markdown(
+def build_snapshot_payload(
     payload: dict[str, Any],
     *,
     label: str,
     summary_path: Path,
     metric_path: Path,
     top_k_mismatches: str = "1",
-) -> str:
+) -> dict[str, Any]:
     overview = payload.get("overview", {}) if isinstance(payload.get("overview"), dict) else {}
     gates = payload.get("gates", {}) if isinstance(payload.get("gates"), dict) else {}
     top1 = _top1_fields(payload)
     resolved_top_k = _resolve_top_k(payload, top_k_mismatches)
 
+    return {
+        "label": label,
+        "cases": {
+            "total": overview.get("total_cases"),
+            "ok": overview.get("ok_cases"),
+            "mismatch": overview.get("mismatch_cases"),
+        },
+        "severity": {
+            "total": overview.get("mismatch_severity_total"),
+            "avg": overview.get("mismatch_severity_avg"),
+        },
+        "any_tripped": gates.get("any_tripped"),
+        "tripped_list": gates.get("tripped_list"),
+        "gate_details_compact": _gate_details_compact(gates),
+        "top1_mismatch": top1,
+        "top_k_mismatches": {
+            "requested": top_k_mismatches,
+            "resolved": resolved_top_k,
+            "compact": _topk_compact(payload, top_k=resolved_top_k),
+        },
+        "summary_json": str(summary_path),
+        "metric_json": str(metric_path),
+    }
+
+
+def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
+    top1 = snapshot.get("top1_mismatch", {}) if isinstance(snapshot.get("top1_mismatch"), dict) else {}
+    cases = snapshot.get("cases", {}) if isinstance(snapshot.get("cases"), dict) else {}
+    severity = snapshot.get("severity", {}) if isinstance(snapshot.get("severity"), dict) else {}
+    top_k = (
+        snapshot.get("top_k_mismatches", {})
+        if isinstance(snapshot.get("top_k_mismatches"), dict)
+        else {}
+    )
+
+    resolved_top_k = top_k.get("resolved")
+
     lines = [
-        f"## {label}",
+        f"## {snapshot.get('label')}",
         (
             "- cases: "
-            f"{overview.get('total_cases')} total / "
-            f"{overview.get('ok_cases')} ok / "
-            f"{overview.get('mismatch_cases')} mismatch"
+            f"{cases.get('total')} total / "
+            f"{cases.get('ok')} ok / "
+            f"{cases.get('mismatch')} mismatch"
         ),
-        (
-            "- severity_total: "
-            f"{overview.get('mismatch_severity_total')} "
-            f"(avg={overview.get('mismatch_severity_avg')})"
-        ),
-        f"- any_tripped: {gates.get('any_tripped')}",
-        f"- tripped_list: {_format_tripped_list(gates.get('tripped_list'))}",
-        f"- gate_details: {_gate_details_compact(gates)}",
+        f"- severity_total: {severity.get('total')} (avg={severity.get('avg')})",
+        f"- any_tripped: {snapshot.get('any_tripped')}",
+        f"- tripped_list: {_format_tripped_list(snapshot.get('tripped_list'))}",
+        f"- gate_details: {snapshot.get('gate_details_compact')}",
         (
             "- top1_mismatch: "
-            f"severity={top1['severity']}; "
-            f"taxonomy={top1['taxonomy']}; "
-            f"source={top1['source']}; "
-            f"first_diff_line={top1['first_diff_line']}; "
-            f"first_token_diff_index={top1['first_token_diff_index']}"
+            f"severity={top1.get('severity')}; "
+            f"taxonomy={top1.get('taxonomy')}; "
+            f"source={top1.get('source')}; "
+            f"first_diff_line={top1.get('first_diff_line')}; "
+            f"first_token_diff_index={top1.get('first_token_diff_index')}"
         ),
         (
             "- top_k_mismatches: "
-            f"requested={top_k_mismatches}; "
+            f"requested={top_k.get('requested')}; "
             f"resolved={resolved_top_k}"
         ),
-        f"- top{resolved_top_k}_mismatches_compact: {_topk_compact(payload, top_k=resolved_top_k)}",
-        f"- summary_json: `{summary_path}`",
-        f"- metric_json: `{metric_path}`",
+        f"- top{resolved_top_k}_mismatches_compact: {top_k.get('compact')}",
+        f"- summary_json: `{snapshot.get('summary_json')}`",
+        f"- metric_json: `{snapshot.get('metric_json')}`",
     ]
     return "\n".join(lines)
 
@@ -170,6 +203,11 @@ def main() -> None:
     )
     parser.add_argument("summary_json", type=Path, help="summary JSON payload path")
     parser.add_argument("--metric-json", required=True, type=Path, help="metric JSON path")
+    parser.add_argument(
+        "--json-output",
+        type=Path,
+        help="optional output path for machine-readable snapshot JSON",
+    )
     parser.add_argument(
         "--label",
         default="CI result snapshot",
@@ -195,15 +233,22 @@ def main() -> None:
             )
 
     payload = json.loads(args.summary_json.read_text(encoding="utf-8"))
-    print(
-        build_snapshot_markdown(
-            payload,
-            label=args.label,
-            summary_path=args.summary_json,
-            metric_path=args.metric_json,
-            top_k_mismatches=args.top_k_mismatches,
-        )
+    snapshot = build_snapshot_payload(
+        payload,
+        label=args.label,
+        summary_path=args.summary_json,
+        metric_path=args.metric_json,
+        top_k_mismatches=args.top_k_mismatches,
     )
+
+    if args.json_output is not None:
+        args.json_output.parent.mkdir(parents=True, exist_ok=True)
+        args.json_output.write_text(
+            json.dumps(snapshot, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
+    print(build_snapshot_markdown(snapshot))
 
 
 if __name__ == "__main__":

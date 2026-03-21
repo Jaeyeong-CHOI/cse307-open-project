@@ -12,24 +12,33 @@ OUT = ROOT / "_build"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def _run(payload: dict, label: str, top_k_mismatches: int | str = 1) -> str:
+def _run(
+    payload: dict,
+    label: str,
+    top_k_mismatches: int | str = 1,
+    json_output: Path | None = None,
+) -> str:
     summary = OUT / "tmp.emit-ci-summary.json"
     metric = OUT / "tmp.emit-ci-metric.json"
     summary.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     metric.write_text("{}", encoding="utf-8")
 
+    cmd = [
+        sys.executable,
+        str(SCRIPT),
+        str(summary),
+        "--metric-json",
+        str(metric),
+        "--label",
+        label,
+        "--top-k-mismatches",
+        str(top_k_mismatches),
+    ]
+    if json_output is not None:
+        cmd.extend(["--json-output", str(json_output)])
+
     proc = subprocess.run(
-        [
-            sys.executable,
-            str(SCRIPT),
-            str(summary),
-            "--metric-json",
-            str(metric),
-            "--label",
-            label,
-            "--top-k-mismatches",
-            str(top_k_mismatches),
-        ],
+        cmd,
         check=True,
         capture_output=True,
         text=True,
@@ -92,7 +101,13 @@ def main() -> None:
         ],
     }
 
-    content = _run(payload_with_mismatch, "Full CI result snapshot", top_k_mismatches=2)
+    snapshot_json = OUT / "tmp.emit-ci-snapshot.json"
+    content = _run(
+        payload_with_mismatch,
+        "Full CI result snapshot",
+        top_k_mismatches=2,
+        json_output=snapshot_json,
+    )
     assert_contains(content, "## Full CI result snapshot")
     assert_contains(content, "- tripped_list: mismatch, severity_total, severity_avg")
     assert_contains(
@@ -108,6 +123,15 @@ def main() -> None:
         content,
         "- top2_mismatches_compact: #1(severity=75, taxonomy=token_stream_mismatch, source=examples/collision-risk-case.py, first_diff_line=2, first_token_diff_index=8) | #2(severity=55, taxonomy=line_count_mismatch, source=examples/linecount-risk-case.py, first_diff_line=4, first_token_diff_index=n/a) | ... (+2 more)",
     )
+
+    snapshot_payload = json.loads(snapshot_json.read_text(encoding="utf-8"))
+    if snapshot_payload.get("label") != "Full CI result snapshot":
+        raise AssertionError("json snapshot label mismatch")
+    top_k_meta = snapshot_payload.get("top_k_mismatches", {})
+    if top_k_meta.get("requested") != "2" or top_k_meta.get("resolved") != 2:
+        raise AssertionError("json snapshot top-k metadata mismatch")
+    if "#1(severity=75" not in str(top_k_meta.get("compact")):
+        raise AssertionError("json snapshot compact mismatch summary missing")
 
     payload_no_mismatch = {
         "overview": {
