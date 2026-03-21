@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -240,47 +241,51 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
-    args = parse_args()
-    summary = load_json(args.summary_json)
+    try:
+        args = parse_args()
+        summary = load_json(args.summary_json)
 
-    task_set_lineage: dict[str, str] | None = None
-    if args.task_set_json is not None:
-        task_set = load_json(args.task_set_json)
-        errors = validate_task_set_payload(task_set, args.task_set_json)
-        if errors:
-            for err in errors:
-                print(err)
-            return 1
-        assert_task_set_consistency(
+        task_set_lineage: dict[str, str] | None = None
+        if args.task_set_json is not None:
+            task_set = load_json(args.task_set_json)
+            errors = validate_task_set_payload(task_set, args.task_set_json)
+            if errors:
+                for err in errors:
+                    print(f"ERROR: {err}", file=sys.stderr)
+                return 1
+            assert_task_set_consistency(
+                summary,
+                task_set,
+                task_set_path=args.task_set_json,
+                task_set_id=args.task_set_id,
+            )
+
+            lineage: dict[str, str] = {"task_set_id": args.task_set_id}
+            alias_set_id = task_set.get("alias_set_id")
+            manifest_path = task_set.get("manifest_path")
+            if isinstance(alias_set_id, str) and alias_set_id.strip():
+                lineage["alias_set_id"] = alias_set_id
+            if isinstance(manifest_path, str) and manifest_path.strip():
+                lineage["manifest_path"] = manifest_path
+            check_summary_lineage_consistency(summary, task_set, args.lineage_consistency)
+            task_set_lineage = lineage or None
+
+        payload = build_metric_payload(
             summary,
-            task_set,
-            task_set_path=args.task_set_json,
             task_set_id=args.task_set_id,
+            prompt_condition=args.prompt_condition,
+            model=args.model,
+            task_set_lineage=task_set_lineage,
         )
 
-        lineage: dict[str, str] = {"task_set_id": args.task_set_id}
-        alias_set_id = task_set.get("alias_set_id")
-        manifest_path = task_set.get("manifest_path")
-        if isinstance(alias_set_id, str) and alias_set_id.strip():
-            lineage["alias_set_id"] = alias_set_id
-        if isinstance(manifest_path, str) and manifest_path.strip():
-            lineage["manifest_path"] = manifest_path
-        check_summary_lineage_consistency(summary, task_set, args.lineage_consistency)
-        task_set_lineage = lineage or None
-
-    payload = build_metric_payload(
-        summary,
-        task_set_id=args.task_set_id,
-        prompt_condition=args.prompt_condition,
-        model=args.model,
-        task_set_lineage=task_set_lineage,
-    )
-
-    output = args.output or args.summary_json.with_suffix("").with_suffix(".metrics.json")
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(output)
-    return 0
+        output = args.output or args.summary_json.with_suffix("").with_suffix(".metrics.json")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(output)
+        return 0
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

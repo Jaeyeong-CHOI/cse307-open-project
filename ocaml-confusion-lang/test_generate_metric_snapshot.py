@@ -114,8 +114,10 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    mismatch_only_output = mismatch_only_metric.stderr + mismatch_only_metric.stdout
     assert mismatch_only_metric.returncode != 0, "expected mismatch-only summary to be rejected with --task-set-json"
-    assert "without --only-mismatches" in (mismatch_only_metric.stderr + mismatch_only_metric.stdout)
+    assert "without --only-mismatches" in mismatch_only_output
+    assert "Traceback" not in mismatch_only_output
 
     lineage_mismatch_summary = OUT / "fixture.summary.lineage-mismatch.json"
     payload = json.loads(summary_json.read_text(encoding="utf-8"))
@@ -143,8 +145,10 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    lineage_fail_output = lineage_fail.stderr + lineage_fail.stdout
     assert lineage_fail.returncode != 0, "expected lineage consistency fail mode to fail"
-    assert "alias_set_id" in (lineage_fail.stderr + lineage_fail.stdout)
+    assert "alias_set_id" in lineage_fail_output
+    assert "Traceback" not in lineage_fail_output
 
     subprocess.run(
         ["python3", str(METRIC_VALIDATOR), str(metric_json)],
