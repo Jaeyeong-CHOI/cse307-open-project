@@ -5,8 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
+
+from error_utils import emit_error
 
 
 def load_json(path: Path) -> Any:
@@ -74,9 +77,7 @@ def main() -> int:
         all_errors.extend(validate_profile(payload, profile_path))
 
     if all_errors:
-        print("Taxonomy profile schema validation failed:")
-        for err in all_errors:
-            print(f"- {err}")
+        emit_error("Taxonomy profile schema validation failed:\n" + "\n".join(f"- {err}" for err in all_errors))
         return 1
 
     print(f"OK: validated {len(profile_paths)} taxonomy profile file(s)")
@@ -84,4 +85,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except (ValueError, OSError, JSONDecodeError) as exc:
+        emit_error(str(exc))
+        raise SystemExit(1)

@@ -5,8 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
+
+from error_utils import emit_error
 
 
 def load_json(path: Path) -> Any:
@@ -134,13 +137,15 @@ def main() -> int:
     payload = load_json(args.summary_json)
     errors = validate_payload(payload, args.summary_json)
     if errors:
-        print("Summary payload schema validation failed:")
-        for err in errors:
-            print(f"- {err}")
+        emit_error("Summary payload schema validation failed:\n" + "\n".join(f"- {err}" for err in errors))
         return 1
     print(f"OK: summary payload schema valid ({args.summary_json})")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except (ValueError, OSError, JSONDecodeError) as exc:
+        emit_error(str(exc))
+        raise SystemExit(1)

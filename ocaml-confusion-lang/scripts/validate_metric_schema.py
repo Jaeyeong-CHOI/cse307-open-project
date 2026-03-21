@@ -5,8 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
+
+from error_utils import emit_error
 
 REQUIRED_ROOT_KEYS = [
     "schema_version",
@@ -72,13 +75,15 @@ def main() -> int:
     payload = load_json(args.metric_json)
     errors = validate_payload(payload, args.metric_json)
     if errors:
-        print("Metric schema validation failed:")
-        for err in errors:
-            print(f"- {err}")
+        emit_error("Metric schema validation failed:\n" + "\n".join(f"- {err}" for err in errors))
         return 1
     print(f"OK: metric schema valid ({args.metric_json})")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except (ValueError, OSError, JSONDecodeError) as exc:
+        emit_error(str(exc))
+        raise SystemExit(1)

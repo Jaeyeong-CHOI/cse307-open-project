@@ -44,8 +44,9 @@ def main() -> int:
         )
         if bad_run.returncode == 0:
             raise AssertionError("expected non-zero exit for invalid profile schema")
-        if "default_weight' must be an integer" not in bad_run.stdout:
-            raise AssertionError(f"missing schema error details in output: {bad_run.stdout!r}")
+        combined = bad_run.stdout + bad_run.stderr
+        if "default_weight' must be an integer" not in combined:
+            raise AssertionError(f"missing schema error details in output: {combined!r}")
 
     print("OK: taxonomy profile schema validation regression passed")
     return 0
