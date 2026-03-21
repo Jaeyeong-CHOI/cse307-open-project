@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from error_utils import emit_error
+
 
 TOP_K_AUTO = "auto"
 TOP_K_MIN = 1
@@ -113,6 +115,43 @@ def _gate_details_compact(gates: dict[str, Any]) -> str:
     if not chunks:
         return "n/a"
     return " | ".join(chunks)
+
+
+def _validate_summary_payload(payload: dict[str, Any], *, input_path: Path) -> None:
+    errors: list[str] = []
+
+    overview = payload.get("overview")
+    if not isinstance(overview, dict):
+        errors.append("overview must be an object")
+    else:
+        for key in ["total_cases", "ok_cases", "mismatch_cases", "mismatch_severity_total"]:
+            if not isinstance(overview.get(key), int):
+                errors.append(f"overview.{key} must be an integer")
+        if not isinstance(overview.get("mismatch_severity_avg"), (int, float)):
+            errors.append("overview.mismatch_severity_avg must be a number")
+
+    gates = payload.get("gates")
+    if not isinstance(gates, dict):
+        errors.append("gates must be an object")
+    else:
+        if not isinstance(gates.get("any_tripped"), bool):
+            errors.append("gates.any_tripped must be a boolean")
+        if not isinstance(gates.get("tripped_list"), list):
+            errors.append("gates.tripped_list must be an array")
+
+    top_mismatches = payload.get("top_mismatches")
+    if top_mismatches is not None and not isinstance(top_mismatches, list):
+        errors.append("top_mismatches must be an array when present")
+
+    if errors:
+        emit_error(
+            "CI snapshot emit input validation failed:\n" + "\n".join(f"- {err}" for err in errors),
+            hints=[
+                f"input={input_path}",
+                "required=overview(total/ok/mismatch/severity), gates(any_tripped,tripped_list)",
+            ],
+        )
+        raise SystemExit(1)
 
 
 def build_snapshot_payload(
@@ -233,6 +272,7 @@ def main() -> None:
             )
 
     payload = json.loads(args.summary_json.read_text(encoding="utf-8"))
+    _validate_summary_payload(payload, input_path=args.summary_json)
     snapshot = build_snapshot_payload(
         payload,
         label=args.label,

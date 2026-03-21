@@ -192,6 +192,41 @@ def main() -> None:
     assert_contains(auto_no_mm, "- top_k_mismatches: requested=auto; resolved=1")
     assert_contains(auto_no_mm, "- top1_mismatches_compact: n/a")
 
+    invalid_shape_summary = OUT / "tmp.emit-ci-summary.invalid-shape.json"
+    invalid_shape_metric = OUT / "tmp.emit-ci-metric.invalid-shape.json"
+    invalid_shape_payload = dict(payload_with_mismatch)
+    invalid_shape_payload["overview"] = {
+        "total_cases": 3,
+        "ok_cases": 1,
+        # mismatch_cases intentionally missing for fail-fast validation
+        "mismatch_severity_total": 130,
+        "mismatch_severity_avg": 65.0,
+    }
+    invalid_shape_summary.write_text(
+        json.dumps(invalid_shape_payload, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    invalid_shape_metric.write_text("{}", encoding="utf-8")
+    invalid_shape = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(invalid_shape_summary),
+            "--metric-json",
+            str(invalid_shape_metric),
+            "--label",
+            "Invalid shape snapshot",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+    if invalid_shape.returncode == 0:
+        raise AssertionError("expected non-zero exit for invalid summary payload shape")
+    assert_contains(invalid_shape.stderr, "CI snapshot emit input validation failed")
+    assert_contains(invalid_shape.stderr, "overview.mismatch_cases must be an integer")
+
 
 if __name__ == "__main__":
     main()
