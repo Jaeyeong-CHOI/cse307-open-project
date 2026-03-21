@@ -131,6 +131,40 @@ def main() -> int:
     if failed_run_context.returncode == 0:
         raise AssertionError("expected invalid run_context pair to fail validation")
 
+    missing_event_source = OUT / "metric.invalid.event-source.json"
+    missing_event_source.write_text(
+        """{
+  \"schema_version\": \"v1\",
+  \"task_set_id\": \"task-set-v1-sample\",
+  \"prompt_condition\": \"strict\",
+  \"model\": \"gpt-5.3-codex\",
+  \"metrics\": {
+    \"acr\": 0.8,
+    \"prr\": 0.2,
+    \"esr\": 0.7,
+    \"mfb\": 1.0
+  },
+  \"source_summary\": {
+    \"run_context\": {
+      \"run_id\": \"123\",
+      \"run_url\": \"https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123\",
+      \"event_name\": \"workflow_dispatch\"
+    }
+  }
+}
+""",
+        encoding="utf-8",
+    )
+    failed_missing_event_source = subprocess.run(
+        ["python3", str(VALIDATOR), str(missing_event_source)],
+        cwd=ROOT,
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if failed_missing_event_source.returncode == 0:
+        raise AssertionError("expected missing event_name_source to fail validation")
+
     print("OK: metric schema regression passed")
     return 0
 

@@ -142,6 +142,12 @@ def validate_run_context(
         errors.append(
             f"{path}: run_context.event_name_source requires run_context.event_name when present"
         )
+    if isinstance(event_name, str) and event_name.strip() and not (
+        isinstance(event_name_source, str) and event_name_source.strip()
+    ):
+        errors.append(
+            f"{path}: run_context.event_name_source is required when run_context.event_name is present"
+        )
 
     for key in ["workflow", "job"]:
         value = run_context.get(key)

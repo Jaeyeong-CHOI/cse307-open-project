@@ -155,6 +155,7 @@ def main() -> int:
         "run_url": "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
         "run_attempt": "2",
         "event_name": "pull_request",
+        "event_name_source": "provided",
         "repository": "Jaeyeong-CHOI/cse307-open-project",
         "sha": "abcdef1",
         "ref": "refs/pull/42/merge",
@@ -193,6 +194,17 @@ def main() -> int:
         json.dumps(payload_invalid_run_context_unknown, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     _run_validator(invalid_run_context_unknown, expect_ok=False)
+
+    invalid_run_context_event_source = OUT / "fixture.summary.schema-check.invalid-run-context-missing-event-source.json"
+    payload_invalid_run_context_event_source = json.loads(
+        valid_run_context_summary.read_text(encoding="utf-8")
+    )
+    del payload_invalid_run_context_event_source["run_context"]["event_name_source"]
+    invalid_run_context_event_source.write_text(
+        json.dumps(payload_invalid_run_context_event_source, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    _run_validator(invalid_run_context_event_source, expect_ok=False)
 
     print("OK: summary payload schema regression passed")
     return 0

@@ -217,6 +217,7 @@ def main() -> int:
     assert run_context.get("run_id") == "123456789", run_context
     assert run_context.get("run_url") == "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789", run_context
     assert run_context.get("event_name") == "workflow_dispatch", run_context
+    assert run_context.get("event_name_source") == "provided", run_context
 
     # fixture totals: total=3, ok=1, mismatch=2, ast_true=2,
     # line-gap proxy tags(line_count + whitespace)=2

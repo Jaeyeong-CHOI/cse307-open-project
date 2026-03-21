@@ -421,6 +421,7 @@ def main() -> None:
         "run_id": "123456789",
         "run_url": "https://github.com/org/repo/actions/runs/123456789",
         "event_name": "pull_request_target",
+        "event_name_source": "provided",
     }
     valid_pull_request_target_event_path = _write(
         OUT / "snapshot.valid-event-name-pull-request-target.json", valid_pull_request_target_event
@@ -431,6 +432,22 @@ def main() -> None:
             f"expected success for run_context.event_name=pull_request_target, got rc={ok_pull_request_target_event.returncode}\n{ok_pull_request_target_event.stderr}"
         )
 
+    missing_event_name_source = dict(valid_payload)
+    missing_event_name_source["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "event_name": "workflow_dispatch",
+    }
+    missing_event_name_source_path = _write(
+        OUT / "snapshot.missing-event-name-source.json", missing_event_name_source
+    )
+    bad_missing_event_name_source = _run(missing_event_name_source_path)
+    if bad_missing_event_name_source.returncode == 0:
+        raise AssertionError("expected failure when run_context.event_name_source is missing")
+    _assert_contains(
+        bad_missing_event_name_source.stderr,
+        "run_context.event_name_source is required when run_context.event_name is present",
+    )
 
     invalid_event_name_source = dict(valid_payload)
     invalid_event_name_source["run_context"] = {
