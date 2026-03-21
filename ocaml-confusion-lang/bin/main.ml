@@ -110,12 +110,17 @@ let split_code_and_comment line =
   in
   loop 0 false false false
 
+let sort_pairs_by_key_length_desc pairs =
+  List.sort
+    (fun (k1, _) (k2, _) -> compare (String.length k2) (String.length k1))
+    pairs
+
 let transform_line pairs line =
   let code, comment = split_code_and_comment line in
   let transformed =
     List.fold_left
       (fun acc (py_kw, alias) -> replace_keyword_wordboundary acc py_kw alias)
-      code pairs
+      code (sort_pairs_by_key_length_desc pairs)
   in
   transformed ^ comment
 
@@ -124,6 +129,23 @@ let invert_pairs pairs = List.map (fun (a, b) -> (b, a)) pairs
 let transform_text pairs text =
   text |> String.split_on_char '\n' |> List.map (transform_line pairs)
   |> String.concat "\n"
+
+let print_first_diff src restored =
+  let src_lines = String.split_on_char '\n' src in
+  let rst_lines = String.split_on_char '\n' restored in
+  let rec loop i a b =
+    match (a, b) with
+    | s :: sa, r :: rb ->
+        if s = r then loop (i + 1) sa rb
+        else (
+          Printf.printf "DIFF at line %d\n" i;
+          Printf.printf "SRC : %s\n" s;
+          Printf.printf "REST: %s\n" r)
+    | [], _ | _, [] ->
+        Printf.printf "DIFF: line count mismatch (src=%d, restored=%d)\n"
+          (List.length src_lines) (List.length rst_lines)
+  in
+  loop 1 src_lines rst_lines
 
 let run_transform alias_path source_path =
   let pairs = load_alias_pairs alias_path in
@@ -152,6 +174,7 @@ let run_roundtrip alias_path source_path =
       0)
     else (
       print_endline "WARN: roundtrip mismatch";
+      print_first_diff src restored;
       3)
 
 let () =
