@@ -352,17 +352,17 @@ def main() -> int:
                     preset = presets[name]
                     if not isinstance(preset, dict):
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
-                    max_total_runs = int(preset.get("max_total_runs", 0))
-                    max_runs_per_model = int(preset.get("max_runs_per_model", 0))
-                    max_runs_per_prompt_condition = int(preset.get("max_runs_per_prompt_condition", 0))
-                    cheap_first = bool(preset.get("cheap_first", False))
-                    fair_model_allocation = bool(preset.get("fair_model_allocation", False))
+                    resolved = resolve_preset_with_defaults(preset)
                     print(
-                        f"{name}\tmax_total_runs={max_total_runs}\t"
-                        f"max_runs_per_model={max_runs_per_model}\t"
-                        f"max_runs_per_prompt_condition={max_runs_per_prompt_condition}\t"
-                        f"cheap_first={str(cheap_first).lower()}\t"
-                        f"fair_model_allocation={str(fair_model_allocation).lower()}"
+                        f"{name}\tmodels={resolved['models']}\tprompt_conditions={resolved['prompt_conditions']}\t"
+                        f"repeats={resolved['repeats']}\tcheap_first={str(resolved['cheap_first']).lower()}\t"
+                        f"fair_model_allocation={str(resolved['fair_model_allocation']).lower()}\t"
+                        f"max_total_runs={resolved['max_total_runs']}\tmax_total_runs_mode={resolved['max_total_runs_mode']}\t"
+                        f"max_runs_per_model={resolved['max_runs_per_model']}\t"
+                        f"max_runs_per_prompt_condition={resolved['max_runs_per_prompt_condition']}\t"
+                        f"max_runs_per_task={resolved['max_runs_per_task']}\t"
+                        f"max_runs_per_task_model={resolved['max_runs_per_task_model']}\t"
+                        f"max_runs_per_task_prompt_condition={resolved['max_runs_per_task_prompt_condition']}"
                     )
                 return 0
             for name in preset_names:

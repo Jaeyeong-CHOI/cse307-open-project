@@ -103,7 +103,7 @@ python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset bala
 python3 scripts/build_batch_eval_plan.py --list-presets
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
-# preset 핵심 cap/정책을 compact summary 라인으로 확인
+# preset resolved 설정(모델/조건/repeats + 전체 cap 세트)을 compact summary 라인으로 확인
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary
 # 모든 preset의 resolved 설정(기본값 포함)을 JSON으로 한번에 확인
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format resolved-json
@@ -329,3 +329,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 154. ~~planner(`build_batch_eval_plan.py`)에 단일 preset resolved 조회(`--show-preset`, `--show-preset-format json|summary`)를 추가해 운영자가 특정 preset의 기본값 보정 결과를 task set 없이 즉시 점검 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 155. ~~planner(`build_batch_eval_plan.py`)에 preset 목록 resolved 출력 모드(`--list-presets-format resolved-json`)를 추가해 모든 preset의 기본값 보정 결과를 단일 호출로 자동화 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 156. ~~planner(`build_batch_eval_plan.py`) preset 파일 로더에 키/타입/range fail-fast 검증을 추가해(`unknown key`, cap 음수, repeats<1 등) 잘못된 preset이 계획 생성 단계까지 전파되는 것을 조기 차단~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+157. ~~planner preset 요약 출력(`--list-presets-format summary`)을 resolved-default 기반으로 확장해 models/prompt_conditions/repeats 및 task 축 cap(`max_runs_per_task`, `max_runs_per_task_model`, `max_runs_per_task_prompt_condition`)까지 한 줄에서 즉시 확인 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

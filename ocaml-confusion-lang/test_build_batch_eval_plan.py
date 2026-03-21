@@ -716,9 +716,16 @@ def main() -> int:
     if quick_smoke_line is None:
         raise AssertionError(f"missing quick-smoke summary line: {summary_lines}")
     expected_snippets = [
+        "models=gpt-5-mini",
+        "prompt_conditions=base",
+        "repeats=1",
         "max_total_runs=6",
+        "max_total_runs_mode=cap",
         "max_runs_per_model=0",
         "max_runs_per_prompt_condition=0",
+        "max_runs_per_task=0",
+        "max_runs_per_task_model=0",
+        "max_runs_per_task_prompt_condition=0",
         "cheap_first=true",
         "fair_model_allocation=false",
     ]
