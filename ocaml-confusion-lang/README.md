@@ -129,6 +129,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format su
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --summary-tsv-description full --summary-tsv-description-max-len 120
 # 모든 preset의 resolved 설정(기본값 포함)을 JSON으로 한번에 확인
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format resolved-json
+# resolved-json도 json 모드와 동일하게 filtered_count/emitted_count/truncated 메타데이터를 포함
+# (list-presets-limit 적용 시 절단 여부를 파서가 즉시 판별 가능)
 # 특정 preset 1개의 resolved 설정(기본값 포함) 확인(JSON)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke
 # 특정 preset 1개의 resolved 설정을 compact summary 라인으로 확인
@@ -373,3 +375,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 173. ~~planner summary-tsv row에 `description_mode` 컬럼을 추가해(`preview|full`) 헤더의 description 컬럼명만으로 모드를 추론하지 않아도 parser가 행 단위 해석 모드를 fail-fast로 판별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 174. ~~planner summary-tsv row에 `description_truncated` 컬럼을 추가해 preview/full(soft-cap) 설명이 실제로 절단됐는지 파서가 즉시 판별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 175. ~~planner summary-tsv row에 `description_length` 컬럼(정규화 원문 길이)을 추가하고 기본 schema id를 `planner_preset_summary_tsv.v2`로 상향해, 절단 여부뿐 아니라 절단 전 설명 크기까지 파서가 정량적으로 판단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+176. ~~planner `--list-presets-format resolved-json` 출력에도 `filtered_count`/`emitted_count`/`truncated` 메타데이터를 추가해 `json` 모드와 절단 관측 규칙을 정렬하고, `--list-presets-limit` 적용 시 downstream 자동화가 절단 여부를 동일 키로 판단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

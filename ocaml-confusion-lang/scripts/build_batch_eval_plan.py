@@ -457,7 +457,7 @@ def parse_args() -> argparse.Namespace:
         "--summary-tsv-schema-id",
         default=PRESET_SUMMARY_TSV_SCHEMA,
         help=(
-            "Schema id for summary-tsv outputs (default: planner_preset_summary_tsv.v1)"
+            "Schema id for summary-tsv outputs (default: planner_preset_summary_tsv.v2)"
         ),
     )
     parser.add_argument(
@@ -652,6 +652,9 @@ def main() -> int:
                             "schema_version": "v1",
                             "preset_file": str(args.preset_file),
                             "presets": resolved_presets,
+                            "filtered_count": len(filtered_presets),
+                            "emitted_count": len(resolved_presets),
+                            "truncated": truncated,
                         },
                         ensure_ascii=False,
                         indent=2,

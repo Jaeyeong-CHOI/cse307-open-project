@@ -850,6 +850,16 @@ def main() -> int:
     resolved_presets = preset_list_resolved_payload.get("presets")
     if not isinstance(resolved_presets, dict) or "quick-smoke" not in resolved_presets:
         raise AssertionError(f"unexpected resolved-json payload: {preset_list_resolved_payload}")
+    if preset_list_resolved_payload.get("filtered_count") != 3:
+        raise AssertionError(
+            f"unexpected filtered_count in resolved-json payload: {preset_list_resolved_payload}"
+        )
+    if preset_list_resolved_payload.get("emitted_count") != 3:
+        raise AssertionError(
+            f"unexpected emitted_count in resolved-json payload: {preset_list_resolved_payload}"
+        )
+    if preset_list_resolved_payload.get("truncated") is not False:
+        raise AssertionError(f"unexpected truncated flag in resolved-json payload: {preset_list_resolved_payload}")
     quick_smoke_resolved = resolved_presets["quick-smoke"]
     if quick_smoke_resolved.get("max_runs_per_task_prompt_condition") != 0:
         raise AssertionError(
@@ -860,6 +870,47 @@ def main() -> int:
         raise AssertionError(f"expected resolved description in preset payload, got: {quick_smoke_resolved}")
     if quick_smoke_resolved.get("tags") != ["cheap-first", "smoke"]:
         raise AssertionError(f"expected resolved tags in preset payload, got: {quick_smoke_resolved}")
+
+    preset_list_resolved_json_limited = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "resolved-json",
+            "--list-presets-limit",
+            "2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_resolved_json_limited_payload = json.loads(preset_list_resolved_json_limited.stdout)
+    resolved_presets_limited = preset_list_resolved_json_limited_payload.get("presets")
+    if not isinstance(resolved_presets_limited, dict) or sorted(resolved_presets_limited.keys()) != [
+        "balanced-ci",
+        "full-analysis",
+    ]:
+        raise AssertionError(
+            "unexpected limited resolved-json payload: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("filtered_count") != 3:
+        raise AssertionError(
+            "unexpected filtered_count for limited resolved-json payload: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("emitted_count") != 2:
+        raise AssertionError(
+            "unexpected emitted_count for limited resolved-json payload: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("truncated") is not True:
+        raise AssertionError(
+            "unexpected truncated flag for limited resolved-json payload: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
 
     preset_list_summary = subprocess.run(
         [
