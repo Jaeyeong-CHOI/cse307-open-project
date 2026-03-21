@@ -12,9 +12,9 @@ OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def _run(snapshot_path: Path) -> subprocess.CompletedProcess[str]:
+def _run(snapshot_path: Path, *extra_args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, str(VALIDATOR), str(snapshot_path)],
+        [sys.executable, str(VALIDATOR), str(snapshot_path), *extra_args],
         check=False,
         capture_output=True,
         text=True,
@@ -96,7 +96,28 @@ def main() -> None:
         raise AssertionError("expected failure for invalid schema_version")
     _assert_contains(
         bad_schema_version.stderr,
-        "schema_version must be 'ci_result_snapshot.v1'",
+        "schema_version v0 is outside allowed range [v1, v1]",
+    )
+
+    valid_v2 = dict(valid_payload)
+    valid_v2["schema_version"] = "ci_result_snapshot.v2"
+    valid_v2_path = _write(OUT / "snapshot.valid-v2.json", valid_v2)
+    ok_v2 = _run(valid_v2_path, "--schema-version-max", "2")
+    if ok_v2.returncode != 0:
+        raise AssertionError(f"expected v2 success with max=2, got rc={ok_v2.returncode}\n{ok_v2.stderr}")
+    _assert_contains(ok_v2.stdout, "OK: ci result snapshot schema valid")
+
+    invalid_schema_format = dict(valid_payload)
+    invalid_schema_format["schema_version"] = "ci_result_snapshot.vX"
+    invalid_schema_format_path = _write(
+        OUT / "snapshot.invalid-schema-format.json", invalid_schema_format
+    )
+    bad_schema_format = _run(invalid_schema_format_path)
+    if bad_schema_format.returncode == 0:
+        raise AssertionError("expected failure for invalid schema_version format")
+    _assert_contains(
+        bad_schema_format.stderr,
+        "schema_version must match 'ci_result_snapshot.vN'",
     )
 
 

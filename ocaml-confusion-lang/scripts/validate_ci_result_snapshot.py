@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
@@ -13,7 +14,7 @@ from error_utils import emit_error
 
 
 EXPECTED_GATES = {"mismatch", "severity_total", "severity_avg"}
-EXPECTED_SCHEMA_VERSION = "ci_result_snapshot.v1"
+SCHEMA_VERSION_PATTERN = re.compile(r"^ci_result_snapshot\.v(\d+)$")
 
 
 def load_json(path: Path) -> Any:
@@ -32,16 +33,24 @@ def _expect_type(payload: dict[str, Any], key: str, expected: type, errors: list
     return value
 
 
-def validate_snapshot(payload: Any, path: Path) -> list[str]:
+def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_version_max: int) -> list[str]:
     errors: list[str] = []
     if not isinstance(payload, dict):
         return [f"{path}: root must be a JSON object"]
 
     schema_version = _expect_type(payload, "schema_version", str, errors, path)
-    if isinstance(schema_version, str) and schema_version != EXPECTED_SCHEMA_VERSION:
-        errors.append(
-            f"{path}: schema_version must be '{EXPECTED_SCHEMA_VERSION}'"
-        )
+    if isinstance(schema_version, str):
+        m = SCHEMA_VERSION_PATTERN.match(schema_version)
+        if not m:
+            errors.append(
+                f"{path}: schema_version must match 'ci_result_snapshot.vN' (got '{schema_version}')"
+            )
+        else:
+            version_num = int(m.group(1))
+            if version_num < schema_version_min or version_num > schema_version_max:
+                errors.append(
+                    f"{path}: schema_version v{version_num} is outside allowed range [v{schema_version_min}, v{schema_version_max}]"
+                )
 
     _expect_type(payload, "label", str, errors, path)
 
@@ -125,18 +134,43 @@ def validate_snapshot(payload: Any, path: Path) -> list[str]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate CI result snapshot JSON schema")
     parser.add_argument("snapshot_json", type=Path, help="Path to CI snapshot JSON output")
+    parser.add_argument(
+        "--schema-version-min",
+        type=int,
+        default=1,
+        help="Minimum supported schema version number (default: 1 for ci_result_snapshot.v1)",
+    )
+    parser.add_argument(
+        "--schema-version-max",
+        type=int,
+        default=1,
+        help="Maximum supported schema version number (default: 1 for ci_result_snapshot.v1)",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    if args.schema_version_min < 1 or args.schema_version_max < 1:
+        emit_error("schema-version bounds must be >= 1")
+        return 1
+    if args.schema_version_min > args.schema_version_max:
+        emit_error("schema-version bounds invalid: min must be <= max")
+        return 1
+
     payload = load_json(args.snapshot_json)
-    errors = validate_snapshot(payload, args.snapshot_json)
+    errors = validate_snapshot(
+        payload,
+        args.snapshot_json,
+        schema_version_min=args.schema_version_min,
+        schema_version_max=args.schema_version_max,
+    )
     if errors:
         emit_error(
             "CI result snapshot schema validation failed:\n" + "\n".join(f"- {err}" for err in errors),
             hints=[
                 f"input={args.snapshot_json}",
+                f"supported_schema_versions=ci_result_snapshot.v{args.schema_version_min}..ci_result_snapshot.v{args.schema_version_max}",
                 "expected_keys=schema_version,label,cases,severity,any_tripped,tripped_list,gate_details_compact,top1_mismatch,top_k_mismatches,summary_json,metric_json",
             ],
         )
