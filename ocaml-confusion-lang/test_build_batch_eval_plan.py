@@ -94,6 +94,10 @@ def main() -> int:
             "expected uncapped run counters to match planned total: "
             f"{summary['potential_runs_total']=}, {summary['skipped_runs_total']=}"
         )
+    if summary.get("planned_run_ratio_total") != 1.0:
+        raise AssertionError(
+            f"expected planned_run_ratio_total=1.0, got {summary.get('planned_run_ratio_total')}"
+        )
     if summary["potential_runs_by_model"] != {"gpt-5-mini": 12, "gpt-5-pro": 12}:
         raise AssertionError(
             f"unexpected potential_runs_by_model: {summary['potential_runs_by_model']}"
@@ -236,6 +240,11 @@ def main() -> int:
         raise AssertionError(
             f"expected max-total-runs cap mode planned total=10, got {capped_mode_summary['planned_runs_total']}"
         )
+    if abs(capped_mode_summary.get("planned_run_ratio_total", 0.0) - round(10 / 24, 6)) > 1e-9:
+        raise AssertionError(
+            "unexpected capped planned_run_ratio_total: "
+            f"{capped_mode_summary.get('planned_run_ratio_total')}"
+        )
 
     per_model_capped_output = OUT / "batch-plan.per-model-capped.json"
     subprocess.run(
@@ -291,6 +300,11 @@ def main() -> int:
     if per_model_summary["skipped_runs_total"] != 26:
         raise AssertionError(
             f"expected per-model skipped total=26, got {per_model_summary['skipped_runs_total']}"
+        )
+    if abs(per_model_summary.get("planned_run_ratio_total", 0.0) - round(10 / 36, 6)) > 1e-9:
+        raise AssertionError(
+            "unexpected per-model planned_run_ratio_total: "
+            f"{per_model_summary.get('planned_run_ratio_total')}"
         )
     if per_model_summary["skipped_runs_by_model"] != {"gpt-5-mini": 13, "gpt-5-pro": 13}:
         raise AssertionError(

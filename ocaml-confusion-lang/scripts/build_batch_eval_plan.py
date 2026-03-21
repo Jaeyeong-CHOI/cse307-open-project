@@ -389,6 +389,10 @@ def main() -> int:
             for task_id in runs_by_task_prompt_condition
         }
 
+        planned_run_ratio_total = 0.0
+        if potential_runs_total > 0:
+            planned_run_ratio_total = round(len(plan) / potential_runs_total, 6)
+
         payload: dict[str, Any] = {
             "schema_version": "v1",
             "task_set_id": task_set_id,
@@ -415,6 +419,7 @@ def main() -> int:
                 "planned_runs_total": len(plan),
                 "potential_runs_total": potential_runs_total,
                 "skipped_runs_total": max(0, potential_runs_total - len(plan)),
+                "planned_run_ratio_total": planned_run_ratio_total,
                 "planned_runs_by_model": runs_per_model,
                 "planned_runs_by_prompt_condition": runs_per_prompt_condition,
                 "planned_runs_by_task": runs_per_task,
