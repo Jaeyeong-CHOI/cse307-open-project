@@ -13,6 +13,7 @@ from error_utils import emit_error
 
 
 EXPECTED_GATES = {"mismatch", "severity_total", "severity_avg"}
+EXPECTED_SCHEMA_VERSION = "ci_result_snapshot.v1"
 
 
 def load_json(path: Path) -> Any:
@@ -35,6 +36,12 @@ def validate_snapshot(payload: Any, path: Path) -> list[str]:
     errors: list[str] = []
     if not isinstance(payload, dict):
         return [f"{path}: root must be a JSON object"]
+
+    schema_version = _expect_type(payload, "schema_version", str, errors, path)
+    if isinstance(schema_version, str) and schema_version != EXPECTED_SCHEMA_VERSION:
+        errors.append(
+            f"{path}: schema_version must be '{EXPECTED_SCHEMA_VERSION}'"
+        )
 
     _expect_type(payload, "label", str, errors, path)
 
@@ -130,7 +137,7 @@ def main() -> int:
             "CI result snapshot schema validation failed:\n" + "\n".join(f"- {err}" for err in errors),
             hints=[
                 f"input={args.snapshot_json}",
-                "expected_keys=label,cases,severity,any_tripped,tripped_list,gate_details_compact,top1_mismatch,top_k_mismatches,summary_json,metric_json",
+                "expected_keys=schema_version,label,cases,severity,any_tripped,tripped_list,gate_details_compact,top1_mismatch,top_k_mismatches,summary_json,metric_json",
             ],
         )
         return 1

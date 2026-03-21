@@ -34,6 +34,7 @@ def _assert_contains(text: str, needle: str) -> None:
 
 def main() -> None:
     valid_payload = {
+        "schema_version": "ci_result_snapshot.v1",
         "label": "Full CI result snapshot",
         "cases": {"total": 3, "ok": 1, "mismatch": 2},
         "severity": {"total": 130, "avg": 65.0},
@@ -84,6 +85,19 @@ def main() -> None:
     if bad_any_tripped.returncode == 0:
         raise AssertionError("expected failure for any_tripped/tripped_list inconsistency")
     _assert_contains(bad_any_tripped.stderr, "any_tripped must equal bool(tripped_list)")
+
+    invalid_schema_version = dict(valid_payload)
+    invalid_schema_version["schema_version"] = "ci_result_snapshot.v0"
+    invalid_schema_version_path = _write(
+        OUT / "snapshot.invalid-schema-version.json", invalid_schema_version
+    )
+    bad_schema_version = _run(invalid_schema_version_path)
+    if bad_schema_version.returncode == 0:
+        raise AssertionError("expected failure for invalid schema_version")
+    _assert_contains(
+        bad_schema_version.stderr,
+        "schema_version must be 'ci_result_snapshot.v1'",
+    )
 
 
 if __name__ == "__main__":

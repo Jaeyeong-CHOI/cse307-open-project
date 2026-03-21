@@ -125,6 +125,8 @@ def main() -> None:
     )
 
     snapshot_payload = json.loads(snapshot_json.read_text(encoding="utf-8"))
+    if snapshot_payload.get("schema_version") != "ci_result_snapshot.v1":
+        raise AssertionError("json snapshot schema_version mismatch")
     if snapshot_payload.get("label") != "Full CI result snapshot":
         raise AssertionError("json snapshot label mismatch")
     top_k_meta = snapshot_payload.get("top_k_mismatches", {})

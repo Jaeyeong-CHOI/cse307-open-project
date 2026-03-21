@@ -14,6 +14,7 @@ from error_utils import emit_error
 TOP_K_AUTO = "auto"
 TOP_K_MIN = 1
 TOP_K_MAX = 3
+SNAPSHOT_SCHEMA_VERSION = "ci_result_snapshot.v1"
 
 
 def _mismatch_fields(item: Any) -> dict[str, Any]:
@@ -168,6 +169,7 @@ def build_snapshot_payload(
     resolved_top_k = _resolve_top_k(payload, top_k_mismatches)
 
     return {
+        "schema_version": SNAPSHOT_SCHEMA_VERSION,
         "label": label,
         "cases": {
             "total": overview.get("total_cases"),
