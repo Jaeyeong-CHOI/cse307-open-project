@@ -117,6 +117,17 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
 
     _expect_type(payload, "mismatch_sort", str, errors, path)
 
+    gates = _expect_type(payload, "gates", dict, errors, path)
+    if isinstance(gates, dict):
+        for gate_key in ["mismatch", "severity_total", "severity_avg"]:
+            gate_value = gates.get(gate_key)
+            if not isinstance(gate_value, dict):
+                errors.append(f"{path}: gates.{gate_key} must be an object")
+                continue
+            for key in ["enabled", "tripped"]:
+                if key not in gate_value:
+                    errors.append(f"{path}: gates.{gate_key} missing '{key}'")
+
     cases = _expect_type(payload, "cases", list, errors, path)
     if isinstance(cases, list):
         for idx, row in enumerate(cases):
@@ -139,7 +150,7 @@ def main() -> int:
     if errors:
         emit_error(
             "Summary payload schema validation failed:\n" + "\n".join(f"- {err}" for err in errors),
-            hints=[f"input={args.summary_json}", "expected_keys=metadata,title,overview,quality_signals,failure_taxonomy,top_mismatches,mismatch_sort,cases"],
+            hints=[f"input={args.summary_json}", "expected_keys=metadata,title,overview,quality_signals,failure_taxonomy,top_mismatches,mismatch_sort,gates,cases"],
         )
         return 1
     print(f"OK: summary payload schema valid ({args.summary_json})")

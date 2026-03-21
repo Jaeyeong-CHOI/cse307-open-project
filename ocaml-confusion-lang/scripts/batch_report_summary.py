@@ -289,6 +289,7 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
     overview = payload["overview"]
     quality = payload["quality_signals"]
     metadata = payload.get("metadata") or {}
+    gates = payload.get("gates") if isinstance(payload.get("gates"), dict) else {}
     task_set_lineage = metadata.get("task_set_lineage") if isinstance(metadata, dict) else None
     lines: list[str] = []
     lines.append(f"# {payload['title']}")
@@ -321,6 +322,40 @@ def build_summary(payload: dict[str, Any], top_k_mismatches: int) -> str:
     lines.append(f"- mismatch_severity_total: {quality['mismatch_severity_total']}")
     lines.append(f"- mismatch_severity_avg: {quality['mismatch_severity_avg']:.1f}")
     lines.append("")
+
+    if gates:
+        lines.append("## Gate Signals")
+        mismatch_gate = gates.get("mismatch") if isinstance(gates.get("mismatch"), dict) else None
+        if isinstance(mismatch_gate, dict):
+            lines.append(
+                "- mismatch gate: "
+                f"enabled={mismatch_gate.get('enabled')}, "
+                f"tripped={mismatch_gate.get('tripped')}, "
+                f"observed_mismatch_cases={mismatch_gate.get('observed_mismatch_cases')}"
+            )
+        severity_total_gate = (
+            gates.get("severity_total") if isinstance(gates.get("severity_total"), dict) else None
+        )
+        if isinstance(severity_total_gate, dict):
+            lines.append(
+                "- severity_total gate: "
+                f"enabled={severity_total_gate.get('enabled')}, "
+                f"tripped={severity_total_gate.get('tripped')}, "
+                f"threshold={severity_total_gate.get('threshold')}, "
+                f"observed={severity_total_gate.get('observed')}"
+            )
+        severity_avg_gate = (
+            gates.get("severity_avg") if isinstance(gates.get("severity_avg"), dict) else None
+        )
+        if isinstance(severity_avg_gate, dict):
+            lines.append(
+                "- severity_avg gate: "
+                f"enabled={severity_avg_gate.get('enabled')}, "
+                f"tripped={severity_avg_gate.get('tripped')}, "
+                f"threshold={severity_avg_gate.get('threshold')}, "
+                f"observed={severity_avg_gate.get('observed')}"
+            )
+        lines.append("")
 
     lines.append("## Failure Taxonomy (frequency)")
     freq = payload["failure_taxonomy"]["frequency"]
@@ -565,6 +600,48 @@ def main() -> int:
         args.only_mismatches,
         task_set_lineage=task_set_lineage,
     )
+
+    observed_mismatch = int(payload["overview"]["mismatch_cases"])
+    severity_total = int(payload["quality_signals"]["mismatch_severity_total"])
+    severity_avg = float(payload["quality_signals"]["mismatch_severity_avg"])
+
+    mismatch_gate_tripped = bool(args.fail_on_mismatch and observed_mismatch > 0)
+    severity_total_gate_enabled = args.fail_on_severity_total_ge is not None
+    severity_total_threshold = (
+        int(args.fail_on_severity_total_ge) if severity_total_gate_enabled else None
+    )
+    severity_total_gate_tripped = bool(
+        severity_total_gate_enabled and severity_total >= int(args.fail_on_severity_total_ge)
+    )
+
+    severity_avg_gate_enabled = args.fail_on_severity_avg_ge is not None
+    severity_avg_threshold = (
+        float(args.fail_on_severity_avg_ge) if severity_avg_gate_enabled else None
+    )
+    severity_avg_gate_tripped = bool(
+        severity_avg_gate_enabled and severity_avg >= float(args.fail_on_severity_avg_ge)
+    )
+
+    payload["gates"] = {
+        "mismatch": {
+            "enabled": bool(args.fail_on_mismatch),
+            "tripped": mismatch_gate_tripped,
+            "observed_mismatch_cases": observed_mismatch,
+        },
+        "severity_total": {
+            "enabled": severity_total_gate_enabled,
+            "threshold": severity_total_threshold,
+            "observed": severity_total,
+            "tripped": severity_total_gate_tripped,
+        },
+        "severity_avg": {
+            "enabled": severity_avg_gate_enabled,
+            "threshold": severity_avg_threshold,
+            "observed": severity_avg,
+            "tripped": severity_avg_gate_tripped,
+        },
+    }
+
     summary = build_summary(payload, top_k)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(summary, encoding="utf-8")
@@ -585,19 +662,14 @@ def main() -> int:
 
     print("\n".join(str(p) for p in outputs))
 
-    if args.fail_on_mismatch and int(payload["overview"]["mismatch_cases"]) > 0:
+    if mismatch_gate_tripped:
         emit_error(
             "mismatch gate tripped: mismatch_cases > 0",
             hints=[f"input={args.input_json}", "gate=--fail-on-mismatch"],
         )
         return 2
 
-    severity_total = int(payload["quality_signals"]["mismatch_severity_total"])
-    severity_avg = float(payload["quality_signals"]["mismatch_severity_avg"])
-    if (
-        args.fail_on_severity_total_ge is not None
-        and severity_total >= int(args.fail_on_severity_total_ge)
-    ):
+    if severity_total_gate_tripped:
         emit_error(
             "severity total gate tripped",
             hints=[
@@ -607,10 +679,7 @@ def main() -> int:
             ],
         )
         return 3
-    if (
-        args.fail_on_severity_avg_ge is not None
-        and severity_avg >= float(args.fail_on_severity_avg_ge)
-    ):
+    if severity_avg_gate_tripped:
         emit_error(
             "severity average gate tripped",
             hints=[

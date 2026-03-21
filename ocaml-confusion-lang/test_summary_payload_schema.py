@@ -49,6 +49,13 @@ def main() -> int:
 
     _run_validator(summary_json, expect_ok=True)
 
+    payload_ok = json.loads(summary_json.read_text(encoding="utf-8"))
+    gates = payload_ok.get("gates")
+    if not isinstance(gates, dict):
+        raise RuntimeError("expected 'gates' object in summary payload")
+    if "mismatch" not in gates or "severity_total" not in gates or "severity_avg" not in gates:
+        raise RuntimeError("expected mismatch/severity gate entries in summary payload")
+
     invalid_summary = OUT / "fixture.summary.schema-check.invalid-lineage.json"
     payload = json.loads(summary_json.read_text(encoding="utf-8"))
     payload["metadata"]["task_set_lineage"]["manifest_path"] = ""
@@ -62,6 +69,13 @@ def main() -> int:
     invalid_scope_summary.write_text(json.dumps(payload_scope, ensure_ascii=False, indent=2), encoding="utf-8")
 
     _run_validator(invalid_scope_summary, expect_ok=False)
+
+    invalid_gate_summary = OUT / "fixture.summary.schema-check.invalid-gate-shape.json"
+    payload_gate = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload_gate["gates"]["mismatch"] = True
+    invalid_gate_summary.write_text(json.dumps(payload_gate, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    _run_validator(invalid_gate_summary, expect_ok=False)
 
     print("OK: summary payload schema regression passed")
     return 0
