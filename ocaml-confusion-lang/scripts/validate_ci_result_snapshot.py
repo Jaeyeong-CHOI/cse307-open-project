@@ -14,6 +14,14 @@ from error_utils import emit_error
 
 
 EXPECTED_GATES = {"mismatch", "severity_total", "severity_avg"}
+ALLOWED_EVENT_NAMES = {
+    "push",
+    "pull_request",
+    "workflow_dispatch",
+    "schedule",
+    "workflow_run",
+    "repository_dispatch",
+}
 SCHEMA_VERSION_PATTERN = re.compile(r"^ci_result_snapshot\.v(\d+)$")
 SHA_PATTERN = re.compile(r"^[0-9a-fA-F]{7,40}$")
 RUN_ID_PATTERN = re.compile(r"^\d+$")
@@ -210,6 +218,12 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
             if isinstance(ref, str) and ref.strip() and not ref.strip().startswith("refs/"):
                 errors.append(
                     f"{path}: run_context.ref must start with 'refs/' when present"
+                )
+
+            event_name = run_context.get("event_name")
+            if isinstance(event_name, str) and event_name.strip() and event_name.strip() not in ALLOWED_EVENT_NAMES:
+                errors.append(
+                    f"{path}: run_context.event_name must be one of {sorted(ALLOWED_EVENT_NAMES)} when present"
                 )
 
     return errors

@@ -300,6 +300,21 @@ def main() -> None:
         "run_context.ref must start with 'refs/' when present",
     )
 
+    invalid_event_name = dict(valid_payload)
+    invalid_event_name["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "event_name": "manual",
+    }
+    invalid_event_name_path = _write(OUT / "snapshot.invalid-event-name.json", invalid_event_name)
+    bad_event_name = _run(invalid_event_name_path)
+    if bad_event_name.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.event_name")
+    _assert_contains(
+        bad_event_name.stderr,
+        "run_context.event_name must be one of",
+    )
+
 
 if __name__ == "__main__":
     main()
