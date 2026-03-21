@@ -28,6 +28,7 @@ RUN_ID_PATTERN = re.compile(r"^\d+$")
 REPOSITORY_PATTERN = re.compile(r"^[^/\s]+/[^/\s]+$")
 ACTOR_PATTERN = re.compile(r"^[A-Za-z0-9-]+$")
 REF_PATTERN = re.compile(r"^refs/(heads|tags|pull)/.+$")
+RUN_CONTEXT_TEXT_MAX_LEN = 128
 GITHUB_RUN_URL_PATTERN = re.compile(
     r"^https://github\.com/(?P<repository>[^/\s]+/[^/\s]+)/actions/runs/(?P<run_id>\d+)(?:/attempts/(?P<attempt>\d+))?/?$"
 )
@@ -257,6 +258,13 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
                 errors.append(
                     f"{path}: run_context.actor must match '[A-Za-z0-9-]+' when present"
                 )
+
+            for key in ["workflow", "job"]:
+                value = run_context.get(key)
+                if isinstance(value, str) and value.strip() and len(value.strip()) > RUN_CONTEXT_TEXT_MAX_LEN:
+                    errors.append(
+                        f"{path}: run_context.{key} length must be <= {RUN_CONTEXT_TEXT_MAX_LEN} when present"
+                    )
 
     return errors
 

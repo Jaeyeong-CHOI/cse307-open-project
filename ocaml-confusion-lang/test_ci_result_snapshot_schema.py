@@ -428,6 +428,34 @@ def main() -> None:
         "run_context.actor must match '[A-Za-z0-9-]+' when present",
     )
 
+    invalid_workflow_too_long = dict(valid_payload)
+    invalid_workflow_too_long["run_context"] = dict(valid_payload["run_context"])
+    invalid_workflow_too_long["run_context"]["workflow"] = "w" * 129
+    invalid_workflow_too_long_path = _write(
+        OUT / "snapshot.invalid-workflow-too-long.json", invalid_workflow_too_long
+    )
+    bad_workflow_too_long = _run(invalid_workflow_too_long_path)
+    if bad_workflow_too_long.returncode == 0:
+        raise AssertionError("expected failure for too-long run_context.workflow")
+    _assert_contains(
+        bad_workflow_too_long.stderr,
+        "run_context.workflow length must be <= 128 when present",
+    )
+
+    invalid_job_too_long = dict(valid_payload)
+    invalid_job_too_long["run_context"] = dict(valid_payload["run_context"])
+    invalid_job_too_long["run_context"]["job"] = "j" * 129
+    invalid_job_too_long_path = _write(
+        OUT / "snapshot.invalid-job-too-long.json", invalid_job_too_long
+    )
+    bad_job_too_long = _run(invalid_job_too_long_path)
+    if bad_job_too_long.returncode == 0:
+        raise AssertionError("expected failure for too-long run_context.job")
+    _assert_contains(
+        bad_job_too_long.stderr,
+        "run_context.job length must be <= 128 when present",
+    )
+
 
 if __name__ == "__main__":
     main()
