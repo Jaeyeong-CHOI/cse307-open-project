@@ -1,0 +1,56 @@
+{
+  "total_cases": 3,
+  "ok_cases": 1,
+  "mismatch_cases": 2,
+  "include_diff": true,
+  "cases": [
+    {
+      "source": "examples/sample.py",
+      "status": "ok",
+      "exact_match": true,
+      "token_equivalent": true,
+      "ast_equivalent": true,
+      "failure_taxonomy": [],
+      "first_diff": null,
+      "first_token_diff": null
+    },
+    {
+      "source": "examples/blankline-drift.py",
+      "status": "mismatch",
+      "exact_match": false,
+      "token_equivalent": true,
+      "ast_equivalent": true,
+      "failure_taxonomy": [
+        "line_count_mismatch",
+        "whitespace_or_blankline_drift"
+      ],
+      "first_diff": {
+        "line": 4,
+        "src": "",
+        "restored": "    "
+      },
+      "first_token_diff": null
+    },
+    {
+      "source": "examples/collision-risk-case.py",
+      "status": "mismatch",
+      "exact_match": false,
+      "token_equivalent": false,
+      "ast_equivalent": false,
+      "failure_taxonomy": [
+        "token_stream_mismatch",
+        "token_substitution_mismatch"
+      ],
+      "first_diff": {
+        "line": 2,
+        "src": "    for n in nums:",
+        "restored": "    for n if nums:"
+      },
+      "first_token_diff": {
+        "index": 8,
+        "src": "word:in",
+        "restored": "word:if"
+      }
+    }
+  ]
+}
