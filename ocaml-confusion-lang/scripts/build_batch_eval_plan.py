@@ -150,6 +150,9 @@ def main() -> int:
         run_index = 0
         runs_per_model: dict[str, int] = {model: 0 for model in models}
         runs_per_prompt_condition: dict[str, int] = {condition: 0 for condition in conditions}
+        runs_by_model_prompt_condition: dict[str, dict[str, int]] = {
+            model: {condition: 0 for condition in conditions} for model in models
+        }
         for model in models:
             for condition in conditions:
                 for task in tasks:
@@ -159,6 +162,7 @@ def main() -> int:
                         run_index += 1
                         runs_per_model[model] += 1
                         runs_per_prompt_condition[condition] += 1
+                        runs_by_model_prompt_condition[model][condition] += 1
                         plan.append(
                             {
                                 "run_id": f"run-{run_index:04d}",
@@ -186,6 +190,22 @@ def main() -> int:
             condition: max(0, potential_runs_per_condition - runs_per_prompt_condition[condition])
             for condition in conditions
         }
+        potential_runs_per_model_prompt_condition = len(tasks) * args.repeats
+        potential_runs_by_model_prompt_condition = {
+            model: {condition: potential_runs_per_model_prompt_condition for condition in conditions}
+            for model in models
+        }
+        skipped_runs_by_model_prompt_condition = {
+            model: {
+                condition: max(
+                    0,
+                    potential_runs_by_model_prompt_condition[model][condition]
+                    - runs_by_model_prompt_condition[model][condition],
+                )
+                for condition in conditions
+            }
+            for model in models
+        }
 
         payload: dict[str, Any] = {
             "schema_version": "v1",
@@ -209,12 +229,15 @@ def main() -> int:
                 "skipped_runs_total": max(0, potential_runs_total - len(plan)),
                 "planned_runs_by_model": runs_per_model,
                 "planned_runs_by_prompt_condition": runs_per_prompt_condition,
+                "planned_runs_by_model_prompt_condition": runs_by_model_prompt_condition,
                 "potential_runs_by_model": {model: potential_runs_per_model for model in models},
                 "potential_runs_by_prompt_condition": {
                     condition: potential_runs_per_condition for condition in conditions
                 },
+                "potential_runs_by_model_prompt_condition": potential_runs_by_model_prompt_condition,
                 "skipped_runs_by_model": skipped_runs_by_model,
                 "skipped_runs_by_prompt_condition": skipped_runs_by_prompt_condition,
+                "skipped_runs_by_model_prompt_condition": skipped_runs_by_model_prompt_condition,
             },
             "plan": plan,
         }

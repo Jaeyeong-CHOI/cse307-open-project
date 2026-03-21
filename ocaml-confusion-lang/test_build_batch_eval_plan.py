@@ -56,6 +56,14 @@ def main() -> int:
             "unexpected planned_runs_by_prompt_condition: "
             f"{summary['planned_runs_by_prompt_condition']}"
         )
+    if summary["planned_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 6, "strict": 6},
+        "gpt-5-pro": {"base": 6, "strict": 6},
+    }:
+        raise AssertionError(
+            "unexpected planned_runs_by_model_prompt_condition: "
+            f"{summary['planned_runs_by_model_prompt_condition']}"
+        )
     if summary["potential_runs_total"] != expected_total or summary["skipped_runs_total"] != 0:
         raise AssertionError(
             "expected uncapped run counters to match planned total: "
@@ -70,6 +78,14 @@ def main() -> int:
             "unexpected potential_runs_by_prompt_condition: "
             f"{summary['potential_runs_by_prompt_condition']}"
         )
+    if summary["potential_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 6, "strict": 6},
+        "gpt-5-pro": {"base": 6, "strict": 6},
+    }:
+        raise AssertionError(
+            "unexpected potential_runs_by_model_prompt_condition: "
+            f"{summary['potential_runs_by_model_prompt_condition']}"
+        )
     if summary["skipped_runs_by_model"] != {"gpt-5-mini": 0, "gpt-5-pro": 0}:
         raise AssertionError(
             f"unexpected skipped_runs_by_model: {summary['skipped_runs_by_model']}"
@@ -78,6 +94,14 @@ def main() -> int:
         raise AssertionError(
             "unexpected skipped_runs_by_prompt_condition: "
             f"{summary['skipped_runs_by_prompt_condition']}"
+        )
+    if summary["skipped_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 0, "strict": 0},
+        "gpt-5-pro": {"base": 0, "strict": 0},
+    }:
+        raise AssertionError(
+            "unexpected skipped_runs_by_model_prompt_condition: "
+            f"{summary['skipped_runs_by_model_prompt_condition']}"
         )
 
     capped = subprocess.run(
@@ -141,6 +165,14 @@ def main() -> int:
             "unexpected per-model capped runs_by_prompt_condition: "
             f"{per_model_summary['planned_runs_by_prompt_condition']}"
         )
+    if per_model_summary["planned_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 5, "strict": 0},
+        "gpt-5-pro": {"base": 5, "strict": 0},
+    }:
+        raise AssertionError(
+            "unexpected per-model capped planned_runs_by_model_prompt_condition: "
+            f"{per_model_summary['planned_runs_by_model_prompt_condition']}"
+        )
     if per_model_summary["potential_runs_total"] != 36:
         raise AssertionError(
             f"expected per-model potential total=36, got {per_model_summary['potential_runs_total']}"
@@ -159,10 +191,26 @@ def main() -> int:
             "unexpected per-model capped potential_runs_by_prompt_condition: "
             f"{per_model_summary['potential_runs_by_prompt_condition']}"
         )
+    if per_model_summary["potential_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 9, "strict": 9},
+        "gpt-5-pro": {"base": 9, "strict": 9},
+    }:
+        raise AssertionError(
+            "unexpected per-model capped potential_runs_by_model_prompt_condition: "
+            f"{per_model_summary['potential_runs_by_model_prompt_condition']}"
+        )
     if per_model_summary["skipped_runs_by_prompt_condition"] != {"base": 8, "strict": 18}:
         raise AssertionError(
             "unexpected per-model capped skipped_runs_by_prompt_condition: "
             f"{per_model_summary['skipped_runs_by_prompt_condition']}"
+        )
+    if per_model_summary["skipped_runs_by_model_prompt_condition"] != {
+        "gpt-5-mini": {"base": 4, "strict": 9},
+        "gpt-5-pro": {"base": 4, "strict": 9},
+    }:
+        raise AssertionError(
+            "unexpected per-model capped skipped_runs_by_model_prompt_condition: "
+            f"{per_model_summary['skipped_runs_by_model_prompt_condition']}"
         )
 
     print("OK: build_batch_eval_plan regression passed")
