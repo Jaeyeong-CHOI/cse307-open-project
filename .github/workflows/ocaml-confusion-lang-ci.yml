@@ -159,6 +159,12 @@ jobs:
             echo "- snapshot_top_k_mismatches: ${SNAPSHOT_TOP_K}"
             echo "- summary_require_explicit_event_name: ${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}"
             echo "- snapshot_require_explicit_event_name: ${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}"
+            if [[ "${SUMMARY_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
+              echo "- summary_event_name_policy_banner: strict mode enabled (fallback event_name=unknown disabled)"
+            fi
+            if [[ "${SNAPSHOT_REQUIRE_EXPLICIT_EVENT_NAME}" == "true" ]]; then
+              echo "- snapshot_event_name_policy_banner: strict mode enabled (fallback event_name=unknown disabled)"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
   test-lightweight:
