@@ -95,6 +95,10 @@ python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-
 python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro --prompt-conditions base,strict --repeats 2 --cheap-first --fair-model-allocation --max-total-runs 24 --max-runs-per-model 14 --max-runs-per-prompt-condition 12 --max-runs-per-task 4 --max-runs-per-task-model 2 -o ../docs/research/results/plan.balanced-ci.json
 # 3) full-analysis: 분석용 고커버리지(여전히 cap 유지)
 python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --models gpt-5-mini,gpt-5-pro,gpt-5.3-codex --prompt-conditions base,strict,few-shot,two-step --repeats 2 --cheap-first --fair-model-allocation --max-total-runs 64 --max-runs-per-model 24 --max-runs-per-prompt-condition 20 --max-runs-per-task 6 --max-runs-per-task-model 3 -o ../docs/research/results/plan.full-analysis.json
+# preset 파일 기반 실행 (examples/batch-plan-presets.v1.json)
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset quick-smoke -o ../docs/research/results/plan.quick-smoke.preset.json
+# preset + CLI override (예: repeats만 덮어쓰기)
+python3 scripts/build_batch_eval_plan.py examples/task-set-v1.json --preset balanced-ci --repeats 2 -o ../docs/research/results/plan.balanced-ci.override.json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
 # run_context fallback event_name(unknown/derived) 차단(엄격 모드)
@@ -304,3 +308,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 147. ~~planner 기본 확장 경로(비 `--max-runs-per-prompt-condition`)에서 `--fair-model-allocation`이 실질적으로 model 순서를 회전하도록 루프 순서를 정리해, task×prompt cap 절단 시 모델 쏠림(cheap model 편향)을 완화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 148. ~~planner summary에 전체 활용률 지표(`planned_run_ratio_total`)를 추가해 cap 조합별 계획 밀도(실행/잠재 비율)를 한눈에 비교 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 149. ~~planner summary에 축별 활용률 지표(`planned_run_ratio_by_model/prompt_condition/task` + 2D 매트릭스 비율)를 추가해 cap 병목 구간을 aggregate 외 단면에서도 즉시 진단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+150. ~~planner(`build_batch_eval_plan.py`)에 `--preset/--preset-file`을 추가하고 `examples/batch-plan-presets.v1.json`을 도입해 cap 조합 프리셋을 재사용 가능하게 만들며, CLI override 우선순위를 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `examples/batch-plan-presets.v1.json`, `test_build_batch_eval_plan.py`, `README.md`)

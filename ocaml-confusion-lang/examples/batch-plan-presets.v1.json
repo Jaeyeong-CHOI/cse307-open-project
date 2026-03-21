@@ -1,0 +1,32 @@
+{
+  "schema_version": "v1",
+  "presets": {
+    "quick-smoke": {
+      "models": "gpt-5-mini",
+      "prompt_conditions": "base",
+      "repeats": 1,
+      "cheap_first": true,
+      "max_total_runs": 6,
+      "max_total_runs_mode": "cap"
+    },
+    "balanced-ci": {
+      "models": "gpt-5-mini,gpt-5-pro",
+      "prompt_conditions": "base,strict",
+      "repeats": 3,
+      "cheap_first": true,
+      "fair_model_allocation": true,
+      "max_total_runs": 24,
+      "max_total_runs_mode": "cap",
+      "max_runs_per_model": 12,
+      "max_runs_per_prompt_condition": 12
+    },
+    "full-analysis": {
+      "models": "gpt-5-mini,gpt-5-pro",
+      "prompt_conditions": "base,strict,few-shot,two-step",
+      "repeats": 3,
+      "cheap_first": true,
+      "fair_model_allocation": true,
+      "max_total_runs_mode": "fail"
+    }
+  }
+}

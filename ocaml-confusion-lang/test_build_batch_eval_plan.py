@@ -637,6 +637,34 @@ def main() -> int:
             f"{fair_per_task_prompt_summary['planned_runs_by_model']}"
         )
 
+    preset_output = OUT / "batch-plan.preset.quick-smoke.json"
+    subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(TASK_SET),
+            "--preset",
+            "quick-smoke",
+            "--output",
+            str(preset_output),
+        ],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    preset_payload = json.loads(preset_output.read_text(encoding="utf-8"))
+    preset_config = preset_payload["config"]
+    if preset_config.get("preset") != "quick-smoke":
+        raise AssertionError(f"unexpected preset name in config: {preset_config.get('preset')}")
+    if preset_config["models"] != ["gpt-5-mini"]:
+        raise AssertionError(f"unexpected preset models: {preset_config['models']}")
+    if preset_payload["summary"]["planned_runs_total"] != 3:
+        raise AssertionError(
+            "expected quick-smoke preset to plan 3 runs (3 tasks x 1 model x 1 condition x 1 repeat), "
+            f"got {preset_payload['summary']['planned_runs_total']}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 

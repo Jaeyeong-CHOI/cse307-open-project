@@ -16,6 +16,9 @@ from typing import Any
 from error_utils import emit_error
 
 
+DEFAULT_PRESET_FILE = Path(__file__).resolve().parent.parent / "examples" / "batch-plan-presets.v1.json"
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         payload = json.load(f)
@@ -29,6 +32,23 @@ def parse_csv_list(raw: str, field_name: str) -> list[str]:
     if not values:
         raise ValueError(f"{field_name} must include at least one non-empty value")
     return values
+
+
+def load_preset_config(preset_file: Path, preset_name: str) -> dict[str, Any]:
+    payload = load_json(preset_file)
+    schema_version = payload.get("schema_version")
+    if schema_version != "v1":
+        raise ValueError(f"{preset_file}: schema_version must be 'v1' (got '{schema_version}')")
+    presets_raw = payload.get("presets")
+    if not isinstance(presets_raw, dict):
+        raise ValueError(f"{preset_file}: presets must be an object")
+    preset = presets_raw.get(preset_name)
+    if not isinstance(preset, dict):
+        available = ", ".join(sorted(presets_raw.keys())) or "<none>"
+        raise ValueError(
+            f"{preset_file}: unknown preset '{preset_name}' (available: {available})"
+        )
+    return preset
 
 
 def _dedupe_keep_order(values: list[str]) -> list[str]:
@@ -114,63 +134,42 @@ def validate_task_set(payload: dict[str, Any], path: Path) -> tuple[str, list[di
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build a batch evaluation plan JSON")
     parser.add_argument("task_set_json", type=Path, help="Path to task-set v1 JSON")
-    parser.add_argument("--models", required=True, help="Comma-separated model ids")
+    parser.add_argument("--preset", default=None, help="Preset name from --preset-file")
+    parser.add_argument(
+        "--preset-file",
+        type=Path,
+        default=DEFAULT_PRESET_FILE,
+        help=f"Preset file path (default: {DEFAULT_PRESET_FILE})",
+    )
+    parser.add_argument("--models", default=None, help="Comma-separated model ids")
     parser.add_argument(
         "--prompt-conditions",
-        required=True,
+        default=None,
         help="Comma-separated prompt condition labels (e.g. base,strict,few-shot)",
     )
-    parser.add_argument("--repeats", type=int, default=1, help="Repeat count per task/condition/model (default: 1)")
-    parser.add_argument(
-        "--max-total-runs",
-        type=int,
-        default=0,
-        help="Optional hard cap for total planned runs (0 disables cap)",
-    )
+    parser.add_argument("--repeats", type=int, default=None, help="Repeat count per task/condition/model")
+    parser.add_argument("--max-total-runs", type=int, default=None, help="Optional hard cap for total planned runs (0 disables cap)")
     parser.add_argument(
         "--max-total-runs-mode",
         choices=("fail", "cap"),
-        default="fail",
+        default=None,
         help="Behavior when --max-total-runs is set: fail (default) or cap plan length",
     )
-    parser.add_argument(
-        "--max-runs-per-model",
-        type=int,
-        default=0,
-        help="Optional per-model cap for planned runs (0 disables cap)",
-    )
-    parser.add_argument(
-        "--max-runs-per-prompt-condition",
-        type=int,
-        default=0,
-        help="Optional per-prompt-condition cap for planned runs (0 disables cap)",
-    )
-    parser.add_argument(
-        "--max-runs-per-task",
-        type=int,
-        default=0,
-        help="Optional per-task cap for planned runs (0 disables cap)",
-    )
-    parser.add_argument(
-        "--max-runs-per-task-model",
-        type=int,
-        default=0,
-        help="Optional per-task×model cap for planned runs (0 disables cap)",
-    )
-    parser.add_argument(
-        "--max-runs-per-task-prompt-condition",
-        type=int,
-        default=0,
-        help="Optional per-task×prompt-condition cap for planned runs (0 disables cap)",
-    )
+    parser.add_argument("--max-runs-per-model", type=int, default=None, help="Optional per-model cap for planned runs (0 disables cap)")
+    parser.add_argument("--max-runs-per-prompt-condition", type=int, default=None, help="Optional per-prompt-condition cap for planned runs (0 disables cap)")
+    parser.add_argument("--max-runs-per-task", type=int, default=None, help="Optional per-task cap for planned runs (0 disables cap)")
+    parser.add_argument("--max-runs-per-task-model", type=int, default=None, help="Optional per-task×model cap for planned runs (0 disables cap)")
+    parser.add_argument("--max-runs-per-task-prompt-condition", type=int, default=None, help="Optional per-task×prompt-condition cap for planned runs (0 disables cap)")
     parser.add_argument(
         "--cheap-first",
         action="store_true",
+        default=None,
         help="Order model runs using a cheap-first heuristic before expanding matrix",
     )
     parser.add_argument(
         "--fair-model-allocation",
         action="store_true",
+        default=None,
         help="Rotate model iteration order per expansion step to reduce cap-induced model skew",
     )
     parser.add_argument(
@@ -187,28 +186,82 @@ def main() -> int:
     try:
         args = parse_args()
 
-        if args.repeats < 1:
+        preset: dict[str, Any] = {}
+        if args.preset:
+            preset = load_preset_config(args.preset_file, args.preset)
+
+        models_raw = args.models if args.models is not None else preset.get("models")
+        conditions_raw = (
+            args.prompt_conditions
+            if args.prompt_conditions is not None
+            else preset.get("prompt_conditions")
+        )
+        if not isinstance(models_raw, str) or not models_raw.strip():
+            raise ValueError("--models is required (or provide preset.models)")
+        if not isinstance(conditions_raw, str) or not conditions_raw.strip():
+            raise ValueError("--prompt-conditions is required (or provide preset.prompt_conditions)")
+
+        repeats = args.repeats if args.repeats is not None else int(preset.get("repeats", 1))
+        max_total_runs = (
+            args.max_total_runs if args.max_total_runs is not None else int(preset.get("max_total_runs", 0))
+        )
+        max_total_runs_mode = (
+            args.max_total_runs_mode
+            if args.max_total_runs_mode is not None
+            else str(preset.get("max_total_runs_mode", "fail"))
+        )
+        max_runs_per_model = (
+            args.max_runs_per_model if args.max_runs_per_model is not None else int(preset.get("max_runs_per_model", 0))
+        )
+        max_runs_per_prompt_condition = (
+            args.max_runs_per_prompt_condition
+            if args.max_runs_per_prompt_condition is not None
+            else int(preset.get("max_runs_per_prompt_condition", 0))
+        )
+        max_runs_per_task = (
+            args.max_runs_per_task if args.max_runs_per_task is not None else int(preset.get("max_runs_per_task", 0))
+        )
+        max_runs_per_task_model = (
+            args.max_runs_per_task_model
+            if args.max_runs_per_task_model is not None
+            else int(preset.get("max_runs_per_task_model", 0))
+        )
+        max_runs_per_task_prompt_condition = (
+            args.max_runs_per_task_prompt_condition
+            if args.max_runs_per_task_prompt_condition is not None
+            else int(preset.get("max_runs_per_task_prompt_condition", 0))
+        )
+        cheap_first = args.cheap_first if args.cheap_first is not None else bool(preset.get("cheap_first", False))
+        fair_model_allocation = (
+            args.fair_model_allocation
+            if args.fair_model_allocation is not None
+            else bool(preset.get("fair_model_allocation", False))
+        )
+
+        if repeats < 1:
             raise ValueError("--repeats must be >= 1")
-        if args.max_total_runs < 0:
+        if max_total_runs < 0:
             raise ValueError("--max-total-runs must be >= 0")
-        if args.max_runs_per_model < 0:
+        if max_total_runs_mode not in {"fail", "cap"}:
+            raise ValueError("--max-total-runs-mode must be one of: fail, cap")
+        if max_runs_per_model < 0:
             raise ValueError("--max-runs-per-model must be >= 0")
-        if args.max_runs_per_prompt_condition < 0:
+        if max_runs_per_prompt_condition < 0:
             raise ValueError("--max-runs-per-prompt-condition must be >= 0")
-        if args.max_runs_per_task < 0:
+        if max_runs_per_task < 0:
             raise ValueError("--max-runs-per-task must be >= 0")
-        if args.max_runs_per_task_model < 0:
+        if max_runs_per_task_model < 0:
             raise ValueError("--max-runs-per-task-model must be >= 0")
-        if args.max_runs_per_task_prompt_condition < 0:
+        if max_runs_per_task_prompt_condition < 0:
             raise ValueError("--max-runs-per-task-prompt-condition must be >= 0")
 
         task_set = load_json(args.task_set_json)
         task_set_id, tasks = validate_task_set(task_set, args.task_set_json)
 
-        models = _dedupe_keep_order(parse_csv_list(args.models, "--models"))
-        conditions = _dedupe_keep_order(parse_csv_list(args.prompt_conditions, "--prompt-conditions"))
+        models = _dedupe_keep_order(parse_csv_list(models_raw, "--models"))
+        conditions = _dedupe_keep_order(parse_csv_list(conditions_raw, "--prompt-conditions"))
 
-        if args.cheap_first:
+        if cheap_first:
             models = sorted(models, key=_cheap_first_rank)
 
         plan: list[dict[str, Any]] = []
@@ -219,11 +272,11 @@ def main() -> int:
         runs_per_model: dict[str, int] = {model: 0 for model in models}
 
         def total_cap_reached() -> bool:
-            return bool(args.max_total_runs and len(plan) >= args.max_total_runs)
+            return bool(max_total_runs and len(plan) >= max_total_runs)
 
         def iter_models() -> list[str]:
             nonlocal model_cursor
-            if not args.fair_model_allocation or len(models) <= 1:
+            if not fair_model_allocation or len(models) <= 1:
                 return models
             min_runs = min(runs_per_model.values())
             # Prioritize currently under-allocated models first, then retain cheap-first/base order.
@@ -246,7 +299,7 @@ def main() -> int:
         runs_by_task_prompt_condition: dict[str, dict[str, int]] = {
             task["task_id"]: {condition: 0 for condition in conditions} for task in tasks
         }
-        if args.max_runs_per_prompt_condition:
+        if max_runs_per_prompt_condition:
             # Condition-first expansion keeps per-condition caps from starving later models.
             for condition in conditions:
                 if stop_planning:
@@ -254,28 +307,28 @@ def main() -> int:
                 for task in tasks:
                     if stop_planning:
                         break
-                    for rep in range(1, args.repeats + 1):
+                    for rep in range(1, repeats + 1):
                         if stop_planning:
                             break
                         for model in iter_models():
-                            if total_cap_reached() and args.max_total_runs_mode == "cap":
+                            if total_cap_reached() and max_total_runs_mode == "cap":
                                 stop_planning = True
                                 break
-                            if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
+                            if max_runs_per_model and runs_per_model[model] >= max_runs_per_model:
                                 continue
-                            if runs_per_prompt_condition[condition] >= args.max_runs_per_prompt_condition:
+                            if runs_per_prompt_condition[condition] >= max_runs_per_prompt_condition:
                                 continue
-                            if args.max_runs_per_task and runs_per_task[task["task_id"]] >= args.max_runs_per_task:
+                            if max_runs_per_task and runs_per_task[task["task_id"]] >= max_runs_per_task:
                                 continue
                             if (
-                                args.max_runs_per_task_model
-                                and runs_by_task_model[task["task_id"]][model] >= args.max_runs_per_task_model
+                                max_runs_per_task_model
+                                and runs_by_task_model[task["task_id"]][model] >= max_runs_per_task_model
                             ):
                                 continue
                             if (
-                                args.max_runs_per_task_prompt_condition
+                                max_runs_per_task_prompt_condition
                                 and runs_by_task_prompt_condition[task["task_id"]][condition]
-                                >= args.max_runs_per_task_prompt_condition
+                                >= max_runs_per_task_prompt_condition
                             ):
                                 continue
                             run_index += 1
@@ -305,26 +358,26 @@ def main() -> int:
                 for task in tasks:
                     if stop_planning:
                         break
-                    for rep in range(1, args.repeats + 1):
+                    for rep in range(1, repeats + 1):
                         if stop_planning:
                             break
                         for model in iter_models():
-                            if total_cap_reached() and args.max_total_runs_mode == "cap":
+                            if total_cap_reached() and max_total_runs_mode == "cap":
                                 stop_planning = True
                                 break
-                            if args.max_runs_per_model and runs_per_model[model] >= args.max_runs_per_model:
+                            if max_runs_per_model and runs_per_model[model] >= max_runs_per_model:
                                 continue
-                            if args.max_runs_per_task and runs_per_task[task["task_id"]] >= args.max_runs_per_task:
+                            if max_runs_per_task and runs_per_task[task["task_id"]] >= max_runs_per_task:
                                 continue
                             if (
-                                args.max_runs_per_task_model
-                                and runs_by_task_model[task["task_id"]][model] >= args.max_runs_per_task_model
+                                max_runs_per_task_model
+                                and runs_by_task_model[task["task_id"]][model] >= max_runs_per_task_model
                             ):
                                 continue
                             if (
-                                args.max_runs_per_task_prompt_condition
+                                max_runs_per_task_prompt_condition
                                 and runs_by_task_prompt_condition[task["task_id"]][condition]
-                                >= args.max_runs_per_task_prompt_condition
+                                >= max_runs_per_task_prompt_condition
                             ):
                                 continue
                             run_index += 1
@@ -345,16 +398,16 @@ def main() -> int:
                                 }
                             )
 
-        if args.max_total_runs_mode == "fail" and args.max_total_runs and len(plan) > args.max_total_runs:
+        if max_total_runs_mode == "fail" and max_total_runs and len(plan) > max_total_runs:
             raise ValueError(
-                f"planned runs ({len(plan)}) exceed --max-total-runs ({args.max_total_runs}); "
+                f"planned runs ({len(plan)}) exceed --max-total-runs ({max_total_runs}); "
                 "reduce models/conditions/repeats or increase cap, or use --max-total-runs-mode cap"
             )
 
-        potential_runs_per_model = len(tasks) * len(conditions) * args.repeats
+        potential_runs_per_model = len(tasks) * len(conditions) * repeats
         potential_runs_total = potential_runs_per_model * len(models)
-        potential_runs_per_condition = len(tasks) * len(models) * args.repeats
-        potential_runs_per_task = len(models) * len(conditions) * args.repeats
+        potential_runs_per_condition = len(tasks) * len(models) * repeats
+        potential_runs_per_task = len(models) * len(conditions) * repeats
         skipped_runs_by_model = {
             model: max(0, potential_runs_per_model - runs_per_model[model]) for model in models
         }
@@ -366,7 +419,7 @@ def main() -> int:
             task_id: max(0, potential_runs_per_task - runs_per_task[task_id])
             for task_id in runs_per_task
         }
-        potential_runs_per_model_prompt_condition = len(tasks) * args.repeats
+        potential_runs_per_model_prompt_condition = len(tasks) * repeats
         potential_runs_by_model_prompt_condition = {
             model: {condition: potential_runs_per_model_prompt_condition for condition in conditions}
             for model in models
@@ -382,7 +435,7 @@ def main() -> int:
             }
             for model in models
         }
-        potential_runs_per_task_model = len(conditions) * args.repeats
+        potential_runs_per_task_model = len(conditions) * repeats
         potential_runs_by_task_model = {
             task["task_id"]: {model: potential_runs_per_task_model for model in models}
             for task in tasks
@@ -394,7 +447,7 @@ def main() -> int:
             }
             for task_id in runs_by_task_model
         }
-        potential_runs_per_task_prompt_condition = len(models) * args.repeats
+        potential_runs_per_task_prompt_condition = len(models) * repeats
         potential_runs_by_task_prompt_condition = {
             task["task_id"]: {condition: potential_runs_per_task_prompt_condition for condition in conditions}
             for task in tasks
@@ -433,18 +486,20 @@ def main() -> int:
             "task_set_id": task_set_id,
             "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "config": {
+                "preset": args.preset,
+                "preset_file": str(args.preset_file) if args.preset else None,
                 "models": models,
                 "prompt_conditions": conditions,
-                "repeats": args.repeats,
-                "cheap_first": bool(args.cheap_first),
-                "fair_model_allocation": bool(args.fair_model_allocation),
-                "max_total_runs": args.max_total_runs,
-                "max_total_runs_mode": args.max_total_runs_mode,
-                "max_runs_per_model": args.max_runs_per_model,
-                "max_runs_per_prompt_condition": args.max_runs_per_prompt_condition,
-                "max_runs_per_task": args.max_runs_per_task,
-                "max_runs_per_task_model": args.max_runs_per_task_model,
-                "max_runs_per_task_prompt_condition": args.max_runs_per_task_prompt_condition,
+                "repeats": repeats,
+                "cheap_first": bool(cheap_first),
+                "fair_model_allocation": bool(fair_model_allocation),
+                "max_total_runs": max_total_runs,
+                "max_total_runs_mode": max_total_runs_mode,
+                "max_runs_per_model": max_runs_per_model,
+                "max_runs_per_prompt_condition": max_runs_per_prompt_condition,
+                "max_runs_per_task": max_runs_per_task,
+                "max_runs_per_task_model": max_runs_per_task_model,
+                "max_runs_per_task_prompt_condition": max_runs_per_task_prompt_condition,
             },
             "summary": {
                 "task_count": len(tasks),
