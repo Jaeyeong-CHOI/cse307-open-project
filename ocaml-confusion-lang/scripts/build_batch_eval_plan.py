@@ -300,23 +300,33 @@ def _format_preset_summary_tsv_row(
     return "\t".join(item.replace("\t", " ") for item in row)
 
 
+def _emit_text_or_json_meta(fields: dict[str, str], meta_format: str = "text") -> None:
+    if meta_format == "json":
+        payload: dict[str, Any] = {"meta": True}
+        payload.update(fields)
+        print(json.dumps(payload, ensure_ascii=False))
+        return
+    text_fields = [f"{key}={value}" for key, value in fields.items()]
+    print("# meta\t" + "\t".join(text_fields))
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
     truncated: bool,
     schema_id: str,
     extra_fields: dict[str, str] | None = None,
+    meta_format: str = "text",
 ) -> None:
-    fields = [
-        f"schema={schema_id}",
-        f"filtered_count={filtered_count}",
-        f"emitted_count={emitted_count}",
-        f"truncated={str(truncated).lower()}",
-    ]
+    fields: dict[str, str] = {
+        "schema": schema_id,
+        "filtered_count": str(filtered_count),
+        "emitted_count": str(emitted_count),
+        "truncated": str(truncated).lower(),
+    }
     if extra_fields:
-        for key, value in extra_fields.items():
-            fields.append(f"{key}={value}")
-    print("# meta\t" + "\t".join(fields))
+        fields.update(extra_fields)
+    _emit_text_or_json_meta(fields, meta_format=meta_format)
 
 
 def _emit_show_preset_text_meta(
@@ -325,20 +335,20 @@ def _emit_show_preset_text_meta(
     preset_file: Path,
     schema_id: str,
     extra_fields: dict[str, str] | None = None,
+    meta_format: str = "text",
 ) -> None:
-    fields = [
-        f"schema={schema_id}",
-        "filtered_count=1",
-        "emitted_count=1",
-        "truncated=false",
-        f"preset={preset_name}",
-        f"format={output_format}",
-        f"preset_file={preset_file}",
-    ]
+    fields: dict[str, str] = {
+        "schema": schema_id,
+        "filtered_count": "1",
+        "emitted_count": "1",
+        "truncated": "false",
+        "preset": preset_name,
+        "format": output_format,
+        "preset_file": str(preset_file),
+    }
     if extra_fields:
-        for key, value in extra_fields.items():
-            fields.append(f"{key}={value}")
-    print("# meta\t" + "\t".join(fields))
+        fields.update(extra_fields)
+    _emit_text_or_json_meta(fields, meta_format=meta_format)
 
 
 def _dedupe_keep_order(values: list[str]) -> list[str]:
@@ -461,6 +471,12 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--show-preset-meta-format",
+        choices=("text", "json"),
+        default="text",
+        help="Meta footer format for --show-preset-with-meta (default: text)",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -515,6 +531,12 @@ def parse_args() -> argparse.Namespace:
             "Include active filter context in --list-presets text meta footer "
             "(tag/name_contains/limit/tag_match)."
         ),
+    )
+    parser.add_argument(
+        "--list-presets-meta-format",
+        choices=("text", "json"),
+        default="text",
+        help="Meta footer format for --list-presets-with-meta (default: text)",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -708,6 +730,7 @@ def main() -> int:
                         args.preset_file,
                         schema_id=show_meta_schema_id,
                         extra_fields=show_meta_extra_fields,
+                        meta_format=args.show_preset_meta_format,
                     )
                 return 0
             if args.show_preset_format == "summary-tsv":
@@ -734,6 +757,7 @@ def main() -> int:
                         args.preset_file,
                         schema_id=show_meta_schema_id,
                         extra_fields=show_meta_extra_fields,
+                        meta_format=args.show_preset_meta_format,
                     )
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -836,6 +860,7 @@ def main() -> int:
                         truncated,
                         schema_id=list_meta_schema_id,
                         extra_fields=list_meta_extra_fields,
+                        meta_format=args.list_presets_meta_format,
                     )
                 return 0
             if args.list_presets_format == "summary-tsv":
@@ -867,6 +892,7 @@ def main() -> int:
                         truncated,
                         schema_id=list_meta_schema_id,
                         extra_fields=list_meta_extra_fields,
+                        meta_format=args.list_presets_meta_format,
                     )
                 return 0
             for name in preset_names:
@@ -878,6 +904,7 @@ def main() -> int:
                     truncated,
                     schema_id=list_meta_schema_id,
                     extra_fields=list_meta_extra_fields,
+                    meta_format=args.list_presets_meta_format,
                 )
             return 0
 

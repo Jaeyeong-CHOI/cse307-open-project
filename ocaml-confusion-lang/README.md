@@ -111,6 +111,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-cont
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 # text 출력(names/summary/summary-tsv)에서도 필터/절단 메타데이터 footer를 함께 출력
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --list-presets-limit 2 --list-presets-with-meta
+# list-presets meta를 JSON 한 줄로 출력(텍스트 key=value split 없이 parser-friendly)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-format json
 # list-presets text meta footer schema id를 버전 실험용으로 override
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-schema-id planner_preset_list_meta.v2
 # list-presets text meta footer에 활성 필터(tag/name/limit/match) 컨텍스트를 함께 기록
@@ -143,6 +145,8 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary
 # show-preset text 출력(summary/summary-tsv)에도 parser-friendly 메타 footer를 함께 출력
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary-tsv --show-preset-with-meta
+# show-preset meta를 JSON 한 줄로 출력(자동화 parser 친화)
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json
 # show-preset text meta footer schema id를 버전 실험용으로 override
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-schema-id planner_preset_show_meta.v2
 # meta footer schema id 정책(파서 구현 참고용 단일 규약)
@@ -401,3 +405,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 182. ~~list/show text meta footer schema id 패턴/버전 정책을 README 단일 블록으로 명시해 parser 구현체의 참고 지점을 일원화~~ ✅ (`README.md`)
 183. ~~planner `--list-presets` text meta footer에 optional 필터 컨텍스트(`tag_filter`, `tag_match`, `name_contains`, `limit`)를 노출하는 `--list-presets-meta-include-filters` 옵션을 추가해, 파서/운영 로그에서 "어떤 필터로 만들어진 메타인지"를 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 184. ~~planner `--show-preset` text meta footer에도 optional CLI override 컨텍스트(`override_count`, `overrides`)를 노출하는 `--show-preset-meta-include-overrides` 옵션을 추가해, 단일 preset preview 로그에서 최종값이 어떤 override로 형성됐는지 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+185. ~~planner list/show text meta footer에 출력 포맷 옵션(`--list-presets-meta-format`, `--show-preset-meta-format`)을 추가해 기존 `# meta\t...` 텍스트와 JSON line을 런타임 선택 가능하게 확장, parser가 key=value split 없이 메타데이터를 직접 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

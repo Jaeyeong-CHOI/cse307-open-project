@@ -956,6 +956,35 @@ def main() -> int:
             f"unexpected names-with-meta custom schema footer: {names_with_meta_custom_schema_lines}"
         )
 
+    preset_list_names_with_meta_json = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_json_lines = [
+        line.strip() for line in preset_list_names_with_meta_json.stdout.splitlines() if line.strip()
+    ]
+    names_meta_payload = json.loads(names_with_meta_json_lines[-1])
+    if names_meta_payload != {
+        "meta": True,
+        "schema": "planner_preset_list_meta.v1",
+        "filtered_count": "3",
+        "emitted_count": "2",
+        "truncated": "true",
+    }:
+        raise AssertionError(f"unexpected names-with-meta json payload: {names_meta_payload}")
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -1426,6 +1455,32 @@ def main() -> int:
             "unexpected show-preset summary custom schema meta footer: "
             f"{show_preset_summary_with_meta_custom_schema_lines}"
         )
+
+    show_preset_summary_with_meta_json = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_json_lines = [
+        line.rstrip("\n") for line in show_preset_summary_with_meta_json.stdout.splitlines() if line.strip()
+    ]
+    show_meta_payload = json.loads(show_preset_with_meta_json_lines[-1])
+    if show_meta_payload.get("meta") is not True or show_meta_payload.get("schema") != "planner_preset_show_meta.v1":
+        raise AssertionError(f"unexpected show-preset json meta payload: {show_meta_payload}")
+    if show_meta_payload.get("preset") != "quick-smoke" or show_meta_payload.get("format") != "summary":
+        raise AssertionError(f"unexpected show-preset json meta payload core fields: {show_meta_payload}")
 
     invalid_show_preset_meta_schema = subprocess.run(
         [
