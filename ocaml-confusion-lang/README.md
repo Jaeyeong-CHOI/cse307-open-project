@@ -16,7 +16,7 @@ OCaml 기반 Python 혼동 언어 연구용 최소 도구 체인 (초기 뼈대)
 - `roundtrip-report <alias_tsv> <source_file> <out_json>`: roundtrip 결과 JSON 리포트 저장 (`first_diff`, `failure_taxonomy`, `ast_equivalent` 포함)
 - `batch-roundtrip-report <alias_tsv> <manifest_txt> <out_json> [--include-diff]`: 여러 소스 파일에 대한 일괄 roundtrip JSON 요약 (`total_cases`, `ok_cases`, `mismatch_cases`, `cases[]`) 생성
   - `--include-diff` 사용 시 각 케이스에 `first_diff`, `first_token_diff` 포함
-- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md] [--csv-output output.csv] [--json-output output.json] [--top-k-mismatches 5] [--include-diff-columns] [--mismatch-sort input|severity] [--taxonomy-weights weights.json] [--taxonomy-weight-profile profile_name] [--only-mismatches] [--fail-on-mismatch] [--fail-on-severity-total-ge N] [--fail-on-severity-avg-ge X]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환하고(선택) case-level CSV/JSON으로 내보냄 (`mismatch_severity_total`, `mismatch_severity_avg` 위험 신호 지표 + `taxonomy_weight_source` 재현성 메타데이터 + `gates`(mismatch/severity gate 상태) 포함, `--only-mismatches`로 mismatch row만 필터링 가능, severity threshold 기반 CI gate 지원)
+- `python3 scripts/batch_report_summary.py <batch_json> [-o output_md] [--csv-output output.csv] [--json-output output.json] [--top-k-mismatches 5] [--include-diff-columns] [--mismatch-sort input|severity] [--taxonomy-weights weights.json] [--taxonomy-weight-profile profile_name] [--only-mismatches] [--fail-on-mismatch] [--fail-on-severity-total-ge N] [--fail-on-severity-avg-ge X] [--require-explicit-event-name]`: batch JSON을 사람 친화적인 Markdown 요약으로 변환하고(선택) case-level CSV/JSON으로 내보냄 (`mismatch_severity_total`, `mismatch_severity_avg` 위험 신호 지표 + `taxonomy_weight_source` 재현성 메타데이터 + `gates`(mismatch/severity gate 상태) 포함, `--only-mismatches`로 mismatch row만 필터링 가능, severity threshold 기반 CI gate 지원, `--require-explicit-event-name`로 run_context event fallback(`unknown`)을 금지 가능)
 - `python3 scripts/batch_report_summary.py --list-taxonomy-profiles`: 내장 taxonomy weight profile 목록 출력 (`examples/weights/*.json`)
 
 ## Alias TSV 형식
@@ -123,6 +123,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - optional `run_context.sha`는 7~40 길이 hex 문자열이어야 함 (short/full SHA 허용)
 - optional `run_context.ref`는 `refs/heads/*`, `refs/tags/*`, `refs/pull/*` 중 하나의 네임스페이스를 따라야 함 (예: `refs/heads/main`, `refs/tags/v1.0.0`, `refs/pull/123/merge`)
 - optional `run_context.event_name`는 `push|pull_request|pull_request_target|merge_group|workflow_dispatch|schedule|workflow_run|repository_dispatch|unknown` 중 하나여야 함 (`unknown`은 event 메타데이터를 확보하지 못한 fallback)
+- `batch_report_summary.py --require-explicit-event-name`를 사용하면 run_context 주입 시 `--event-name` 생략을 허용하지 않고 fail-fast 처리해 fallback(`unknown`) 유입을 차단할 수 있음
 - optional `run_context.workflow`/`run_context.job`은 non-empty string이어야 하며 길이는 1~128자로 제한됨 (비정상적으로 긴 메타데이터 fail-fast 차단)
 - optional `run_context.actor`는 `^[A-Za-z0-9-]+$` 패턴이어야 함 (다운스트림 파서 입력 오염 차단)
 
@@ -259,3 +260,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 119. ~~`batch_report_summary.py`의 `--run-*` 입력에 대해 공통 `run_context` 규칙을 즉시 검증해(요약 생성 전 fail-fast) 잘못된 run URL/attempt 조합이 summary→metric 파이프라인으로 흘러들어가는 것을 차단~~ ✅ (`scripts/batch_report_summary.py`, `test_batch_report_summary.py`, `README.md`)
 120. ~~snapshot emitter가 `event_name` 자동 fallback(`unknown`) 시 `run_context.event_name_source=derived`를 함께 기록하고, validator가 `event_name_source` enum(`provided|derived`)을 검증하도록 확장해 run_context provenance를 명시~~ ✅ (`scripts/emit_ci_result_snapshot.py`, `scripts/run_context_validation.py`, `scripts/validate_ci_result_snapshot.py`, `test_emit_ci_result_snapshot.py`, `test_ci_result_snapshot_schema.py`, `README.md`)
 121. ~~`batch_report_summary.py`에서도 run_context `event_name` 미지정 시 `unknown` + `event_name_source=derived`를 자동 주입하고, `--event-name` 제공 시 `event_name_source=provided`를 기록해 summary/snapshot provenance 정책을 완전히 정렬~~ ✅ (`scripts/batch_report_summary.py`, `test_batch_report_summary.py`, `README.md`)
+122. ~~`batch_report_summary.py`에 `--require-explicit-event-name` 옵션을 추가해 run_context 사용 시 fallback(`event_name=unknown`) 유입을 선택적으로 차단하고, 엄격 모드(명시 이벤트 강제)를 운영자가 선택할 수 있게 개선~~ ✅ (`scripts/batch_report_summary.py`, `test_batch_report_summary.py`, `README.md`)

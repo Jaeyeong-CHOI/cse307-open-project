@@ -351,6 +351,10 @@ def build_run_context_from_args(args: argparse.Namespace) -> dict[str, str] | No
     if event_name:
         run_context["event_name_source"] = "provided"
     else:
+        if bool(args.require_explicit_event_name):
+            raise ValueError(
+                "run_context.event_name is required when --require-explicit-event-name is set"
+            )
         run_context["event_name"] = "unknown"
         run_context["event_name_source"] = "derived"
 
@@ -660,6 +664,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Exit with code 4 when any enabled gate is tripped (aggregate gate for automation). "
             "Works with --fail-on-mismatch / --fail-on-severity-* flags."
+        ),
+    )
+    parser.add_argument(
+        "--require-explicit-event-name",
+        action="store_true",
+        help=(
+            "When any --run-* metadata is provided, require explicit --event-name instead "
+            "of deriving event_name=unknown"
         ),
     )
     parser.add_argument("--run-id", type=str, default=None, help="Optional run_context.run_id")

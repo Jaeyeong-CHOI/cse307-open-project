@@ -619,6 +619,29 @@ def main() -> int:
         raise AssertionError("expected run_context.event_name_source=derived when --event-name is omitted")
     _ = derived_event_summary_md
 
+    explicit_event_required_proc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            str(FIXTURE),
+            "-o",
+            str(OUT / "fixture.summary.require-explicit-event-name.md"),
+            "--run-id",
+            "123456789",
+            "--run-url",
+            "https://github.com/Jaeyeong-CHOI/cse307-open-project/actions/runs/123456789",
+            "--require-explicit-event-name",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if explicit_event_required_proc.returncode == 0:
+        raise AssertionError("expected --require-explicit-event-name to fail when --event-name is omitted")
+    if "run_context.event_name is required" not in explicit_event_required_proc.stderr:
+        raise AssertionError("expected explicit event-name requirement error message")
+
     invalid_run_context_proc = subprocess.run(
         [
             "python3",
