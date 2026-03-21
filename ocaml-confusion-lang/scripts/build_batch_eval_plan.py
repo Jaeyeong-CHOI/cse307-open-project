@@ -178,6 +178,13 @@ def _matches_preset_tags(
 def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
+    raw_description = str(resolved.get("description", "")).strip()
+    if not raw_description:
+        description_preview = "-"
+    elif len(raw_description) <= 60:
+        description_preview = raw_description
+    else:
+        description_preview = f"{raw_description[:57].rstrip()}..."
     return (
         f"{name}\tmodels={resolved['models']}\tprompt_conditions={resolved['prompt_conditions']}\t"
         f"repeats={resolved['repeats']}\tcheap_first={str(resolved['cheap_first']).lower()}\t"
@@ -188,7 +195,7 @@ def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
         f"max_runs_per_task={resolved['max_runs_per_task']}\t"
         f"max_runs_per_task_model={resolved['max_runs_per_task_model']}\t"
         f"max_runs_per_task_prompt_condition={resolved['max_runs_per_task_prompt_condition']}\t"
-        f"tags={tag_value}"
+        f"tags={tag_value}\tdescription={description_preview}"
     )
 
 
