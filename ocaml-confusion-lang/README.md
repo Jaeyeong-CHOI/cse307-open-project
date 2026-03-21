@@ -111,6 +111,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format re
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke
 # 특정 preset 1개의 resolved 설정을 compact summary 라인으로 확인
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary
+# preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
+python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
 # run_context fallback event_name(unknown/derived) 차단(엄격 모드)
@@ -326,3 +328,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 153. ~~planner(`build_batch_eval_plan.py`)에 preset compact 출력 모드(`--list-presets-format summary`)를 추가해 preset 선택 전 핵심 cap/정책(`max_total_runs`, per-model/per-condition cap, cheap/fair 토글)을 한눈에 확인 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 154. ~~planner(`build_batch_eval_plan.py`)에 단일 preset resolved 조회(`--show-preset`, `--show-preset-format json|summary`)를 추가해 운영자가 특정 preset의 기본값 보정 결과를 task set 없이 즉시 점검 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 155. ~~planner(`build_batch_eval_plan.py`)에 preset 목록 resolved 출력 모드(`--list-presets-format resolved-json`)를 추가해 모든 preset의 기본값 보정 결과를 단일 호출로 자동화 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+156. ~~planner(`build_batch_eval_plan.py`) preset 파일 로더에 키/타입/range fail-fast 검증을 추가해(`unknown key`, cap 음수, repeats<1 등) 잘못된 preset이 계획 생성 단계까지 전파되는 것을 조기 차단~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

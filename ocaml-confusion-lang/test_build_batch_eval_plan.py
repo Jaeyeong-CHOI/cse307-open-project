@@ -796,6 +796,46 @@ def main() -> int:
             f"got {preset_payload['summary']['planned_runs_total']}"
         )
 
+    invalid_preset_file = OUT / "invalid-batch-plan-presets.v1.json"
+    invalid_preset_file.write_text(
+        json.dumps(
+            {
+                "schema_version": "v1",
+                "presets": {
+                    "bad": {
+                        "models": "gpt-5-mini",
+                        "prompt_conditions": "base",
+                        "repeats": 1,
+                        "unexpected_field": "oops",
+                    }
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    invalid_preset_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--preset-file",
+            str(invalid_preset_file),
+            "--list-presets",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_preset_run.returncode == 0:
+        raise AssertionError("expected invalid preset file to fail-fast")
+    if "unknown key(s): unexpected_field" not in (invalid_preset_run.stderr or ""):
+        raise AssertionError(
+            "expected unknown-key preset validation error message, got: "
+            f"{invalid_preset_run.stderr}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 

@@ -34,6 +34,72 @@ def parse_csv_list(raw: str, field_name: str) -> list[str]:
     return values
 
 
+def _validate_preset(name: str, preset: Any, preset_file: Path) -> dict[str, Any]:
+    if not isinstance(preset, dict):
+        raise ValueError(f"{preset_file}: presets.{name} must be an object")
+
+    allowed_keys = {
+        "models",
+        "prompt_conditions",
+        "repeats",
+        "cheap_first",
+        "fair_model_allocation",
+        "max_total_runs",
+        "max_total_runs_mode",
+        "max_runs_per_model",
+        "max_runs_per_prompt_condition",
+        "max_runs_per_task",
+        "max_runs_per_task_model",
+        "max_runs_per_task_prompt_condition",
+    }
+    unknown_keys = sorted(k for k in preset if k not in allowed_keys)
+    if unknown_keys:
+        raise ValueError(
+            f"{preset_file}: presets.{name} contains unknown key(s): {', '.join(unknown_keys)}"
+        )
+
+    if "models" in preset and (not isinstance(preset["models"], str) or not preset["models"].strip()):
+        raise ValueError(f"{preset_file}: presets.{name}.models must be a non-empty string")
+    if "prompt_conditions" in preset and (
+        not isinstance(preset["prompt_conditions"], str) or not preset["prompt_conditions"].strip()
+    ):
+        raise ValueError(f"{preset_file}: presets.{name}.prompt_conditions must be a non-empty string")
+
+    int_keys = [
+        "repeats",
+        "max_total_runs",
+        "max_runs_per_model",
+        "max_runs_per_prompt_condition",
+        "max_runs_per_task",
+        "max_runs_per_task_model",
+        "max_runs_per_task_prompt_condition",
+    ]
+    for key in int_keys:
+        if key not in preset:
+            continue
+        value = preset[key]
+        if not isinstance(value, int):
+            raise ValueError(f"{preset_file}: presets.{name}.{key} must be an integer")
+        if key == "repeats" and value < 1:
+            raise ValueError(f"{preset_file}: presets.{name}.repeats must be >= 1")
+        if key != "repeats" and value < 0:
+            raise ValueError(f"{preset_file}: presets.{name}.{key} must be >= 0")
+
+    bool_keys = ["cheap_first", "fair_model_allocation"]
+    for key in bool_keys:
+        if key in preset and not isinstance(preset[key], bool):
+            raise ValueError(f"{preset_file}: presets.{name}.{key} must be a boolean")
+
+    if "max_total_runs_mode" in preset:
+        mode = preset["max_total_runs_mode"]
+        if mode not in {"fail", "cap"}:
+            raise ValueError(
+                f"{preset_file}: presets.{name}.max_total_runs_mode must be one of: fail, cap"
+            )
+
+    return preset
+
+
 def load_preset_file(preset_file: Path) -> dict[str, Any]:
     payload = load_json(preset_file)
     schema_version = payload.get("schema_version")
@@ -42,7 +108,8 @@ def load_preset_file(preset_file: Path) -> dict[str, Any]:
     presets_raw = payload.get("presets")
     if not isinstance(presets_raw, dict):
         raise ValueError(f"{preset_file}: presets must be an object")
-    return presets_raw
+
+    return {name: _validate_preset(name, preset, preset_file) for name, preset in presets_raw.items()}
 
 
 def load_preset_config(preset_file: Path, preset_name: str) -> dict[str, Any]:
