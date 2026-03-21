@@ -170,7 +170,9 @@ jobs:
             --run-attempt "${{ github.run_attempt }}" \
             --event-name "${{ github.event_name }}" \
             --sha "${{ github.sha }}" \
-            --ref "${{ github.ref }}" >> "$GITHUB_STEP_SUMMARY"
+            --ref "${{ github.ref }}" \
+            --repository "${{ github.repository }}" \
+            --actor "${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json
 
@@ -285,7 +287,9 @@ jobs:
             --run-attempt "${{ github.run_attempt }}" \
             --event-name "${{ github.event_name }}" \
             --sha "${{ github.sha }}" \
-            --ref "${{ github.ref }}" >> "$GITHUB_STEP_SUMMARY"
+            --ref "${{ github.ref }}" \
+            --repository "${{ github.repository }}" \
+            --actor "${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 

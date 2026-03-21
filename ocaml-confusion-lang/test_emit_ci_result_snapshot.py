@@ -45,6 +45,8 @@ def _run(
             ("--event-name", "event_name"),
             ("--sha", "sha"),
             ("--ref", "ref"),
+            ("--repository", "repository"),
+            ("--actor", "actor"),
         ]:
             value = run_context.get(key)
             if isinstance(value, str):
@@ -127,6 +129,8 @@ def main() -> None:
             "event_name": "workflow_dispatch",
             "sha": "abc123def456",
             "ref": "refs/heads/main",
+            "repository": "org/repo",
+            "actor": "octocat",
         },
     )
     assert_contains(content, "## Full CI result snapshot")
@@ -146,7 +150,7 @@ def main() -> None:
     )
     assert_contains(
         content,
-        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; run_attempt=2; event_name=workflow_dispatch; sha=abc123def456; ref=refs/heads/main",
+        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; run_attempt=2; event_name=workflow_dispatch; sha=abc123def456; ref=refs/heads/main; repository=org/repo; actor=octocat",
     )
 
     snapshot_payload = json.loads(snapshot_json.read_text(encoding="utf-8"))
@@ -164,6 +168,10 @@ def main() -> None:
         raise AssertionError("json snapshot run_context.run_id mismatch")
     if run_context_meta.get("event_name") != "workflow_dispatch":
         raise AssertionError("json snapshot run_context.event_name mismatch")
+    if run_context_meta.get("repository") != "org/repo":
+        raise AssertionError("json snapshot run_context.repository mismatch")
+    if run_context_meta.get("actor") != "octocat":
+        raise AssertionError("json snapshot run_context.actor mismatch")
 
     payload_no_mismatch = {
         "overview": {

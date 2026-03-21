@@ -133,7 +133,7 @@ def validate_snapshot(payload: Any, path: Path, schema_version_min: int, schema_
         if not isinstance(run_context, dict):
             errors.append(f"{path}: run_context must be an object when present")
         else:
-            for key in ["run_id", "run_url", "run_attempt", "event_name", "sha", "ref"]:
+            for key in ["run_id", "run_url", "run_attempt", "event_name", "sha", "ref", "repository", "actor"]:
                 if key in run_context and (
                     not isinstance(run_context.get(key), str) or not run_context.get(key).strip()
                 ):

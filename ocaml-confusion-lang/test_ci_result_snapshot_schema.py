@@ -62,6 +62,8 @@ def main() -> None:
             "event_name": "workflow_dispatch",
             "sha": "abc123def456",
             "ref": "refs/heads/main",
+            "repository": "org/repo",
+            "actor": "octocat",
         },
     }
 
@@ -129,14 +131,14 @@ def main() -> None:
     )
 
     invalid_run_context = dict(valid_payload)
-    invalid_run_context["run_context"] = {"run_id": ""}
+    invalid_run_context["run_context"] = {"repository": ""}
     invalid_run_context_path = _write(OUT / "snapshot.invalid-run-context.json", invalid_run_context)
     bad_run_context = _run(invalid_run_context_path)
     if bad_run_context.returncode == 0:
-        raise AssertionError("expected failure for invalid run_context.run_id")
+        raise AssertionError("expected failure for invalid run_context.repository")
     _assert_contains(
         bad_run_context.stderr,
-        "run_context.run_id must be a non-empty string when present",
+        "run_context.repository must be a non-empty string when present",
     )
 
 
