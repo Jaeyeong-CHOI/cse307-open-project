@@ -679,6 +679,27 @@ def main() -> int:
     if preset_names != ["balanced-ci", "full-analysis", "quick-smoke"]:
         raise AssertionError(f"unexpected preset list output: {preset_names}")
 
+    preset_list_tag_filtered = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag",
+            "smoke,cheap-first",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_tag_filtered = [
+        line.strip() for line in preset_list_tag_filtered.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_tag_filtered != ["quick-smoke"]:
+        raise AssertionError(
+            f"unexpected tag-filtered preset names: {preset_names_tag_filtered}"
+        )
+
     preset_list_json = subprocess.run(
         [
             "python3",
@@ -698,6 +719,28 @@ def main() -> int:
     listed_presets = preset_list_payload.get("presets")
     if not isinstance(listed_presets, dict) or "quick-smoke" not in listed_presets:
         raise AssertionError(f"unexpected preset list json payload: {preset_list_payload}")
+
+    preset_list_json_tag_filtered = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+            "--list-presets-tag",
+            "SMOKE",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_json_tag_filtered_payload = json.loads(preset_list_json_tag_filtered.stdout)
+    if sorted(preset_list_json_tag_filtered_payload.get("presets", {}).keys()) != ["quick-smoke"]:
+        raise AssertionError(
+            "unexpected tag-filtered preset json payload: "
+            f"{preset_list_json_tag_filtered_payload}"
+        )
 
     preset_list_resolved_json = subprocess.run(
         [
@@ -866,6 +909,29 @@ def main() -> int:
         raise AssertionError(
             "expected quick-smoke preset to plan 3 runs (3 tasks x 1 model x 1 condition x 1 repeat), "
             f"got {preset_payload['summary']['planned_runs_total']}"
+        )
+
+    invalid_empty_tag_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag",
+            ",,,",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_empty_tag_filter_run.returncode == 0:
+        raise AssertionError("expected empty --list-presets-tag to fail-fast")
+    if "--list-presets-tag must include at least one non-empty tag" not in (
+        invalid_empty_tag_filter_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected empty tag filter validation error, got: "
+            f"{invalid_empty_tag_filter_run.stderr}"
         )
 
     invalid_preset_file = OUT / "invalid-batch-plan-presets.v1.json"

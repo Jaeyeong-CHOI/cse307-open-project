@@ -161,6 +161,16 @@ def resolve_preset_with_defaults(preset: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _matches_preset_tags(preset: dict[str, Any], required_tags: set[str]) -> bool:
+    if not required_tags:
+        return True
+    raw_tags = preset.get("tags", [])
+    if not isinstance(raw_tags, list):
+        return False
+    preset_tags = {str(tag).strip().lower() for tag in raw_tags if str(tag).strip()}
+    return required_tags.issubset(preset_tags)
+
+
 def _dedupe_keep_order(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -266,6 +276,11 @@ def parse_args() -> argparse.Namespace:
         choices=("names", "json", "resolved-json", "summary"),
         default="names",
         help="Output format for --list-presets (default: names)",
+    )
+    parser.add_argument(
+        "--list-presets-tag",
+        default=None,
+        help="Optional tag filter for --list-presets (comma-separated, case-insensitive)",
     )
     parser.add_argument(
         "--preset-file",
@@ -388,14 +403,24 @@ def main() -> int:
 
         if args.list_presets:
             presets = load_preset_file(args.preset_file)
+            required_tags: set[str] = set()
+            if args.list_presets_tag:
+                required_tags = {tag.strip().lower() for tag in args.list_presets_tag.split(",") if tag.strip()}
+                if not required_tags:
+                    raise ValueError("--list-presets-tag must include at least one non-empty tag")
+            filtered_presets = {
+                name: preset
+                for name, preset in presets.items()
+                if isinstance(preset, dict) and _matches_preset_tags(preset, required_tags)
+            }
             if args.list_presets_format == "json":
-                print(json.dumps({"schema_version": "v1", "presets": presets}, ensure_ascii=False, indent=2))
+                print(json.dumps({"schema_version": "v1", "presets": filtered_presets}, ensure_ascii=False, indent=2))
                 return 0
-            preset_names = sorted(presets.keys())
+            preset_names = sorted(filtered_presets.keys())
             if args.list_presets_format == "resolved-json":
                 resolved_presets: dict[str, dict[str, Any]] = {}
                 for name in preset_names:
-                    preset = presets[name]
+                    preset = filtered_presets[name]
                     if not isinstance(preset, dict):
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
                     resolved_presets[name] = resolve_preset_with_defaults(preset)
@@ -413,7 +438,7 @@ def main() -> int:
                 return 0
             if args.list_presets_format == "summary":
                 for name in preset_names:
-                    preset = presets[name]
+                    preset = filtered_presets[name]
                     if not isinstance(preset, dict):
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
                     resolved = resolve_preset_with_defaults(preset)
