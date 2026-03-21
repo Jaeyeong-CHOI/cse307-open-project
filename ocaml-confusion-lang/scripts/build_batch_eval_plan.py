@@ -53,6 +53,28 @@ def _cheap_first_rank(model: str) -> tuple[int, str]:
     return (1, name)
 
 
+def _safe_ratio(numerator: int, denominator: int) -> float:
+    if denominator <= 0:
+        return 0.0
+    return round(numerator / denominator, 6)
+
+
+def _ratio_map_1d(planned: dict[str, int], potential: dict[str, int]) -> dict[str, float]:
+    return {key: _safe_ratio(planned[key], potential[key]) for key in planned}
+
+
+def _ratio_map_2d(
+    planned: dict[str, dict[str, int]], potential: dict[str, dict[str, int]]
+) -> dict[str, dict[str, float]]:
+    return {
+        outer_key: {
+            inner_key: _safe_ratio(planned[outer_key][inner_key], potential[outer_key][inner_key])
+            for inner_key in planned[outer_key]
+        }
+        for outer_key in planned
+    }
+
+
 def validate_task_set(payload: dict[str, Any], path: Path) -> tuple[str, list[dict[str, str]]]:
     schema_version = payload.get("schema_version")
     if schema_version != "v1":
@@ -389,9 +411,22 @@ def main() -> int:
             for task_id in runs_by_task_prompt_condition
         }
 
-        planned_run_ratio_total = 0.0
-        if potential_runs_total > 0:
-            planned_run_ratio_total = round(len(plan) / potential_runs_total, 6)
+        planned_run_ratio_total = _safe_ratio(len(plan), potential_runs_total)
+        planned_run_ratio_by_model = _ratio_map_1d(runs_per_model, {model: potential_runs_per_model for model in models})
+        planned_run_ratio_by_prompt_condition = _ratio_map_1d(
+            runs_per_prompt_condition,
+            {condition: potential_runs_per_condition for condition in conditions},
+        )
+        planned_run_ratio_by_task = _ratio_map_1d(runs_per_task, {task_id: potential_runs_per_task for task_id in runs_per_task})
+        planned_run_ratio_by_model_prompt_condition = _ratio_map_2d(
+            runs_by_model_prompt_condition,
+            potential_runs_by_model_prompt_condition,
+        )
+        planned_run_ratio_by_task_model = _ratio_map_2d(runs_by_task_model, potential_runs_by_task_model)
+        planned_run_ratio_by_task_prompt_condition = _ratio_map_2d(
+            runs_by_task_prompt_condition,
+            potential_runs_by_task_prompt_condition,
+        )
 
         payload: dict[str, Any] = {
             "schema_version": "v1",
@@ -420,6 +455,12 @@ def main() -> int:
                 "potential_runs_total": potential_runs_total,
                 "skipped_runs_total": max(0, potential_runs_total - len(plan)),
                 "planned_run_ratio_total": planned_run_ratio_total,
+                "planned_run_ratio_by_model": planned_run_ratio_by_model,
+                "planned_run_ratio_by_prompt_condition": planned_run_ratio_by_prompt_condition,
+                "planned_run_ratio_by_task": planned_run_ratio_by_task,
+                "planned_run_ratio_by_model_prompt_condition": planned_run_ratio_by_model_prompt_condition,
+                "planned_run_ratio_by_task_model": planned_run_ratio_by_task_model,
+                "planned_run_ratio_by_task_prompt_condition": planned_run_ratio_by_task_prompt_condition,
                 "planned_runs_by_model": runs_per_model,
                 "planned_runs_by_prompt_condition": runs_per_prompt_condition,
                 "planned_runs_by_task": runs_per_task,

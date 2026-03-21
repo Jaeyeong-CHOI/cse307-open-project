@@ -98,6 +98,15 @@ def main() -> int:
         raise AssertionError(
             f"expected planned_run_ratio_total=1.0, got {summary.get('planned_run_ratio_total')}"
         )
+    if summary.get("planned_run_ratio_by_model") != {"gpt-5-mini": 1.0, "gpt-5-pro": 1.0}:
+        raise AssertionError(
+            f"unexpected planned_run_ratio_by_model: {summary.get('planned_run_ratio_by_model')}"
+        )
+    if summary.get("planned_run_ratio_by_prompt_condition") != {"base": 1.0, "strict": 1.0}:
+        raise AssertionError(
+            "unexpected planned_run_ratio_by_prompt_condition: "
+            f"{summary.get('planned_run_ratio_by_prompt_condition')}"
+        )
     if summary["potential_runs_by_model"] != {"gpt-5-mini": 12, "gpt-5-pro": 12}:
         raise AssertionError(
             f"unexpected potential_runs_by_model: {summary['potential_runs_by_model']}"
@@ -305,6 +314,15 @@ def main() -> int:
         raise AssertionError(
             "unexpected per-model planned_run_ratio_total: "
             f"{per_model_summary.get('planned_run_ratio_total')}"
+        )
+    expected_per_model_ratio = round(5 / 18, 6)
+    if per_model_summary.get("planned_run_ratio_by_model") != {
+        "gpt-5-mini": expected_per_model_ratio,
+        "gpt-5-pro": expected_per_model_ratio,
+    }:
+        raise AssertionError(
+            "unexpected per-model planned_run_ratio_by_model: "
+            f"{per_model_summary.get('planned_run_ratio_by_model')}"
         )
     if per_model_summary["skipped_runs_by_model"] != {"gpt-5-mini": 13, "gpt-5-pro": 13}:
         raise AssertionError(
