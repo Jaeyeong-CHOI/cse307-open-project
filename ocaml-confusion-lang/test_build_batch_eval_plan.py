@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import pathlib
+import re
 import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -985,6 +986,38 @@ def main() -> int:
     }:
         raise AssertionError(f"unexpected names-with-meta json payload: {names_meta_payload}")
 
+    preset_list_names_with_meta_generated_at = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-generated-at",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_generated_at_lines = [
+        line.strip() for line in preset_list_names_with_meta_generated_at.stdout.splitlines() if line.strip()
+    ]
+    names_with_meta_generated_at_footer = names_with_meta_generated_at_lines[-1]
+    if not names_with_meta_generated_at_footer.startswith(
+        "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\ttruncated=true\tgenerated_at_utc="
+    ):
+        raise AssertionError(
+            f"unexpected names-with-meta generated_at footer: {names_with_meta_generated_at_lines}"
+        )
+    generated_at_value = names_with_meta_generated_at_footer.rsplit("generated_at_utc=", 1)[-1]
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", generated_at_value) is None:
+        raise AssertionError(
+            "unexpected generated_at_utc timestamp format in list-presets meta footer: "
+            f"{generated_at_value}"
+        )
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -1481,6 +1514,38 @@ def main() -> int:
         raise AssertionError(f"unexpected show-preset json meta payload: {show_meta_payload}")
     if show_meta_payload.get("preset") != "quick-smoke" or show_meta_payload.get("format") != "summary":
         raise AssertionError(f"unexpected show-preset json meta payload core fields: {show_meta_payload}")
+
+    show_preset_summary_with_meta_generated_at = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-generated-at",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_generated_at_lines = [
+        line.rstrip("\n") for line in show_preset_summary_with_meta_generated_at.stdout.splitlines() if line.strip()
+    ]
+    show_generated_at_footer = show_preset_with_meta_generated_at_lines[-1]
+    if "\tgenerated_at_utc=" not in show_generated_at_footer:
+        raise AssertionError(
+            "missing generated_at_utc in show-preset meta footer: "
+            f"{show_preset_with_meta_generated_at_lines}"
+        )
+    show_generated_at_value = show_generated_at_footer.rsplit("generated_at_utc=", 1)[-1]
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", show_generated_at_value) is None:
+        raise AssertionError(
+            "unexpected generated_at_utc timestamp format in show-preset meta footer: "
+            f"{show_generated_at_value}"
+        )
 
     invalid_show_preset_meta_schema = subprocess.run(
         [

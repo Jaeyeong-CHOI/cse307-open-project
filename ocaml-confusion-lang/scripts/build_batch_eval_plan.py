@@ -43,6 +43,10 @@ PRESET_SHOW_TEXT_META_SCHEMA = "planner_preset_show_meta.v1"
 PRESET_SHOW_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_show_meta\.v[1-9][0-9]*$")
 
 
+def _utc_now_iso() -> str:
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         payload = json.load(f)
@@ -477,6 +481,11 @@ def parse_args() -> argparse.Namespace:
         help="Meta footer format for --show-preset-with-meta (default: text)",
     )
     parser.add_argument(
+        "--show-preset-meta-include-generated-at",
+        action="store_true",
+        help="Include generated_at_utc in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -537,6 +546,11 @@ def parse_args() -> argparse.Namespace:
         choices=("text", "json"),
         default="text",
         help="Meta footer format for --list-presets-with-meta (default: text)",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-generated-at",
+        action="store_true",
+        help="Include generated_at_utc in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -720,6 +734,10 @@ def main() -> int:
                     "override_count": str(len(active_overrides)),
                     "overrides": ",".join(active_overrides) if active_overrides else "none",
                 }
+            if args.show_preset_meta_include_generated_at:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["generated_at_utc"] = _utc_now_iso()
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -807,6 +825,10 @@ def main() -> int:
                     if args.list_presets_limit is not None
                     else "none",
                 }
+            if args.list_presets_meta_include_generated_at:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["generated_at_utc"] = _utc_now_iso()
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}
@@ -1224,7 +1246,7 @@ def main() -> int:
         payload: dict[str, Any] = {
             "schema_version": "v1",
             "task_set_id": task_set_id,
-            "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "generated_at_utc": _utc_now_iso(),
             "config": {
                 "preset": args.preset,
                 "preset_file": str(args.preset_file) if args.preset else None,
