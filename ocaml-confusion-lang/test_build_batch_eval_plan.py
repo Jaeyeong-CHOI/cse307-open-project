@@ -722,6 +722,10 @@ def main() -> int:
             "expected default max_runs_per_task_prompt_condition=0 in resolved-json output, "
             f"got {quick_smoke_resolved}"
         )
+    if quick_smoke_resolved.get("description") != "Fast sanity check with minimal cost.":
+        raise AssertionError(f"expected resolved description in preset payload, got: {quick_smoke_resolved}")
+    if quick_smoke_resolved.get("tags") != ["cheap-first", "smoke"]:
+        raise AssertionError(f"expected resolved tags in preset payload, got: {quick_smoke_resolved}")
 
     preset_list_summary = subprocess.run(
         [
@@ -780,6 +784,8 @@ def main() -> int:
         raise AssertionError(f"missing resolved preset payload: {show_preset_payload}")
     if resolved.get("max_runs_per_task") != 0:
         raise AssertionError(f"expected default max_runs_per_task=0 in resolved preset, got {resolved}")
+    if resolved.get("description") != "Fast sanity check with minimal cost.":
+        raise AssertionError(f"expected show-preset description, got {resolved}")
 
     show_preset_summary = subprocess.run(
         [
@@ -900,6 +906,46 @@ def main() -> int:
         raise AssertionError(
             "expected unknown-key preset validation error message, got: "
             f"{invalid_preset_run.stderr}"
+        )
+
+    invalid_preset_tags_file = OUT / "invalid-batch-plan-presets.tags.v1.json"
+    invalid_preset_tags_file.write_text(
+        json.dumps(
+            {
+                "schema_version": "v1",
+                "presets": {
+                    "bad-tags": {
+                        "models": "gpt-5-mini",
+                        "prompt_conditions": "base",
+                        "repeats": 1,
+                        "tags": "not-an-array",
+                    }
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    invalid_preset_tags_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--preset-file",
+            str(invalid_preset_tags_file),
+            "--list-presets",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_preset_tags_run.returncode == 0:
+        raise AssertionError("expected invalid preset tags to fail-fast")
+    if "presets.bad-tags.tags must be a non-empty array" not in (invalid_preset_tags_run.stderr or ""):
+        raise AssertionError(
+            "expected tags type preset validation error message, got: "
+            f"{invalid_preset_tags_run.stderr}"
         )
 
     print("OK: build_batch_eval_plan regression passed")

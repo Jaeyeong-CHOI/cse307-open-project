@@ -114,6 +114,7 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 # show-preset에서도 CLI override가 최종값에 어떻게 반영되는지 미리 확인
 python3 scripts/build_batch_eval_plan.py --show-preset balanced-ci --show-preset-format summary --repeats 1 --max-total-runs 12 --fair-model-allocation
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
+# optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
 # summary/task-set lineage 불일치 시 fail-fast
 python3 scripts/generate_metric_snapshot.py ../docs/research/results/roundtrip-batch-v1.diff.summary.json -o ../docs/research/results/roundtrip-batch-v1.diff.metrics.strict-lineage.json --task-set-id cse307-roundtrip-batch-v1 --prompt-condition strict --model gpt-5.3-codex --task-set-json examples/task-set-v1.json --lineage-consistency fail
@@ -334,3 +335,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 157. ~~planner preset 요약 출력(`--list-presets-format summary`)을 resolved-default 기반으로 확장해 models/prompt_conditions/repeats 및 task 축 cap(`max_runs_per_task`, `max_runs_per_task_model`, `max_runs_per_task_prompt_condition`)까지 한 줄에서 즉시 확인 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 158. ~~planner summary에 repeat 축 집계(`planned/potential/skipped_runs_by_repeat_index`, `planned_run_ratio_by_repeat_index`)를 추가해 `max-total-runs cap`/축별 cap 적용 시 특정 repeat index로 실행이 쏠리는지 즉시 진단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 159. ~~planner(`build_batch_eval_plan.py`)의 `--show-preset` 경로에 CLI override preview를 반영해(`models/repeats/cap/fair 등`) preset 선택 단계에서 실제 적용 최종값을 task set 없이 즉시 검증 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+160. ~~planner preset schema(v1)에 optional metadata(`description`, `tags`)를 추가하고 fail-fast 타입 검증을 도입해 preset discovery JSON(`--list-presets-format resolved-json`/`--show-preset`)을 운영 문서/자동화에서 바로 재사용 가능하게 개선~~ ✅ (`examples/batch-plan-presets.v1.json`, `scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

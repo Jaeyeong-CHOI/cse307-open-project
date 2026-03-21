@@ -7,7 +7,9 @@
       "repeats": 1,
       "cheap_first": true,
       "max_total_runs": 6,
-      "max_total_runs_mode": "cap"
+      "max_total_runs_mode": "cap",
+      "description": "Fast sanity check with minimal cost.",
+      "tags": ["cheap-first", "smoke"]
     },
     "balanced-ci": {
       "models": "gpt-5-mini,gpt-5-pro",
@@ -18,7 +20,9 @@
       "max_total_runs": 24,
       "max_total_runs_mode": "cap",
       "max_runs_per_model": 12,
-      "max_runs_per_prompt_condition": 12
+      "max_runs_per_prompt_condition": 12,
+      "description": "Balanced regression preset for CI with fairness/caps.",
+      "tags": ["ci", "balanced", "cheap-first"]
     },
     "full-analysis": {
       "models": "gpt-5-mini,gpt-5-pro",
@@ -26,7 +30,9 @@
       "repeats": 3,
       "cheap_first": true,
       "fair_model_allocation": true,
-      "max_total_runs_mode": "fail"
+      "max_total_runs_mode": "fail",
+      "description": "High-coverage analysis preset for deeper diagnostics.",
+      "tags": ["analysis", "high-coverage"]
     }
   }
 }

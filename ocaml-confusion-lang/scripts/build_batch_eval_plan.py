@@ -51,6 +51,8 @@ def _validate_preset(name: str, preset: Any, preset_file: Path) -> dict[str, Any
         "max_runs_per_task",
         "max_runs_per_task_model",
         "max_runs_per_task_prompt_condition",
+        "description",
+        "tags",
     }
     unknown_keys = sorted(k for k in preset if k not in allowed_keys)
     if unknown_keys:
@@ -90,6 +92,21 @@ def _validate_preset(name: str, preset: Any, preset_file: Path) -> dict[str, Any
         if key in preset and not isinstance(preset[key], bool):
             raise ValueError(f"{preset_file}: presets.{name}.{key} must be a boolean")
 
+    if "description" in preset and (
+        not isinstance(preset["description"], str) or not preset["description"].strip()
+    ):
+        raise ValueError(f"{preset_file}: presets.{name}.description must be a non-empty string")
+
+    if "tags" in preset:
+        tags = preset["tags"]
+        if not isinstance(tags, list) or not tags:
+            raise ValueError(f"{preset_file}: presets.{name}.tags must be a non-empty array")
+        for idx, tag in enumerate(tags):
+            if not isinstance(tag, str) or not tag.strip():
+                raise ValueError(
+                    f"{preset_file}: presets.{name}.tags[{idx}] must be a non-empty string"
+                )
+
     if "max_total_runs_mode" in preset:
         mode = preset["max_total_runs_mode"]
         if mode not in {"fail", "cap"}:
@@ -124,6 +141,8 @@ def load_preset_config(preset_file: Path, preset_name: str) -> dict[str, Any]:
 
 
 def resolve_preset_with_defaults(preset: dict[str, Any]) -> dict[str, Any]:
+    raw_tags = preset.get("tags", [])
+    tags = [str(tag).strip() for tag in raw_tags if str(tag).strip()] if isinstance(raw_tags, list) else []
     return {
         "models": str(preset.get("models", "")),
         "prompt_conditions": str(preset.get("prompt_conditions", "")),
@@ -137,6 +156,8 @@ def resolve_preset_with_defaults(preset: dict[str, Any]) -> dict[str, Any]:
         "max_runs_per_task": int(preset.get("max_runs_per_task", 0)),
         "max_runs_per_task_model": int(preset.get("max_runs_per_task_model", 0)),
         "max_runs_per_task_prompt_condition": int(preset.get("max_runs_per_task_prompt_condition", 0)),
+        "description": str(preset.get("description", "")),
+        "tags": tags,
     }
 
 
