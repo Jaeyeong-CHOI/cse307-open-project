@@ -89,6 +89,7 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 - 필수 top-level key: `metadata`, `title`, `overview`, `quality_signals`, `failure_taxonomy`, `top_mismatches`, `mismatch_sort`, `cases`
 - `metadata`는 `schema_version`, `generated_at_utc`, `input_report` 필수
 - optional `metadata.task_set_lineage`가 존재하면 object여야 하며, 포함된 `task_set_id/alias_set_id/manifest_path`는 non-empty string이어야 함
+- `overview.cases_scope`는 `all|mismatches-only` enum 중 하나여야 함
 - `failure_taxonomy.severity_weighted[*]`는 `tag/count/weight/weighted_score` 필수
 - `top_mismatches[*]`는 `source/failure_taxonomy/severity` 필수
 
@@ -149,3 +150,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 44. ~~metric snapshot 생성기(`generate_metric_snapshot.py`)에 summary/task-set lineage 교차 일관성 검증(`--lineage-consistency off|warn|fail`) + lineage `task_set_id` 포함~~ ✅ (`scripts/generate_metric_snapshot.py`, `test_generate_metric_snapshot.py`)
 45. ~~CI metric snapshot 단계에 `--task-set-json examples/task-set-v1.json` + `--lineage-consistency fail` 적용해 end-to-end lineage chain 강제~~ ✅ (`.github/workflows/ocaml-confusion-lang-ci.yml`)
 46. ~~metric snapshot 파이프라인 정책 문서화: `--task-set-json` 경로에서는 `cases_scope=all`만 허용하고 `--only-mismatches` 산출물 차단을 README/에러 메시지에 명시~~ ✅ (`README.md`, `scripts/generate_metric_snapshot.py`)
+47. ~~summary payload validator에 `overview.cases_scope` enum(`all|mismatches-only`) 검증 명시 + 회귀 테스트 추가~~ ✅ (`scripts/validate_summary_payload.py`, `test_summary_payload_schema.py`)

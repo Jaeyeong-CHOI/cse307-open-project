@@ -66,6 +66,12 @@ def validate_payload(payload: Any, path: Path) -> list[str]:
             if key not in overview:
                 errors.append(f"{path}: overview missing '{key}'")
 
+        cases_scope = overview.get("cases_scope")
+        if cases_scope is not None and cases_scope not in {"all", "mismatches-only"}:
+            errors.append(
+                f"{path}: overview.cases_scope must be one of ['all', 'mismatches-only']"
+            )
+
     quality = _expect_type(payload, "quality_signals", dict, errors, path)
     if isinstance(quality, dict):
         for key in [

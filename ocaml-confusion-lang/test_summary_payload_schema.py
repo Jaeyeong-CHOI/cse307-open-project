@@ -56,6 +56,13 @@ def main() -> int:
 
     _run_validator(invalid_summary, expect_ok=False)
 
+    invalid_scope_summary = OUT / "fixture.summary.schema-check.invalid-cases-scope.json"
+    payload_scope = json.loads(summary_json.read_text(encoding="utf-8"))
+    payload_scope["overview"]["cases_scope"] = "subset"
+    invalid_scope_summary.write_text(json.dumps(payload_scope, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    _run_validator(invalid_scope_summary, expect_ok=False)
+
     print("OK: summary payload schema regression passed")
     return 0
 
