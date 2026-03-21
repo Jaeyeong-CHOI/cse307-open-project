@@ -111,6 +111,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-cont
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 # text 출력(names/summary/summary-tsv)에서도 필터/절단 메타데이터 footer를 함께 출력
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --list-presets-limit 2 --list-presets-with-meta
+# list-presets text meta footer schema id를 버전 실험용으로 override
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-schema-id planner_preset_list_meta.v2
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
@@ -382,3 +384,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 176. ~~planner `--list-presets-format resolved-json` 출력에도 `filtered_count`/`emitted_count`/`truncated` 메타데이터를 추가해 `json` 모드와 절단 관측 규칙을 정렬하고, `--list-presets-limit` 적용 시 downstream 자동화가 절단 여부를 동일 키로 판단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 177. ~~planner `--list-presets` text 출력(names/summary/summary-tsv)에도 opt-in 메타 footer(`--list-presets-with-meta`)를 추가해 JSON 모드 없이도 filtered/emitted/truncated 상태를 동일 키로 관측 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 178. ~~planner `--show-preset` text 출력(summary/summary-tsv)에도 opt-in 메타 footer(`--show-preset-with-meta`)를 추가해 단일 preset 조회를 downstream parser에서 JSON 모드 없이도 `preset/format/preset_file` 키로 일관 처리 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+179. ~~planner `--list-presets` text meta footer에 schema id(`schema=planner_preset_list_meta.vN`)를 포함하고 `--list-presets-meta-schema-id` override를 추가해 footer 포맷 버전을 parser가 fail-fast로 식별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

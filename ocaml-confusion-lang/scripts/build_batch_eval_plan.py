@@ -37,6 +37,8 @@ PRESET_SUMMARY_TSV_BASE_COLUMNS = [
 ]
 PRESET_SUMMARY_TSV_SCHEMA = "planner_preset_summary_tsv.v2"
 PRESET_SUMMARY_TSV_SCHEMA_PATTERN = re.compile(r"^planner_preset_summary_tsv\.v[1-9][0-9]*$")
+PRESET_LIST_TEXT_META_SCHEMA = "planner_preset_list_meta.v1"
+PRESET_LIST_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_list_meta\.v[1-9][0-9]*$")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -296,9 +298,15 @@ def _format_preset_summary_tsv_row(
     return "\t".join(item.replace("\t", " ") for item in row)
 
 
-def _emit_list_presets_text_meta(filtered_count: int, emitted_count: int, truncated: bool) -> None:
+def _emit_list_presets_text_meta(
+    filtered_count: int,
+    emitted_count: int,
+    truncated: bool,
+    schema_id: str,
+) -> None:
     print(
         "# meta\t"
+        f"schema={schema_id}\t"
         f"filtered_count={filtered_count}\t"
         f"emitted_count={emitted_count}\t"
         f"truncated={str(truncated).lower()}"
@@ -459,6 +467,13 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-presets-meta-schema-id",
+        default=PRESET_LIST_TEXT_META_SCHEMA,
+        help=(
+            "Schema id for --list-presets text meta footer (default: planner_preset_list_meta.v1)"
+        ),
+    )
+    parser.add_argument(
         "--summary-tsv-with-schema-header",
         action="store_true",
         help=(
@@ -549,6 +564,11 @@ def main() -> int:
         if not PRESET_SUMMARY_TSV_SCHEMA_PATTERN.match(schema_id):
             raise ValueError(
                 "--summary-tsv-schema-id must match planner_preset_summary_tsv.vN (N>=1)"
+            )
+        list_meta_schema_id = str(args.list_presets_meta_schema_id).strip()
+        if not PRESET_LIST_TEXT_META_SCHEMA_PATTERN.match(list_meta_schema_id):
+            raise ValueError(
+                "--list-presets-meta-schema-id must match planner_preset_list_meta.vN (N>=1)"
             )
         if args.summary_tsv_description_max_len is not None and args.summary_tsv_description_max_len < 4:
             raise ValueError("--summary-tsv-description-max-len must be >= 4")
@@ -707,7 +727,12 @@ def main() -> int:
                     resolved = resolve_preset_with_defaults(preset)
                     print(_format_preset_summary_line(name, resolved))
                 if args.list_presets_with_meta:
-                    _emit_list_presets_text_meta(len(filtered_presets), len(preset_names), truncated)
+                    _emit_list_presets_text_meta(
+                        len(filtered_presets),
+                        len(preset_names),
+                        truncated,
+                        schema_id=list_meta_schema_id,
+                    )
                 return 0
             if args.list_presets_format == "summary-tsv":
                 _emit_preset_summary_tsv_header(
@@ -732,12 +757,22 @@ def main() -> int:
                         )
                     )
                 if args.list_presets_with_meta:
-                    _emit_list_presets_text_meta(len(filtered_presets), len(preset_names), truncated)
+                    _emit_list_presets_text_meta(
+                        len(filtered_presets),
+                        len(preset_names),
+                        truncated,
+                        schema_id=list_meta_schema_id,
+                    )
                 return 0
             for name in preset_names:
                 print(name)
             if args.list_presets_with_meta:
-                _emit_list_presets_text_meta(len(filtered_presets), len(preset_names), truncated)
+                _emit_list_presets_text_meta(
+                    len(filtered_presets),
+                    len(preset_names),
+                    truncated,
+                    schema_id=list_meta_schema_id,
+                )
             return 0
 
         if args.task_set_json is None:

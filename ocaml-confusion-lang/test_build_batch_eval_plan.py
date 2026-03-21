@@ -927,8 +927,34 @@ def main() -> int:
         text=True,
     )
     names_with_meta_lines = [line.strip() for line in preset_list_names_with_meta.stdout.splitlines() if line.strip()]
-    if names_with_meta_lines[-1] != "# meta\tfiltered_count=3\temitted_count=2\ttruncated=true":
+    if names_with_meta_lines[-1] != "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\ttruncated=true":
         raise AssertionError(f"unexpected names-with-meta footer: {names_with_meta_lines}")
+
+    preset_list_names_with_meta_custom_schema = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-schema-id",
+            "planner_preset_list_meta.v2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_custom_schema_lines = [
+        line.strip() for line in preset_list_names_with_meta_custom_schema.stdout.splitlines() if line.strip()
+    ]
+    if names_with_meta_custom_schema_lines[-1] != (
+        "# meta\tschema=planner_preset_list_meta.v2\tfiltered_count=3\temitted_count=2\ttruncated=true"
+    ):
+        raise AssertionError(
+            f"unexpected names-with-meta custom schema footer: {names_with_meta_custom_schema_lines}"
+        )
 
     preset_list_summary = subprocess.run(
         [
@@ -1027,7 +1053,7 @@ def main() -> int:
         text=True,
     )
     summary_tsv_meta_lines = [line.rstrip("\n") for line in preset_list_summary_tsv_with_meta.stdout.splitlines() if line.strip()]
-    if summary_tsv_meta_lines[-1] != "# meta\tfiltered_count=3\temitted_count=2\ttruncated=true":
+    if summary_tsv_meta_lines[-1] != "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\ttruncated=true":
         raise AssertionError(f"unexpected summary-tsv meta footer: {summary_tsv_meta_lines}")
 
     preset_list_summary_tsv_with_schema = subprocess.run(
