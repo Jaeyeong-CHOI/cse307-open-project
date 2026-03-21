@@ -172,7 +172,9 @@ jobs:
             --sha "${{ github.sha }}" \
             --ref "${{ github.ref }}" \
             --repository "${{ github.repository }}" \
-            --actor "${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
+            --actor "${{ github.actor }}" \
+            --workflow "${{ github.workflow }}" \
+            --job "${{ github.job }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.snapshot.ci.json
 
@@ -289,7 +291,9 @@ jobs:
             --sha "${{ github.sha }}" \
             --ref "${{ github.ref }}" \
             --repository "${{ github.repository }}" \
-            --actor "${{ github.actor }}" >> "$GITHUB_STEP_SUMMARY"
+            --actor "${{ github.actor }}" \
+            --workflow "${{ github.workflow }}" \
+            --job "${{ github.job }}" >> "$GITHUB_STEP_SUMMARY"
           python3 scripts/validate_ci_result_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.snapshot.ci.json
 

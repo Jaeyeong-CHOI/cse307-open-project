@@ -64,6 +64,8 @@ def main() -> None:
             "ref": "refs/heads/main",
             "repository": "org/repo",
             "actor": "octocat",
+            "workflow": "ocaml-confusion-lang-ci",
+            "job": "build-and-test",
         },
     }
 
@@ -139,6 +141,23 @@ def main() -> None:
     _assert_contains(
         bad_run_context.stderr,
         "run_context.repository must be a non-empty string when present",
+    )
+
+    invalid_run_context_workflow = dict(valid_payload)
+    invalid_run_context_workflow["run_context"] = {
+        "run_id": "123456789",
+        "run_url": "https://github.com/org/repo/actions/runs/123456789",
+        "workflow": "",
+    }
+    invalid_run_context_workflow_path = _write(
+        OUT / "snapshot.invalid-run-context-workflow.json", invalid_run_context_workflow
+    )
+    bad_run_context_workflow = _run(invalid_run_context_workflow_path)
+    if bad_run_context_workflow.returncode == 0:
+        raise AssertionError("expected failure for invalid run_context.workflow")
+    _assert_contains(
+        bad_run_context_workflow.stderr,
+        "run_context.workflow must be a non-empty string when present",
     )
 
     invalid_run_context_pair = dict(valid_payload)

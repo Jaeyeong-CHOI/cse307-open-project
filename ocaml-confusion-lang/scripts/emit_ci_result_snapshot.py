@@ -249,7 +249,9 @@ def build_snapshot_markdown(snapshot: dict[str, Any]) -> str:
             f"sha={run_context.get('sha', 'n/a')}; "
             f"ref={run_context.get('ref', 'n/a')}; "
             f"repository={run_context.get('repository', 'n/a')}; "
-            f"actor={run_context.get('actor', 'n/a')}"
+            f"actor={run_context.get('actor', 'n/a')}; "
+            f"workflow={run_context.get('workflow', 'n/a')}; "
+            f"job={run_context.get('job', 'n/a')}"
         ),
         f"- summary_json: `{snapshot.get('summary_json')}`",
         f"- metric_json: `{snapshot.get('metric_json')}`",
@@ -294,6 +296,8 @@ def main() -> None:
     parser.add_argument("--ref", help="optional git ref metadata")
     parser.add_argument("--repository", help="optional repository metadata (owner/repo)")
     parser.add_argument("--actor", help="optional trigger actor metadata")
+    parser.add_argument("--workflow", help="optional workflow name metadata")
+    parser.add_argument("--job", help="optional job id metadata")
     args = parser.parse_args()
 
     if not re.match(SCHEMA_VERSION_PATTERN, args.schema_version):
@@ -326,6 +330,8 @@ def main() -> None:
             "ref": args.ref,
             "repository": args.repository,
             "actor": args.actor,
+            "workflow": args.workflow,
+            "job": args.job,
         }.items()
         if isinstance(value, str) and value.strip()
     }

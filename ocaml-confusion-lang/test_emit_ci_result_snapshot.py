@@ -50,6 +50,8 @@ def _run(
             ("--ref", "ref"),
             ("--repository", "repository"),
             ("--actor", "actor"),
+            ("--workflow", "workflow"),
+            ("--job", "job"),
         ]:
             value = run_context.get(key)
             if isinstance(value, str):
@@ -134,6 +136,8 @@ def main() -> None:
             "ref": "refs/heads/main",
             "repository": "org/repo",
             "actor": "octocat",
+            "workflow": "ocaml-confusion-lang-ci",
+            "job": "build-and-test",
         },
     )
     assert_contains(content, "## Full CI result snapshot")
@@ -153,7 +157,7 @@ def main() -> None:
     )
     assert_contains(
         content,
-        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; run_attempt=2; event_name=workflow_dispatch; sha=abc123def456; ref=refs/heads/main; repository=org/repo; actor=octocat",
+        "- run_context: run_id=123456789; run_url=https://github.com/org/repo/actions/runs/123456789; run_attempt=2; event_name=workflow_dispatch; sha=abc123def456; ref=refs/heads/main; repository=org/repo; actor=octocat; workflow=ocaml-confusion-lang-ci; job=build-and-test",
     )
 
     snapshot_payload = json.loads(snapshot_json.read_text(encoding="utf-8"))
@@ -175,6 +179,10 @@ def main() -> None:
         raise AssertionError("json snapshot run_context.repository mismatch")
     if run_context_meta.get("actor") != "octocat":
         raise AssertionError("json snapshot run_context.actor mismatch")
+    if run_context_meta.get("workflow") != "ocaml-confusion-lang-ci":
+        raise AssertionError("json snapshot run_context.workflow mismatch")
+    if run_context_meta.get("job") != "build-and-test":
+        raise AssertionError("json snapshot run_context.job mismatch")
 
     payload_no_mismatch = {
         "overview": {
