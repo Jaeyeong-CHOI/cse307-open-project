@@ -2480,9 +2480,29 @@ def main() -> int:
             "expected resolved-json list meta output_format=resolved-json, got: "
             f"{list_meta_payload}"
         )
+    if list_meta_payload.get("output_transport") != "json":
+        raise AssertionError(
+            "expected resolved-json list meta output_transport=json, got: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("output_has_header") is not False:
+        raise AssertionError(
+            "expected resolved-json list meta output_has_header=false, got: "
+            f"{list_meta_payload}"
+        )
     if list_meta_payload.get("output_delimiter") != "none":
         raise AssertionError(
             "expected resolved-json list meta output_delimiter=none, got: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("output_field_count") != 0:
+        raise AssertionError(
+            "expected resolved-json list meta output_field_count=0, got: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("output_columns") != []:
+        raise AssertionError(
+            "expected resolved-json list meta output_columns=[], got: "
             f"{list_meta_payload}"
         )
     for required_key in (
@@ -3577,8 +3597,16 @@ def main() -> int:
         raise AssertionError(f"unexpected show-preset name: {show_preset_payload}")
     if show_preset_payload.get("output_format") != "json":
         raise AssertionError(f"unexpected show-preset output_format: {show_preset_payload}")
+    if show_preset_payload.get("output_transport") != "json":
+        raise AssertionError(f"unexpected show-preset output_transport: {show_preset_payload}")
+    if show_preset_payload.get("output_has_header") is not False:
+        raise AssertionError(f"unexpected show-preset output_has_header: {show_preset_payload}")
     if show_preset_payload.get("output_delimiter") != "none":
         raise AssertionError(f"unexpected show-preset output_delimiter: {show_preset_payload}")
+    if show_preset_payload.get("output_field_count") != 0:
+        raise AssertionError(f"unexpected show-preset output_field_count: {show_preset_payload}")
+    if show_preset_payload.get("output_columns") != []:
+        raise AssertionError(f"unexpected show-preset output_columns: {show_preset_payload}")
     resolved = show_preset_payload.get("resolved")
     if not isinstance(resolved, dict):
         raise AssertionError(f"missing resolved preset payload: {show_preset_payload}")
@@ -3615,7 +3643,11 @@ def main() -> int:
         show_meta_payload.get("preset") != "quick-smoke"
         or show_meta_payload.get("format") != "json"
         or show_meta_payload.get("output_format") != "json"
+        or show_meta_payload.get("output_transport") != "json"
+        or show_meta_payload.get("output_has_header") is not False
         or show_meta_payload.get("output_delimiter") != "none"
+        or show_meta_payload.get("output_field_count") != 0
+        or show_meta_payload.get("output_columns") != []
     ):
         raise AssertionError(f"unexpected show-preset json meta identity fields: {show_meta_payload}")
     if show_meta_payload.get("filtered_count") != 1 or show_meta_payload.get("emitted_count") != 1:

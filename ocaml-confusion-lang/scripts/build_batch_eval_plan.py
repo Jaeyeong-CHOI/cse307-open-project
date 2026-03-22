@@ -2012,6 +2012,34 @@ def _resolve_preset_output_delimiter(output_format: str) -> str:
     return "newline"
 
 
+def _resolve_preset_output_transport(output_format: str) -> str:
+    if output_format in {"json", "resolved-json"}:
+        return "json"
+    if output_format == "summary-tsv":
+        return "tsv"
+    return "text"
+
+
+def _resolve_preset_output_has_header(output_format: str) -> bool:
+    return output_format == "summary-tsv"
+
+
+def _resolve_preset_output_columns(output_format: str, with_schema_column: bool) -> list[str]:
+    if output_format in {"json", "resolved-json"}:
+        return []
+    if output_format == "summary-tsv":
+        columns = [
+            *PRESET_SUMMARY_TSV_BASE_COLUMNS,
+            "description_mode",
+            "description_truncated",
+            "description",
+        ]
+        if with_schema_column:
+            columns.append("schema")
+        return columns
+    return ["line"]
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -3271,12 +3299,20 @@ def main() -> int:
             if resolved["max_runs_per_task_prompt_condition"] < 0:
                 raise ValueError("--max-runs-per-task-prompt-condition must be >= 0")
 
+            show_output_columns = _resolve_preset_output_columns(
+                args.show_preset_format,
+                with_schema_column=args.summary_tsv_with_schema_column,
+            )
             payload = {
                 "schema_version": "v1",
                 "preset_file": str(args.preset_file),
                 "preset": args.show_preset,
                 "output_format": args.show_preset_format,
+                "output_transport": _resolve_preset_output_transport(args.show_preset_format),
+                "output_has_header": _resolve_preset_output_has_header(args.show_preset_format),
                 "output_delimiter": _resolve_preset_output_delimiter(args.show_preset_format),
+                "output_field_count": len(show_output_columns),
+                "output_columns": show_output_columns,
                 "resolved": resolved,
             }
             show_meta_extra_fields: dict[str, Any] | None = None
@@ -3368,6 +3404,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["preset_file_sha256"] = _file_sha256(args.preset_file)
+            show_output_columns = _resolve_preset_output_columns(
+                args.show_preset_format,
+                with_schema_column=args.summary_tsv_with_schema_column,
+            )
             show_meta_payload = _compose_meta_payload(
                 {
                     "schema": show_meta_schema_id,
@@ -3377,7 +3417,11 @@ def main() -> int:
                     "preset": args.show_preset,
                     "format": args.show_preset_format,
                     "output_format": args.show_preset_format,
+                    "output_transport": _resolve_preset_output_transport(args.show_preset_format),
+                    "output_has_header": _resolve_preset_output_has_header(args.show_preset_format),
                     "output_delimiter": _resolve_preset_output_delimiter(args.show_preset_format),
+                    "output_field_count": len(show_output_columns),
+                    "output_columns": show_output_columns,
                     "preset_file": str(args.preset_file),
                 },
                 show_meta_extra_fields,
@@ -4220,6 +4264,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["preset_file_sha256"] = _file_sha256(args.preset_file)
+            list_output_columns = _resolve_preset_output_columns(
+                args.list_presets_format,
+                with_schema_column=args.summary_tsv_with_schema_column,
+            )
             list_meta_payload = _compose_meta_payload(
                 {
                     "schema": list_meta_schema_id,
@@ -4227,7 +4275,11 @@ def main() -> int:
                     "emitted_count": len(preset_names),
                     "truncated": truncated,
                     "output_format": args.list_presets_format,
+                    "output_transport": _resolve_preset_output_transport(args.list_presets_format),
+                    "output_has_header": _resolve_preset_output_has_header(args.list_presets_format),
                     "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
+                    "output_field_count": len(list_output_columns),
+                    "output_columns": list_output_columns,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
                     "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
@@ -4269,10 +4321,18 @@ def main() -> int:
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}
+                list_output_columns = _resolve_preset_output_columns(
+                    args.list_presets_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                )
                 payload = {
                     "schema_version": "v1",
                     "output_format": args.list_presets_format,
+                    "output_transport": _resolve_preset_output_transport(args.list_presets_format),
+                    "output_has_header": _resolve_preset_output_has_header(args.list_presets_format),
                     "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
+                    "output_field_count": len(list_output_columns),
+                    "output_columns": list_output_columns,
                     "presets": limited_presets,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
