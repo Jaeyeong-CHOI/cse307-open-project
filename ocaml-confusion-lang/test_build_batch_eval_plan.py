@@ -5050,6 +5050,62 @@ def main() -> int:
             f"{group_size_aliases}"
         )
 
+    group_share_local_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "group-share-pct-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    group_share_local_sort_payload = json.loads(group_share_local_sort_run.stdout)
+    if group_share_local_sort_payload.get("sort") != "group-share-pct-desc":
+        raise AssertionError(
+            "expected group-share-pct-desc sort mode in payload, got: "
+            f"{group_share_local_sort_payload.get('sort')}"
+        )
+    group_share_local_aliases = list(group_share_local_sort_payload.get("aliases", {}).items())
+    if group_share_local_aliases != expected_group_size_aliases:
+        raise AssertionError(
+            "expected group-share-pct-desc to match group-size-desc ordering for this filtered subset, got: "
+            f"{group_share_local_aliases}"
+        )
+
+    group_share_global_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "group-share-pct-global-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    group_share_global_sort_payload = json.loads(group_share_global_sort_run.stdout)
+    if group_share_global_sort_payload.get("sort") != "group-share-pct-global-desc":
+        raise AssertionError(
+            "expected group-share-pct-global-desc sort mode in payload, got: "
+            f"{group_share_global_sort_payload.get('sort')}"
+        )
+    group_share_global_aliases = list(group_share_global_sort_payload.get("aliases", {}).items())
+    if group_share_global_aliases != expected_group_size_aliases:
+        raise AssertionError(
+            "expected group-share-pct-global-desc to prioritize globally larger families first, got: "
+            f"{group_share_global_aliases}"
+        )
+
     min_group_size_run = subprocess.run(
         [
             "python3",

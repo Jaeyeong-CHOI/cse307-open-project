@@ -140,6 +140,10 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-min-group-size 2 --list-sort-aliases-sort canonical
 # canonical family 크기 상한으로 fan-out 큰 alias family를 제외(예: 1이면 singleton만 유지)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-max-group-size 1 --list-sort-aliases-sort canonical
+# local/grouped 비중(%) 기준으로 canonical family 집중도를 정렬(부분집합 기준)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-pct-desc
+# global 비중(%) 기준으로 canonical family 집중도를 정렬(전체 alias universe 기준)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-pct-global-desc
 # 비용 상한(max_total_runs) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # 비용 상한(max_total_runs) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -751,3 +755,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 268. ~~`--list-sort-aliases` TSV 출력(`aliases-tsv`, `grouped-tsv`)에 global canonical family 절대 크기 컬럼(`canonical_group_count_global`, `alias_count_global`)을 추가해 필터 부분집합에서도 전체 alias universe 기준 fan-out 규모를 재계산 없이 즉시 해석 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 269. ~~`--list-sort-aliases`에 global canonical family 비중 필터(`--list-sort-aliases-min-group-share-pct-global`, `--list-sort-aliases-max-group-share-pct-global`)를 추가해, alias 텍스트 매칭과 독립적으로 fan-out이 큰/작은 canonical family를 비용 triage 관점에서 즉시 분리 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 270. ~~`--list-sort-aliases`에 local canonical family 비중 필터(`--list-sort-aliases-min-group-share-pct`, `--list-sort-aliases-max-group-share-pct`)를 추가해, 현재 필터링된 alias 부분집합 내부의 fan-out 집중도 기준으로 canonical family를 즉시 분리 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+271. ~~`--list-sort-aliases-sort`에 canonical family 비중 기반 정렬(`group-share-pct*`, `group-share-pct-global*`)을 추가해 local subset과 global baseline 관점의 fan-out 집중도를 런타임에서 즉시 전환/비교 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
