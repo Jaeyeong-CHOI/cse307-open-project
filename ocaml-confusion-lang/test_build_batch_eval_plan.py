@@ -739,6 +739,49 @@ def main() -> int:
             f"{preset_names_sorted_by_cap_desc}"
         )
 
+    preset_list_sorted_by_repeats = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "repeats",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_repeats = [
+        line.strip() for line in preset_list_sorted_by_repeats.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_repeats != ["quick-smoke", "balanced-ci", "full-analysis"]:
+        raise AssertionError(
+            f"unexpected --list-presets-sort=repeats output: {preset_names_sorted_by_repeats}"
+        )
+
+    preset_list_sorted_by_repeats_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "repeats-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_repeats_desc = [
+        line.strip() for line in preset_list_sorted_by_repeats_desc.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_repeats_desc != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=repeats-desc output: "
+            f"{preset_names_sorted_by_repeats_desc}"
+        )
+
     preset_list_tag_filtered = subprocess.run(
         [
             "python3",
