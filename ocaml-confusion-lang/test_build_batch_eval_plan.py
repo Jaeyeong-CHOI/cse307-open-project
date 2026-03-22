@@ -6881,6 +6881,16 @@ def main() -> int:
             "expected aliases-tsv JSON meta footer output_shape_fields to expose output_shape_sha256 input keys, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
+    if aliases_tsv_meta_json_payload.get("output_shape_tuple") != (
+        "output=aliases|output_transport=tsv|output_is_rows=false|output_has_header=true|"
+        "output_delimiter=tab|output_field_count=6|output_column_count=6|"
+        "output_columns=alias,canonical,canonical_group_count,canonical_group_count_global,"
+        "canonical_group_share_pct,canonical_group_share_pct_global"
+    ):
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_shape_tuple to expose human-readable output shape, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
     if aliases_tsv_meta_json_payload.get("output_shape_sha256") != expected_aliases_tsv_output_shape_sha256:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_shape_sha256 to match output shape payload, got: "
@@ -7799,6 +7809,10 @@ def main() -> int:
     if "output_shape_fields=output,output_transport,output_is_rows,output_has_header,output_delimiter,output_field_count,output_column_count,output_columns" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_shape_fields, got: {names_meta_lines[-1]}"
+        )
+    if "output_shape_tuple=output=names|output_transport=text|output_is_rows=false|output_has_header=false|output_delimiter=newline|output_field_count=1|output_column_count=1|output_columns=name" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_shape_tuple, got: {names_meta_lines[-1]}"
         )
     if "output_shape_sha256=" not in names_meta_lines[-1]:
         raise AssertionError(
