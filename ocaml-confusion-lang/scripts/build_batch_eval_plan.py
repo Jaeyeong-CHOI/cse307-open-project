@@ -53,6 +53,23 @@ SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION = "v1"
 SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
 SORT_ALIASES_OUTPUT_SHAPE_SCHEMA = "planner_sort_alias_output_shape.v1"
 PRESET_OUTPUT_SHAPE_SCHEMA = "planner_preset_output_shape.v1"
+RETAINED_RECORDS_STATE_CODES_SCHEMA = "planner_retained_records_state_codes.v1"
+RETAINED_RECORDS_STATE_CODE_ROWS: list[dict[str, Any]] = [
+    {
+        "state": "no_retained_records",
+        "code": 0,
+        "has_retained_records": False,
+        "has_no_retained_records": True,
+        "description": "No records were retained in the emitted output.",
+    },
+    {
+        "state": "has_retained_records",
+        "code": 1,
+        "has_retained_records": True,
+        "has_no_retained_records": False,
+        "description": "At least one record was retained in the emitted output.",
+    },
+]
 
 
 PRESET_SORT_ALIAS_MAP: dict[str, str] = {
@@ -2264,6 +2281,23 @@ def _resolve_output_retained_records_state_code(emitted_count: int) -> int:
     return 1 if emitted_count > 0 else 0
 
 
+def _resolve_output_retained_records_state(emitted_count: int) -> str:
+    return "has_retained_records" if emitted_count > 0 else "no_retained_records"
+
+
+def _resolve_retained_records_state_code_rows() -> list[dict[str, Any]]:
+    return [dict(row) for row in RETAINED_RECORDS_STATE_CODE_ROWS]
+
+
+def _resolve_retained_records_state_code_payload() -> dict[str, Any]:
+    rows = _resolve_retained_records_state_code_rows()
+    return {
+        "schema_version": "v1",
+        "schema": RETAINED_RECORDS_STATE_CODES_SCHEMA,
+        "states": rows,
+    }
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -2675,6 +2709,14 @@ def parse_args() -> argparse.Namespace:
         "--list-sort-aliases",
         action="store_true",
         help="List canonical/alias mappings for --list-presets-sort and exit",
+    )
+    parser.add_argument(
+        "--list-retained-records-state-codes",
+        action="store_true",
+        help=(
+            "List parser-friendly retained-records state/code mappings used by "
+            "output_retained_records_state_code and exit"
+        ),
     )
     parser.add_argument(
         "--list-sort-aliases-format",
@@ -3501,6 +3543,10 @@ def main() -> int:
             raise ValueError(
                 "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)"
             )
+
+        if args.list_retained_records_state_codes:
+            print(json.dumps(_resolve_retained_records_state_code_payload(), ensure_ascii=False, indent=2))
+            return 0
 
         if args.show_preset:
             preset = load_preset_config(args.preset_file, args.show_preset)

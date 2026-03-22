@@ -8913,6 +8913,43 @@ def main() -> int:
             "expected list-presets resolved-json payload to expose output_retained_pct=100.0 when not truncated"
         )
 
+    retained_state_codes_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_payload = json.loads(retained_state_codes_run.stdout)
+    if retained_state_codes_payload.get("schema") != "planner_retained_records_state_codes.v1":
+        raise AssertionError(
+            "expected retained-records state-code payload schema to be planner_retained_records_state_codes.v1"
+        )
+    rows = retained_state_codes_payload.get("states")
+    if not isinstance(rows, list) or len(rows) != 2:
+        raise AssertionError("expected retained-records state-code payload to emit exactly two states")
+    row_by_state = {
+        row.get("state"): row
+        for row in rows
+        if isinstance(row, dict) and isinstance(row.get("state"), str)
+    }
+    if set(row_by_state.keys()) != {"no_retained_records", "has_retained_records"}:
+        raise AssertionError(
+            f"unexpected retained-records states: {sorted(row_by_state.keys())}"
+        )
+    if row_by_state["no_retained_records"].get("code") != 0:
+        raise AssertionError("expected no_retained_records code to be 0")
+    if row_by_state["has_retained_records"].get("code") != 1:
+        raise AssertionError("expected has_retained_records code to be 1")
+    if row_by_state["no_retained_records"].get("has_no_retained_records") is not True:
+        raise AssertionError("expected no_retained_records row to expose has_no_retained_records=true")
+    if row_by_state["has_retained_records"].get("has_retained_records") is not True:
+        raise AssertionError("expected has_retained_records row to expose has_retained_records=true")
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
