@@ -4894,6 +4894,58 @@ def main() -> int:
             f"{canonical_aliases}"
         )
 
+    aliases_tsv_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "aliases-tsv",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    aliases_tsv_lines = aliases_tsv_run.stdout.strip().splitlines()
+    if aliases_tsv_lines[0] != "alias\tcanonical":
+        raise AssertionError(f"unexpected aliases-tsv header: {aliases_tsv_lines[0]}")
+    if "fair-allocation\tfair-model-allocation" not in aliases_tsv_lines[1:]:
+        raise AssertionError(
+            "expected aliases-tsv output to include fair-allocation mapping, got: "
+            f"{aliases_tsv_lines}"
+        )
+
+    grouped_tsv_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "grouped-tsv",
+            "--list-sort-aliases-name-contains",
+            "fair-cap",
+            "--list-sort-aliases-filter-mode",
+            "exact",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    grouped_tsv_lines = grouped_tsv_run.stdout.strip().splitlines()
+    if grouped_tsv_lines[0] != "canonical\talias_count\taliases":
+        raise AssertionError(f"unexpected grouped-tsv header: {grouped_tsv_lines[0]}")
+    if grouped_tsv_lines[1:] != ["fair-allocation-total-cap\t1\tfair-cap"]:
+        raise AssertionError(
+            "expected grouped-tsv exact filter output to collapse to a single canonical family, got: "
+            f"{grouped_tsv_lines}"
+        )
+
     prefix_filter_run = subprocess.run(
         [
             "python3",

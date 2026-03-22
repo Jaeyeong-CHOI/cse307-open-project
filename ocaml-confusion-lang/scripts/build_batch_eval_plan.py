@@ -98,6 +98,20 @@ def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[st
     return dict(sorted(groups.items(), key=lambda item: item[0]))
 
 
+def _format_sort_aliases_tsv(alias_map: dict[str, str]) -> str:
+    lines = ["alias\tcanonical"]
+    for alias, canonical in alias_map.items():
+        lines.append(f"{alias}\t{canonical}")
+    return "\n".join(lines)
+
+
+def _format_sort_alias_groups_tsv(groups: dict[str, list[str]]) -> str:
+    lines = ["canonical\talias_count\taliases"]
+    for canonical, aliases in groups.items():
+        lines.append(f"{canonical}\t{len(aliases)}\t{','.join(aliases)}")
+    return "\n".join(lines)
+
+
 def _filter_sort_alias_map(
     alias_name_contains: str | None,
     limit: int | None,
@@ -1413,11 +1427,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-sort-aliases-format",
-        choices=("aliases-json", "grouped-json"),
+        choices=("aliases-json", "grouped-json", "aliases-tsv", "grouped-tsv"),
         default="aliases-json",
         help=(
             "Output format for --list-sort-aliases: aliases-json (default, alias->canonical) "
-            "or grouped-json (canonical->[aliases])."
+            "or grouped-json (canonical->[aliases]), aliases-tsv, grouped-tsv."
         ),
     )
     parser.add_argument(
@@ -2049,8 +2063,8 @@ def main() -> int:
                 args.list_sort_aliases_filter_mode,
                 args.list_sort_aliases_match_field,
             )
+            grouped = _build_sort_alias_groups(alias_map)
             if args.list_sort_aliases_format == "grouped-json":
-                grouped = _build_sort_alias_groups(alias_map)
                 print(
                     json.dumps(
                         {
@@ -2070,6 +2084,12 @@ def main() -> int:
                         indent=2,
                     )
                 )
+                return 0
+            if args.list_sort_aliases_format == "aliases-tsv":
+                print(_format_sort_aliases_tsv(alias_map))
+                return 0
+            if args.list_sort_aliases_format == "grouped-tsv":
+                print(_format_sort_alias_groups_tsv(grouped))
                 return 0
             print(
                 json.dumps(

@@ -115,6 +115,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort name
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases
 # sort alias 그룹 매핑(JSON) 조회 (canonical -> aliases)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format grouped-json
+# sort alias 매핑을 TSV로 조회 (jq 없이 shell/CI에서 바로 소비)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format aliases-tsv
+# canonical alias family 요약을 TSV로 조회
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format grouped-tsv
 # sort alias 이름/캐노니컬 substring 필터 + 출력 상한 (비용/로그 길이 절약)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-limit 2
 # sort alias 필터 매칭 모드(prefix/exact)로 더 정밀한 탐색
