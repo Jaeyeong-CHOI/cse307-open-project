@@ -5489,6 +5489,20 @@ def main() -> int:
             "expected default list-sort-aliases output_shape_sha256 to match output shape payload, got: "
             f"{sort_aliases_payload.get('output_shape_sha256')}"
         )
+    if sort_aliases_payload.get("output_shape_payload") != {
+        "output": sort_aliases_payload.get("output"),
+        "output_transport": sort_aliases_payload.get("output_transport"),
+        "output_is_rows": sort_aliases_payload.get("output_is_rows"),
+        "output_has_header": sort_aliases_payload.get("output_has_header"),
+        "output_delimiter": sort_aliases_payload.get("output_delimiter"),
+        "output_field_count": sort_aliases_payload.get("output_field_count"),
+        "output_column_count": sort_aliases_payload.get("output_column_count"),
+        "output_columns": sort_aliases_payload.get("output_columns"),
+    }:
+        raise AssertionError(
+            "expected default list-sort-aliases output_shape_payload to mirror output shape fields, got: "
+            f"{sort_aliases_payload.get('output_shape_payload')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -6894,6 +6908,20 @@ def main() -> int:
     if aliases_tsv_meta_json_payload.get("output_shape_sha256") != expected_aliases_tsv_output_shape_sha256:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_shape_sha256 to match output shape payload, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("output_shape_payload") != {
+        "output": aliases_tsv_meta_json_payload.get("output"),
+        "output_transport": aliases_tsv_meta_json_payload.get("output_transport"),
+        "output_is_rows": aliases_tsv_meta_json_payload.get("output_is_rows"),
+        "output_has_header": aliases_tsv_meta_json_payload.get("output_has_header"),
+        "output_delimiter": aliases_tsv_meta_json_payload.get("output_delimiter"),
+        "output_field_count": aliases_tsv_meta_json_payload.get("output_field_count"),
+        "output_column_count": aliases_tsv_meta_json_payload.get("output_column_count"),
+        "output_columns": aliases_tsv_meta_json_payload.get("output_columns"),
+    }:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_shape_payload to mirror output shape fields, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
     if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
