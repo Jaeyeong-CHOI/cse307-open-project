@@ -84,8 +84,12 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
     "cheap-first-desc": "cheap-first-tag-desc",
     "cheap-total-cap": "cheap-first-total-cap",
     "cheap-total-cap-desc": "cheap-first-total-cap-desc",
+    "ctc": "cheap-first-total-cap",
+    "ctcd": "cheap-first-total-cap-desc",
     "fair-total-cap": "fair-allocation-total-cap",
     "fair-total-cap-desc": "fair-allocation-total-cap-desc",
+    "ftc": "fair-allocation-total-cap",
+    "ftcd": "fair-allocation-total-cap-desc",
     "fair-cap": "fair-allocation-total-cap",
     "fair-cap-desc": "fair-allocation-total-cap-desc",
     "cost": "cost-priority",
@@ -1586,10 +1590,14 @@ def _sort_preset_names(
         "cheap-first-total-cap-desc",
         "cheap-total-cap",
         "cheap-total-cap-desc",
+        "ctc",
+        "ctcd",
         "fair-allocation-total-cap",
         "fair-allocation-total-cap-desc",
         "fair-total-cap",
         "fair-total-cap-desc",
+        "ftc",
+        "ftcd",
         "fair-cap",
         "fair-cap-desc",
         "cost-priority",
@@ -1840,7 +1848,7 @@ def _sort_preset_names(
         if sort_mode in ("cheap-first-tag", "cheap-first"):
             return sorted(preset_names, key=lambda name: (-resolved_cheap_first_tag_flags[name], name))
 
-        if sort_mode in ("cheap-first-total-cap", "cheap-total-cap"):
+        if sort_mode in ("cheap-first-total-cap", "cheap-total-cap", "ctc"):
             def cheap_first_total_cap_sort_key(name: str) -> tuple[int, int, int, str]:
                 cheap_first_rank = -resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1850,7 +1858,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cheap_first_total_cap_sort_key)
 
-        if sort_mode in ("cheap-first-total-cap-desc", "cheap-total-cap-desc"):
+        if sort_mode in ("cheap-first-total-cap-desc", "cheap-total-cap-desc", "ctcd"):
             def cheap_first_total_cap_desc_sort_key(name: str) -> tuple[int, int, int, str]:
                 cheap_first_rank = resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1860,7 +1868,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cheap_first_total_cap_desc_sort_key)
 
-        if sort_mode in ("fair-allocation-total-cap", "fair-total-cap", "fair-cap"):
+        if sort_mode in ("fair-allocation-total-cap", "fair-total-cap", "ftc", "fair-cap"):
             def fair_allocation_total_cap_sort_key(name: str) -> tuple[int, int, int, str]:
                 fair_rank = -resolved_fair_model_allocation_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1870,7 +1878,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=fair_allocation_total_cap_sort_key)
 
-        if sort_mode in ("fair-allocation-total-cap-desc", "fair-total-cap-desc", "fair-cap-desc"):
+        if sort_mode in ("fair-allocation-total-cap-desc", "fair-total-cap-desc", "ftcd", "fair-cap-desc"):
             def fair_allocation_total_cap_desc_sort_key(name: str) -> tuple[int, int, int, str]:
                 fair_rank = resolved_fair_model_allocation_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -3165,13 +3173,17 @@ def parse_args() -> argparse.Namespace:
             "cheap-first-desc (alias of cheap-first-tag-desc), cheap-first-total-cap "
             "(cheap-first tagged presets first, then max_total_runs ascending with uncapped last), "
             "cheap-total-cap (alias of cheap-first-total-cap), "
+            "ctc (alias of cheap-first-total-cap), "
             "cheap-first-total-cap-desc (cheap-first-untagged presets first, then max_total_runs descending with uncapped first), "
             "cheap-total-cap-desc (alias of cheap-first-total-cap-desc), "
+            "ctcd (alias of cheap-first-total-cap-desc), "
             "fair-allocation-total-cap (fair_model_allocation=true presets first, then max_total_runs ascending with uncapped last), "
             "fair-total-cap (alias of fair-allocation-total-cap), "
+            "ftc (alias of fair-allocation-total-cap), "
             "fair-cap (alias of fair-allocation-total-cap), "
             "fair-allocation-total-cap-desc (fair_model_allocation=false presets first, then max_total_runs descending with uncapped first), "
             "fair-total-cap-desc (alias of fair-allocation-total-cap-desc), "
+            "ftcd (alias of fair-allocation-total-cap-desc), "
             "fair-cap-desc (alias of fair-allocation-total-cap-desc), "
             "cost-priority (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_model asc with uncapped last), "
             "cost (alias of cost-priority), "

@@ -318,10 +318,14 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort chea
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-first-total-cap
 # cheap-first 복합 정렬 단축 alias(=cheap-first-total-cap)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-total-cap
+# cheap-first 복합 정렬 초단축 alias(=cheap-first-total-cap)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort ctc
 # cheap-first 역방향 + max_total_runs cap 내림차순(uncapped 먼저) 복합 정렬
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-first-total-cap-desc
 # cheap-first 역방향 복합 정렬 단축 alias(=cheap-first-total-cap-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-total-cap-desc
+# cheap-first 역방향 복합 정렬 초단축 alias(=cheap-first-total-cap-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort ctcd
 # fair_model_allocation=true preset 우선 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-model-allocation
 # fair_model_allocation 우선 + max_total_runs cap 오름차순(uncapped 마지막) 복합 정렬
@@ -329,11 +333,15 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair
 # fair allocation 복합 정렬 단축 alias(=fair-allocation-total-cap)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-total-cap
 # fair allocation 복합 정렬 초단축 alias(=fair-allocation-total-cap)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort ftc
+# fair allocation 복합 정렬 초단축 alias(=fair-allocation-total-cap)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-cap
 # fair_model_allocation 역방향 + max_total_runs cap 내림차순(uncapped 먼저) 복합 정렬
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-total-cap-desc
 # fair allocation 역방향 복합 정렬 단축 alias(=fair-allocation-total-cap-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-total-cap-desc
+# fair allocation 역방향 복합 정렬 초단축 alias(=fair-allocation-total-cap-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort ftcd
 # fair allocation 역방향 복합 정렬 초단축 alias(=fair-allocation-total-cap-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-cap-desc
 # 비용 우선 복합 정렬(cheap-first 태그 -> total cap -> per-model cap)
@@ -907,3 +915,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 351. ~~planner preset/sort-aliases 출력 JSON+meta에 `output_retention_state_code`(`0=fully_retained`, `1=partially_retained`, `2=fully_truncated`)를 추가해 문자열 enum 파싱 없이 정수 분기(fail-fast switch/case) 경로를 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 352. ~~planner preset discovery 정렬 모드에 ultra-short 비용 정렬 alias(`cp`, `cpd`)를 추가해 `cost-priority`/`cost-priority-desc` 장문 입력 없이도 동일 triage 호출을 더 빠르게 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 353. ~~planner preset discovery 정렬 모드에 ultra-short condition-cost alias(`cpp`, `cppd`)를 추가해 `cost-priority-prompt`/`cost-priority-prompt-desc` 장문 입력 없이도 동일 triage 호출을 더 빠르게 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+354. ~~planner preset discovery 정렬 모드에 ultra-short total-cap 복합 alias(`ctc`, `ctcd`, `ftc`, `ftcd`)를 추가해 `cheap-first-total-cap*`/`fair-allocation-total-cap*` 장문 입력 없이도 동일 triage 호출을 더 빠르게 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

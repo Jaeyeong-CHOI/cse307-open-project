@@ -2109,6 +2109,30 @@ def main() -> int:
             f"{preset_names_sorted_by_cheap_total_cap_desc_alias}"
         )
 
+    preset_list_sorted_by_ctcd_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "ctcd",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_ctcd_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_ctcd_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_ctcd_alias != ["full-analysis", "balanced-ci", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=ctcd alias output: "
+            f"{preset_names_sorted_by_ctcd_alias}"
+        )
+
     preset_list_sorted_by_fair_allocation_total_cap_desc = subprocess.run(
         [
             "python3",
@@ -2155,6 +2179,30 @@ def main() -> int:
         raise AssertionError(
             "unexpected --list-presets-sort=fair-total-cap-desc output: "
             f"{preset_names_sorted_by_fair_total_cap_desc_alias}"
+        )
+
+    preset_list_sorted_by_ftcd_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "ftcd",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_ftcd_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_ftcd_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_ftcd_alias != ["quick-smoke", "full-analysis", "balanced-ci"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=ftcd alias output: "
+            f"{preset_names_sorted_by_ftcd_alias}"
         )
 
     preset_list_sorted_by_fair_cap_desc_alias = subprocess.run(
@@ -6578,8 +6626,10 @@ def main() -> int:
     expected_group_size_aliases = [
         ("fair-cap", "fair-allocation-total-cap"),
         ("fair-total-cap", "fair-allocation-total-cap"),
+        ("ftc", "fair-allocation-total-cap"),
         ("fair-cap-desc", "fair-allocation-total-cap-desc"),
         ("fair-total-cap-desc", "fair-allocation-total-cap-desc"),
+        ("ftcd", "fair-allocation-total-cap-desc"),
         ("fair-allocation", "fair-model-allocation"),
         ("fair-allocation-desc", "fair-model-allocation-desc"),
     ]
@@ -6938,8 +6988,10 @@ def main() -> int:
     expected_min_group_size_aliases = {
         "fair-cap": "fair-allocation-total-cap",
         "fair-total-cap": "fair-allocation-total-cap",
+        "ftc": "fair-allocation-total-cap",
         "fair-cap-desc": "fair-allocation-total-cap-desc",
         "fair-total-cap-desc": "fair-allocation-total-cap-desc",
+        "ftcd": "fair-allocation-total-cap-desc",
     }
     if min_group_size_aliases != expected_min_group_size_aliases:
         raise AssertionError(
@@ -7068,8 +7120,10 @@ def main() -> int:
     expected_min_group_share_global_aliases = {
         "fair-cap": "fair-allocation-total-cap",
         "fair-total-cap": "fair-allocation-total-cap",
+        "ftc": "fair-allocation-total-cap",
         "fair-cap-desc": "fair-allocation-total-cap-desc",
         "fair-total-cap-desc": "fair-allocation-total-cap-desc",
+        "ftcd": "fair-allocation-total-cap-desc",
     }
     if min_group_share_global_aliases != expected_min_group_share_global_aliases:
         raise AssertionError(
@@ -7110,7 +7164,7 @@ def main() -> int:
             f"{aliases_tsv_lines}"
         )
     fair_cap_row = next(
-        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-cap\tfair-allocation-total-cap\t2\t2\t")),
+        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-cap\tfair-allocation-total-cap\t3\t3\t")),
         None,
     )
     if fair_cap_row is None:
@@ -7209,7 +7263,7 @@ def main() -> int:
     grouped_tsv_lines = grouped_tsv_run.stdout.strip().splitlines()
     if grouped_tsv_lines[0] != "canonical\talias_count\talias_count_global\talias_share_pct\talias_share_pct_global\taliases":
         raise AssertionError(f"unexpected grouped-tsv header: {grouped_tsv_lines[0]}")
-    expected_grouped_prefix = "fair-allocation-total-cap\t1\t2\t100.00\t"
+    expected_grouped_prefix = "fair-allocation-total-cap\t1\t3\t100.00\t"
     if len(grouped_tsv_lines) != 2 or not grouped_tsv_lines[1].startswith(expected_grouped_prefix) or not grouped_tsv_lines[1].endswith("\tfair-cap"):
         raise AssertionError(
             "expected grouped-tsv exact filter output to collapse to a single canonical family with 100% filtered share and global share column, got: "
@@ -7983,9 +8037,9 @@ def main() -> int:
             "--list-sort-aliases-filter-mode",
             "exact",
             "--list-sort-aliases-min-group-size-delta",
-            "-1",
+            "-2",
             "--list-sort-aliases-max-group-size-delta",
-            "-1",
+            "-2",
             "--list-sort-aliases-sort",
             "canonical",
         ],
@@ -7995,14 +8049,14 @@ def main() -> int:
         text=True,
     )
     size_delta_filter_payload = json.loads(size_delta_filter_run.stdout)
-    if size_delta_filter_payload.get("min_group_size_delta") != -1:
+    if size_delta_filter_payload.get("min_group_size_delta") != -2:
         raise AssertionError(
-            "expected min_group_size_delta=-1 in payload, got: "
+            "expected min_group_size_delta=-2 in payload, got: "
             f"{size_delta_filter_payload.get('min_group_size_delta')}"
         )
-    if size_delta_filter_payload.get("max_group_size_delta") != -1:
+    if size_delta_filter_payload.get("max_group_size_delta") != -2:
         raise AssertionError(
-            "expected max_group_size_delta=-1 in payload, got: "
+            "expected max_group_size_delta=-2 in payload, got: "
             f"{size_delta_filter_payload.get('max_group_size_delta')}"
         )
     expected_size_delta_canonicals = {
@@ -8010,7 +8064,7 @@ def main() -> int:
     }
     if set(size_delta_filter_payload.get("aliases", {}).values()) != expected_size_delta_canonicals:
         raise AssertionError(
-            "expected signed size-delta filter(-1 only) to keep fair-allocation canonical group, got: "
+            "expected signed size-delta filter(-2 only) to keep fair-allocation canonical group, got: "
             f"{size_delta_filter_payload.get('aliases', {})}"
         )
 
@@ -8283,9 +8337,9 @@ def main() -> int:
         raise AssertionError(f"expected names output to be alias-only (no TSV columns), got: {names_lines}")
     if any(line.startswith("{") for line in names_lines):
         raise AssertionError(f"expected names output to be plain lines (not JSON), got: {names_lines}")
-    if any("cap" not in line for line in names_lines):
+    if any(("cap" not in line) and (line not in {"ctc", "ctcd", "ftc", "ftcd"}) for line in names_lines):
         raise AssertionError(
-            "expected --list-sort-aliases-name-contains=cap to constrain names output, got: "
+            "expected --list-sort-aliases-name-contains=cap to constrain names output (including ultra-short cap aliases), got: "
             f"{names_lines}"
         )
 
@@ -8554,9 +8608,9 @@ def main() -> int:
             "expected names-json normalized filter values name_values=['cap'], name_not_values=[], got: "
             f"name_values={names_json.get('name_values')} name_not_values={names_json.get('name_not_values')}"
         )
-    if any("cap" not in name for name in names_json["names"]):
+    if any(("cap" not in name) and (name not in {"ctc", "ctcd", "ftc", "ftcd"}) for name in names_json["names"]):
         raise AssertionError(
-            "expected names-json names to honor --list-sort-aliases-name-contains=cap filter, got: "
+            "expected names-json names to honor --list-sort-aliases-name-contains=cap filter (including ultra-short cap aliases), got: "
             f"{names_json['names']}"
         )
 
