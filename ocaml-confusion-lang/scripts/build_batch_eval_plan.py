@@ -583,6 +583,10 @@ def _filter_sort_alias_map(
         "group-size-delta-desc",
         "group-size-delta-abs",
         "group-size-delta-abs-desc",
+        "group-size-delta-pct",
+        "group-size-delta-pct-desc",
+        "group-size-delta-pct-abs",
+        "group-size-delta-pct-abs-desc",
     ):
         local_group_sizes = {}
         for _, canonical in filtered_items:
@@ -612,6 +616,16 @@ def _filter_sort_alias_map(
         def _abs_size_delta(canonical: str) -> int:
             return abs(_size_delta(canonical))
 
+        def _size_delta_pct(canonical: str) -> float:
+            global_size = global_group_sizes.get(canonical, 0)
+            local_size = local_group_sizes.get(canonical, 0)
+            if global_size <= 0:
+                return 0.0 if local_size <= 0 else 100.0
+            return round(((local_size - global_size) / global_size) * 100.0, 2)
+
+        def _abs_size_delta_pct(canonical: str) -> float:
+            return round(abs(_size_delta_pct(canonical)), 2)
+
         if sort_mode == "group-share-delta":
             filtered_items.sort(key=lambda item: (_share_delta(item[1]), item[1], item[0]))
         elif sort_mode == "group-share-delta-desc":
@@ -626,8 +640,16 @@ def _filter_sort_alias_map(
             filtered_items.sort(key=lambda item: (-_size_delta(item[1]), item[1], item[0]))
         elif sort_mode == "group-size-delta-abs":
             filtered_items.sort(key=lambda item: (_abs_size_delta(item[1]), item[1], item[0]))
-        else:
+        elif sort_mode == "group-size-delta-abs-desc":
             filtered_items.sort(key=lambda item: (-_abs_size_delta(item[1]), item[1], item[0]))
+        elif sort_mode == "group-size-delta-pct":
+            filtered_items.sort(key=lambda item: (_size_delta_pct(item[1]), item[1], item[0]))
+        elif sort_mode == "group-size-delta-pct-desc":
+            filtered_items.sort(key=lambda item: (-_size_delta_pct(item[1]), item[1], item[0]))
+        elif sort_mode == "group-size-delta-pct-abs":
+            filtered_items.sort(key=lambda item: (_abs_size_delta_pct(item[1]), item[1], item[0]))
+        else:
+            filtered_items.sort(key=lambda item: (-_abs_size_delta_pct(item[1]), item[1], item[0]))
     else:
         raise ValueError(f"unsupported list-sort-aliases sort mode: {sort_mode}")
 
@@ -2125,6 +2147,10 @@ def parse_args() -> argparse.Namespace:
             "group-size-delta-desc",
             "group-size-delta-abs",
             "group-size-delta-abs-desc",
+            "group-size-delta-pct",
+            "group-size-delta-pct-desc",
+            "group-size-delta-pct-abs",
+            "group-size-delta-pct-abs-desc",
         ),
         default="alias",
         help=(
@@ -2136,8 +2162,10 @@ def parse_args() -> argparse.Namespace:
             "group-share-pct-global/group-share-pct-global-desc (by global canonical family share %% values), "
             "group-share-delta/group-share-delta-desc (by signed local-global canonical family share %% delta), "
             "group-share-delta-abs/group-share-delta-abs-desc (by absolute local-global canonical family share %% delta), "
-            "group-size-delta/group-size-delta-desc (by signed local-global canonical family size delta), or "
-            "group-size-delta-abs/group-size-delta-abs-desc (by absolute local-global canonical family size delta)."
+            "group-size-delta/group-size-delta-desc (by signed local-global canonical family size delta), "
+            "group-size-delta-abs/group-size-delta-abs-desc (by absolute local-global canonical family size delta), "
+            "group-size-delta-pct/group-size-delta-pct-desc (by signed local-global canonical family size delta %% relative to global family size), or "
+            "group-size-delta-pct-abs/group-size-delta-pct-abs-desc (by absolute local-global canonical family size delta %% relative to global family size)."
         ),
     )
     parser.add_argument(

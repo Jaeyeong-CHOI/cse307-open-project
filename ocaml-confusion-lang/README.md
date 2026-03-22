@@ -150,6 +150,8 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-delta-abs-desc
 # local-global 절대 family 크기 차이(count) 기준 정렬로 global fan-out 대비 축소/확장 편차가 큰 canonical family를 우선 triage
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-size-delta-abs-desc
+# local-global family 크기 변화율(%) 절대값 기준 정렬로 canonical family 상대 편향(전역 대비 축소/확장 비율)을 우선 triage
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-name-not-contains total --list-sort-aliases-sort group-size-delta-pct-abs-desc
 # global canonical family 크기 기준 정렬(전체 alias universe 기준)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-size-global-desc
 # global canonical family 크기 하한/상한으로 전체 alias universe 기준 fan-out 규모를 필터링
@@ -782,3 +784,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 277. ~~`--list-sort-aliases`에 signed local-global canonical family 비중 차이 필터(`--list-sort-aliases-min-group-share-delta-pct`, `--list-sort-aliases-max-group-share-delta-pct`)를 추가해, 편향 정렬 이전에 과대표/과소대표 family를 임계값 기반으로 fail-fast 선별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 278. ~~`--list-sort-aliases`에 absolute local-global canonical family 비중 차이 필터(`--list-sort-aliases-min-group-share-delta-abs-pct`, `--list-sort-aliases-max-group-share-delta-abs-pct`)를 추가해, 편향 방향과 무관한 skew 크기 기준 triage를 임계값으로 fail-fast 선별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 279. ~~`--list-sort-aliases`에 signed/absolute local-global canonical family 크기 차이 필터(`--list-sort-aliases-min/max-group-size-delta`, `--list-sort-aliases-min/max-group-size-delta-abs`)를 추가해, fan-out skew를 정렬 전에 임계값으로 fail-fast 선별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+280. ~~`--list-sort-aliases-sort`에 canonical family 크기 변화율(%) 정렬(`group-size-delta-pct*`)을 추가해 local-global 절대 count 차이뿐 아니라 상대 편향(전역 대비 축소/확장 비율) 기반 triage를 단일 키로 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

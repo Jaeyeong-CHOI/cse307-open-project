@@ -5218,6 +5218,44 @@ def main() -> int:
             f"{group_size_delta_abs_aliases}"
         )
 
+    group_size_delta_pct_abs_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-name-not-contains",
+            "total",
+            "--list-sort-aliases-match-field",
+            "alias",
+            "--list-sort-aliases-sort",
+            "group-size-delta-pct-abs-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    group_size_delta_pct_abs_sort_payload = json.loads(group_size_delta_pct_abs_sort_run.stdout)
+    if group_size_delta_pct_abs_sort_payload.get("sort") != "group-size-delta-pct-abs-desc":
+        raise AssertionError(
+            "expected group-size-delta-pct-abs-desc sort mode in payload, got: "
+            f"{group_size_delta_pct_abs_sort_payload.get('sort')}"
+        )
+    group_size_delta_pct_abs_aliases = list(group_size_delta_pct_abs_sort_payload.get("aliases", {}).items())
+    expected_group_size_delta_pct_abs_aliases = [
+        ("fair-cap", "fair-allocation-total-cap"),
+        ("fair-cap-desc", "fair-allocation-total-cap-desc"),
+        ("fair-allocation", "fair-model-allocation"),
+        ("fair-allocation-desc", "fair-model-allocation-desc"),
+    ]
+    if group_size_delta_pct_abs_aliases != expected_group_size_delta_pct_abs_aliases:
+        raise AssertionError(
+            "expected group-size-delta-pct-abs-desc to prioritize larger relative local-global family size deltas first, got: "
+            f"{group_size_delta_pct_abs_aliases}"
+        )
+
     min_group_size_run = subprocess.run(
         [
             "python3",
