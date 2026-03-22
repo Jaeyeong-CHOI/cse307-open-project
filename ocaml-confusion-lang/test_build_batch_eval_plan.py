@@ -894,6 +894,50 @@ def main() -> int:
             f"{preset_names_sorted_by_prompt_condition_count_desc}"
         )
 
+    preset_list_sorted_by_max_runs_per_model = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "max-runs-per-model",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_max_runs_per_model = [
+        line.strip() for line in preset_list_sorted_by_max_runs_per_model.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_max_runs_per_model != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=max-runs-per-model output: "
+            f"{preset_names_sorted_by_max_runs_per_model}"
+        )
+
+    preset_list_sorted_by_max_runs_per_model_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "max-runs-per-model-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_max_runs_per_model_desc = [
+        line.strip() for line in preset_list_sorted_by_max_runs_per_model_desc.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_max_runs_per_model_desc != ["full-analysis", "quick-smoke", "balanced-ci"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=max-runs-per-model-desc output: "
+            f"{preset_names_sorted_by_max_runs_per_model_desc}"
+        )
+
     preset_list_sorted_by_description_length = subprocess.run(
         [
             "python3",
