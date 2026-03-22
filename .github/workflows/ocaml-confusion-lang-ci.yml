@@ -222,7 +222,7 @@ jobs:
           python3 scripts/generate_metric_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
             -o ../docs/research/results/roundtrip-batch-v1.fixture.metrics.ci.json \
-            --task-set-id cse307-roundtrip-batch-v1 \
+            --task-set-id cse307-task-set-v1 \
             --prompt-condition strict \
             --model gpt-5.3-codex \
             --task-set-json examples/task-set-v1.json \
@@ -367,7 +367,7 @@ jobs:
           python3 scripts/generate_metric_snapshot.py \
             ../docs/research/results/roundtrip-batch-v1.include-diff.summary.ci.json \
             -o ../docs/research/results/roundtrip-batch-v1.include-diff.metrics.ci.json \
-            --task-set-id cse307-roundtrip-batch-v1 \
+            --task-set-id cse307-task-set-v1 \
             --prompt-condition strict \
             --model gpt-5.3-codex \
             --task-set-json examples/task-set-v1.json \
