@@ -230,6 +230,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "rj": "rows-json",
     "cj": "codes-json",
     "scj": "state-codes-json",
+    "csj": "codes-state-json",
     "n": "names",
     "c": "codes",
 }
@@ -2405,6 +2406,16 @@ def _render_state_code_rows_state_codes_json(rows: list[dict[str, Any]]) -> dict
     return payload
 
 
+def _render_state_code_rows_codes_state_json(rows: list[dict[str, Any]]) -> dict[str, str]:
+    payload: dict[str, str] = {}
+    for row in rows:
+        state = row.get("state")
+        code = row.get("code")
+        if isinstance(state, str) and isinstance(code, int):
+            payload[str(code)] = state
+    return payload
+
+
 def _render_state_code_rows_names(rows: list[dict[str, Any]]) -> str:
     return "\n".join(
         str(state)
@@ -2433,6 +2444,9 @@ def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any]
         return
     if output_format == "state-codes-json":
         print(json.dumps(_render_state_code_rows_state_codes_json(rows), ensure_ascii=False, indent=2))
+        return
+    if output_format == "codes-state-json":
+        print(json.dumps(_render_state_code_rows_codes_state_json(rows), ensure_ascii=False, indent=2))
         return
     if output_format == "names":
         print(_render_state_code_rows_names(rows))
@@ -2879,12 +2893,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "rows-json", "codes-json", "state-codes-json", "names", "codes", "tsv", "tsv-rows", "j", "rj", "cj", "scj", "n", "c", "t", "tr", "r", "rows"),
+        choices=("json", "rows-json", "codes-json", "state-codes-json", "codes-state-json", "names", "codes", "tsv", "tsv-rows", "j", "rj", "cj", "scj", "csj", "n", "c", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
-            "json (default), rows-json (row list only), codes-json (code-keyed row map), state-codes-json (state->code map), names (newline state labels), codes (newline numeric codes), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, rj=rows-json, cj=codes-json, scj=state-codes-json, n=names, c=codes, t=tsv, tr/r/rows=tsv-rows."
+            "json (default), rows-json (row list only), codes-json (code-keyed row map), state-codes-json (state->code map), codes-state-json (code->state map), names (newline state labels), codes (newline numeric codes), tsv (header), or tsv-rows (headerless rows). "
+            "Shorthand aliases: j=json, rj=rows-json, cj=codes-json, scj=state-codes-json, csj=codes-state-json, n=names, c=codes, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(
