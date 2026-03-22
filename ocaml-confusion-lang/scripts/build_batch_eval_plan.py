@@ -228,6 +228,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "r": "tsv-rows",
     "rows": "tsv-rows",
     "rj": "rows-json",
+    "cj": "codes-json",
 }
 
 
@@ -2382,12 +2383,24 @@ def _render_state_code_rows_tsv(
     return "\n".join(lines)
 
 
+def _render_state_code_rows_codes_json(rows: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    payload: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        code = row.get("code")
+        if isinstance(code, int):
+            payload[str(code)] = dict(row)
+    return payload
+
+
 def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any], output_format: str, kind: str) -> None:
     if output_format == "json":
         print(json.dumps(payload, ensure_ascii=False, indent=2))
         return
     if output_format == "rows-json":
         print(json.dumps(rows, ensure_ascii=False, indent=2))
+        return
+    if output_format == "codes-json":
+        print(json.dumps(_render_state_code_rows_codes_json(rows), ensure_ascii=False, indent=2))
         return
     if output_format == "tsv":
         print(_render_state_code_rows_tsv(rows, kind=kind, include_header=True))
@@ -2828,12 +2841,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "rows-json", "tsv", "tsv-rows", "j", "rj", "t", "tr", "r", "rows"),
+        choices=("json", "rows-json", "codes-json", "tsv", "tsv-rows", "j", "rj", "cj", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
-            "json (default), rows-json (row list only), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, rj=rows-json, t=tsv, tr/r/rows=tsv-rows."
+            "json (default), rows-json (row list only), codes-json (code-keyed map), tsv (header), or tsv-rows (headerless rows). "
+            "Shorthand aliases: j=json, rj=rows-json, cj=codes-json, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(
