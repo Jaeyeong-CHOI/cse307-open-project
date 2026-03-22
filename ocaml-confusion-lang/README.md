@@ -183,6 +183,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-prompt-cap
 # task×prompt_condition run cap 정렬 단축 alias 내림차순(=max-runs-per-task-prompt-condition-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-prompt-cap-desc
+# task×prompt_condition run cap 정렬 초단축 alias(=max-runs-per-task-prompt-condition)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-prompt-cap
+# task×prompt_condition run cap 정렬 초단축 alias 내림차순(=max-runs-per-task-prompt-condition-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-prompt-cap-desc
 # task×condition run cap 정렬 초단축 alias(=max-runs-per-task-prompt-condition)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-condition-cap
 # task×condition run cap 정렬 초단축 alias 내림차순(=max-runs-per-task-prompt-condition-desc)
@@ -624,3 +628,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 230. ~~planner preset discovery 정렬 모드에 `total-cap`/`total-cap-desc` alias를 추가해 `max-total-runs*` 장문 옵션 없이도 총 실행 cap 축 정렬을 짧게 호출 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 231. ~~planner preset discovery 정렬 모드에 task 축 cap 기반 정렬(`max-runs-per-task*`, `max-runs-per-task-model*`, `max-runs-per-task-prompt-condition*` + alias)을 추가해 task 과샘플링 리스크를 preset 탐색 단계에서 즉시 진단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 232. ~~planner preset discovery 정렬 모드에 초단축 task cap alias(`task-cap*`, `task-model-cap*`, `task-condition-cap*`)를 추가해 task 축 triage 명령 길이를 줄이고 cap family 네이밍 일관성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+233. ~~planner preset discovery 정렬 모드에 `task-prompt-cap`/`task-prompt-cap-desc` alias를 추가해 `task-condition-cap*`와 병행 가능한 직관적 네이밍(프롬프트 축 강조)을 제공하고 task×prompt_condition cap triage 호출 가독성을 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
