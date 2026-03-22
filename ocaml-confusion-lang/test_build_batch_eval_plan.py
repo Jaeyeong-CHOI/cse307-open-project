@@ -6039,6 +6039,67 @@ def main() -> int:
             f"{invalid_local_share_range_run.stderr}"
         )
 
+    share_delta_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "task",
+            "--list-sort-aliases-min-group-share-delta-pct",
+            "10",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    share_delta_filter_payload = json.loads(share_delta_filter_run.stdout)
+    if share_delta_filter_payload.get("min_group_share_delta_pct") != 10.0:
+        raise AssertionError(
+            "expected min_group_share_delta_pct=10.0 in payload, got: "
+            f"{share_delta_filter_payload.get('min_group_share_delta_pct')}"
+        )
+    share_delta_aliases = share_delta_filter_payload.get("aliases", {})
+    expected_delta_canonicals = {
+        "max-runs-per-task-prompt-condition",
+        "max-runs-per-task-prompt-condition-desc",
+    }
+    if not share_delta_aliases:
+        raise AssertionError("expected share-delta filter to keep over-represented canonical families")
+    if set(share_delta_aliases.values()) != expected_delta_canonicals:
+        raise AssertionError(
+            "expected share-delta filter(min=10) to keep only task-prompt cap canonical groups, got: "
+            f"{share_delta_aliases}"
+        )
+
+    invalid_share_delta_range_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-share-delta-pct",
+            "25",
+            "--list-sort-aliases-max-group-share-delta-pct",
+            "10",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_share_delta_range_run.returncode == 0:
+        raise AssertionError("expected max<min local-global group share delta bounds to fail-fast")
+    if "--list-sort-aliases-max-group-share-delta-pct must be >= --list-sort-aliases-min-group-share-delta-pct" not in (
+        invalid_share_delta_range_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected local-global group-share delta bounds validation error, got: "
+            f"{invalid_share_delta_range_run.stderr}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
