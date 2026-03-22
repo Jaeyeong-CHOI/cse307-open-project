@@ -7628,6 +7628,64 @@ def main() -> int:
             f"{canonical_names_json['canonical_names']}"
         )
 
+    aliases_rows_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "aliases-tsv-rows",
+            "--list-sort-aliases-limit",
+            "2",
+            "--list-sort-aliases-tsv-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    aliases_rows_lines = [line for line in (aliases_rows_run.stdout or "").splitlines() if line.strip()]
+    if len(aliases_rows_lines) < 2:
+        raise AssertionError("expected aliases-tsv-rows output to include at least one data row plus meta footer")
+    if aliases_rows_lines[0].startswith("alias\tcanonical\t"):
+        raise AssertionError(f"expected aliases-tsv-rows first line to be headerless data row, got: {aliases_rows_lines[0]}")
+    if not aliases_rows_lines[-1].startswith("# meta\t"):
+        raise AssertionError(f"expected aliases-tsv-rows meta footer, got: {aliases_rows_lines[-1]}")
+    if "output_format=aliases-tsv-rows" not in aliases_rows_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv-rows meta footer to expose output_format=aliases-tsv-rows, got: "
+            f"{aliases_rows_lines[-1]}"
+        )
+
+    grouped_rows_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "grouped-tsv-rows",
+            "--list-sort-aliases-limit",
+            "2",
+            "--list-sort-aliases-tsv-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    grouped_rows_lines = [line for line in (grouped_rows_run.stdout or "").splitlines() if line.strip()]
+    if len(grouped_rows_lines) < 2:
+        raise AssertionError("expected grouped-tsv-rows output to include at least one data row plus meta footer")
+    if grouped_rows_lines[0].startswith("canonical\talias_count\t"):
+        raise AssertionError(f"expected grouped-tsv-rows first line to be headerless data row, got: {grouped_rows_lines[0]}")
+    if not grouped_rows_lines[-1].startswith("# meta\t"):
+        raise AssertionError(f"expected grouped-tsv-rows meta footer, got: {grouped_rows_lines[-1]}")
+    if "output_format=grouped-tsv-rows" not in grouped_rows_lines[-1]:
+        raise AssertionError(
+            "expected grouped-tsv-rows meta footer to expose output_format=grouped-tsv-rows, got: "
+            f"{grouped_rows_lines[-1]}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
