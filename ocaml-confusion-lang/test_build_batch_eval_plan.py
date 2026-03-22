@@ -5465,6 +5465,11 @@ def main() -> int:
             separators=(",", ":"),
         ).encode("utf-8")
     ).hexdigest()
+    if sort_aliases_payload.get("output_shape_schema") != "planner_sort_alias_output_shape.v1":
+        raise AssertionError(
+            "expected default list-sort-aliases output_shape_schema=planner_sort_alias_output_shape.v1, got: "
+            f"{sort_aliases_payload.get('output_shape_schema')}"
+        )
     if sort_aliases_payload.get("output_shape_sha256") != expected_aliases_output_shape_sha256:
         raise AssertionError(
             "expected default list-sort-aliases output_shape_sha256 to match output shape payload, got: "
@@ -5789,6 +5794,11 @@ def main() -> int:
             separators=(",", ":"),
         ).encode("utf-8")
     ).hexdigest()
+    if grouped_sort_aliases_payload.get("output_shape_schema") != "planner_sort_alias_output_shape.v1":
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_shape_schema=planner_sort_alias_output_shape.v1, got: "
+            f"{grouped_sort_aliases_payload.get('output_shape_schema')}"
+        )
     if grouped_sort_aliases_payload.get("output_shape_sha256") != expected_grouped_output_shape_sha256:
         raise AssertionError(
             "expected grouped list-sort-aliases output_shape_sha256 to match output shape payload, got: "
@@ -6838,6 +6848,11 @@ def main() -> int:
             separators=(",", ":"),
         ).encode("utf-8")
     ).hexdigest()
+    if aliases_tsv_meta_json_payload.get("output_shape_schema") != "planner_sort_alias_output_shape.v1":
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_shape_schema=planner_sort_alias_output_shape.v1, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
     if aliases_tsv_meta_json_payload.get("output_shape_sha256") != expected_aliases_tsv_output_shape_sha256:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_shape_sha256 to match output shape payload, got: "
@@ -7748,6 +7763,10 @@ def main() -> int:
     if "output_columns_sha256=" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_columns_sha256, got: {names_meta_lines[-1]}"
+        )
+    if "output_shape_schema=planner_sort_alias_output_shape.v1" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_shape_schema=planner_sort_alias_output_shape.v1, got: {names_meta_lines[-1]}"
         )
     if "output_shape_sha256=" not in names_meta_lines[-1]:
         raise AssertionError(

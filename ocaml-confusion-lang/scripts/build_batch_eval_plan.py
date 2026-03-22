@@ -51,6 +51,7 @@ PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
 SORT_ALIASES_TSV_META_SCHEMA = "planner_sort_aliases_tsv_meta.v1"
 SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION = "v1"
 SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
+SORT_ALIASES_OUTPUT_SHAPE_SCHEMA = "planner_sort_alias_output_shape.v1"
 
 
 PRESET_SORT_ALIAS_MAP: dict[str, str] = {
@@ -370,6 +371,11 @@ def _resolve_sort_aliases_output_columns_sha256(output_format: str) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+def _resolve_sort_aliases_output_shape_schema(output_format: str) -> str:
+    _ = output_format
+    return SORT_ALIASES_OUTPUT_SHAPE_SCHEMA
+
+
 def _resolve_sort_aliases_output_shape_sha256(output_format: str) -> str:
     payload = json.dumps(
         {
@@ -452,6 +458,7 @@ def _format_sort_aliases_tsv_meta(
     output_columns = _resolve_sort_aliases_output_columns(output_format)
     output_column_count = _resolve_sort_aliases_output_column_count(output_format)
     output_columns_sha256 = _resolve_sort_aliases_output_columns_sha256(output_format)
+    output_shape_schema = _resolve_sort_aliases_output_shape_schema(output_format)
     output_shape_sha256 = _resolve_sort_aliases_output_shape_sha256(output_format)
 
     if meta_format == "json":
@@ -469,6 +476,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_column_count": output_column_count,
                 "output_columns": output_columns,
                 "output_columns_sha256": output_columns_sha256,
+                "output_shape_schema": output_shape_schema,
                 "output_shape_sha256": output_shape_sha256,
                 "output_format": output_format,
                 "output_format_requested": output_format_requested,
@@ -534,6 +542,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_column_count={output_column_count}\t"
         f"output_columns={','.join(output_columns) if output_columns else 'none'}\t"
         f"output_columns_sha256={output_columns_sha256}\t"
+        f"output_shape_schema={output_shape_schema}\t"
         f"output_shape_sha256={output_shape_sha256}\t"
         f"output_format={output_format}\t"
         f"output_format_requested={output_format_requested}\t"
@@ -3487,6 +3496,7 @@ def main() -> int:
                             "output_column_count": _resolve_sort_aliases_output_column_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
                             "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
+                            "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "group_schema_version": "v2",
                             "output_format": resolved_list_sort_aliases_format,
@@ -3575,6 +3585,7 @@ def main() -> int:
                             "output_column_count": _resolve_sort_aliases_output_column_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
                             "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
+                            "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
@@ -3647,6 +3658,7 @@ def main() -> int:
                             "output_column_count": _resolve_sort_aliases_output_column_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
                             "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
+                            "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
@@ -3764,6 +3776,7 @@ def main() -> int:
                             "output_column_count": _resolve_sort_aliases_output_column_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
                             "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
+                            "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                         "output_format": resolved_list_sort_aliases_format,
                         "output_format_requested": list_sort_aliases_format_requested,
