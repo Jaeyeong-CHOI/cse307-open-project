@@ -144,6 +144,9 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-pct-desc
 # global 비중(%) 기준으로 canonical family 집중도를 정렬(전체 alias universe 기준)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-pct-global-desc
+# global canonical family 크기 하한/상한으로 전체 alias universe 기준 fan-out 규모를 필터링
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-min-group-size-global 2 --list-sort-aliases-sort canonical
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-max-group-size-global 1 --list-sort-aliases-sort canonical
 # 비용 상한(max_total_runs) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # 비용 상한(max_total_runs) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -756,3 +759,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 269. ~~`--list-sort-aliases`에 global canonical family 비중 필터(`--list-sort-aliases-min-group-share-pct-global`, `--list-sort-aliases-max-group-share-pct-global`)를 추가해, alias 텍스트 매칭과 독립적으로 fan-out이 큰/작은 canonical family를 비용 triage 관점에서 즉시 분리 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 270. ~~`--list-sort-aliases`에 local canonical family 비중 필터(`--list-sort-aliases-min-group-share-pct`, `--list-sort-aliases-max-group-share-pct`)를 추가해, 현재 필터링된 alias 부분집합 내부의 fan-out 집중도 기준으로 canonical family를 즉시 분리 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 271. ~~`--list-sort-aliases-sort`에 canonical family 비중 기반 정렬(`group-share-pct*`, `group-share-pct-global*`)을 추가해 local subset과 global baseline 관점의 fan-out 집중도를 런타임에서 즉시 전환/비교 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+272. ~~`--list-sort-aliases`에 global canonical family 크기 필터(`--list-sort-aliases-min-group-size-global`, `--list-sort-aliases-max-group-size-global`)를 추가해, 현재 subset이 아닌 전체 alias universe fan-out 기준으로 canonical family를 선별해 triage 노이즈를 줄이기~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

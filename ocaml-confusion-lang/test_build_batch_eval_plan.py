@@ -5176,6 +5176,66 @@ def main() -> int:
             f"{max_group_size_aliases}"
         )
 
+    min_group_size_global_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-min-group-size-global",
+            "2",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    min_group_size_global_payload = json.loads(min_group_size_global_run.stdout)
+    if min_group_size_global_payload.get("min_group_size_global") != 2:
+        raise AssertionError(
+            "expected min_group_size_global to be reflected in payload, got: "
+            f"{min_group_size_global_payload.get('min_group_size_global')}"
+        )
+    min_group_size_global_aliases = min_group_size_global_payload.get("aliases", {})
+    if min_group_size_global_aliases != expected_min_group_size_aliases:
+        raise AssertionError(
+            "expected min_group_size_global filter to keep only globally larger canonical families, got: "
+            f"{min_group_size_global_aliases}"
+        )
+
+    max_group_size_global_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-max-group-size-global",
+            "1",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    max_group_size_global_payload = json.loads(max_group_size_global_run.stdout)
+    if max_group_size_global_payload.get("max_group_size_global") != 1:
+        raise AssertionError(
+            "expected max_group_size_global to be reflected in payload, got: "
+            f"{max_group_size_global_payload.get('max_group_size_global')}"
+        )
+    max_group_size_global_aliases = max_group_size_global_payload.get("aliases", {})
+    if max_group_size_global_aliases != expected_max_group_size_aliases:
+        raise AssertionError(
+            "expected max_group_size_global filter to keep only global singleton canonical families, got: "
+            f"{max_group_size_global_aliases}"
+        )
+
     min_group_share_global_run = subprocess.run(
         [
             "python3",
@@ -5609,6 +5669,54 @@ def main() -> int:
         raise AssertionError(
             "expected list-sort-aliases group-size bounds validation error, got: "
             f"{invalid_group_size_range_run.stderr}"
+        )
+
+    invalid_min_group_size_global_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-size-global",
+            "0",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_min_group_size_global_run.returncode == 0:
+        raise AssertionError("expected non-positive --list-sort-aliases-min-group-size-global to fail-fast")
+    if "--list-sort-aliases-min-group-size-global must be >= 1" not in (
+        invalid_min_group_size_global_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected list-sort-aliases-min-group-size-global validation error, got: "
+            f"{invalid_min_group_size_global_run.stderr}"
+        )
+
+    invalid_group_size_global_range_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-size-global",
+            "2",
+            "--list-sort-aliases-max-group-size-global",
+            "1",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_group_size_global_range_run.returncode == 0:
+        raise AssertionError("expected max<min list-sort-aliases global group-size bounds to fail-fast")
+    if "--list-sort-aliases-max-group-size-global must be >= --list-sort-aliases-min-group-size-global" not in (
+        invalid_group_size_global_range_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected list-sort-aliases global group-size bounds validation error, got: "
+            f"{invalid_group_size_global_range_run.stderr}"
         )
 
     invalid_min_group_size_run = subprocess.run(
