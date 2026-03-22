@@ -118,16 +118,18 @@ def _format_sort_aliases_tsv(
     alias_map: dict[str, str],
     *,
     global_group_share_pct: dict[str, float] | None = None,
+    global_group_sizes: dict[str, int] | None = None,
 ) -> str:
     group_sizes, _, group_share_pct = _compute_group_sizes_and_share_pct(alias_map)
 
     lines = [
-        "alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct\tcanonical_group_share_pct_global"
+        "alias\tcanonical\tcanonical_group_count\tcanonical_group_count_global\tcanonical_group_share_pct\tcanonical_group_share_pct_global"
     ]
     for alias, canonical in alias_map.items():
+        global_count = 0 if global_group_sizes is None else global_group_sizes.get(canonical, 0)
         global_share = 0.0 if global_group_share_pct is None else global_group_share_pct.get(canonical, 0.0)
         lines.append(
-            f"{alias}\t{canonical}\t{group_sizes[canonical]}\t{group_share_pct[canonical]:.2f}\t{global_share:.2f}"
+            f"{alias}\t{canonical}\t{group_sizes[canonical]}\t{global_count}\t{group_share_pct[canonical]:.2f}\t{global_share:.2f}"
         )
     return "\n".join(lines)
 
@@ -136,14 +138,20 @@ def _format_sort_alias_groups_tsv(
     groups: dict[str, list[str]],
     *,
     global_group_share_pct: dict[str, float] | None = None,
+    global_group_sizes: dict[str, int] | None = None,
 ) -> str:
     total_aliases = sum(len(aliases) for aliases in groups.values())
-    lines = ["canonical\talias_count\talias_share_pct\talias_share_pct_global\taliases"]
+    lines = [
+        "canonical\talias_count\talias_count_global\talias_share_pct\talias_share_pct_global\taliases"
+    ]
     for canonical, aliases in groups.items():
         alias_count = len(aliases)
+        global_count = 0 if global_group_sizes is None else global_group_sizes.get(canonical, 0)
         alias_share_pct = 0.0 if total_aliases == 0 else round((alias_count / total_aliases) * 100.0, 2)
         global_share = 0.0 if global_group_share_pct is None else global_group_share_pct.get(canonical, 0.0)
-        lines.append(f"{canonical}\t{alias_count}\t{alias_share_pct:.2f}\t{global_share:.2f}\t{','.join(aliases)}")
+        lines.append(
+            f"{canonical}\t{alias_count}\t{global_count}\t{alias_share_pct:.2f}\t{global_share:.2f}\t{','.join(aliases)}"
+        )
     return "\n".join(lines)
 
 
@@ -2348,7 +2356,13 @@ def main() -> int:
                 )
                 return 0
             if args.list_sort_aliases_format == "aliases-tsv":
-                print(_format_sort_aliases_tsv(alias_map, global_group_share_pct=global_group_share_pct))
+                print(
+                    _format_sort_aliases_tsv(
+                        alias_map,
+                        global_group_share_pct=global_group_share_pct,
+                        global_group_sizes=global_group_sizes,
+                    )
+                )
                 if args.list_sort_aliases_tsv_with_meta:
                     print(
                         _format_sort_aliases_tsv_meta(
@@ -2372,7 +2386,13 @@ def main() -> int:
                     )
                 return 0
             if args.list_sort_aliases_format == "grouped-tsv":
-                print(_format_sort_alias_groups_tsv(grouped, global_group_share_pct=global_group_share_pct))
+                print(
+                    _format_sort_alias_groups_tsv(
+                        grouped,
+                        global_group_share_pct=global_group_share_pct,
+                        global_group_sizes=global_group_sizes,
+                    )
+                )
                 if args.list_sort_aliases_tsv_with_meta:
                     print(
                         _format_sort_aliases_tsv_meta(

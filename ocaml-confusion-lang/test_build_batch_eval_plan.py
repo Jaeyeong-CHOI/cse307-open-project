@@ -5140,11 +5140,11 @@ def main() -> int:
     aliases_tsv_lines = aliases_tsv_run.stdout.strip().splitlines()
     if (
         aliases_tsv_lines[0]
-        != "alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct\tcanonical_group_share_pct_global"
+        != "alias\tcanonical\tcanonical_group_count\tcanonical_group_count_global\tcanonical_group_share_pct\tcanonical_group_share_pct_global"
     ):
         raise AssertionError(f"unexpected aliases-tsv header: {aliases_tsv_lines[0]}")
     fair_allocation_row = next(
-        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-allocation\tfair-model-allocation\t1\t")),
+        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-allocation\tfair-model-allocation\t1\t1\t")),
         None,
     )
     if fair_allocation_row is None:
@@ -5153,7 +5153,7 @@ def main() -> int:
             f"{aliases_tsv_lines}"
         )
     fair_cap_row = next(
-        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-cap\tfair-allocation-total-cap\t2\t")),
+        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-cap\tfair-allocation-total-cap\t2\t2\t")),
         None,
     )
     if fair_cap_row is None:
@@ -5215,9 +5215,9 @@ def main() -> int:
         text=True,
     )
     grouped_tsv_lines = grouped_tsv_run.stdout.strip().splitlines()
-    if grouped_tsv_lines[0] != "canonical\talias_count\talias_share_pct\talias_share_pct_global\taliases":
+    if grouped_tsv_lines[0] != "canonical\talias_count\talias_count_global\talias_share_pct\talias_share_pct_global\taliases":
         raise AssertionError(f"unexpected grouped-tsv header: {grouped_tsv_lines[0]}")
-    expected_grouped_prefix = "fair-allocation-total-cap\t1\t100.00\t"
+    expected_grouped_prefix = "fair-allocation-total-cap\t1\t2\t100.00\t"
     if len(grouped_tsv_lines) != 2 or not grouped_tsv_lines[1].startswith(expected_grouped_prefix) or not grouped_tsv_lines[1].endswith("\tfair-cap"):
         raise AssertionError(
             "expected grouped-tsv exact filter output to collapse to a single canonical family with 100% filtered share and global share column, got: "
