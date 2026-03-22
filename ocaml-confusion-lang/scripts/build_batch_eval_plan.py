@@ -393,6 +393,8 @@ def _sort_preset_names(
         "repeats-desc",
         "model-count",
         "model-count-desc",
+        "prompt-condition-count",
+        "prompt-condition-count-desc",
         "description-length",
         "description-length-desc",
         "tag-count",
@@ -403,6 +405,7 @@ def _sort_preset_names(
         resolved_caps: dict[str, int] = {}
         resolved_repeats: dict[str, int] = {}
         resolved_model_counts: dict[str, int] = {}
+        resolved_prompt_condition_counts: dict[str, int] = {}
         resolved_description_lengths: dict[str, int] = {}
         resolved_cheap_first_tag_flags: dict[str, int] = {}
         resolved_custom_tag_flags: dict[str, int] = {}
@@ -419,6 +422,15 @@ def _sort_preset_names(
                 resolved_model_counts[name] = len([token for token in models.split(",") if token.strip()])
             else:
                 resolved_model_counts[name] = 0
+            prompt_conditions = resolved.get("prompt_conditions", [])
+            if isinstance(prompt_conditions, list):
+                resolved_prompt_condition_counts[name] = len(prompt_conditions)
+            elif isinstance(prompt_conditions, str):
+                resolved_prompt_condition_counts[name] = len(
+                    [token for token in prompt_conditions.split(",") if token.strip()]
+                )
+            else:
+                resolved_prompt_condition_counts[name] = 0
             description_text = _preset_description_text(resolved.get("description", ""))
             resolved_description_lengths[name] = 0 if description_text == "-" else len(description_text)
             tags = resolved.get("tags", [])
@@ -458,6 +470,12 @@ def _sort_preset_names(
 
         if sort_mode == "model-count-desc":
             return sorted(preset_names, key=lambda name: (-resolved_model_counts[name], name))
+
+        if sort_mode == "prompt-condition-count":
+            return sorted(preset_names, key=lambda name: (resolved_prompt_condition_counts[name], name))
+
+        if sort_mode == "prompt-condition-count-desc":
+            return sorted(preset_names, key=lambda name: (-resolved_prompt_condition_counts[name], name))
 
         if sort_mode == "description-length":
             return sorted(preset_names, key=lambda name: (resolved_description_lengths[name], name))
@@ -992,6 +1010,7 @@ def parse_args() -> argparse.Namespace:
             "name (default), max-total-runs (ascending; capped presets first, 0/uncapped last), "
             "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
             "repeats-desc (descending), model-count (ascending), model-count-desc (descending), "
+            "prompt-condition-count (ascending), prompt-condition-count-desc (descending), "
             "description-length (ascending normalized description length), description-length-desc (descending), "
             "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
