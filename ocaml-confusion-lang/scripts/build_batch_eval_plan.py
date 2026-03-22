@@ -438,6 +438,46 @@ def _emit_show_preset_text_meta(
     )
 
 
+def _apply_show_meta_profile(args: argparse.Namespace) -> None:
+    if args.show_preset_meta_profile in (None, "minimal"):
+        return
+    if args.show_preset_meta_profile == "debug":
+        args.show_preset_meta_include_overrides = True
+        args.show_preset_meta_include_generated_at = True
+        args.show_preset_meta_include_cwd = True
+        args.show_preset_meta_include_python_version = True
+        args.show_preset_meta_include_pid = True
+        args.show_preset_meta_include_hostname = True
+        args.show_preset_meta_include_git_head = True
+        args.show_preset_meta_include_git_branch = True
+        args.show_preset_meta_include_git_remote = True
+        args.show_preset_meta_include_git_dirty = True
+        args.show_preset_meta_include_argv = True
+        args.show_preset_meta_include_argv_tokens = True
+        args.show_preset_meta_include_argv_sha256 = True
+        args.show_preset_meta_include_argv_count = True
+
+
+def _apply_list_meta_profile(args: argparse.Namespace) -> None:
+    if args.list_presets_meta_profile in (None, "minimal"):
+        return
+    if args.list_presets_meta_profile == "debug":
+        args.list_presets_meta_include_filters = True
+        args.list_presets_meta_include_generated_at = True
+        args.list_presets_meta_include_cwd = True
+        args.list_presets_meta_include_python_version = True
+        args.list_presets_meta_include_pid = True
+        args.list_presets_meta_include_hostname = True
+        args.list_presets_meta_include_git_head = True
+        args.list_presets_meta_include_git_branch = True
+        args.list_presets_meta_include_git_remote = True
+        args.list_presets_meta_include_git_dirty = True
+        args.list_presets_meta_include_argv = True
+        args.list_presets_meta_include_argv_tokens = True
+        args.list_presets_meta_include_argv_sha256 = True
+        args.list_presets_meta_include_argv_count = True
+
+
 def _dedupe_keep_order(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -562,6 +602,15 @@ def parse_args() -> argparse.Namespace:
         choices=("text", "json"),
         default="text",
         help="Meta footer format for --show-preset-with-meta (default: text)",
+    )
+    parser.add_argument(
+        "--show-preset-meta-profile",
+        choices=("minimal", "debug"),
+        default=None,
+        help=(
+            "Optional profile for --show-preset meta footer fields: "
+            "minimal (default behavior) or debug (enable common debug fields)."
+        ),
     )
     parser.add_argument(
         "--show-preset-meta-json-schema-version",
@@ -697,6 +746,15 @@ def parse_args() -> argparse.Namespace:
         choices=("text", "json"),
         default="text",
         help="Meta footer format for --list-presets-with-meta (default: text)",
+    )
+    parser.add_argument(
+        "--list-presets-meta-profile",
+        choices=("minimal", "debug"),
+        default=None,
+        help=(
+            "Optional profile for --list-presets meta footer fields: "
+            "minimal (default behavior) or debug (enable common debug fields)."
+        ),
     )
     parser.add_argument(
         "--list-presets-meta-json-schema-version",
@@ -881,6 +939,9 @@ def main() -> int:
             raise ValueError("--show-preset-meta-json-schema-version must match vN (N>=1)")
         if args.summary_tsv_description_max_len is not None and args.summary_tsv_description_max_len < 4:
             raise ValueError("--summary-tsv-description-max-len must be >= 4")
+
+        _apply_show_meta_profile(args)
+        _apply_list_meta_profile(args)
 
         if args.show_preset:
             preset = load_preset_config(args.preset_file, args.show_preset)
