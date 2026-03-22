@@ -132,6 +132,8 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains FAIR-CAP --list-sort-aliases-filter-mode exact --list-sort-aliases-case-sensitive
 # filter 대상을 alias/canonical/both로 제어(기본 both)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair-allocation --list-sort-aliases-match-field canonical
+# exclusion substring 필터로 include 결과에서 노이즈 키를 추가 제거
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains cap --list-sort-aliases-name-not-contains total
 # canonical family 크기 하한으로 단일 alias family(크기 1)를 제외
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-min-group-size 2 --list-sort-aliases-sort canonical
 # canonical family 크기 상한으로 fan-out 큰 alias family를 제외(예: 1이면 singleton만 유지)
@@ -733,3 +735,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 254. ~~`--list-sort-aliases-min-group-size`를 추가해 canonical family 크기 하한(예: 2+)으로 singleton alias family를 탐색 단계에서 제외하고, JSON/TSV meta에 `min_group_size` 컨텍스트를 함께 기록해 downstream 파서의 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 255. ~~`--list-sort-aliases-max-group-size`를 추가해 canonical family 크기 상한(예: 1)으로 fan-out 큰 alias family를 탐색 단계에서 제외하고, JSON/TSV meta에 `max_group_size` 컨텍스트를 함께 기록해 downstream 파서의 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 256. ~~`--list-sort-aliases-case-sensitive` 옵션을 추가해 alias/canonical 필터를 기본 case-insensitive에서 선택적으로 case-sensitive로 전환하고, JSON/TSV meta에 `case_sensitive` 컨텍스트를 함께 기록해 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+257. ~~planner sort-aliases 탐색에 exclusion substring 필터(`--list-sort-aliases-name-not-contains`)를 추가해 포함 필터와 조합한 noise 제거를 지원하고, JSON/TSV meta에 `name_not_contains` 컨텍스트를 함께 기록해 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

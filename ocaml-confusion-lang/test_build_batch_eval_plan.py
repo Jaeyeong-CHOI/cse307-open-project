@@ -5403,6 +5403,53 @@ def main() -> int:
             f"{invalid_min_group_size_run.stderr}"
         )
 
+    include_exclude_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "cap",
+            "--list-sort-aliases-name-not-contains",
+            "total",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    include_exclude_payload = json.loads(include_exclude_run.stdout)
+    include_exclude_aliases = include_exclude_payload.get("aliases", {})
+    if not include_exclude_aliases:
+        raise AssertionError("expected include+exclude alias filter to emit at least one alias")
+    if any("total" in alias.lower() or "total" in canonical.lower() for alias, canonical in include_exclude_aliases.items()):
+        raise AssertionError(
+            "expected --list-sort-aliases-name-not-contains to drop aliases/canonical keys containing exclusion substring"
+        )
+
+    invalid_sort_alias_not_contains_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-not-contains",
+            "   ",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_sort_alias_not_contains_run.returncode == 0:
+        raise AssertionError("expected empty --list-sort-aliases-name-not-contains to fail-fast")
+    if "--list-sort-aliases-name-not-contains must include at least one non-empty character" not in (
+        invalid_sort_alias_not_contains_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected list-sort-aliases-name-not-contains validation error, got: "
+            f"{invalid_sort_alias_not_contains_run.stderr}"
+        )
+
     invalid_sort_alias_contains_run = subprocess.run(
         [
             "python3",

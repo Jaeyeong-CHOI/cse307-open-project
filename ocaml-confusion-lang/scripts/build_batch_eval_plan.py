@@ -121,6 +121,7 @@ def _format_sort_aliases_tsv_meta(
     emitted_count: int,
     truncated: bool,
     name_contains: str | None,
+    name_not_contains: str | None,
     filter_mode: str,
     match_field: str,
     case_sensitive: bool,
@@ -142,6 +143,7 @@ def _format_sort_aliases_tsv_meta(
                 "emitted_count": emitted_count,
                 "truncated": truncated,
                 "name_contains": name_contains,
+                "name_not_contains": name_not_contains,
                 "filter_mode": filter_mode,
                 "match_field": match_field,
                 "case_sensitive": case_sensitive,
@@ -160,6 +162,7 @@ def _format_sort_aliases_tsv_meta(
         f"emitted_count={emitted_count}\t"
         f"truncated={str(truncated).lower()}\t"
         f"name_contains={name_contains or 'none'}\t"
+        f"name_not_contains={name_not_contains or 'none'}\t"
         f"filter_mode={filter_mode}\t"
         f"match_field={match_field}\t"
         f"case_sensitive={str(case_sensitive).lower()}\t"
@@ -173,6 +176,7 @@ def _format_sort_aliases_tsv_meta(
 
 def _filter_sort_alias_map(
     alias_name_contains: str | None,
+    alias_name_not_contains: str | None,
     limit: int | None,
     sort_mode: str = "alias",
     filter_mode: str = "contains",
@@ -186,6 +190,12 @@ def _filter_sort_alias_map(
         normalized_filter = normalized_filter.lower()
     if alias_name_contains is not None and not normalized_filter:
         raise ValueError("--list-sort-aliases-name-contains must include at least one non-empty character")
+
+    normalized_exclude_filter = alias_name_not_contains.strip() if alias_name_not_contains is not None else None
+    if normalized_exclude_filter is not None and not case_sensitive:
+        normalized_exclude_filter = normalized_exclude_filter.lower()
+    if alias_name_not_contains is not None and not normalized_exclude_filter:
+        raise ValueError("--list-sort-aliases-name-not-contains must include at least one non-empty character")
     if limit is not None and limit < 1:
         raise ValueError("--list-sort-aliases-limit must be >= 1")
     if filter_mode not in {"contains", "prefix", "exact"}:
@@ -217,9 +227,22 @@ def _filter_sort_alias_map(
             return _match_value(canonical_key)
         return _match_value(alias_key) or _match_value(canonical_key)
 
+    def _matches_exclude_filter(alias: str, canonical: str) -> bool:
+        if not normalized_exclude_filter:
+            return False
+        alias_key = alias if case_sensitive else alias.lower()
+        canonical_key = canonical if case_sensitive else canonical.lower()
+        if match_field == "alias":
+            return normalized_exclude_filter in alias_key
+        if match_field == "canonical":
+            return normalized_exclude_filter in canonical_key
+        return (normalized_exclude_filter in alias_key) or (normalized_exclude_filter in canonical_key)
+
     filtered_items: list[tuple[str, str]] = []
     for alias, canonical in PRESET_SORT_ALIAS_MAP.items():
         if not _matches_filter(alias, canonical):
+            continue
+        if _matches_exclude_filter(alias, canonical):
             continue
         filtered_items.append((alias, canonical))
 
@@ -1542,10 +1565,18 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-name-not-contains",
+        default=None,
+        help=(
+            "Optional exclusion substring filter for --list-sort-aliases; "
+            "drops aliases/canonical keys containing this value after include filtering."
+        ),
+    )
+    parser.add_argument(
         "--list-sort-aliases-case-sensitive",
         action="store_true",
         help=(
-            "Treat --list-sort-aliases-name-contains matching as case-sensitive "
+            "Treat --list-sort-aliases-name-contains and --list-sort-aliases-name-not-contains matching as case-sensitive "
             "(default: case-insensitive)."
         ),
     )
@@ -2215,6 +2246,7 @@ def main() -> int:
         if args.list_sort_aliases:
             alias_map, filtered_count, truncated = _filter_sort_alias_map(
                 args.list_sort_aliases_name_contains,
+                args.list_sort_aliases_name_not_contains,
                 args.list_sort_aliases_limit,
                 args.list_sort_aliases_sort,
                 args.list_sort_aliases_filter_mode,
@@ -2234,6 +2266,7 @@ def main() -> int:
                             "emitted_count": len(alias_map),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
+                            "name_not_contains": args.list_sort_aliases_name_not_contains,
                             "filter_mode": args.list_sort_aliases_filter_mode,
                             "match_field": args.list_sort_aliases_match_field,
                             "case_sensitive": args.list_sort_aliases_case_sensitive,
@@ -2257,6 +2290,7 @@ def main() -> int:
                             emitted_count=len(alias_map),
                             truncated=truncated,
                             name_contains=args.list_sort_aliases_name_contains,
+                            name_not_contains=args.list_sort_aliases_name_not_contains,
                             filter_mode=args.list_sort_aliases_filter_mode,
                             match_field=args.list_sort_aliases_match_field,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
@@ -2279,6 +2313,7 @@ def main() -> int:
                             emitted_count=len(alias_map),
                             truncated=truncated,
                             name_contains=args.list_sort_aliases_name_contains,
+                            name_not_contains=args.list_sort_aliases_name_not_contains,
                             filter_mode=args.list_sort_aliases_filter_mode,
                             match_field=args.list_sort_aliases_match_field,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
@@ -2300,6 +2335,7 @@ def main() -> int:
                         "emitted_count": len(alias_map),
                         "truncated": truncated,
                         "name_contains": args.list_sort_aliases_name_contains,
+                        "name_not_contains": args.list_sort_aliases_name_not_contains,
                         "filter_mode": args.list_sort_aliases_filter_mode,
                         "match_field": args.list_sort_aliases_match_field,
                         "case_sensitive": args.list_sort_aliases_case_sensitive,
