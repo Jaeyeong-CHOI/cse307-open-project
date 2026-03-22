@@ -455,6 +455,30 @@ def _filter_sort_alias_map(
             filtered_items.sort(key=lambda item: (_global_share(item[1]), item[1], item[0]))
         else:
             filtered_items.sort(key=lambda item: (-_global_share(item[1]), item[1], item[0]))
+    elif sort_mode in ("group-share-delta", "group-share-delta-desc"):
+        local_group_sizes = {}
+        for _, canonical in filtered_items:
+            local_group_sizes[canonical] = local_group_sizes.get(canonical, 0) + 1
+        local_alias_count = len(filtered_items)
+        global_group_sizes, global_alias_count, _ = _compute_group_sizes_and_share_pct(PRESET_SORT_ALIAS_MAP)
+
+        def _local_share(canonical: str) -> float:
+            if local_alias_count == 0:
+                return 0.0
+            return round((local_group_sizes.get(canonical, 0) / local_alias_count) * 100.0, 2)
+
+        def _global_share(canonical: str) -> float:
+            if global_alias_count == 0:
+                return 0.0
+            return round((global_group_sizes.get(canonical, 0) / global_alias_count) * 100.0, 2)
+
+        def _share_delta(canonical: str) -> float:
+            return round(_local_share(canonical) - _global_share(canonical), 2)
+
+        if sort_mode == "group-share-delta":
+            filtered_items.sort(key=lambda item: (_share_delta(item[1]), item[1], item[0]))
+        else:
+            filtered_items.sort(key=lambda item: (-_share_delta(item[1]), item[1], item[0]))
     else:
         raise ValueError(f"unsupported list-sort-aliases sort mode: {sort_mode}")
 
@@ -1872,6 +1896,8 @@ def parse_args() -> argparse.Namespace:
             "group-size-global-desc",
             "group-share-pct-global",
             "group-share-pct-global-desc",
+            "group-share-delta",
+            "group-share-delta-desc",
         ),
         default="alias",
         help=(
@@ -1879,8 +1905,9 @@ def parse_args() -> argparse.Namespace:
             "canonical/canonical-desc (by canonical key, tie-breaking by alias), "
             "group-size/group-size-desc (by local canonical family size), "
             "group-share-pct/group-share-pct-desc (by local canonical family share %% values), "
-            "group-size-global/group-size-global-desc (by global canonical family size), or "
-            "group-share-pct-global/group-share-pct-global-desc (by global canonical family share %% values)."
+            "group-size-global/group-size-global-desc (by global canonical family size), "
+            "group-share-pct-global/group-share-pct-global-desc (by global canonical family share %% values), or "
+            "group-share-delta/group-share-delta-desc (by local-global canonical family share %% delta)."
         ),
     )
     parser.add_argument(

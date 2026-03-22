@@ -5134,6 +5134,34 @@ def main() -> int:
             f"{group_share_global_aliases}"
         )
 
+    group_share_delta_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "group-share-delta-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    group_share_delta_sort_payload = json.loads(group_share_delta_sort_run.stdout)
+    if group_share_delta_sort_payload.get("sort") != "group-share-delta-desc":
+        raise AssertionError(
+            "expected group-share-delta-desc sort mode in payload, got: "
+            f"{group_share_delta_sort_payload.get('sort')}"
+        )
+    group_share_delta_aliases = list(group_share_delta_sort_payload.get("aliases", {}).items())
+    if group_share_delta_aliases != expected_group_size_aliases:
+        raise AssertionError(
+            "expected group-share-delta-desc to prioritize larger local-global share deltas first, got: "
+            f"{group_share_delta_aliases}"
+        )
+
     min_group_size_run = subprocess.run(
         [
             "python3",

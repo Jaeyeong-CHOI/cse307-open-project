@@ -144,6 +144,8 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-pct-desc
 # global 비중(%) 기준으로 canonical family 집중도를 정렬(전체 alias universe 기준)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-pct-global-desc
+# local-global 비중 차이(%) 기준 정렬로 subset 편향이 큰 canonical family를 우선 triage
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-delta-desc
 # global canonical family 크기 기준 정렬(전체 alias universe 기준)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-size-global-desc
 # global canonical family 크기 하한/상한으로 전체 alias universe 기준 fan-out 규모를 필터링
@@ -763,3 +765,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 271. ~~`--list-sort-aliases-sort`에 canonical family 비중 기반 정렬(`group-share-pct*`, `group-share-pct-global*`)을 추가해 local subset과 global baseline 관점의 fan-out 집중도를 런타임에서 즉시 전환/비교 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 272. ~~`--list-sort-aliases`에 global canonical family 크기 필터(`--list-sort-aliases-min-group-size-global`, `--list-sort-aliases-max-group-size-global`)를 추가해, 현재 subset이 아닌 전체 alias universe fan-out 기준으로 canonical family를 선별해 triage 노이즈를 줄이기~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 273. ~~`--list-sort-aliases-sort`에 global canonical family 크기 정렬(`group-size-global`, `group-size-global-desc`)을 추가해 global share 정렬과 대칭되는 절대 fan-out 우선 triage를 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+274. ~~`--list-sort-aliases-sort`에 local-global canonical family 비중 차이 정렬(`group-share-delta`, `group-share-delta-desc`)을 추가해 필터링된 subset 편향(전역 대비 과대표/과소대표)을 단일 키로 빠르게 triage 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
