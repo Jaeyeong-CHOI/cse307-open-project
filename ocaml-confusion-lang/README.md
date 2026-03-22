@@ -146,6 +146,10 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-pct-global-desc
 # local-global 비중 차이(%) 기준 정렬로 subset 편향이 큰 canonical family를 우선 triage
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-delta-desc
+# local-global 절대 비중 차이(%) 기준 정렬로 편향 방향과 무관한 편향 크기를 우선 triage
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-share-delta-abs-desc
+# local-global 절대 family 크기 차이(count) 기준 정렬로 global fan-out 대비 축소/확장 편차가 큰 canonical family를 우선 triage
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-size-delta-abs-desc
 # global canonical family 크기 기준 정렬(전체 alias universe 기준)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-size-global-desc
 # global canonical family 크기 하한/상한으로 전체 alias universe 기준 fan-out 규모를 필터링
@@ -767,3 +771,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 273. ~~`--list-sort-aliases-sort`에 global canonical family 크기 정렬(`group-size-global`, `group-size-global-desc`)을 추가해 global share 정렬과 대칭되는 절대 fan-out 우선 triage를 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 274. ~~`--list-sort-aliases-sort`에 local-global canonical family 비중 차이 정렬(`group-share-delta`, `group-share-delta-desc`)을 추가해 필터링된 subset 편향(전역 대비 과대표/과소대표)을 단일 키로 빠르게 triage 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 275. ~~`--list-sort-aliases-sort`에 절대 local-global canonical family 비중 차이 정렬(`group-share-delta-abs`, `group-share-delta-abs-desc`)을 추가해 과대표/과소대표 방향과 무관한 편향 크기 triage를 단일 키로 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+276. ~~`--list-sort-aliases-sort`에 canonical family 크기 차이 정렬(`group-size-delta*`)을 추가해 local subset fan-out이 global baseline 대비 얼마나 줄거나 늘었는지(절대/부호)를 count 관점에서 즉시 triage 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

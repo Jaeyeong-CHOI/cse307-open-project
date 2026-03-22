@@ -460,6 +460,10 @@ def _filter_sort_alias_map(
         "group-share-delta-desc",
         "group-share-delta-abs",
         "group-share-delta-abs-desc",
+        "group-size-delta",
+        "group-size-delta-desc",
+        "group-size-delta-abs",
+        "group-size-delta-abs-desc",
     ):
         local_group_sizes = {}
         for _, canonical in filtered_items:
@@ -483,14 +487,28 @@ def _filter_sort_alias_map(
         def _abs_share_delta(canonical: str) -> float:
             return round(abs(_share_delta(canonical)), 2)
 
+        def _size_delta(canonical: str) -> int:
+            return local_group_sizes.get(canonical, 0) - global_group_sizes.get(canonical, 0)
+
+        def _abs_size_delta(canonical: str) -> int:
+            return abs(_size_delta(canonical))
+
         if sort_mode == "group-share-delta":
             filtered_items.sort(key=lambda item: (_share_delta(item[1]), item[1], item[0]))
         elif sort_mode == "group-share-delta-desc":
             filtered_items.sort(key=lambda item: (-_share_delta(item[1]), item[1], item[0]))
         elif sort_mode == "group-share-delta-abs":
             filtered_items.sort(key=lambda item: (_abs_share_delta(item[1]), item[1], item[0]))
-        else:
+        elif sort_mode == "group-share-delta-abs-desc":
             filtered_items.sort(key=lambda item: (-_abs_share_delta(item[1]), item[1], item[0]))
+        elif sort_mode == "group-size-delta":
+            filtered_items.sort(key=lambda item: (_size_delta(item[1]), item[1], item[0]))
+        elif sort_mode == "group-size-delta-desc":
+            filtered_items.sort(key=lambda item: (-_size_delta(item[1]), item[1], item[0]))
+        elif sort_mode == "group-size-delta-abs":
+            filtered_items.sort(key=lambda item: (_abs_size_delta(item[1]), item[1], item[0]))
+        else:
+            filtered_items.sort(key=lambda item: (-_abs_size_delta(item[1]), item[1], item[0]))
     else:
         raise ValueError(f"unsupported list-sort-aliases sort mode: {sort_mode}")
 
@@ -1912,6 +1930,10 @@ def parse_args() -> argparse.Namespace:
             "group-share-delta-desc",
             "group-share-delta-abs",
             "group-share-delta-abs-desc",
+            "group-size-delta",
+            "group-size-delta-desc",
+            "group-size-delta-abs",
+            "group-size-delta-abs-desc",
         ),
         default="alias",
         help=(
@@ -1921,8 +1943,10 @@ def parse_args() -> argparse.Namespace:
             "group-share-pct/group-share-pct-desc (by local canonical family share %% values), "
             "group-size-global/group-size-global-desc (by global canonical family size), "
             "group-share-pct-global/group-share-pct-global-desc (by global canonical family share %% values), "
-            "group-share-delta/group-share-delta-desc (by signed local-global canonical family share %% delta), or "
-            "group-share-delta-abs/group-share-delta-abs-desc (by absolute local-global canonical family share %% delta)."
+            "group-share-delta/group-share-delta-desc (by signed local-global canonical family share %% delta), "
+            "group-share-delta-abs/group-share-delta-abs-desc (by absolute local-global canonical family share %% delta), "
+            "group-size-delta/group-size-delta-desc (by signed local-global canonical family size delta), or "
+            "group-size-delta-abs/group-size-delta-abs-desc (by absolute local-global canonical family size delta)."
         ),
     )
     parser.add_argument(

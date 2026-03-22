@@ -5190,6 +5190,34 @@ def main() -> int:
             f"{group_share_delta_abs_aliases}"
         )
 
+    group_size_delta_abs_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "group-size-delta-abs-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    group_size_delta_abs_sort_payload = json.loads(group_size_delta_abs_sort_run.stdout)
+    if group_size_delta_abs_sort_payload.get("sort") != "group-size-delta-abs-desc":
+        raise AssertionError(
+            "expected group-size-delta-abs-desc sort mode in payload, got: "
+            f"{group_size_delta_abs_sort_payload.get('sort')}"
+        )
+    group_size_delta_abs_aliases = list(group_size_delta_abs_sort_payload.get("aliases", {}).items())
+    if group_size_delta_abs_aliases != expected_group_size_aliases:
+        raise AssertionError(
+            "expected group-size-delta-abs-desc to prioritize larger absolute local-global family size deltas first, got: "
+            f"{group_size_delta_abs_aliases}"
+        )
+
     min_group_size_run = subprocess.run(
         [
             "python3",
