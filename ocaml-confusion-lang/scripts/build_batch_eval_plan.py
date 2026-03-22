@@ -565,6 +565,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_format_alias_resolved": output_format_alias_resolved,
                 "filtered_count": filtered_count,
                 "emitted_count": emitted_count,
+                "output_record_count": emitted_count,
                 "truncated": truncated,
                 "name_contains": name_contains,
                 "name_not_contains": name_not_contains,
@@ -638,6 +639,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_format_alias_resolved={str(output_format_alias_resolved).lower()}\t"
         f"filtered_count={filtered_count}\t"
         f"emitted_count={emitted_count}\t"
+        f"output_record_count={emitted_count}\t"
         f"truncated={str(truncated).lower()}\t"
         f"name_contains={name_contains or 'none'}\t"
         f"name_not_contains={name_not_contains or 'none'}\t"
@@ -2201,6 +2203,7 @@ def _emit_list_presets_text_meta(
         "schema": schema_id,
         "filtered_count": str(filtered_count),
         "emitted_count": str(emitted_count),
+        "output_record_count": str(emitted_count),
         "truncated": str(truncated).lower(),
         "output_format": output_format,
     }
@@ -2226,6 +2229,7 @@ def _emit_show_preset_text_meta(
         "schema": schema_id,
         "filtered_count": "1",
         "emitted_count": "1",
+        "output_record_count": "1",
         "truncated": "false",
         "preset": preset_name,
         "format": output_format,
@@ -3614,6 +3618,7 @@ def main() -> int:
                     "schema": show_meta_schema_id,
                     "filtered_count": 1,
                     "emitted_count": 1,
+                    "output_record_count": 1,
                     "truncated": False,
                     "preset": args.show_preset,
                     "format": args.show_preset_format,
@@ -3885,6 +3890,7 @@ def main() -> int:
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                             "filtered_count": filtered_count,
                             "emitted_count": len(alias_map),
+                            "output_record_count": len(alias_map),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -3982,6 +3988,7 @@ def main() -> int:
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                             "filtered_count": filtered_count,
                             "emitted_count": len(alias_map),
+                            "output_record_count": len(alias_map),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4064,6 +4071,7 @@ def main() -> int:
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                             "filtered_count": filtered_count,
                             "emitted_count": len(grouped),
+                            "output_record_count": len(grouped),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4191,6 +4199,7 @@ def main() -> int:
                         "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                         "filtered_count": filtered_count,
                         "emitted_count": len(alias_map),
+                        "output_record_count": len(alias_map),
                         "truncated": truncated,
                         "name_contains": args.list_sort_aliases_name_contains,
                         "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4528,6 +4537,7 @@ def main() -> int:
                     "schema": list_meta_schema_id,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(preset_names),
+                    "output_record_count": len(preset_names),
                     "truncated": truncated,
                     "output_format": args.list_presets_format,
                     "output_transport": _resolve_preset_output_transport(args.list_presets_format),
@@ -4683,6 +4693,7 @@ def main() -> int:
                     "presets": limited_presets,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
+                    "output_record_count": len(limited_presets),
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
@@ -4795,6 +4806,7 @@ def main() -> int:
                     "presets": resolved_presets,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(resolved_presets),
+                    "output_record_count": len(resolved_presets),
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
