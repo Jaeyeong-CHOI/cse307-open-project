@@ -5470,6 +5470,20 @@ def main() -> int:
             "expected default list-sort-aliases output_shape_schema=planner_sort_alias_output_shape.v1, got: "
             f"{sort_aliases_payload.get('output_shape_schema')}"
         )
+    if sort_aliases_payload.get("output_shape_fields") != [
+        "output",
+        "output_transport",
+        "output_is_rows",
+        "output_has_header",
+        "output_delimiter",
+        "output_field_count",
+        "output_column_count",
+        "output_columns",
+    ]:
+        raise AssertionError(
+            "expected default list-sort-aliases output_shape_fields to expose output_shape_sha256 input keys, got: "
+            f"{sort_aliases_payload.get('output_shape_fields')}"
+        )
     if sort_aliases_payload.get("output_shape_sha256") != expected_aliases_output_shape_sha256:
         raise AssertionError(
             "expected default list-sort-aliases output_shape_sha256 to match output shape payload, got: "
@@ -6853,6 +6867,20 @@ def main() -> int:
             "expected aliases-tsv JSON meta footer output_shape_schema=planner_sort_alias_output_shape.v1, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
+    if aliases_tsv_meta_json_payload.get("output_shape_fields") != [
+        "output",
+        "output_transport",
+        "output_is_rows",
+        "output_has_header",
+        "output_delimiter",
+        "output_field_count",
+        "output_column_count",
+        "output_columns",
+    ]:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_shape_fields to expose output_shape_sha256 input keys, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
     if aliases_tsv_meta_json_payload.get("output_shape_sha256") != expected_aliases_tsv_output_shape_sha256:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_shape_sha256 to match output shape payload, got: "
@@ -7767,6 +7795,10 @@ def main() -> int:
     if "output_shape_schema=planner_sort_alias_output_shape.v1" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_shape_schema=planner_sort_alias_output_shape.v1, got: {names_meta_lines[-1]}"
+        )
+    if "output_shape_fields=output,output_transport,output_is_rows,output_has_header,output_delimiter,output_field_count,output_column_count,output_columns" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_shape_fields, got: {names_meta_lines[-1]}"
         )
     if "output_shape_sha256=" not in names_meta_lines[-1]:
         raise AssertionError(
