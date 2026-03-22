@@ -221,6 +221,12 @@ LIST_SORT_ALIASES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "cnj": "canonical-names-json",
 }
 
+LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
+    "j": "json",
+    "t": "tsv",
+    "tr": "tsv-rows",
+}
+
 
 def _resolve_filter_mode(mode: str) -> str:
     return FILTER_MODE_ALIAS_MAP.get(mode, mode)
@@ -240,6 +246,10 @@ def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
 
 def _resolve_list_sort_aliases_format(output_format: str) -> str:
     return LIST_SORT_ALIASES_FORMAT_ALIAS_MAP.get(output_format, output_format)
+
+
+def _resolve_list_state_codes_format(output_format: str) -> str:
+    return LIST_STATE_CODES_FORMAT_ALIAS_MAP.get(output_format, output_format)
 
 
 def _normalize_sort_alias_name_filter_value(value: str | None, *, case_sensitive: bool) -> str | None:
@@ -2812,11 +2822,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "tsv", "tsv-rows"),
+        choices=("json", "tsv", "tsv-rows", "j", "t", "tr"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
-            "json (default), tsv (header), or tsv-rows (headerless rows)."
+            "json (default), tsv (header), or tsv-rows (headerless rows). "
+            "Shorthand aliases: j=json, t=tsv, tr=tsv-rows."
         ),
     )
     parser.add_argument(
@@ -3645,13 +3656,16 @@ def main() -> int:
                 "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)"
             )
 
+        list_state_codes_format_requested = str(args.list_state_codes_format)
+        list_state_codes_format = _resolve_list_state_codes_format(list_state_codes_format_requested)
+
         if args.list_retained_records_state_codes:
             rows = _resolve_retained_records_state_code_rows()
             payload = _resolve_retained_records_state_code_payload()
             _emit_state_code_payload(
                 rows,
                 payload,
-                output_format=args.list_state_codes_format,
+                output_format=list_state_codes_format,
                 kind="retained-records",
             )
             return 0
@@ -3662,7 +3676,7 @@ def main() -> int:
             _emit_state_code_payload(
                 rows,
                 payload,
-                output_format=args.list_state_codes_format,
+                output_format=list_state_codes_format,
                 kind="retention",
             )
             return 0
