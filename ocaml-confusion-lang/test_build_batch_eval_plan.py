@@ -4826,6 +4826,16 @@ def main() -> int:
             "expected empty tag_not_values when no exclusion filter is set: "
             f"{tag_case_sensitive_json_payload}"
         )
+    if tag_case_sensitive_json_payload.get("tag_filter") != "cheap-first":
+        raise AssertionError(
+            "expected raw tag_filter to preserve the include filter input in list-presets json payload: "
+            f"{tag_case_sensitive_json_payload}"
+        )
+    if tag_case_sensitive_json_payload.get("tag_not_filter") is not None:
+        raise AssertionError(
+            "expected null tag_not_filter when exclusion tag filter is not provided: "
+            f"{tag_case_sensitive_json_payload}"
+        )
 
     name_filter_json_run = subprocess.run(
         [
@@ -4853,6 +4863,16 @@ def main() -> int:
     if name_filter_json_payload.get("name_not_values") != ["full"]:
         raise AssertionError(
             "expected normalized lower-cased name_not_values in list-presets json payload: "
+            f"{name_filter_json_payload}"
+        )
+    if name_filter_json_payload.get("name_contains") != "Quick":
+        raise AssertionError(
+            "expected name_contains to preserve the raw include filter input in list-presets json payload: "
+            f"{name_filter_json_payload}"
+        )
+    if name_filter_json_payload.get("name_not_contains") != "FULL":
+        raise AssertionError(
+            "expected name_not_contains to preserve the raw exclusion filter input in list-presets json payload: "
             f"{name_filter_json_payload}"
         )
 
