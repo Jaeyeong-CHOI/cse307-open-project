@@ -8459,6 +8459,11 @@ def main() -> int:
             "expected names-json emitted_count to match names length, got: "
             f"emitted_count={names_json.get('emitted_count')} len={len(names_json['names'])}"
         )
+    if names_json.get("output_truncated_count") != max(names_json.get("filtered_count", 0) - names_json.get("emitted_count", 0), 0):
+        raise AssertionError(
+            "expected names-json output_truncated_count to match filtered-emitted delta, got: "
+            f"filtered={names_json.get('filtered_count')} emitted={names_json.get('emitted_count')} output_truncated_count={names_json.get('output_truncated_count')}"
+        )
     if names_json.get("name_values") != ["cap"] or names_json.get("name_not_values") != []:
         raise AssertionError(
             "expected names-json normalized filter values name_values=['cap'], name_not_values=[], got: "
@@ -8565,6 +8570,11 @@ def main() -> int:
     if "output_has_header=false" not in aliases_rows_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv-rows meta footer to expose output_has_header=false, got: "
+            f"{aliases_rows_lines[-1]}"
+        )
+    if "output_has_truncated_records=true" not in aliases_rows_lines[-1] or "output_truncated_count=" not in aliases_rows_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv-rows meta footer to expose truncation provenance keys, got: "
             f"{aliases_rows_lines[-1]}"
         )
 
