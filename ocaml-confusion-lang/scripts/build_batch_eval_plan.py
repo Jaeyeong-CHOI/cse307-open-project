@@ -360,6 +360,12 @@ def _resolve_sort_aliases_output_columns(output_format: str) -> list[str]:
     return []
 
 
+def _resolve_sort_aliases_output_columns_sha256(output_format: str) -> str:
+    columns = _resolve_sort_aliases_output_columns(output_format)
+    payload = "\n".join(columns)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def _format_sort_aliases_tsv_meta(
     *,
     output_format: str,
@@ -421,6 +427,7 @@ def _format_sort_aliases_tsv_meta(
     output_delimiter = _resolve_sort_aliases_output_delimiter(output_format)
     output_field_count = _resolve_sort_aliases_output_field_count(output_format)
     output_columns = _resolve_sort_aliases_output_columns(output_format)
+    output_columns_sha256 = _resolve_sort_aliases_output_columns_sha256(output_format)
 
     if meta_format == "json":
         return json.dumps(
@@ -435,6 +442,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_delimiter": output_delimiter,
                 "output_field_count": output_field_count,
                 "output_columns": output_columns,
+                "output_columns_sha256": output_columns_sha256,
                 "output_format": output_format,
                 "output_format_requested": output_format_requested,
                 "output_format_alias_resolved": output_format_alias_resolved,
@@ -497,6 +505,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_delimiter={output_delimiter}\t"
         f"output_field_count={output_field_count}\t"
         f"output_columns={','.join(output_columns) if output_columns else 'none'}\t"
+        f"output_columns_sha256={output_columns_sha256}\t"
         f"output_format={output_format}\t"
         f"output_format_requested={output_format_requested}\t"
         f"output_format_alias_resolved={str(output_format_alias_resolved).lower()}\t"
@@ -3447,6 +3456,7 @@ def main() -> int:
                             "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
                             "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
+                            "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
                             "group_schema_version": "v2",
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
@@ -3532,6 +3542,7 @@ def main() -> int:
                             "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
                             "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
+                            "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
@@ -3601,6 +3612,7 @@ def main() -> int:
                             "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
                             "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
+                            "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
@@ -3715,6 +3727,7 @@ def main() -> int:
                         "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
                         "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                             "output_columns": _resolve_sort_aliases_output_columns(resolved_list_sort_aliases_format),
+                            "output_columns_sha256": _resolve_sort_aliases_output_columns_sha256(resolved_list_sort_aliases_format),
                         "output_format": resolved_list_sort_aliases_format,
                         "output_format_requested": list_sort_aliases_format_requested,
                         "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
