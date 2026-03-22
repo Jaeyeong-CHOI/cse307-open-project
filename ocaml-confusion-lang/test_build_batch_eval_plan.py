@@ -7347,6 +7347,40 @@ def main() -> int:
             f"{invalid_size_delta_range_run.stderr}"
         )
 
+    names_sort_aliases_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "names",
+            "--list-sort-aliases-name-contains",
+            "cap",
+            "--list-sort-aliases-sort",
+            "alias",
+            "--list-sort-aliases-limit",
+            "4",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_lines = [line for line in (names_sort_aliases_run.stdout or "").splitlines() if line.strip()]
+    if not names_lines:
+        raise AssertionError("expected names list-sort-aliases output to include at least one alias")
+    if len(names_lines) > 4:
+        raise AssertionError(f"expected names output to respect --list-sort-aliases-limit=4, got {len(names_lines)}")
+    if any("\t" in line for line in names_lines):
+        raise AssertionError(f"expected names output to be alias-only (no TSV columns), got: {names_lines}")
+    if any(line.startswith("{") for line in names_lines):
+        raise AssertionError(f"expected names output to be plain lines (not JSON), got: {names_lines}")
+    if any("cap" not in line for line in names_lines):
+        raise AssertionError(
+            "expected --list-sort-aliases-name-contains=cap to constrain names output, got: "
+            f"{names_lines}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 

@@ -210,6 +210,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort tota
 # per-task-condition-cap-desc -> max-runs-per-task-prompt-condition-desc
 # fair-cap                 -> fair-allocation-total-cap
 # fair-cap-desc            -> fair-allocation-total-cap-desc
+# alias 이름만 newline으로 빠르게 조회(JSON/TSV 파싱 없이 shell 파이프라인에 바로 사용)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format names --list-sort-aliases-name-contains cap --list-sort-aliases-limit 5
 # repeat 횟수 기준 오름차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort repeats
 # repeat 횟수 기준 내림차순 정렬(동률은 이름순)
@@ -824,3 +826,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 295. ~~`--list-presets` JSON/메타데이터에 정규화된 태그 필터 값(`tag_values`, `tag_not_values`)을 추가해 include/exclude 필터가 실제로 어떤 토큰 집합으로 해석됐는지(중복 제거/대소문자 정규화 포함) downstream에서 즉시 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 296. ~~`--list-presets` JSON/메타데이터에 정규화된 이름 필터 값(`name_values`, `name_not_values`)을 추가해 include/exclude 이름 필터가 실제로 어떤 토큰으로 해석됐는지(case 모드 포함) downstream에서 즉시 재현 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 297. ~~`--list-presets` JSON/메타데이터에 sort decomposition 필드(`sort_family`, `sort_tag`, `sort_direction`, `sort_is_desc`)를 추가해 `tag:` custom sort 및 desc 여부를 문자열 재파싱 없이 downstream에서 즉시 해석 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+298. ~~`--list-sort-aliases-format names` 출력 모드를 추가해 alias 이름만 newline으로 경량 조회할 수 있게 하고(파이프/grep 친화), 회귀 테스트로 limit/필터 적용을 검증~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
