@@ -2123,6 +2123,19 @@ def _resolve_preset_output_shape_sha256(output_format: str, with_schema_column: 
     ).hexdigest()
 
 
+def _resolve_preset_output_shape_payload_json_sha256(output_format: str, with_schema_column: bool) -> str:
+    payload = _resolve_preset_output_shape_payload_json(
+        output_format,
+        with_schema_column=with_schema_column,
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _resolve_preset_output_shape_payload_json_sha256_algo(output_format: str, with_schema_column: bool) -> str:
+    _ = (output_format, with_schema_column)
+    return "sha256"
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -3414,6 +3427,14 @@ def main() -> int:
                     args.show_preset_format,
                     with_schema_column=args.summary_tsv_with_schema_column,
                 ),
+                "output_shape_payload_json_sha256": _resolve_preset_output_shape_payload_json_sha256(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
+                "output_shape_payload_json_sha256_algo": _resolve_preset_output_shape_payload_json_sha256_algo(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
                 "output_shape_tuple": _resolve_preset_output_shape_tuple(
                     args.show_preset_format,
                     with_schema_column=args.summary_tsv_with_schema_column,
@@ -3547,6 +3568,14 @@ def main() -> int:
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
                     "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json_sha256": _resolve_preset_output_shape_payload_json_sha256(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json_sha256_algo": _resolve_preset_output_shape_payload_json_sha256_algo(
                         args.show_preset_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
@@ -4435,6 +4464,14 @@ def main() -> int:
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
+                    "output_shape_payload_json_sha256": _resolve_preset_output_shape_payload_json_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json_sha256_algo": _resolve_preset_output_shape_payload_json_sha256_algo(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "output_shape_tuple": _resolve_preset_output_shape_tuple(
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
@@ -4512,6 +4549,14 @@ def main() -> int:
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
                     "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json_sha256": _resolve_preset_output_shape_payload_json_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json_sha256_algo": _resolve_preset_output_shape_payload_json_sha256_algo(
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
@@ -4604,6 +4649,14 @@ def main() -> int:
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
                     "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json_sha256": _resolve_preset_output_shape_payload_json_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json_sha256_algo": _resolve_preset_output_shape_payload_json_sha256_algo(
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
