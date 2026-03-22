@@ -5422,6 +5422,18 @@ def main() -> int:
             "expected default list-sort-aliases output_field_count=0, got: "
             f"{sort_aliases_payload.get('output_field_count')}"
         )
+    if sort_aliases_payload.get("output_columns") != [
+        "alias",
+        "canonical",
+        "canonical_group_count",
+        "canonical_group_count_global",
+        "canonical_group_share_pct",
+        "canonical_group_share_pct_global",
+    ]:
+        raise AssertionError(
+            "expected default list-sort-aliases output_columns to match aliases schema, got: "
+            f"{sort_aliases_payload.get('output_columns')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -5698,6 +5710,18 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases output_field_count=0, got: "
             f"{grouped_sort_aliases_payload.get('output_field_count')}"
+        )
+    if grouped_sort_aliases_payload.get("output_columns") != [
+        "canonical",
+        "alias_count",
+        "alias_count_global",
+        "alias_share_pct",
+        "alias_share_pct_global",
+        "aliases",
+    ]:
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_columns to match grouped schema, got: "
+            f"{grouped_sort_aliases_payload.get('output_columns')}"
         )
     if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(
@@ -6534,6 +6558,11 @@ def main() -> int:
             "expected aliases-tsv meta footer to include output_field_count=6, got: "
             f"{aliases_tsv_with_meta_lines[-1]}"
         )
+    if "\toutput_columns=alias,canonical,canonical_group_count,canonical_group_count_global,canonical_group_share_pct,canonical_group_share_pct_global" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include aliases output_columns, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
     if "\tmin_group_size=1" not in aliases_tsv_with_meta_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv meta footer to include min_group_size context, got: "
@@ -6684,6 +6713,18 @@ def main() -> int:
     if aliases_tsv_meta_json_payload.get("output_field_count") != 6:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_field_count=6, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("output_columns") != [
+        "alias",
+        "canonical",
+        "canonical_group_count",
+        "canonical_group_count_global",
+        "canonical_group_share_pct",
+        "canonical_group_share_pct_global",
+    ]:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_columns to match aliases schema, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
     if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
@@ -7579,6 +7620,10 @@ def main() -> int:
     if "output_field_count=1" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_field_count=1, got: {names_meta_lines[-1]}"
+        )
+    if "output_columns=name" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_columns=name, got: {names_meta_lines[-1]}"
         )
 
     canonical_names_sort_aliases_run = subprocess.run(
