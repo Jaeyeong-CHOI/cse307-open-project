@@ -395,6 +395,8 @@ def _sort_preset_names(
         "model-count-desc",
         "description-length",
         "description-length-desc",
+        "tag-count",
+        "tag-count-desc",
         "cheap-first-tag",
         "cheap-first-tag-desc",
     ) or custom_tag_sort:
@@ -404,6 +406,7 @@ def _sort_preset_names(
         resolved_description_lengths: dict[str, int] = {}
         resolved_cheap_first_tag_flags: dict[str, int] = {}
         resolved_custom_tag_flags: dict[str, int] = {}
+        resolved_tag_counts: dict[str, int] = {}
         for name in preset_names:
             preset = presets.get(name, {})
             resolved = resolve_preset_with_defaults(preset)
@@ -424,6 +427,7 @@ def _sort_preset_names(
             )
             resolved_cheap_first_tag_flags[name] = 1 if "cheap-first" in normalized_tags else 0
             resolved_custom_tag_flags[name] = 1 if custom_tag_name and custom_tag_name in normalized_tags else 0
+            resolved_tag_counts[name] = len(normalized_tags)
 
         if sort_mode == "max-total-runs":
             def asc_sort_key(name: str) -> tuple[int, int, str]:
@@ -460,6 +464,12 @@ def _sort_preset_names(
 
         if sort_mode == "description-length-desc":
             return sorted(preset_names, key=lambda name: (-resolved_description_lengths[name], name))
+
+        if sort_mode == "tag-count":
+            return sorted(preset_names, key=lambda name: (resolved_tag_counts[name], name))
+
+        if sort_mode == "tag-count-desc":
+            return sorted(preset_names, key=lambda name: (-resolved_tag_counts[name], name))
 
         if custom_tag_sort:
             if custom_tag_descending:
@@ -983,6 +993,7 @@ def parse_args() -> argparse.Namespace:
             "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
             "repeats-desc (descending), model-count (ascending), model-count-desc (descending), "
             "description-length (ascending normalized description length), description-length-desc (descending), "
+            "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
             "(presets without cheap-first tag first), tag:<name> (presets containing that tag first), "
             "or tag:<name>-desc (presets without that tag first)."
