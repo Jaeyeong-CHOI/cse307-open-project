@@ -134,6 +134,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-branch
 # list-presets meta footer에 origin remote URL(git_remote)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-remote
+# list-presets meta footer에 현재 작업트리 상태(git_dirty: clean|dirty|unknown)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-dirty
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
@@ -192,6 +194,8 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-branch
 # show-preset meta footer에 origin remote URL(git_remote)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-remote
+# show-preset meta footer에 현재 작업트리 상태(git_dirty: clean|dirty|unknown)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-dirty
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 # optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
@@ -450,3 +454,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 193. ~~planner list/show meta footer에 optional `git_head`(short SHA) 주입 옵션(`--list-presets-meta-include-git-head`, `--show-preset-meta-include-git-head`)을 추가해 로그/자동화 결과를 코드 리비전과 즉시 매핑 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 194. ~~planner list/show meta footer에 optional `git_branch` 주입 옵션(`--list-presets-meta-include-git-branch`, `--show-preset-meta-include-git-branch`)을 추가해 detached HEAD 이외 일반 브랜치 실행에서 로그 컨텍스트(리비전 + 브랜치)를 즉시 파악 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 195. ~~planner list/show meta footer에 optional `git_remote`(origin URL) 주입 옵션(`--list-presets-meta-include-git-remote`, `--show-preset-meta-include-git-remote`)을 추가해 로그를 리포지토리 원격과 즉시 매핑 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+196. ~~planner list/show meta footer에 optional `git_dirty`(`clean|dirty|unknown`) 주입 옵션(`--list-presets-meta-include-git-dirty`, `--show-preset-meta-include-git-dirty`)을 추가해 preset 탐색 로그에서 작업트리 오염 여부를 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
