@@ -5448,6 +5448,28 @@ def main() -> int:
             "expected default list-sort-aliases output_columns_sha256 to match output_columns payload, got: "
             f"{sort_aliases_payload.get('output_columns_sha256')}"
         )
+    expected_aliases_output_shape_sha256 = hashlib.sha256(
+        json.dumps(
+            {
+                "output": sort_aliases_payload.get("output"),
+                "output_transport": sort_aliases_payload.get("output_transport"),
+                "output_is_rows": sort_aliases_payload.get("output_is_rows"),
+                "output_has_header": sort_aliases_payload.get("output_has_header"),
+                "output_delimiter": sort_aliases_payload.get("output_delimiter"),
+                "output_field_count": sort_aliases_payload.get("output_field_count"),
+                "output_column_count": sort_aliases_payload.get("output_column_count"),
+                "output_columns": sort_aliases_payload.get("output_columns"),
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if sort_aliases_payload.get("output_shape_sha256") != expected_aliases_output_shape_sha256:
+        raise AssertionError(
+            "expected default list-sort-aliases output_shape_sha256 to match output shape payload, got: "
+            f"{sort_aliases_payload.get('output_shape_sha256')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -5749,6 +5771,28 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases output_columns_sha256 to match output_columns payload, got: "
             f"{grouped_sort_aliases_payload.get('output_columns_sha256')}"
+        )
+    expected_grouped_output_shape_sha256 = hashlib.sha256(
+        json.dumps(
+            {
+                "output": grouped_sort_aliases_payload.get("output"),
+                "output_transport": grouped_sort_aliases_payload.get("output_transport"),
+                "output_is_rows": grouped_sort_aliases_payload.get("output_is_rows"),
+                "output_has_header": grouped_sort_aliases_payload.get("output_has_header"),
+                "output_delimiter": grouped_sort_aliases_payload.get("output_delimiter"),
+                "output_field_count": grouped_sort_aliases_payload.get("output_field_count"),
+                "output_column_count": grouped_sort_aliases_payload.get("output_column_count"),
+                "output_columns": grouped_sort_aliases_payload.get("output_columns"),
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if grouped_sort_aliases_payload.get("output_shape_sha256") != expected_grouped_output_shape_sha256:
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_shape_sha256 to match output shape payload, got: "
+            f"{grouped_sort_aliases_payload.get('output_shape_sha256')}"
         )
     if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(
@@ -6777,6 +6821,28 @@ def main() -> int:
             "expected aliases-tsv JSON meta footer output_columns_sha256 to match output_columns payload, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
+    expected_aliases_tsv_output_shape_sha256 = hashlib.sha256(
+        json.dumps(
+            {
+                "output": aliases_tsv_meta_json_payload.get("output"),
+                "output_transport": aliases_tsv_meta_json_payload.get("output_transport"),
+                "output_is_rows": aliases_tsv_meta_json_payload.get("output_is_rows"),
+                "output_has_header": aliases_tsv_meta_json_payload.get("output_has_header"),
+                "output_delimiter": aliases_tsv_meta_json_payload.get("output_delimiter"),
+                "output_field_count": aliases_tsv_meta_json_payload.get("output_field_count"),
+                "output_column_count": aliases_tsv_meta_json_payload.get("output_column_count"),
+                "output_columns": aliases_tsv_meta_json_payload.get("output_columns"),
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if aliases_tsv_meta_json_payload.get("output_shape_sha256") != expected_aliases_tsv_output_shape_sha256:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_shape_sha256 to match output shape payload, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
     if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer max_group_size=None by default, got: "
@@ -7682,6 +7748,10 @@ def main() -> int:
     if "output_columns_sha256=" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_columns_sha256, got: {names_meta_lines[-1]}"
+        )
+    if "output_shape_sha256=" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_shape_sha256, got: {names_meta_lines[-1]}"
         )
 
     canonical_names_sort_aliases_run = subprocess.run(
