@@ -143,6 +143,13 @@ def _git_head_subject(cwd: str | None = None) -> str:
         return "unknown"
 
 
+def _file_sha256(path: Path) -> str:
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError:
+        return "unknown"
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         payload = json.load(f)
@@ -480,6 +487,7 @@ def _apply_show_meta_profile(args: argparse.Namespace) -> None:
         args.show_preset_meta_include_git_dirty = True
         args.show_preset_meta_include_argv_sha256 = True
         args.show_preset_meta_include_argv_count = True
+        args.show_preset_meta_include_preset_file_sha256 = True
     if args.show_preset_meta_profile in ("debug", "safe-debug"):
         args.show_preset_meta_include_generated_at = True
         args.show_preset_meta_include_pid = True
@@ -504,6 +512,7 @@ def _apply_list_meta_profile(args: argparse.Namespace) -> None:
         args.list_presets_meta_include_git_dirty = True
         args.list_presets_meta_include_argv_sha256 = True
         args.list_presets_meta_include_argv_count = True
+        args.list_presets_meta_include_preset_file_sha256 = True
     if args.list_presets_meta_profile in ("debug", "safe-debug"):
         args.list_presets_meta_include_generated_at = True
         args.list_presets_meta_include_pid = True
@@ -735,6 +744,11 @@ def parse_args() -> argparse.Namespace:
         help="Include argv_count (number of CLI invocation tokens) in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-preset-file-sha256",
+        action="store_true",
+        help="Include preset_file_sha256 (hash of resolved --preset-file bytes) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -888,6 +902,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-argv-count",
         action="store_true",
         help="Include argv_count (number of CLI invocation tokens) in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-preset-file-sha256",
+        action="store_true",
+        help="Include preset_file_sha256 (hash of resolved --preset-file bytes) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -1147,6 +1166,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["argv_count"] = len(sys.argv)
+            if args.show_preset_meta_include_preset_file_sha256:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["preset_file_sha256"] = _file_sha256(args.preset_file)
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -1303,6 +1326,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["argv_count"] = len(sys.argv)
+            if args.list_presets_meta_include_preset_file_sha256:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["preset_file_sha256"] = _file_sha256(args.preset_file)
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}

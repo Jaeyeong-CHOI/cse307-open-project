@@ -1163,6 +1163,7 @@ def main() -> int:
         "git_dirty",
         "argv_sha256",
         "argv_count",
+        "preset_file_sha256",
     ):
         if required_key not in list_safe_debug_meta_payload:
             raise AssertionError(f"missing {required_key} in list-presets meta safe-debug profile payload: {list_safe_debug_meta_payload}")
@@ -1200,6 +1201,7 @@ def main() -> int:
         "git_dirty",
         "argv_sha256",
         "argv_count",
+        "preset_file_sha256",
     ):
         if required_key not in list_ci_safe_meta_payload:
             raise AssertionError(f"missing {required_key} in list-presets meta ci-safe profile payload: {list_ci_safe_meta_payload}")
@@ -1215,6 +1217,12 @@ def main() -> int:
     ):
         if forbidden_key in list_ci_safe_meta_payload:
             raise AssertionError(f"unexpected {forbidden_key} in list-presets meta ci-safe profile payload: {list_ci_safe_meta_payload}")
+    list_preset_file_sha256 = list_ci_safe_meta_payload.get("preset_file_sha256")
+    if not isinstance(list_preset_file_sha256, str) or len(list_preset_file_sha256) != 64:
+        raise AssertionError(
+            "invalid preset_file_sha256 in list-presets meta ci-safe profile payload: "
+            f"{list_ci_safe_meta_payload}"
+        )
 
     preset_list_names_with_meta_generated_at = subprocess.run(
         [
@@ -2226,6 +2234,7 @@ def main() -> int:
         "git_dirty",
         "argv_sha256",
         "argv_count",
+        "preset_file_sha256",
     ):
         if required_key not in show_safe_debug_meta_payload:
             raise AssertionError(f"missing {required_key} in show-preset meta safe-debug profile payload: {show_safe_debug_meta_payload}")
@@ -2264,6 +2273,7 @@ def main() -> int:
         "git_dirty",
         "argv_sha256",
         "argv_count",
+        "preset_file_sha256",
     ):
         if required_key not in show_ci_safe_meta_payload:
             raise AssertionError(f"missing {required_key} in show-preset meta ci-safe profile payload: {show_ci_safe_meta_payload}")
@@ -2279,6 +2289,12 @@ def main() -> int:
     ):
         if forbidden_key in show_ci_safe_meta_payload:
             raise AssertionError(f"unexpected {forbidden_key} in show-preset meta ci-safe profile payload: {show_ci_safe_meta_payload}")
+    show_preset_file_sha256 = show_ci_safe_meta_payload.get("preset_file_sha256")
+    if not isinstance(show_preset_file_sha256, str) or len(show_preset_file_sha256) != 64:
+        raise AssertionError(
+            "invalid preset_file_sha256 in show-preset meta ci-safe profile payload: "
+            f"{show_ci_safe_meta_payload}"
+        )
 
     show_preset_summary_with_meta_generated_at = subprocess.run(
         [
