@@ -106,9 +106,17 @@ def _format_sort_aliases_tsv(alias_map: dict[str, str]) -> str:
     for canonical in alias_map.values():
         group_sizes[canonical] = group_sizes.get(canonical, 0) + 1
 
-    lines = ["alias\tcanonical\tcanonical_group_count"]
+    total_aliases = sum(group_sizes.values())
+    group_share_pct = {
+        canonical: (0.0 if total_aliases == 0 else round((count / total_aliases) * 100.0, 2))
+        for canonical, count in group_sizes.items()
+    }
+
+    lines = ["alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct"]
     for alias, canonical in alias_map.items():
-        lines.append(f"{alias}\t{canonical}\t{group_sizes[canonical]}")
+        lines.append(
+            f"{alias}\t{canonical}\t{group_sizes[canonical]}\t{group_share_pct[canonical]:.2f}"
+        )
     return "\n".join(lines)
 
 

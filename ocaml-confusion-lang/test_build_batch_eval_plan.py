@@ -5113,11 +5113,24 @@ def main() -> int:
         text=True,
     )
     aliases_tsv_lines = aliases_tsv_run.stdout.strip().splitlines()
-    if aliases_tsv_lines[0] != "alias\tcanonical\tcanonical_group_count":
+    if aliases_tsv_lines[0] != "alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct":
         raise AssertionError(f"unexpected aliases-tsv header: {aliases_tsv_lines[0]}")
-    if "fair-allocation\tfair-model-allocation\t1" not in aliases_tsv_lines[1:]:
+    fair_allocation_row = next(
+        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-allocation\tfair-model-allocation\t1\t")),
+        None,
+    )
+    if fair_allocation_row is None:
         raise AssertionError(
-            "expected aliases-tsv output to include fair-allocation mapping with canonical_group_count, got: "
+            "expected aliases-tsv output to include fair-allocation mapping with canonical_group_count/share_pct, got: "
+            f"{aliases_tsv_lines}"
+        )
+    fair_cap_row = next(
+        (line for line in aliases_tsv_lines[1:] if line.startswith("fair-cap\tfair-allocation-total-cap\t2\t")),
+        None,
+    )
+    if fair_cap_row is None:
+        raise AssertionError(
+            "expected aliases-tsv output to include fair-cap mapping with canonical_group_count/share_pct, got: "
             f"{aliases_tsv_lines}"
         )
 
