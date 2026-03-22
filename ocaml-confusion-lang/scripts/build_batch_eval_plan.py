@@ -417,13 +417,17 @@ def _resolve_sort_aliases_output_shape_payload(output_format: str) -> dict[str, 
     }
 
 
-def _resolve_sort_aliases_output_shape_sha256(output_format: str) -> str:
-    payload = json.dumps(
+def _resolve_sort_aliases_output_shape_payload_json(output_format: str) -> str:
+    return json.dumps(
         _resolve_sort_aliases_output_shape_payload(output_format),
         ensure_ascii=False,
         sort_keys=True,
         separators=(",", ":"),
     )
+
+
+def _resolve_sort_aliases_output_shape_sha256(output_format: str) -> str:
+    payload = _resolve_sort_aliases_output_shape_payload_json(output_format)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
@@ -513,6 +517,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_shape_schema": output_shape_schema,
                 "output_shape_fields": output_shape_fields,
                 "output_shape_payload": _resolve_sort_aliases_output_shape_payload(output_format),
+                "output_shape_payload_json": _resolve_sort_aliases_output_shape_payload_json(output_format),
                 "output_shape_tuple": output_shape_tuple,
                 "output_shape_sha256": output_shape_sha256,
                 "output_format": output_format,
@@ -3538,6 +3543,7 @@ def main() -> int:
                             "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_fields": _resolve_sort_aliases_output_shape_fields(resolved_list_sort_aliases_format),
                             "output_shape_payload": _resolve_sort_aliases_output_shape_payload(resolved_list_sort_aliases_format),
+                            "output_shape_payload_json": _resolve_sort_aliases_output_shape_payload_json(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "group_schema_version": "v2",
@@ -3630,6 +3636,7 @@ def main() -> int:
                             "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_fields": _resolve_sort_aliases_output_shape_fields(resolved_list_sort_aliases_format),
                             "output_shape_payload": _resolve_sort_aliases_output_shape_payload(resolved_list_sort_aliases_format),
+                            "output_shape_payload_json": _resolve_sort_aliases_output_shape_payload_json(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
@@ -3706,6 +3713,7 @@ def main() -> int:
                             "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_fields": _resolve_sort_aliases_output_shape_fields(resolved_list_sort_aliases_format),
                             "output_shape_payload": _resolve_sort_aliases_output_shape_payload(resolved_list_sort_aliases_format),
+                            "output_shape_payload_json": _resolve_sort_aliases_output_shape_payload_json(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
@@ -3827,6 +3835,7 @@ def main() -> int:
                             "output_shape_schema": _resolve_sort_aliases_output_shape_schema(resolved_list_sort_aliases_format),
                             "output_shape_fields": _resolve_sort_aliases_output_shape_fields(resolved_list_sort_aliases_format),
                             "output_shape_payload": _resolve_sort_aliases_output_shape_payload(resolved_list_sort_aliases_format),
+                            "output_shape_payload_json": _resolve_sort_aliases_output_shape_payload_json(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                         "output_format": resolved_list_sort_aliases_format,
