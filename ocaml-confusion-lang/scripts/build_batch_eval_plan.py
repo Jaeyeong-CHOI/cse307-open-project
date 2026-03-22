@@ -185,6 +185,10 @@ def _format_sort_aliases_tsv_meta(
     max_group_size_delta: int,
     min_group_size_delta_abs: int,
     max_group_size_delta_abs: int,
+    min_group_size_delta_pct: float,
+    max_group_size_delta_pct: float,
+    min_group_size_delta_abs_pct: float,
+    max_group_size_delta_abs_pct: float,
     meta_format: str = "text",
     json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
@@ -222,6 +226,10 @@ def _format_sort_aliases_tsv_meta(
                 "max_group_size_delta": max_group_size_delta,
                 "min_group_size_delta_abs": min_group_size_delta_abs,
                 "max_group_size_delta_abs": max_group_size_delta_abs,
+                "min_group_size_delta_pct": min_group_size_delta_pct,
+                "max_group_size_delta_pct": max_group_size_delta_pct,
+                "min_group_size_delta_abs_pct": min_group_size_delta_abs_pct,
+                "max_group_size_delta_abs_pct": max_group_size_delta_abs_pct,
             },
             ensure_ascii=False,
         )
@@ -255,7 +263,11 @@ def _format_sort_aliases_tsv_meta(
         f"min_group_size_delta={min_group_size_delta}\t"
         f"max_group_size_delta={max_group_size_delta}\t"
         f"min_group_size_delta_abs={min_group_size_delta_abs}\t"
-        f"max_group_size_delta_abs={max_group_size_delta_abs}"
+        f"max_group_size_delta_abs={max_group_size_delta_abs}\t"
+        f"min_group_size_delta_pct={min_group_size_delta_pct:.2f}\t"
+        f"max_group_size_delta_pct={max_group_size_delta_pct:.2f}\t"
+        f"min_group_size_delta_abs_pct={min_group_size_delta_abs_pct:.2f}\t"
+        f"max_group_size_delta_abs_pct={max_group_size_delta_abs_pct:.2f}"
     )
 
 
@@ -283,6 +295,10 @@ def _filter_sort_alias_map(
     max_group_size_delta: int = 999_999,
     min_group_size_delta_abs: int = 0,
     max_group_size_delta_abs: int = 999_999,
+    min_group_size_delta_pct: float = -100.0,
+    max_group_size_delta_pct: float = 100.0,
+    min_group_size_delta_abs_pct: float = 0.0,
+    max_group_size_delta_abs_pct: float = 100.0,
     case_sensitive: bool = False,
 ) -> tuple[dict[str, str], int, bool]:
     normalized_filter = alias_name_contains.strip() if alias_name_contains is not None else None
@@ -359,6 +375,22 @@ def _filter_sort_alias_map(
     if max_group_size_delta_abs < min_group_size_delta_abs:
         raise ValueError(
             "--list-sort-aliases-max-group-size-delta-abs must be >= --list-sort-aliases-min-group-size-delta-abs"
+        )
+    if not -100.0 <= min_group_size_delta_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-min-group-size-delta-pct must be between -100 and 100")
+    if not -100.0 <= max_group_size_delta_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-max-group-size-delta-pct must be between -100 and 100")
+    if max_group_size_delta_pct < min_group_size_delta_pct:
+        raise ValueError(
+            "--list-sort-aliases-max-group-size-delta-pct must be >= --list-sort-aliases-min-group-size-delta-pct"
+        )
+    if not 0.0 <= min_group_size_delta_abs_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-min-group-size-delta-abs-pct must be between 0 and 100")
+    if not 0.0 <= max_group_size_delta_abs_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-max-group-size-delta-abs-pct must be between 0 and 100")
+    if max_group_size_delta_abs_pct < min_group_size_delta_abs_pct:
+        raise ValueError(
+            "--list-sort-aliases-max-group-size-delta-abs-pct must be >= --list-sort-aliases-min-group-size-delta-abs-pct"
         )
 
     def _match_value(candidate: str) -> bool:
@@ -504,6 +536,10 @@ def _filter_sort_alias_map(
         or max_group_size_delta < 999_999
         or min_group_size_delta_abs > 0
         or max_group_size_delta_abs < 999_999
+        or min_group_size_delta_pct > -100.0
+        or max_group_size_delta_pct < 100.0
+        or min_group_size_delta_abs_pct > 0.0
+        or max_group_size_delta_abs_pct < 100.0
     ):
         local_group_sizes: dict[str, int] = {}
         for _, canonical in filtered_items:
@@ -516,11 +552,22 @@ def _filter_sort_alias_map(
         def _size_delta_abs(canonical: str) -> int:
             return abs(_size_delta(canonical))
 
+        def _size_delta_pct(canonical: str) -> float:
+            global_size = global_group_sizes.get(canonical, 0)
+            if global_size == 0:
+                return 0.0
+            return round((_size_delta(canonical) / global_size) * 100.0, 2)
+
+        def _size_delta_abs_pct(canonical: str) -> float:
+            return round(abs(_size_delta_pct(canonical)), 2)
+
         filtered_items = [
             (alias, canonical)
             for alias, canonical in filtered_items
             if min_group_size_delta <= _size_delta(canonical) <= max_group_size_delta
             and min_group_size_delta_abs <= _size_delta_abs(canonical) <= max_group_size_delta_abs
+            and min_group_size_delta_pct <= _size_delta_pct(canonical) <= max_group_size_delta_pct
+            and min_group_size_delta_abs_pct <= _size_delta_abs_pct(canonical) <= max_group_size_delta_abs_pct
         ]
 
     if sort_mode == "alias":
@@ -2125,6 +2172,42 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-min-group-size-delta-pct",
+        type=float,
+        default=-100.0,
+        help=(
+            "Optional signed local-global canonical family size delta %% floor (-100~100). "
+            "Applied after absolute size-delta filtering using ((local_group_size-global_group_size)/global_group_size)*100."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-max-group-size-delta-pct",
+        type=float,
+        default=100.0,
+        help=(
+            "Optional signed local-global canonical family size delta %% ceiling (-100~100). "
+            "Applied after absolute size-delta filtering using ((local_group_size-global_group_size)/global_group_size)*100."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-min-group-size-delta-abs-pct",
+        type=float,
+        default=0.0,
+        help=(
+            "Optional absolute local-global canonical family size delta %% floor (0~100). "
+            "Applied after signed size-delta%% filtering using abs((local_group_size-global_group_size)/global_group_size*100)."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-max-group-size-delta-abs-pct",
+        type=float,
+        default=100.0,
+        help=(
+            "Optional absolute local-global canonical family size delta %% ceiling (0~100). "
+            "Applied after signed size-delta%% filtering using abs((local_group_size-global_group_size)/global_group_size*100)."
+        ),
+    )
+    parser.add_argument(
         "--list-sort-aliases-sort",
         choices=(
             "alias",
@@ -2797,6 +2880,10 @@ def main() -> int:
                 args.list_sort_aliases_max_group_size_delta,
                 args.list_sort_aliases_min_group_size_delta_abs,
                 args.list_sort_aliases_max_group_size_delta_abs,
+                args.list_sort_aliases_min_group_size_delta_pct,
+                args.list_sort_aliases_max_group_size_delta_pct,
+                args.list_sort_aliases_min_group_size_delta_abs_pct,
+                args.list_sort_aliases_max_group_size_delta_abs_pct,
                 args.list_sort_aliases_case_sensitive,
             )
             grouped = _build_sort_alias_groups(alias_map)
@@ -2835,6 +2922,10 @@ def main() -> int:
                             "max_group_size_delta": args.list_sort_aliases_max_group_size_delta,
                             "min_group_size_delta_abs": args.list_sort_aliases_min_group_size_delta_abs,
                             "max_group_size_delta_abs": args.list_sort_aliases_max_group_size_delta_abs,
+                            "min_group_size_delta_pct": args.list_sort_aliases_min_group_size_delta_pct,
+                            "max_group_size_delta_pct": args.list_sort_aliases_max_group_size_delta_pct,
+                            "min_group_size_delta_abs_pct": args.list_sort_aliases_min_group_size_delta_abs_pct,
+                            "max_group_size_delta_abs_pct": args.list_sort_aliases_max_group_size_delta_abs_pct,
                             "limit": args.list_sort_aliases_limit,
                             "sort": args.list_sort_aliases_sort,
                             "group_count": len(grouped),
@@ -2889,6 +2980,10 @@ def main() -> int:
                             max_group_size_delta=args.list_sort_aliases_max_group_size_delta,
                             min_group_size_delta_abs=args.list_sort_aliases_min_group_size_delta_abs,
                             max_group_size_delta_abs=args.list_sort_aliases_max_group_size_delta_abs,
+                            min_group_size_delta_pct=args.list_sort_aliases_min_group_size_delta_pct,
+                            max_group_size_delta_pct=args.list_sort_aliases_max_group_size_delta_pct,
+                            min_group_size_delta_abs_pct=args.list_sort_aliases_min_group_size_delta_abs_pct,
+                            max_group_size_delta_abs_pct=args.list_sort_aliases_max_group_size_delta_abs_pct,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2933,6 +3028,10 @@ def main() -> int:
                             max_group_size_delta=args.list_sort_aliases_max_group_size_delta,
                             min_group_size_delta_abs=args.list_sort_aliases_min_group_size_delta_abs,
                             max_group_size_delta_abs=args.list_sort_aliases_max_group_size_delta_abs,
+                            min_group_size_delta_pct=args.list_sort_aliases_min_group_size_delta_pct,
+                            max_group_size_delta_pct=args.list_sort_aliases_max_group_size_delta_pct,
+                            min_group_size_delta_abs_pct=args.list_sort_aliases_min_group_size_delta_abs_pct,
+                            max_group_size_delta_abs_pct=args.list_sort_aliases_max_group_size_delta_abs_pct,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2967,6 +3066,10 @@ def main() -> int:
                         "max_group_size_delta": args.list_sort_aliases_max_group_size_delta,
                         "min_group_size_delta_abs": args.list_sort_aliases_min_group_size_delta_abs,
                         "max_group_size_delta_abs": args.list_sort_aliases_max_group_size_delta_abs,
+                        "min_group_size_delta_pct": args.list_sort_aliases_min_group_size_delta_pct,
+                        "max_group_size_delta_pct": args.list_sort_aliases_max_group_size_delta_pct,
+                        "min_group_size_delta_abs_pct": args.list_sort_aliases_min_group_size_delta_abs_pct,
+                        "max_group_size_delta_abs_pct": args.list_sort_aliases_max_group_size_delta_abs_pct,
                         "limit": args.list_sort_aliases_limit,
                         "sort": args.list_sort_aliases_sort,
                         "group_count": len(grouped),
