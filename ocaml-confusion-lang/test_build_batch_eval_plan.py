@@ -8484,6 +8484,16 @@ def main() -> int:
             "expected names-json output_retained_ratio to match emitted_count/filtered_count, got: "
             f"filtered={names_json.get('filtered_count')} emitted={names_json.get('emitted_count')} output_retained_ratio={names_json.get('output_retained_ratio')}"
         )
+    if names_json.get("output_truncated_pct") != expected_names_truncated_ratio * 100.0:
+        raise AssertionError(
+            "expected names-json output_truncated_pct to match output_truncated_ratio*100, got: "
+            f"output_truncated_ratio={names_json.get('output_truncated_ratio')} output_truncated_pct={names_json.get('output_truncated_pct')}"
+        )
+    if names_json.get("output_retained_pct") != expected_names_retained_ratio * 100.0:
+        raise AssertionError(
+            "expected names-json output_retained_pct to match output_retained_ratio*100, got: "
+            f"output_retained_ratio={names_json.get('output_retained_ratio')} output_retained_pct={names_json.get('output_retained_pct')}"
+        )
     if names_json.get("name_values") != ["cap"] or names_json.get("name_not_values") != []:
         raise AssertionError(
             "expected names-json normalized filter values name_values=['cap'], name_not_values=[], got: "
@@ -8563,6 +8573,16 @@ def main() -> int:
             "expected canonical-names-json output_retained_ratio to match emitted_count/filtered_count, got: "
             f"filtered={canonical_names_json.get('filtered_count')} emitted={canonical_names_json.get('emitted_count')} output_retained_ratio={canonical_names_json.get('output_retained_ratio')}"
         )
+    if canonical_names_json.get("output_truncated_pct") != expected_canonical_names_truncated_ratio * 100.0:
+        raise AssertionError(
+            "expected canonical-names-json output_truncated_pct to match output_truncated_ratio*100, got: "
+            f"output_truncated_ratio={canonical_names_json.get('output_truncated_ratio')} output_truncated_pct={canonical_names_json.get('output_truncated_pct')}"
+        )
+    if canonical_names_json.get("output_retained_pct") != expected_canonical_names_retained_ratio * 100.0:
+        raise AssertionError(
+            "expected canonical-names-json output_retained_pct to match output_retained_ratio*100, got: "
+            f"output_retained_ratio={canonical_names_json.get('output_retained_ratio')} output_retained_pct={canonical_names_json.get('output_retained_pct')}"
+        )
     if canonical_names_json.get("name_values") != ["fair"] or canonical_names_json.get("name_not_values") != []:
         raise AssertionError(
             "expected canonical-names-json normalized filter values name_values=['fair'], name_not_values=[], got: "
@@ -8616,7 +8636,9 @@ def main() -> int:
         "output_has_truncated_records=true" not in aliases_rows_lines[-1]
         or "output_truncated_count=" not in aliases_rows_lines[-1]
         or "output_truncated_ratio=" not in aliases_rows_lines[-1]
+        or "output_truncated_pct=" not in aliases_rows_lines[-1]
         or "output_retained_ratio=" not in aliases_rows_lines[-1]
+        or "output_retained_pct=" not in aliases_rows_lines[-1]
     ):
         raise AssertionError(
             "expected aliases-tsv-rows meta footer to expose truncation/retention provenance keys, got: "
@@ -8698,6 +8720,14 @@ def main() -> int:
         raise AssertionError(
             "expected list-presets JSON payload to expose output_retained_ratio=emitted_count/filtered_count when filtered_count>0"
         )
+    if list_presets_truncated_payload.get("output_truncated_pct") != expected_truncated_ratio * 100.0:
+        raise AssertionError(
+            "expected list-presets JSON payload to expose output_truncated_pct=output_truncated_ratio*100"
+        )
+    if list_presets_truncated_payload.get("output_retained_pct") != expected_retained_ratio * 100.0:
+        raise AssertionError(
+            "expected list-presets JSON payload to expose output_retained_pct=output_retained_ratio*100"
+        )
 
     list_presets_not_truncated_run = subprocess.run(
         [
@@ -8721,9 +8751,17 @@ def main() -> int:
         raise AssertionError(
             "expected list-presets resolved-json payload to expose output_truncated_ratio=0.0 when not truncated"
         )
+    if list_presets_not_truncated_payload.get("output_truncated_pct") != 0.0:
+        raise AssertionError(
+            "expected list-presets resolved-json payload to expose output_truncated_pct=0.0 when not truncated"
+        )
     if list_presets_not_truncated_payload.get("output_retained_ratio") != 1.0:
         raise AssertionError(
             "expected list-presets resolved-json payload to expose output_retained_ratio=1.0 when not truncated"
+        )
+    if list_presets_not_truncated_payload.get("output_retained_pct") != 100.0:
+        raise AssertionError(
+            "expected list-presets resolved-json payload to expose output_retained_pct=100.0 when not truncated"
         )
 
     print("OK: build_batch_eval_plan regression passed")
