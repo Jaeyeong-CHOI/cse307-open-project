@@ -115,6 +115,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort name
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # 비용 상한(max_total_runs) 기준 내림차순 정렬(0=uncapped는 처음)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs-desc
+# 비용 상한 정렬 단축 alias(=max-total-runs)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort total-cap
+# 비용 상한 정렬 단축 alias 내림차순(=max-total-runs-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort total-cap-desc
 # repeat 횟수 기준 오름차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort repeats
 # repeat 횟수 기준 내림차순 정렬(동률은 이름순)
@@ -581,3 +585,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 227. ~~planner preset discovery 정렬 모드에 `per-model-cap`/`per-model-cap-desc` alias를 추가해 `max-runs-per-model*` 장문 옵션 없이도 동일 정렬 의미를 짧게 호출할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 228. ~~planner preset discovery 정렬 모드에 `per-prompt-cap`/`per-prompt-cap-desc` alias를 추가해 `max-runs-per-prompt-condition*` 장문 옵션 없이도 동일 정렬 의미를 짧게 호출할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 229. ~~planner preset discovery 정렬 모드에 `per-condition-cap`/`per-condition-cap-desc` alias를 추가해 condition 축 의미를 직접 드러내는 짧은 호출명을 제공하고 `per-prompt-cap*`와 동일 정렬 동작을 유지~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+230. ~~planner preset discovery 정렬 모드에 `total-cap`/`total-cap-desc` alias를 추가해 `max-total-runs*` 장문 옵션 없이도 총 실행 cap 축 정렬을 짧게 호출 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

@@ -761,6 +761,50 @@ def main() -> int:
             f"{preset_names_sorted_by_cap_desc}"
         )
 
+    preset_list_sorted_by_total_cap = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "total-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_total_cap = [
+        line.strip() for line in preset_list_sorted_by_total_cap.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_total_cap != ["quick-smoke", "balanced-ci", "full-analysis"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=total-cap output: "
+            f"{preset_names_sorted_by_total_cap}"
+        )
+
+    preset_list_sorted_by_total_cap_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "total-cap-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_total_cap_desc = [
+        line.strip() for line in preset_list_sorted_by_total_cap_desc.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_total_cap_desc != ["full-analysis", "balanced-ci", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=total-cap-desc output: "
+            f"{preset_names_sorted_by_total_cap_desc}"
+        )
+
     preset_list_sorted_by_repeats = subprocess.run(
         [
             "python3",

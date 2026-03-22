@@ -392,6 +392,8 @@ def _sort_preset_names(
     if sort_mode in (
         "max-total-runs",
         "max-total-runs-desc",
+        "total-cap",
+        "total-cap-desc",
         "repeats",
         "repeats-desc",
         "model-count",
@@ -460,7 +462,7 @@ def _sort_preset_names(
             resolved_custom_tag_flags[name] = 1 if custom_tag_name and custom_tag_name in normalized_tags else 0
             resolved_tag_counts[name] = len(normalized_tags)
 
-        if sort_mode == "max-total-runs":
+        if sort_mode in ("max-total-runs", "total-cap"):
             def asc_sort_key(name: str) -> tuple[int, int, str]:
                 max_total_runs = resolved_caps[name]
                 is_uncapped = 1 if max_total_runs == 0 else 0
@@ -469,7 +471,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=asc_sort_key)
 
-        if sort_mode == "max-total-runs-desc":
+        if sort_mode in ("max-total-runs-desc", "total-cap-desc"):
             def desc_sort_key(name: str) -> tuple[int, int, str]:
                 max_total_runs = resolved_caps[name]
                 is_uncapped = 0 if max_total_runs == 0 else 1
@@ -1071,7 +1073,8 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Sort mode for filtered preset emission: "
             "name (default), name-desc (descending), max-total-runs (ascending; capped presets first, 0/uncapped last), "
-            "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
+            "max-total-runs-desc (descending; 0/uncapped first), total-cap (alias of max-total-runs), "
+            "total-cap-desc (alias of max-total-runs-desc), repeats (ascending), "
             "repeats-desc (descending), model-count (ascending), model-count-desc (descending), "
             "prompt-condition-count (ascending), prompt-condition-count-desc (descending), "
             "max-runs-per-model (ascending; capped presets first, 0/uncapped last), "
