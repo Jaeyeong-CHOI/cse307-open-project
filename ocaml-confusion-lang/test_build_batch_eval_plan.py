@@ -5412,6 +5412,11 @@ def main() -> int:
             "expected default list-sort-aliases output_has_header=false, got: "
             f"{sort_aliases_payload.get('output_has_header')}"
         )
+    if sort_aliases_payload.get("output_delimiter") != "none":
+        raise AssertionError(
+            "expected default list-sort-aliases output_delimiter=none, got: "
+            f"{sort_aliases_payload.get('output_delimiter')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -6509,6 +6514,11 @@ def main() -> int:
             "expected aliases-tsv meta footer to include output_has_header=true, got: "
             f"{aliases_tsv_with_meta_lines[-1]}"
         )
+    if "\toutput_delimiter=tab" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include output_delimiter=tab, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
     if "\tmin_group_size=1" not in aliases_tsv_with_meta_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv meta footer to include min_group_size context, got: "
@@ -6649,6 +6659,11 @@ def main() -> int:
     if aliases_tsv_meta_json_payload.get("output_has_header") is not True:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_has_header=true, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("output_delimiter") != "tab":
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_delimiter=tab, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
     if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
@@ -7536,6 +7551,10 @@ def main() -> int:
     if "output_has_header=false" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_has_header=false, got: {names_meta_lines[-1]}"
+        )
+    if "output_delimiter=newline" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_delimiter=newline, got: {names_meta_lines[-1]}"
         )
 
     canonical_names_sort_aliases_run = subprocess.run(
