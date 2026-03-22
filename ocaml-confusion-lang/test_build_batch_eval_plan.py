@@ -955,6 +955,69 @@ def main() -> int:
             f"{preset_list_resolved_json_limited_payload}"
         )
 
+    preset_list_resolved_json_with_meta = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "resolved-json",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-profile",
+            "privacy-safe",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_resolved_json_with_meta_payload = json.loads(preset_list_resolved_json_with_meta.stdout)
+    list_meta_payload = preset_list_resolved_json_with_meta_payload.get("meta")
+    if not isinstance(list_meta_payload, dict):
+        raise AssertionError(
+            "expected top-level meta object in resolved-json list payload: "
+            f"{preset_list_resolved_json_with_meta_payload}"
+        )
+    if list_meta_payload.get("schema") != "planner_preset_list_meta.v1":
+        raise AssertionError(
+            "unexpected schema in resolved-json list meta payload: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("filtered_count") != 3 or list_meta_payload.get("emitted_count") != 2:
+        raise AssertionError(
+            "unexpected counts in resolved-json list meta payload: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("truncated") is not True:
+        raise AssertionError(
+            "unexpected truncated flag in resolved-json list meta payload: "
+            f"{list_meta_payload}"
+        )
+    for required_key in (
+        "tag_match",
+        "python_version",
+        "git_head",
+        "git_branch",
+        "git_dirty",
+        "git_toplevel",
+        "git_repo_name",
+        "git_worktree_name",
+        "argv_sha256",
+        "argv_count",
+        "preset_file_sha256",
+    ):
+        if required_key not in list_meta_payload:
+            raise AssertionError(
+                f"missing {required_key} in resolved-json list meta payload: {list_meta_payload}"
+            )
+    for forbidden_key in ("cwd", "generated_at_utc", "pid", "hostname", "git_remote", "argv", "argv_tokens"):
+        if forbidden_key in list_meta_payload:
+            raise AssertionError(
+                f"unexpected {forbidden_key} in resolved-json list meta payload: {list_meta_payload}"
+            )
+
     preset_list_names_with_meta = subprocess.run(
         [
             "python3",
@@ -2013,6 +2076,57 @@ def main() -> int:
         raise AssertionError(f"expected default max_runs_per_task=0 in resolved preset, got {resolved}")
     if resolved.get("description") != "Fast sanity check with minimal cost.":
         raise AssertionError(f"expected show-preset description, got {resolved}")
+
+    show_preset_json_with_meta = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-with-meta",
+            "--show-preset-meta-profile",
+            "privacy-safe",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_json_with_meta_payload = json.loads(show_preset_json_with_meta.stdout)
+    show_meta_payload = show_preset_json_with_meta_payload.get("meta")
+    if not isinstance(show_meta_payload, dict):
+        raise AssertionError(
+            "expected top-level meta object in show-preset json payload: "
+            f"{show_preset_json_with_meta_payload}"
+        )
+    if show_meta_payload.get("schema") != "planner_preset_show_meta.v1":
+        raise AssertionError(f"unexpected show-preset json meta schema: {show_meta_payload}")
+    if show_meta_payload.get("preset") != "quick-smoke" or show_meta_payload.get("format") != "json":
+        raise AssertionError(f"unexpected show-preset json meta identity fields: {show_meta_payload}")
+    if show_meta_payload.get("filtered_count") != 1 or show_meta_payload.get("emitted_count") != 1:
+        raise AssertionError(f"unexpected show-preset json meta counters: {show_meta_payload}")
+    if show_meta_payload.get("truncated") is not False:
+        raise AssertionError(f"unexpected show-preset json meta truncated flag: {show_meta_payload}")
+    for required_key in (
+        "override_count",
+        "python_version",
+        "git_head",
+        "git_branch",
+        "git_dirty",
+        "git_toplevel",
+        "git_repo_name",
+        "git_worktree_name",
+        "argv_sha256",
+        "argv_count",
+        "preset_file_sha256",
+    ):
+        if required_key not in show_meta_payload:
+            raise AssertionError(f"missing {required_key} in show-preset json meta payload: {show_meta_payload}")
+    for forbidden_key in ("cwd", "generated_at_utc", "pid", "hostname", "git_remote", "argv", "argv_tokens"):
+        if forbidden_key in show_meta_payload:
+            raise AssertionError(
+                f"unexpected {forbidden_key} in show-preset json meta payload: {show_meta_payload}"
+            )
 
     show_preset_summary = subprocess.run(
         [

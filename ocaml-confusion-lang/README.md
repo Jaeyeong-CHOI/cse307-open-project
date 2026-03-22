@@ -168,8 +168,12 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format su
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format resolved-json
 # resolved-json도 json 모드와 동일하게 filtered_count/emitted_count/truncated 메타데이터를 포함
 # (list-presets-limit 적용 시 절단 여부를 파서가 즉시 판별 가능)
+# resolved-json 본문에도 opt-in meta object를 포함해 provenance/profile 정보를 단일 JSON 파싱으로 수집
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format resolved-json --list-presets-limit 2 --list-presets-with-meta --list-presets-meta-profile privacy-safe
 # 특정 preset 1개의 resolved 설정(기본값 포함) 확인(JSON)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke
+# show-preset JSON 본문에도 opt-in meta object를 포함해 preset provenance를 단일 JSON 파싱으로 수집
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-with-meta --show-preset-meta-profile privacy-safe
 # 특정 preset 1개의 resolved 설정을 compact summary 라인으로 확인
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary
 # show-preset text 출력(summary/summary-tsv)에도 parser-friendly 메타 footer를 함께 출력
@@ -510,3 +514,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 211. ~~planner meta profile에 `privacy-safe`를 추가해(`--list-presets-meta-profile/--show-preset-meta-profile`) `cwd`/raw argv 같은 민감 가능 필드를 기본 제외하면서도 `argv_sha256`/git provenance 기반 재현성 추적은 유지할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 212. ~~planner preset discovery에 정렬 모드(`--list-presets-sort name|max-total-runs`)를 추가해 운영자가 비용 상한 기준으로 cheap-first preset 후보를 빠르게 나열할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 213. ~~planner preset discovery 정렬 모드에 `max-total-runs-desc`를 추가해(0=uncapped first) 고커버리지/고비용 preset을 우선 점검하는 역방향 리뷰 흐름을 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+214. ~~planner list/show preset의 JSON 출력(`--list-presets-format json|resolved-json`, `--show-preset-format json`)에도 `--*-with-meta`가 top-level `meta` object를 주입하도록 확장해 단일 JSON 파싱만으로 provenance/profile 관측 필드를 수집 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

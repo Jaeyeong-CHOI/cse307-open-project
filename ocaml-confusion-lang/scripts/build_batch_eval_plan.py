@@ -541,6 +541,16 @@ def _emit_show_preset_text_meta(
     )
 
 
+def _compose_meta_payload(
+    base_fields: dict[str, Any],
+    extra_fields: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    payload = dict(base_fields)
+    if extra_fields:
+        payload.update(extra_fields)
+    return payload
+
+
 def _apply_show_meta_profile(args: argparse.Namespace) -> None:
     if args.show_preset_meta_profile in (None, "minimal"):
         return
@@ -698,8 +708,8 @@ def parse_args() -> argparse.Namespace:
         "--show-preset-with-meta",
         action="store_true",
         help=(
-            "Emit preset/format/preset_file metadata footer for text show-preset formats "
-            "(summary/summary-tsv)."
+            "Emit preset/format/preset_file metadata for show-preset outputs; "
+            "text formats append a footer and json adds a top-level meta object."
         ),
     )
     parser.add_argument(
@@ -885,8 +895,8 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-with-meta",
         action="store_true",
         help=(
-            "Emit filtered/emitted/truncated metadata for text formats (names/summary/summary-tsv). "
-            "JSON/resolved-json always include metadata."
+            "Emit filtered/emitted/truncated metadata for list-presets outputs; "
+            "text formats append a footer and json/resolved-json add a top-level meta object."
         ),
     )
     parser.add_argument(
@@ -1298,6 +1308,18 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["preset_file_sha256"] = _file_sha256(args.preset_file)
+            show_meta_payload = _compose_meta_payload(
+                {
+                    "schema": show_meta_schema_id,
+                    "filtered_count": 1,
+                    "emitted_count": 1,
+                    "truncated": False,
+                    "preset": args.show_preset,
+                    "format": args.show_preset_format,
+                    "preset_file": str(args.preset_file),
+                },
+                show_meta_extra_fields,
+            )
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -1340,6 +1362,8 @@ def main() -> int:
                         json_schema_version=show_meta_json_schema_version,
                     )
                 return 0
+            if args.show_preset_with_meta:
+                payload["meta"] = show_meta_payload
             print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0
 
@@ -1475,22 +1499,28 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["preset_file_sha256"] = _file_sha256(args.preset_file)
+            list_meta_payload = _compose_meta_payload(
+                {
+                    "schema": list_meta_schema_id,
+                    "filtered_count": len(filtered_presets),
+                    "emitted_count": len(preset_names),
+                    "truncated": truncated,
+                },
+                list_meta_extra_fields,
+            )
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}
-                print(
-                    json.dumps(
-                        {
-                            "schema_version": "v1",
-                            "presets": limited_presets,
-                            "filtered_count": len(filtered_presets),
-                            "emitted_count": len(limited_presets),
-                            "truncated": truncated,
-                        },
-                        ensure_ascii=False,
-                        indent=2,
-                    )
-                )
+                payload = {
+                    "schema_version": "v1",
+                    "presets": limited_presets,
+                    "filtered_count": len(filtered_presets),
+                    "emitted_count": len(limited_presets),
+                    "truncated": truncated,
+                }
+                if args.list_presets_with_meta:
+                    payload["meta"] = list_meta_payload
+                print(json.dumps(payload, ensure_ascii=False, indent=2))
                 return 0
             if args.list_presets_format == "resolved-json":
                 resolved_presets: dict[str, dict[str, Any]] = {}
@@ -1499,20 +1529,17 @@ def main() -> int:
                     if not isinstance(preset, dict):
                         raise ValueError(f"{args.preset_file}: presets.{name} must be an object")
                     resolved_presets[name] = resolve_preset_with_defaults(preset)
-                print(
-                    json.dumps(
-                        {
-                            "schema_version": "v1",
-                            "preset_file": str(args.preset_file),
-                            "presets": resolved_presets,
-                            "filtered_count": len(filtered_presets),
-                            "emitted_count": len(resolved_presets),
-                            "truncated": truncated,
-                        },
-                        ensure_ascii=False,
-                        indent=2,
-                    )
-                )
+                payload = {
+                    "schema_version": "v1",
+                    "preset_file": str(args.preset_file),
+                    "presets": resolved_presets,
+                    "filtered_count": len(filtered_presets),
+                    "emitted_count": len(resolved_presets),
+                    "truncated": truncated,
+                }
+                if args.list_presets_with_meta:
+                    payload["meta"] = list_meta_payload
+                print(json.dumps(payload, ensure_ascii=False, indent=2))
                 return 0
             if args.list_presets_format == "summary":
                 for name in preset_names:
