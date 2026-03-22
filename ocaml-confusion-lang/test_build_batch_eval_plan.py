@@ -9055,6 +9055,37 @@ def main() -> int:
         raise AssertionError(f"unexpected retained-records names output: {retained_names}")
     if retained_state_codes_names_alias_run.stdout != retained_state_codes_names_run.stdout:
         raise AssertionError("expected --list-state-codes-format n alias to match canonical names output")
+    retained_state_codes_codes_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "codes",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_codes_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "c",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_codes = [line for line in retained_state_codes_codes_run.stdout.strip().splitlines() if line.strip()]
+    if retained_codes != ["0", "1"]:
+        raise AssertionError(f"unexpected retained-records codes output: {retained_codes}")
+    if retained_state_codes_codes_alias_run.stdout != retained_state_codes_codes_run.stdout:
+        raise AssertionError("expected --list-state-codes-format c alias to match canonical codes output")
     rows = retained_state_codes_payload.get("states")
     if not isinstance(rows, list) or len(rows) != 2:
         raise AssertionError("expected retained-records state-code payload to emit exactly two states")
@@ -9203,6 +9234,37 @@ def main() -> int:
     retention_names = [line for line in retention_state_codes_names_run.stdout.strip().splitlines() if line.strip()]
     if retention_names != ["fully_retained", "partially_retained", "fully_truncated"]:
         raise AssertionError(f"unexpected retention names output: {retention_names}")
+    retention_state_codes_codes_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "codes",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_codes_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "c",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_codes = [line for line in retention_state_codes_codes_run.stdout.strip().splitlines() if line.strip()]
+    if retention_codes != ["0", "1", "2"]:
+        raise AssertionError(f"unexpected retention codes output: {retention_codes}")
+    if retention_state_codes_codes_alias_run.stdout != retention_state_codes_codes_run.stdout:
+        raise AssertionError("expected --list-state-codes-format c alias to match canonical codes output")
     retention_rows = retention_state_codes_payload.get("states")
     if not isinstance(retention_rows, list) or len(retention_rows) != 3:
         raise AssertionError("expected retention state-code payload to emit exactly three states")
