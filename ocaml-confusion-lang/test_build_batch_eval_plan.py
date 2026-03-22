@@ -3199,6 +3199,8 @@ def main() -> int:
         "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
         "\ttag_match_alias_resolved=false\tname_contains=quick\tname_filter_mode=contains"
         "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
+        "\tname_not_contains=none\tname_not_filter_mode=contains"
+        "\tname_not_filter_mode_requested=contains\tname_not_filter_mode_alias_resolved=false"
         "\tlimit=1\tsort=name\tsort_requested=name\tsort_alias_resolved=false"
     )
     if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
@@ -4735,6 +4737,51 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+
+    name_exclusion_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "analysis",
+            "--list-presets-name-not-contains",
+            "full",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if name_exclusion_filtered_run.stdout.strip().splitlines() != []:
+        raise AssertionError(
+            "expected exclusion name filter to remove full-analysis preset, got: "
+            f"{name_exclusion_filtered_run.stdout!r}"
+        )
+
+    name_exclusion_mode_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-not-contains",
+            "balanced",
+            "--list-presets-name-not-filter-mode",
+            "p",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if name_exclusion_mode_filtered_run.stdout.strip().splitlines() != [
+        "full-analysis",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "unexpected preset exclusion prefix filter output: "
+            f"{name_exclusion_mode_filtered_run.stdout!r}"
+        )
     name_and_tag_filtered_lines = name_and_tag_filtered_run.stdout.strip().splitlines()
     if len(name_and_tag_filtered_lines) != 2:
         raise AssertionError(
@@ -4768,6 +4815,29 @@ def main() -> int:
         raise AssertionError(
             "expected empty name filter validation error, got: "
             f"{invalid_empty_name_filter_run.stderr}"
+        )
+
+    invalid_empty_name_not_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-not-contains",
+            "   ",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_empty_name_not_filter_run.returncode == 0:
+        raise AssertionError("expected empty --list-presets-name-not-contains to fail-fast")
+    if "--list-presets-name-not-contains must include at least one non-empty character" not in (
+        invalid_empty_name_not_filter_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected empty name-not filter validation error, got: "
+            f"{invalid_empty_name_not_filter_run.stderr}"
         )
 
     invalid_list_meta_json_schema_version_run = subprocess.run(
