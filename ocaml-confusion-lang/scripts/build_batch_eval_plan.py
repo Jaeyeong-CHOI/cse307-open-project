@@ -571,6 +571,9 @@ def _format_sort_aliases_tsv_meta(
                 "output_has_multiple_records": emitted_count > 1,
                 "output_has_truncated_records": max(filtered_count - emitted_count, 0) > 0,
                 "output_truncated_count": max(filtered_count - emitted_count, 0),
+                "output_truncated_ratio": (
+                    max(filtered_count - emitted_count, 0) / filtered_count if filtered_count > 0 else 0.0
+                ),
                 "truncated": truncated,
                 "name_contains": name_contains,
                 "name_not_contains": name_not_contains,
@@ -650,6 +653,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_has_multiple_records={str(emitted_count > 1).lower()}\t"
         f"output_has_truncated_records={str(max(filtered_count - emitted_count, 0) > 0).lower()}\t"
         f"output_truncated_count={max(filtered_count - emitted_count, 0)}\t"
+        f"output_truncated_ratio={(max(filtered_count - emitted_count, 0) / filtered_count) if filtered_count > 0 else 0.0:.6f}\t"
         f"truncated={str(truncated).lower()}\t"
         f"name_contains={name_contains or 'none'}\t"
         f"name_not_contains={name_not_contains or 'none'}\t"
@@ -3918,6 +3922,9 @@ def main() -> int:
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
+                            "output_truncated_ratio": (
+                                max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
+                            ),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4021,6 +4028,9 @@ def main() -> int:
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
+                            "output_truncated_ratio": (
+                                max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
+                            ),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4109,6 +4119,9 @@ def main() -> int:
                             "output_has_multiple_records": len(grouped) > 1,
                             "output_has_truncated_records": max(filtered_count - len(grouped), 0) > 0,
                             "output_truncated_count": max(filtered_count - len(grouped), 0),
+                            "output_truncated_ratio": (
+                                max(filtered_count - len(grouped), 0) / filtered_count if filtered_count > 0 else 0.0
+                            ),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,

@@ -8464,6 +8464,16 @@ def main() -> int:
             "expected names-json output_truncated_count to match filtered-emitted delta, got: "
             f"filtered={names_json.get('filtered_count')} emitted={names_json.get('emitted_count')} output_truncated_count={names_json.get('output_truncated_count')}"
         )
+    expected_names_truncated_ratio = (
+        names_json.get("output_truncated_count", 0) / names_json.get("filtered_count", 1)
+        if names_json.get("filtered_count", 0) > 0
+        else 0.0
+    )
+    if names_json.get("output_truncated_ratio") != expected_names_truncated_ratio:
+        raise AssertionError(
+            "expected names-json output_truncated_ratio to match output_truncated_count/filtered_count, got: "
+            f"filtered={names_json.get('filtered_count')} output_truncated_count={names_json.get('output_truncated_count')} output_truncated_ratio={names_json.get('output_truncated_ratio')}"
+        )
     if names_json.get("name_values") != ["cap"] or names_json.get("name_not_values") != []:
         raise AssertionError(
             "expected names-json normalized filter values name_values=['cap'], name_not_values=[], got: "
@@ -8523,6 +8533,16 @@ def main() -> int:
             "expected canonical-names-json emitted_count to match canonical_names length, got: "
             f"emitted_count={canonical_names_json.get('emitted_count')} len={len(canonical_names_json['canonical_names'])}"
         )
+    expected_canonical_names_truncated_ratio = (
+        canonical_names_json.get("output_truncated_count", 0) / canonical_names_json.get("filtered_count", 1)
+        if canonical_names_json.get("filtered_count", 0) > 0
+        else 0.0
+    )
+    if canonical_names_json.get("output_truncated_ratio") != expected_canonical_names_truncated_ratio:
+        raise AssertionError(
+            "expected canonical-names-json output_truncated_ratio to match output_truncated_count/filtered_count, got: "
+            f"filtered={canonical_names_json.get('filtered_count')} output_truncated_count={canonical_names_json.get('output_truncated_count')} output_truncated_ratio={canonical_names_json.get('output_truncated_ratio')}"
+        )
     if canonical_names_json.get("name_values") != ["fair"] or canonical_names_json.get("name_not_values") != []:
         raise AssertionError(
             "expected canonical-names-json normalized filter values name_values=['fair'], name_not_values=[], got: "
@@ -8572,7 +8592,11 @@ def main() -> int:
             "expected aliases-tsv-rows meta footer to expose output_has_header=false, got: "
             f"{aliases_rows_lines[-1]}"
         )
-    if "output_has_truncated_records=true" not in aliases_rows_lines[-1] or "output_truncated_count=" not in aliases_rows_lines[-1]:
+    if (
+        "output_has_truncated_records=true" not in aliases_rows_lines[-1]
+        or "output_truncated_count=" not in aliases_rows_lines[-1]
+        or "output_truncated_ratio=" not in aliases_rows_lines[-1]
+    ):
         raise AssertionError(
             "expected aliases-tsv-rows meta footer to expose truncation provenance keys, got: "
             f"{aliases_rows_lines[-1]}"
