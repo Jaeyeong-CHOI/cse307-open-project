@@ -438,6 +438,8 @@ def _sort_preset_names(
         "tag-count-desc",
         "cheap-first-tag",
         "cheap-first-tag-desc",
+        "cheap-first",
+        "cheap-first-desc",
         "fair-model-allocation",
         "fair-model-allocation-desc",
         "fair-allocation",
@@ -669,8 +671,11 @@ def _sort_preset_names(
                 return sorted(preset_names, key=lambda name: (resolved_custom_tag_flags[name], name))
             return sorted(preset_names, key=lambda name: (-resolved_custom_tag_flags[name], name))
 
-        if sort_mode == "cheap-first-tag":
+        if sort_mode in ("cheap-first-tag", "cheap-first"):
             return sorted(preset_names, key=lambda name: (-resolved_cheap_first_tag_flags[name], name))
+
+        if sort_mode in ("cheap-first-tag-desc", "cheap-first-desc"):
+            return sorted(preset_names, key=lambda name: (resolved_cheap_first_tag_flags[name], name))
 
         if sort_mode in ("fair-model-allocation", "fair-allocation"):
             return sorted(preset_names, key=lambda name: (-resolved_fair_model_allocation_flags[name], name))
@@ -1226,7 +1231,8 @@ def parse_args() -> argparse.Namespace:
             "description-length (ascending normalized description length), description-length-desc (descending), "
             "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
-            "(presets without cheap-first tag first), fair-model-allocation (presets with fair_model_allocation=true first), "
+            "(presets without cheap-first tag first), cheap-first (alias of cheap-first-tag), "
+            "cheap-first-desc (alias of cheap-first-tag-desc), fair-model-allocation (presets with fair_model_allocation=true first), "
             "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
             "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "
             "tag:<name> (presets containing that tag first), or tag:<name>-desc (presets without that tag first)."

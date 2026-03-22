@@ -1549,6 +1549,52 @@ def main() -> int:
             f"{preset_names_sorted_by_cheap_first_tag_desc}"
         )
 
+    preset_list_sorted_by_cheap_first_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "cheap-first",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cheap_first_alias = [
+        line.strip() for line in preset_list_sorted_by_cheap_first_alias.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_cheap_first_alias != ["balanced-ci", "quick-smoke", "full-analysis"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cheap-first output: "
+            f"{preset_names_sorted_by_cheap_first_alias}"
+        )
+
+    preset_list_sorted_by_cheap_first_desc_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "cheap-first-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cheap_first_desc_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cheap_first_desc_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cheap_first_desc_alias != ["full-analysis", "balanced-ci", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cheap-first-desc output: "
+            f"{preset_names_sorted_by_cheap_first_desc_alias}"
+        )
+
     preset_list_sorted_by_fair_model_allocation = subprocess.run(
         [
             "python3",
