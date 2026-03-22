@@ -258,6 +258,7 @@ def _format_sort_alias_groups_tsv(
 
 def _format_sort_aliases_tsv_meta(
     *,
+    output_format: str,
     filtered_count: int,
     emitted_count: int,
     truncated: bool,
@@ -313,6 +314,7 @@ def _format_sort_aliases_tsv_meta(
                 "meta": True,
                 "schema_version": json_schema_version,
                 "schema": SORT_ALIASES_TSV_META_SCHEMA,
+                "output_format": output_format,
                 "filtered_count": filtered_count,
                 "emitted_count": emitted_count,
                 "truncated": truncated,
@@ -365,6 +367,7 @@ def _format_sort_aliases_tsv_meta(
     return (
         "# meta\t"
         f"schema={SORT_ALIASES_TSV_META_SCHEMA}\t"
+        f"output_format={output_format}\t"
         f"filtered_count={filtered_count}\t"
         f"emitted_count={emitted_count}\t"
         f"truncated={str(truncated).lower()}\t"
@@ -3226,6 +3229,7 @@ def main() -> int:
 
             def build_sort_aliases_meta_footer() -> str:
                 return _format_sort_aliases_tsv_meta(
+                    output_format=args.list_sort_aliases_format,
                     filtered_count=filtered_count,
                     emitted_count=len(alias_map),
                     truncated=truncated,

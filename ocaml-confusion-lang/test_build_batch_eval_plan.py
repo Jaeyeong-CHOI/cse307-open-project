@@ -7408,6 +7408,8 @@ def main() -> int:
         raise AssertionError(f"expected names-with-meta text footer line, got: {names_meta_lines[-1]}")
     if "sort=" not in names_meta_lines[-1] or "group_count=" not in names_meta_lines[-1]:
         raise AssertionError(f"expected names-with-meta footer to include sort/group counters, got: {names_meta_lines[-1]}")
+    if "output_format=names" not in names_meta_lines[-1]:
+        raise AssertionError(f"expected names-with-meta footer to include output_format=names, got: {names_meta_lines[-1]}")
 
     canonical_names_sort_aliases_run = subprocess.run(
         [
@@ -7487,6 +7489,11 @@ def main() -> int:
         raise AssertionError(
             "expected canonical-names-with-meta JSON footer schema planner_sort_aliases_tsv_meta.v1, got: "
             f"{canonical_names_meta_json.get('schema')}"
+        )
+    if canonical_names_meta_json.get("output_format") != "canonical-names":
+        raise AssertionError(
+            "expected canonical-names-with-meta JSON footer output_format=canonical-names, got: "
+            f"{canonical_names_meta_json.get('output_format')}"
         )
 
     names_json_run = subprocess.run(
