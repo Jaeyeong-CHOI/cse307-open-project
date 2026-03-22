@@ -1190,6 +1190,101 @@ def main() -> int:
             f"{preset_names_sorted_by_per_condition_cap_desc}"
         )
 
+    task_cap_presets_file = OUT / "batch-plan-presets.task-cap-sort.v1.json"
+    task_cap_presets_file.write_text(
+        json.dumps(
+            {
+                "schema_version": "v1",
+                "presets": {
+                    "task-cap-small": {"models": "gpt-5-mini", "prompt_conditions": "base", "max_runs_per_task": 2, "max_runs_per_task_model": 1, "max_runs_per_task_prompt_condition": 2},
+                    "task-cap-large": {"models": "gpt-5-mini", "prompt_conditions": "base", "max_runs_per_task": 7, "max_runs_per_task_model": 4, "max_runs_per_task_prompt_condition": 6},
+                    "task-cap-uncapped": {"models": "gpt-5-mini", "prompt_conditions": "base"},
+                },
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    preset_list_sorted_by_per_task_cap = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(task_cap_presets_file),
+            "--list-presets-sort",
+            "per-task-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_per_task_cap = [
+        line.strip() for line in preset_list_sorted_by_per_task_cap.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_per_task_cap != ["task-cap-small", "task-cap-large", "task-cap-uncapped"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=per-task-cap output: "
+            f"{preset_names_sorted_by_per_task_cap}"
+        )
+
+    preset_list_sorted_by_per_task_model_cap_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(task_cap_presets_file),
+            "--list-presets-sort",
+            "per-task-model-cap-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_per_task_model_cap_desc = [
+        line.strip()
+        for line in preset_list_sorted_by_per_task_model_cap_desc.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_per_task_model_cap_desc != [
+        "task-cap-uncapped",
+        "task-cap-large",
+        "task-cap-small",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=per-task-model-cap-desc output: "
+            f"{preset_names_sorted_by_per_task_model_cap_desc}"
+        )
+
+    preset_list_sorted_by_per_task_prompt_cap = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(task_cap_presets_file),
+            "--list-presets-sort",
+            "per-task-prompt-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_per_task_prompt_cap = [
+        line.strip() for line in preset_list_sorted_by_per_task_prompt_cap.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_per_task_prompt_cap != ["task-cap-small", "task-cap-large", "task-cap-uncapped"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=per-task-prompt-cap output: "
+            f"{preset_names_sorted_by_per_task_prompt_cap}"
+        )
+
     preset_list_sorted_by_description_length = subprocess.run(
         [
             "python3",
