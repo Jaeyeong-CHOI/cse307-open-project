@@ -440,6 +440,7 @@ def _sort_preset_names(
         "cheap-first-tag-desc",
         "cheap-first",
         "cheap-first-desc",
+        "cheap-first-total-cap",
         "fair-model-allocation",
         "fair-model-allocation-desc",
         "fair-allocation",
@@ -673,6 +674,16 @@ def _sort_preset_names(
 
         if sort_mode in ("cheap-first-tag", "cheap-first"):
             return sorted(preset_names, key=lambda name: (-resolved_cheap_first_tag_flags[name], name))
+
+        if sort_mode == "cheap-first-total-cap":
+            def cheap_first_total_cap_sort_key(name: str) -> tuple[int, int, int, str]:
+                cheap_first_rank = -resolved_cheap_first_tag_flags[name]
+                max_total_runs = resolved_caps[name]
+                is_uncapped = 1 if max_total_runs == 0 else 0
+                normalized_cap = max_total_runs if max_total_runs > 0 else sys.maxsize
+                return (cheap_first_rank, is_uncapped, normalized_cap, name)
+
+            return sorted(preset_names, key=cheap_first_total_cap_sort_key)
 
         if sort_mode in ("cheap-first-tag-desc", "cheap-first-desc"):
             return sorted(preset_names, key=lambda name: (resolved_cheap_first_tag_flags[name], name))
@@ -1232,7 +1243,9 @@ def parse_args() -> argparse.Namespace:
             "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
             "(presets without cheap-first tag first), cheap-first (alias of cheap-first-tag), "
-            "cheap-first-desc (alias of cheap-first-tag-desc), fair-model-allocation (presets with fair_model_allocation=true first), "
+            "cheap-first-desc (alias of cheap-first-tag-desc), cheap-first-total-cap "
+            "(cheap-first tagged presets first, then max_total_runs ascending with uncapped last), "
+            "fair-model-allocation (presets with fair_model_allocation=true first), "
             "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
             "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "
             "tag:<name> (presets containing that tag first), or tag:<name>-desc (presets without that tag first)."
