@@ -46,6 +46,7 @@ PRESET_LIST_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_list_meta\.v
 PRESET_SHOW_TEXT_META_SCHEMA = "planner_preset_show_meta.v1"
 PRESET_SHOW_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_show_meta\.v[1-9][0-9]*$")
 PRESET_TEXT_META_JSON_SCHEMA_VERSION = "v1"
+PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
 
 
 def _utc_now_iso() -> str:
@@ -368,11 +369,15 @@ def _format_preset_summary_tsv_row(
     return "\t".join(item.replace("\t", " ") for item in row)
 
 
-def _emit_text_or_json_meta(fields: dict[str, str], meta_format: str = "text") -> None:
+def _emit_text_or_json_meta(
+    fields: dict[str, str],
+    meta_format: str = "text",
+    json_schema_version: str = PRESET_TEXT_META_JSON_SCHEMA_VERSION,
+) -> None:
     if meta_format == "json":
         payload: dict[str, Any] = {
             "meta": True,
-            "schema_version": PRESET_TEXT_META_JSON_SCHEMA_VERSION,
+            "schema_version": json_schema_version,
         }
         payload.update(fields)
         print(json.dumps(payload, ensure_ascii=False))
@@ -388,6 +393,7 @@ def _emit_list_presets_text_meta(
     schema_id: str,
     extra_fields: dict[str, str] | None = None,
     meta_format: str = "text",
+    json_schema_version: str = PRESET_TEXT_META_JSON_SCHEMA_VERSION,
 ) -> None:
     fields: dict[str, str] = {
         "schema": schema_id,
@@ -397,7 +403,11 @@ def _emit_list_presets_text_meta(
     }
     if extra_fields:
         fields.update(extra_fields)
-    _emit_text_or_json_meta(fields, meta_format=meta_format)
+    _emit_text_or_json_meta(
+        fields,
+        meta_format=meta_format,
+        json_schema_version=json_schema_version,
+    )
 
 
 def _emit_show_preset_text_meta(
@@ -407,6 +417,7 @@ def _emit_show_preset_text_meta(
     schema_id: str,
     extra_fields: dict[str, str] | None = None,
     meta_format: str = "text",
+    json_schema_version: str = PRESET_TEXT_META_JSON_SCHEMA_VERSION,
 ) -> None:
     fields: dict[str, str] = {
         "schema": schema_id,
@@ -419,7 +430,11 @@ def _emit_show_preset_text_meta(
     }
     if extra_fields:
         fields.update(extra_fields)
-    _emit_text_or_json_meta(fields, meta_format=meta_format)
+    _emit_text_or_json_meta(
+        fields,
+        meta_format=meta_format,
+        json_schema_version=json_schema_version,
+    )
 
 
 def _dedupe_keep_order(values: list[str]) -> list[str]:
@@ -548,6 +563,14 @@ def parse_args() -> argparse.Namespace:
         help="Meta footer format for --show-preset-with-meta (default: text)",
     )
     parser.add_argument(
+        "--show-preset-meta-json-schema-version",
+        default=PRESET_TEXT_META_JSON_SCHEMA_VERSION,
+        help=(
+            "Schema version for --show-preset meta JSON envelope "
+            "(default: v1; only used when --show-preset-meta-format=json)"
+        ),
+    )
+    parser.add_argument(
         "--show-preset-meta-include-generated-at",
         action="store_true",
         help="Include generated_at_utc in --show-preset text/json meta footer.",
@@ -653,6 +676,14 @@ def parse_args() -> argparse.Namespace:
         choices=("text", "json"),
         default="text",
         help="Meta footer format for --list-presets-with-meta (default: text)",
+    )
+    parser.add_argument(
+        "--list-presets-meta-json-schema-version",
+        default=PRESET_TEXT_META_JSON_SCHEMA_VERSION,
+        help=(
+            "Schema version for --list-presets meta JSON envelope "
+            "(default: v1; only used when --list-presets-meta-format=json)"
+        ),
     )
     parser.add_argument(
         "--list-presets-meta-include-generated-at",
@@ -801,6 +832,12 @@ def main() -> int:
             raise ValueError(
                 "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)"
             )
+        list_meta_json_schema_version = str(args.list_presets_meta_json_schema_version).strip()
+        if not PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN.match(list_meta_json_schema_version):
+            raise ValueError("--list-presets-meta-json-schema-version must match vN (N>=1)")
+        show_meta_json_schema_version = str(args.show_preset_meta_json_schema_version).strip()
+        if not PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN.match(show_meta_json_schema_version):
+            raise ValueError("--show-preset-meta-json-schema-version must match vN (N>=1)")
         if args.summary_tsv_description_max_len is not None and args.summary_tsv_description_max_len < 4:
             raise ValueError("--summary-tsv-description-max-len must be >= 4")
 
@@ -928,6 +965,7 @@ def main() -> int:
                         schema_id=show_meta_schema_id,
                         extra_fields=show_meta_extra_fields,
                         meta_format=args.show_preset_meta_format,
+                        json_schema_version=show_meta_json_schema_version,
                     )
                 return 0
             if args.show_preset_format == "summary-tsv":
@@ -955,6 +993,7 @@ def main() -> int:
                         schema_id=show_meta_schema_id,
                         extra_fields=show_meta_extra_fields,
                         meta_format=args.show_preset_meta_format,
+                        json_schema_version=show_meta_json_schema_version,
                     )
                 return 0
             print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1094,6 +1133,7 @@ def main() -> int:
                         schema_id=list_meta_schema_id,
                         extra_fields=list_meta_extra_fields,
                         meta_format=args.list_presets_meta_format,
+                        json_schema_version=list_meta_json_schema_version,
                     )
                 return 0
             if args.list_presets_format == "summary-tsv":
@@ -1126,6 +1166,7 @@ def main() -> int:
                         schema_id=list_meta_schema_id,
                         extra_fields=list_meta_extra_fields,
                         meta_format=args.list_presets_meta_format,
+                        json_schema_version=list_meta_json_schema_version,
                     )
                 return 0
             for name in preset_names:
@@ -1138,6 +1179,7 @@ def main() -> int:
                     schema_id=list_meta_schema_id,
                     extra_fields=list_meta_extra_fields,
                     meta_format=args.list_presets_meta_format,
+                    json_schema_version=list_meta_json_schema_version,
                 )
             return 0
 

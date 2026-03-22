@@ -988,6 +988,30 @@ def main() -> int:
     }:
         raise AssertionError(f"unexpected names-with-meta json payload: {names_meta_payload}")
 
+    preset_list_names_with_meta_json_schema_v2 = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-format",
+            "json",
+            "--list-presets-meta-json-schema-version",
+            "v2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_meta_payload_v2 = json.loads(
+        [line.strip() for line in preset_list_names_with_meta_json_schema_v2.stdout.splitlines() if line.strip()][-1]
+    )
+    if names_meta_payload_v2.get("schema_version") != "v2":
+        raise AssertionError(f"expected schema_version=v2 in list-presets json meta payload: {names_meta_payload_v2}")
+
     preset_list_names_with_meta_generated_at = subprocess.run(
         [
             "python3",
@@ -1716,6 +1740,31 @@ def main() -> int:
     if show_meta_payload.get("preset") != "quick-smoke" or show_meta_payload.get("format") != "summary":
         raise AssertionError(f"unexpected show-preset json meta payload core fields: {show_meta_payload}")
 
+    show_preset_summary_with_meta_json_schema_v2 = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-format",
+            "json",
+            "--show-preset-meta-json-schema-version",
+            "v2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_meta_payload_v2 = json.loads(
+        [line.rstrip("\n") for line in show_preset_summary_with_meta_json_schema_v2.stdout.splitlines() if line.strip()][-1]
+    )
+    if show_meta_payload_v2.get("schema_version") != "v2":
+        raise AssertionError(f"expected schema_version=v2 in show-preset json meta payload: {show_meta_payload_v2}")
+
     show_preset_summary_with_meta_generated_at = subprocess.run(
         [
             "python3",
@@ -2299,6 +2348,29 @@ def main() -> int:
         raise AssertionError(
             "expected empty name filter validation error, got: "
             f"{invalid_empty_name_filter_run.stderr}"
+        )
+
+    invalid_list_meta_json_schema_version_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-meta-json-schema-version",
+            "1",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_list_meta_json_schema_version_run.returncode == 0:
+        raise AssertionError("expected invalid --list-presets-meta-json-schema-version to fail-fast")
+    if "--list-presets-meta-json-schema-version must match vN (N>=1)" not in (
+        invalid_list_meta_json_schema_version_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected list meta json schema version validation error, got: "
+            f"{invalid_list_meta_json_schema_version_run.stderr}"
         )
 
     invalid_preset_file = OUT / "invalid-batch-plan-presets.v1.json"

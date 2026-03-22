@@ -114,6 +114,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format su
 # list-presets meta를 JSON 한 줄로 출력(텍스트 key=value split 없이 parser-friendly)
 # JSON meta line은 wrapper 버전 식별용 schema_version(v1) 필드를 포함
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-format json
+# JSON meta wrapper schema_version을 override(v2 migration rehearsal)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-json-schema-version v2
 # list-presets text meta footer schema id를 버전 실험용으로 override
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-schema-id planner_preset_list_meta.v2
 # list-presets text meta footer에 활성 필터(tag/name/limit/match) 컨텍스트를 함께 기록
@@ -167,6 +169,8 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 # show-preset meta를 JSON 한 줄로 출력(자동화 parser 친화)
 # JSON meta line은 schema id와 별도로 wrapper schema_version(v1)을 함께 제공
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json
+# show-preset JSON meta wrapper schema_version을 override(v2 migration rehearsal)
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-json-schema-version v2
 # show-preset text meta footer schema id를 버전 실험용으로 override
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-schema-id planner_preset_show_meta.v2
 # meta footer schema id 정책(파서 구현 참고용 단일 규약)
@@ -455,3 +459,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 194. ~~planner list/show meta footer에 optional `git_branch` 주입 옵션(`--list-presets-meta-include-git-branch`, `--show-preset-meta-include-git-branch`)을 추가해 detached HEAD 이외 일반 브랜치 실행에서 로그 컨텍스트(리비전 + 브랜치)를 즉시 파악 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 195. ~~planner list/show meta footer에 optional `git_remote`(origin URL) 주입 옵션(`--list-presets-meta-include-git-remote`, `--show-preset-meta-include-git-remote`)을 추가해 로그를 리포지토리 원격과 즉시 매핑 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 196. ~~planner list/show meta footer에 optional `git_dirty`(`clean|dirty|unknown`) 주입 옵션(`--list-presets-meta-include-git-dirty`, `--show-preset-meta-include-git-dirty`)을 추가해 preset 탐색 로그에서 작업트리 오염 여부를 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+197. ~~planner list/show JSON meta footer의 wrapper `schema_version`을 CLI override(`--list-presets-meta-json-schema-version`, `--show-preset-meta-json-schema-version`)로 주입 가능하게 확장해 v2 migration rehearsal을 코드 수정 없이 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
