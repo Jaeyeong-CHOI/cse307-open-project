@@ -146,6 +146,15 @@ def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
     return LIST_SORT_ALIASES_SORT_ALIAS_MAP.get(sort_mode, sort_mode)
 
 
+def _normalize_sort_alias_name_filter_value(value: str | None, *, case_sensitive: bool) -> str | None:
+    if value is None:
+        return None
+    normalized = value.strip()
+    if not case_sensitive:
+        normalized = normalized.lower()
+    return normalized
+
+
 def _describe_list_sort_aliases_sort_mode(sort_mode: str) -> dict[str, Any]:
     descending = sort_mode.endswith("-desc")
     sort_key = sort_mode[: -len("-desc")] if descending else sort_mode
@@ -254,6 +263,8 @@ def _format_sort_aliases_tsv_meta(
     truncated: bool,
     name_contains: str | None,
     name_not_contains: str | None,
+    name_values: list[str],
+    name_not_values: list[str],
     filter_mode: str,
     filter_mode_requested: str,
     filter_mode_alias_resolved: bool,
@@ -307,6 +318,8 @@ def _format_sort_aliases_tsv_meta(
                 "truncated": truncated,
                 "name_contains": name_contains,
                 "name_not_contains": name_not_contains,
+                "name_values": name_values,
+                "name_not_values": name_not_values,
                 "filter_mode": filter_mode,
                 "filter_mode_requested": filter_mode_requested,
                 "filter_mode_alias_resolved": filter_mode_alias_resolved,
@@ -357,6 +370,8 @@ def _format_sort_aliases_tsv_meta(
         f"truncated={str(truncated).lower()}\t"
         f"name_contains={name_contains or 'none'}\t"
         f"name_not_contains={name_not_contains or 'none'}\t"
+        f"name_values={','.join(name_values) if name_values else 'none'}\t"
+        f"name_not_values={','.join(name_not_values) if name_not_values else 'none'}\t"
         f"filter_mode={filter_mode}\t"
         f"filter_mode_requested={filter_mode_requested}\t"
         f"filter_mode_alias_resolved={str(filter_mode_alias_resolved).lower()}\t"
@@ -3163,6 +3178,16 @@ def main() -> int:
             list_sort_aliases_match_field_alias_resolved = (
                 resolved_list_sort_aliases_match_field != list_sort_aliases_match_field_requested
             )
+            normalized_name_contains = _normalize_sort_alias_name_filter_value(
+                args.list_sort_aliases_name_contains,
+                case_sensitive=args.list_sort_aliases_case_sensitive,
+            )
+            normalized_name_not_contains = _normalize_sort_alias_name_filter_value(
+                args.list_sort_aliases_name_not_contains,
+                case_sensitive=args.list_sort_aliases_case_sensitive,
+            )
+            name_values = [] if normalized_name_contains is None else [normalized_name_contains]
+            name_not_values = [] if normalized_name_not_contains is None else [normalized_name_not_contains]
             alias_map, filtered_count, truncated = _filter_sort_alias_map(
                 args.list_sort_aliases_name_contains,
                 args.list_sort_aliases_name_not_contains,
@@ -3206,6 +3231,8 @@ def main() -> int:
                     truncated=truncated,
                     name_contains=args.list_sort_aliases_name_contains,
                     name_not_contains=args.list_sort_aliases_name_not_contains,
+                    name_values=name_values,
+                    name_not_values=name_not_values,
                     filter_mode=resolved_list_sort_aliases_filter_mode,
                     filter_mode_requested=list_sort_aliases_filter_mode_requested,
                     filter_mode_alias_resolved=list_sort_aliases_filter_mode_alias_resolved,
@@ -3260,6 +3287,8 @@ def main() -> int:
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
+                            "name_values": name_values,
+                            "name_not_values": name_not_values,
                             "filter_mode": resolved_list_sort_aliases_filter_mode,
                             "filter_mode_requested": list_sort_aliases_filter_mode_requested,
                             "filter_mode_alias_resolved": list_sort_aliases_filter_mode_alias_resolved,
@@ -3333,6 +3362,8 @@ def main() -> int:
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
+                            "name_values": name_values,
+                            "name_not_values": name_not_values,
                             "filter_mode": resolved_list_sort_aliases_filter_mode,
                             "filter_mode_requested": list_sort_aliases_filter_mode_requested,
                             "filter_mode_alias_resolved": list_sort_aliases_filter_mode_alias_resolved,
@@ -3391,6 +3422,8 @@ def main() -> int:
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
+                            "name_values": name_values,
+                            "name_not_values": name_not_values,
                             "filter_mode": resolved_list_sort_aliases_filter_mode,
                             "filter_mode_requested": list_sort_aliases_filter_mode_requested,
                             "filter_mode_alias_resolved": list_sort_aliases_filter_mode_alias_resolved,
@@ -3468,6 +3501,8 @@ def main() -> int:
                         "truncated": truncated,
                         "name_contains": args.list_sort_aliases_name_contains,
                         "name_not_contains": args.list_sort_aliases_name_not_contains,
+                        "name_values": name_values,
+                        "name_not_values": name_not_values,
                         "filter_mode": resolved_list_sort_aliases_filter_mode,
                         "filter_mode_requested": list_sort_aliases_filter_mode_requested,
                         "filter_mode_alias_resolved": list_sort_aliases_filter_mode_alias_resolved,

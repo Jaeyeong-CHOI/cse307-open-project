@@ -7521,6 +7521,11 @@ def main() -> int:
             "expected names-json emitted_count to match names length, got: "
             f"emitted_count={names_json.get('emitted_count')} len={len(names_json['names'])}"
         )
+    if names_json.get("name_values") != ["cap"] or names_json.get("name_not_values") != []:
+        raise AssertionError(
+            "expected names-json normalized filter values name_values=['cap'], name_not_values=[], got: "
+            f"name_values={names_json.get('name_values')} name_not_values={names_json.get('name_not_values')}"
+        )
     if any("cap" not in name for name in names_json["names"]):
         raise AssertionError(
             "expected names-json names to honor --list-sort-aliases-name-contains=cap filter, got: "
@@ -7564,6 +7569,11 @@ def main() -> int:
         raise AssertionError(
             "expected canonical-names-json emitted_count to match canonical_names length, got: "
             f"emitted_count={canonical_names_json.get('emitted_count')} len={len(canonical_names_json['canonical_names'])}"
+        )
+    if canonical_names_json.get("name_values") != ["fair"] or canonical_names_json.get("name_not_values") != []:
+        raise AssertionError(
+            "expected canonical-names-json normalized filter values name_values=['fair'], name_not_values=[], got: "
+            f"name_values={canonical_names_json.get('name_values')} name_not_values={canonical_names_json.get('name_not_values')}"
         )
     if any("fair" not in name for name in canonical_names_json["canonical_names"]):
         raise AssertionError(
