@@ -55,6 +55,23 @@ SORT_ALIASES_OUTPUT_SHAPE_SCHEMA = "planner_sort_alias_output_shape.v1"
 PRESET_OUTPUT_SHAPE_SCHEMA = "planner_preset_output_shape.v1"
 RETAINED_RECORDS_STATE_CODES_SCHEMA = "planner_retained_records_state_codes.v1"
 RETENTION_STATE_CODES_SCHEMA = "planner_retention_state_codes.v1"
+STATE_CODES_OUTPUT_COLUMNS_BY_KIND: dict[str, tuple[str, ...]] = {
+    "retained-records": (
+        "state",
+        "code",
+        "has_retained_records",
+        "has_no_retained_records",
+        "description",
+    ),
+    "retention": (
+        "state",
+        "code",
+        "is_fully_retained",
+        "is_partially_retained",
+        "is_fully_truncated",
+        "description",
+    ),
+}
 RETAINED_RECORDS_STATE_CODE_ROWS: list[dict[str, Any]] = [
     {
         "state": "no_retained_records",
@@ -2338,6 +2355,33 @@ def _resolve_retention_state_code_payload() -> dict[str, Any]:
     }
 
 
+def _render_state_code_rows_tsv(
+    rows: list[dict[str, Any]],
+    kind: str,
+    include_header: bool,
+) -> str:
+    columns = STATE_CODES_OUTPUT_COLUMNS_BY_KIND[kind]
+    lines: list[str] = []
+    if include_header:
+        lines.append("\t".join(columns))
+    for row in rows:
+        lines.append("\t".join(str(row.get(column, "")) for column in columns))
+    return "\n".join(lines)
+
+
+def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any], output_format: str, kind: str) -> None:
+    if output_format == "json":
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    if output_format == "tsv":
+        print(_render_state_code_rows_tsv(rows, kind=kind, include_header=True))
+        return
+    if output_format == "tsv-rows":
+        print(_render_state_code_rows_tsv(rows, kind=kind, include_header=False))
+        return
+    raise ValueError(f"Unsupported --list-state-codes-format: {output_format}")
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -2764,6 +2808,15 @@ def parse_args() -> argparse.Namespace:
         help=(
             "List parser-friendly retention state/code mappings used by "
             "output_retention_state and output_retention_state_code and exit"
+        ),
+    )
+    parser.add_argument(
+        "--list-state-codes-format",
+        choices=("json", "tsv", "tsv-rows"),
+        default="json",
+        help=(
+            "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
+            "json (default), tsv (header), or tsv-rows (headerless rows)."
         ),
     )
     parser.add_argument(
@@ -3593,11 +3646,25 @@ def main() -> int:
             )
 
         if args.list_retained_records_state_codes:
-            print(json.dumps(_resolve_retained_records_state_code_payload(), ensure_ascii=False, indent=2))
+            rows = _resolve_retained_records_state_code_rows()
+            payload = _resolve_retained_records_state_code_payload()
+            _emit_state_code_payload(
+                rows,
+                payload,
+                output_format=args.list_state_codes_format,
+                kind="retained-records",
+            )
             return 0
 
         if args.list_retention_state_codes:
-            print(json.dumps(_resolve_retention_state_code_payload(), ensure_ascii=False, indent=2))
+            rows = _resolve_retention_state_code_rows()
+            payload = _resolve_retention_state_code_payload()
+            _emit_state_code_payload(
+                rows,
+                payload,
+                output_format=args.list_state_codes_format,
+                kind="retention",
+            )
             return 0
 
         if args.show_preset:

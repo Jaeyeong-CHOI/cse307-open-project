@@ -8924,6 +8924,24 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_tsv_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "tsv",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_tsv_lines = [line for line in retained_state_codes_tsv_run.stdout.strip().splitlines() if line.strip()]
+    if not retained_tsv_lines or retained_tsv_lines[0] != "state\tcode\thas_retained_records\thas_no_retained_records\tdescription":
+        raise AssertionError("expected retained-records state-code TSV header to include canonical columns")
+    if len(retained_tsv_lines) != 3:
+        raise AssertionError("expected retained-records state-code TSV to emit header + two rows")
     retained_state_codes_payload = json.loads(retained_state_codes_run.stdout)
     if retained_state_codes_payload.get("schema") != "planner_retained_records_state_codes.v1":
         raise AssertionError(
@@ -8961,6 +8979,24 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_tsv_rows_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "tsv-rows",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_tsv_rows = [line for line in retention_state_codes_tsv_rows_run.stdout.strip().splitlines() if line.strip()]
+    if len(retention_tsv_rows) != 3:
+        raise AssertionError("expected retention state-code tsv-rows to emit exactly three rows")
+    if retention_tsv_rows[0].startswith("state\t"):
+        raise AssertionError("expected retention state-code tsv-rows output to be headerless")
     retention_state_codes_payload = json.loads(retention_state_codes_run.stdout)
     if retention_state_codes_payload.get("schema") != "planner_retention_state_codes.v1":
         raise AssertionError(
