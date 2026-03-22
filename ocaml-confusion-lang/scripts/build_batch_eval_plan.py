@@ -173,6 +173,8 @@ def _format_sort_aliases_tsv_meta(
     max_group_size: int | None,
     min_group_share_pct_global: float,
     max_group_share_pct_global: float,
+    min_group_share_pct: float,
+    max_group_share_pct: float,
     meta_format: str = "text",
     json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
@@ -198,6 +200,8 @@ def _format_sort_aliases_tsv_meta(
                 "max_group_size": max_group_size,
                 "min_group_share_pct_global": min_group_share_pct_global,
                 "max_group_share_pct_global": max_group_share_pct_global,
+                "min_group_share_pct": min_group_share_pct,
+                "max_group_share_pct": max_group_share_pct,
             },
             ensure_ascii=False,
         )
@@ -219,7 +223,9 @@ def _format_sort_aliases_tsv_meta(
         f"min_group_size={min_group_size}\t"
         f"max_group_size={max_group_size if max_group_size is not None else 'none'}\t"
         f"min_group_share_pct_global={min_group_share_pct_global:.2f}\t"
-        f"max_group_share_pct_global={max_group_share_pct_global:.2f}"
+        f"max_group_share_pct_global={max_group_share_pct_global:.2f}\t"
+        f"min_group_share_pct={min_group_share_pct:.2f}\t"
+        f"max_group_share_pct={max_group_share_pct:.2f}"
     )
 
 
@@ -235,6 +241,8 @@ def _filter_sort_alias_map(
     max_group_size: int | None = None,
     min_group_share_pct_global: float = 0.0,
     max_group_share_pct_global: float = 100.0,
+    min_group_share_pct: float = 0.0,
+    max_group_share_pct: float = 100.0,
     case_sensitive: bool = False,
 ) -> tuple[dict[str, str], int, bool]:
     normalized_filter = alias_name_contains.strip() if alias_name_contains is not None else None
@@ -270,6 +278,12 @@ def _filter_sort_alias_map(
         raise ValueError(
             "--list-sort-aliases-max-group-share-pct-global must be >= --list-sort-aliases-min-group-share-pct-global"
         )
+    if not 0.0 <= min_group_share_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-min-group-share-pct must be between 0 and 100")
+    if not 0.0 <= max_group_share_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-max-group-share-pct must be between 0 and 100")
+    if max_group_share_pct < min_group_share_pct:
+        raise ValueError("--list-sort-aliases-max-group-share-pct must be >= --list-sort-aliases-min-group-share-pct")
 
     def _match_value(candidate: str) -> bool:
         if filter_mode == "contains":
@@ -346,6 +360,23 @@ def _filter_sort_alias_map(
             (alias, canonical)
             for alias, canonical in filtered_items
             if _group_size_ok(canonical)
+        ]
+
+    if min_group_share_pct > 0.0 or max_group_share_pct < 100.0:
+        local_group_sizes: dict[str, int] = {}
+        for _, canonical in filtered_items:
+            local_group_sizes[canonical] = local_group_sizes.get(canonical, 0) + 1
+        local_alias_count = len(filtered_items)
+
+        def _local_share_pct(canonical: str) -> float:
+            if local_alias_count == 0:
+                return 0.0
+            return round((local_group_sizes.get(canonical, 0) / local_alias_count) * 100.0, 2)
+
+        filtered_items = [
+            (alias, canonical)
+            for alias, canonical in filtered_items
+            if min_group_share_pct <= _local_share_pct(canonical) <= max_group_share_pct
         ]
 
     if sort_mode == "alias":
@@ -1733,6 +1764,24 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-min-group-share-pct",
+        type=float,
+        default=0.0,
+        help=(
+            "Optional local canonical family share floor (0~100). "
+            "Applied after text/global/group-size filtering, based on the currently filtered alias subset."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-max-group-share-pct",
+        type=float,
+        default=100.0,
+        help=(
+            "Optional local canonical family share ceiling (0~100). "
+            "Applied after text/global/group-size filtering, based on the currently filtered alias subset."
+        ),
+    )
+    parser.add_argument(
         "--list-sort-aliases-sort",
         choices=(
             "alias",
@@ -2366,6 +2415,8 @@ def main() -> int:
                 args.list_sort_aliases_max_group_size,
                 args.list_sort_aliases_min_group_share_pct_global,
                 args.list_sort_aliases_max_group_share_pct_global,
+                args.list_sort_aliases_min_group_share_pct,
+                args.list_sort_aliases_max_group_share_pct,
                 args.list_sort_aliases_case_sensitive,
             )
             grouped = _build_sort_alias_groups(alias_map)
@@ -2392,6 +2443,8 @@ def main() -> int:
                             "max_group_size": args.list_sort_aliases_max_group_size,
                             "min_group_share_pct_global": args.list_sort_aliases_min_group_share_pct_global,
                             "max_group_share_pct_global": args.list_sort_aliases_max_group_share_pct_global,
+                            "min_group_share_pct": args.list_sort_aliases_min_group_share_pct,
+                            "max_group_share_pct": args.list_sort_aliases_max_group_share_pct,
                             "limit": args.list_sort_aliases_limit,
                             "sort": args.list_sort_aliases_sort,
                             "group_count": len(grouped),
@@ -2434,6 +2487,8 @@ def main() -> int:
                             max_group_size=args.list_sort_aliases_max_group_size,
                             min_group_share_pct_global=args.list_sort_aliases_min_group_share_pct_global,
                             max_group_share_pct_global=args.list_sort_aliases_max_group_share_pct_global,
+                            min_group_share_pct=args.list_sort_aliases_min_group_share_pct,
+                            max_group_share_pct=args.list_sort_aliases_max_group_share_pct,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2466,6 +2521,8 @@ def main() -> int:
                             max_group_size=args.list_sort_aliases_max_group_size,
                             min_group_share_pct_global=args.list_sort_aliases_min_group_share_pct_global,
                             max_group_share_pct_global=args.list_sort_aliases_max_group_share_pct_global,
+                            min_group_share_pct=args.list_sort_aliases_min_group_share_pct,
+                            max_group_share_pct=args.list_sort_aliases_max_group_share_pct,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2488,6 +2545,8 @@ def main() -> int:
                         "max_group_size": args.list_sort_aliases_max_group_size,
                         "min_group_share_pct_global": args.list_sort_aliases_min_group_share_pct_global,
                         "max_group_share_pct_global": args.list_sort_aliases_max_group_share_pct_global,
+                        "min_group_share_pct": args.list_sort_aliases_min_group_share_pct,
+                        "max_group_share_pct": args.list_sort_aliases_max_group_share_pct,
                         "limit": args.list_sort_aliases_limit,
                         "sort": args.list_sort_aliases_sort,
                         "group_count": len(grouped),

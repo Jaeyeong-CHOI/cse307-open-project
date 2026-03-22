@@ -5702,6 +5702,67 @@ def main() -> int:
             f"{invalid_sort_alias_not_filter_mode_run.stderr}"
         )
 
+    local_share_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "per-task",
+            "--list-sort-aliases-min-group-share-pct",
+            "20",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    local_share_filter_payload = json.loads(local_share_filter_run.stdout)
+    if local_share_filter_payload.get("min_group_share_pct") != 20.0:
+        raise AssertionError(
+            "expected min_group_share_pct=20.0 in payload, got: "
+            f"{local_share_filter_payload.get('min_group_share_pct')}"
+        )
+    local_share_aliases = local_share_filter_payload.get("aliases", {})
+    expected_canonicals = {
+        "max-runs-per-task-prompt-condition",
+        "max-runs-per-task-prompt-condition-desc",
+    }
+    if not local_share_aliases:
+        raise AssertionError("expected local share filter to keep high-share canonical groups")
+    if set(local_share_aliases.values()) != expected_canonicals:
+        raise AssertionError(
+            "expected local share filter(min=20) to keep only task-prompt cap canonical groups, got: "
+            f"{local_share_aliases}"
+        )
+
+    invalid_local_share_range_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-share-pct",
+            "60",
+            "--list-sort-aliases-max-group-share-pct",
+            "40",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_local_share_range_run.returncode == 0:
+        raise AssertionError("expected max<min local group share pct bounds to fail-fast")
+    if "--list-sort-aliases-max-group-share-pct must be >= --list-sort-aliases-min-group-share-pct" not in (
+        invalid_local_share_range_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected local group-share bounds validation error, got: "
+            f"{invalid_local_share_range_run.stderr}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
