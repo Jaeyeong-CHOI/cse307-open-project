@@ -57,7 +57,7 @@ on:
 
 concurrency:
   group: ocaml-confusion-lang-ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   detect-changes:
