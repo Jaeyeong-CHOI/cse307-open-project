@@ -262,6 +262,18 @@ def _format_sort_alias_groups_tsv(
     return "\n".join(lines)
 
 
+def _resolve_sort_aliases_output_kind(output_format: str) -> str:
+    if output_format in {"aliases-json", "aliases-tsv", "aliases-tsv-rows"}:
+        return "aliases"
+    if output_format in {"grouped-json", "grouped-tsv", "grouped-tsv-rows"}:
+        return "grouped"
+    if output_format in {"names", "names-json"}:
+        return "names"
+    if output_format in {"canonical-names", "canonical-names-json"}:
+        return "canonical-names"
+    return output_format
+
+
 def _format_sort_aliases_tsv_meta(
     *,
     output_format: str,
@@ -314,12 +326,15 @@ def _format_sort_aliases_tsv_meta(
     meta_format: str = "text",
     json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
+    output = _resolve_sort_aliases_output_kind(output_format)
+
     if meta_format == "json":
         return json.dumps(
             {
                 "meta": True,
                 "schema_version": json_schema_version,
                 "schema": SORT_ALIASES_TSV_META_SCHEMA,
+                "output": output,
                 "output_format": output_format,
                 "filtered_count": filtered_count,
                 "emitted_count": emitted_count,
@@ -373,6 +388,7 @@ def _format_sort_aliases_tsv_meta(
     return (
         "# meta\t"
         f"schema={SORT_ALIASES_TSV_META_SCHEMA}\t"
+        f"output={output}\t"
         f"output_format={output_format}\t"
         f"filtered_count={filtered_count}\t"
         f"emitted_count={emitted_count}\t"

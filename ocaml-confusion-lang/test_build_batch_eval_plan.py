@@ -7438,6 +7438,8 @@ def main() -> int:
         raise AssertionError(f"expected names-with-meta text footer line, got: {names_meta_lines[-1]}")
     if "sort=" not in names_meta_lines[-1] or "group_count=" not in names_meta_lines[-1]:
         raise AssertionError(f"expected names-with-meta footer to include sort/group counters, got: {names_meta_lines[-1]}")
+    if "output=names" not in names_meta_lines[-1]:
+        raise AssertionError(f"expected names-with-meta footer to include output=names, got: {names_meta_lines[-1]}")
     if "output_format=names" not in names_meta_lines[-1]:
         raise AssertionError(f"expected names-with-meta footer to include output_format=names, got: {names_meta_lines[-1]}")
 
@@ -7519,6 +7521,11 @@ def main() -> int:
         raise AssertionError(
             "expected canonical-names-with-meta JSON footer schema planner_sort_aliases_tsv_meta.v1, got: "
             f"{canonical_names_meta_json.get('schema')}"
+        )
+    if canonical_names_meta_json.get("output") != "canonical-names":
+        raise AssertionError(
+            "expected canonical-names-with-meta JSON footer output=canonical-names, got: "
+            f"{canonical_names_meta_json.get('output')}"
         )
     if canonical_names_meta_json.get("output_format") != "canonical-names":
         raise AssertionError(
@@ -7651,6 +7658,11 @@ def main() -> int:
         raise AssertionError(f"expected aliases-tsv-rows first line to be headerless data row, got: {aliases_rows_lines[0]}")
     if not aliases_rows_lines[-1].startswith("# meta\t"):
         raise AssertionError(f"expected aliases-tsv-rows meta footer, got: {aliases_rows_lines[-1]}")
+    if "output=aliases" not in aliases_rows_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv-rows meta footer to expose output=aliases, got: "
+            f"{aliases_rows_lines[-1]}"
+        )
     if "output_format=aliases-tsv-rows" not in aliases_rows_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv-rows meta footer to expose output_format=aliases-tsv-rows, got: "
@@ -7680,6 +7692,11 @@ def main() -> int:
         raise AssertionError(f"expected grouped-tsv-rows first line to be headerless data row, got: {grouped_rows_lines[0]}")
     if not grouped_rows_lines[-1].startswith("# meta\t"):
         raise AssertionError(f"expected grouped-tsv-rows meta footer, got: {grouped_rows_lines[-1]}")
+    if "output=grouped" not in grouped_rows_lines[-1]:
+        raise AssertionError(
+            "expected grouped-tsv-rows meta footer to expose output=grouped, got: "
+            f"{grouped_rows_lines[-1]}"
+        )
     if "output_format=grouped-tsv-rows" not in grouped_rows_lines[-1]:
         raise AssertionError(
             "expected grouped-tsv-rows meta footer to expose output_format=grouped-tsv-rows, got: "
