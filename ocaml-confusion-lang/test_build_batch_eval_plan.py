@@ -1704,6 +1704,7 @@ def main() -> int:
                         "cheap_first": True,
                         "max_total_runs": 20,
                         "max_runs_per_model": 4,
+                        "max_runs_per_prompt_condition": 3,
                         "tags": ["cheap-first", "ci"],
                     },
                     "cheap-model-loose": {
@@ -1713,6 +1714,7 @@ def main() -> int:
                         "cheap_first": True,
                         "max_total_runs": 20,
                         "max_runs_per_model": 12,
+                        "max_runs_per_prompt_condition": 9,
                         "tags": ["cheap-first", "ci"],
                     },
                     "expensive-analysis": {
@@ -1790,6 +1792,66 @@ def main() -> int:
         raise AssertionError(
             "unexpected --list-presets-sort=cost-priority-desc output: "
             f"{preset_names_sorted_by_cost_priority_desc}"
+        )
+
+    preset_list_sorted_by_cost_priority_prompt = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cost-priority-prompt",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cost_priority_prompt = [
+        line.strip()
+        for line in preset_list_sorted_by_cost_priority_prompt.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cost_priority_prompt != [
+        "cheap-model-tight",
+        "cheap-model-loose",
+        "expensive-analysis",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cost-priority-prompt output: "
+            f"{preset_names_sorted_by_cost_priority_prompt}"
+        )
+
+    preset_list_sorted_by_cost_priority_prompt_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cost-priority-prompt-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cost_priority_prompt_desc = [
+        line.strip()
+        for line in preset_list_sorted_by_cost_priority_prompt_desc.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cost_priority_prompt_desc != [
+        "expensive-analysis",
+        "cheap-model-loose",
+        "cheap-model-tight",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cost-priority-prompt-desc output: "
+            f"{preset_names_sorted_by_cost_priority_prompt_desc}"
         )
 
     preset_list_sorted_by_cheap_first_total_cap_desc = subprocess.run(

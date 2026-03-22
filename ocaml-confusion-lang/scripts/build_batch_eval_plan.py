@@ -450,6 +450,8 @@ def _sort_preset_names(
         "fair-total-cap-desc",
         "cost-priority",
         "cost-priority-desc",
+        "cost-priority-prompt",
+        "cost-priority-prompt-desc",
         "fair-model-allocation",
         "fair-model-allocation-desc",
         "fair-allocation",
@@ -763,6 +765,50 @@ def _sort_preset_names(
                 )
 
             return sorted(preset_names, key=cost_priority_desc_sort_key)
+
+        if sort_mode == "cost-priority-prompt":
+            def cost_priority_prompt_sort_key(name: str) -> tuple[int, int, int, int, int, str]:
+                cheap_first_rank = -resolved_cheap_first_tag_flags[name]
+                max_total_runs = resolved_caps[name]
+                total_is_uncapped = 1 if max_total_runs == 0 else 0
+                normalized_total_cap = max_total_runs if max_total_runs > 0 else sys.maxsize
+                max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
+                prompt_is_uncapped = 1 if max_runs_per_prompt_condition == 0 else 0
+                normalized_prompt_cap = (
+                    max_runs_per_prompt_condition if max_runs_per_prompt_condition > 0 else sys.maxsize
+                )
+                return (
+                    cheap_first_rank,
+                    total_is_uncapped,
+                    normalized_total_cap,
+                    prompt_is_uncapped,
+                    normalized_prompt_cap,
+                    name,
+                )
+
+            return sorted(preset_names, key=cost_priority_prompt_sort_key)
+
+        if sort_mode == "cost-priority-prompt-desc":
+            def cost_priority_prompt_desc_sort_key(name: str) -> tuple[int, int, int, int, int, str]:
+                cheap_first_rank = resolved_cheap_first_tag_flags[name]
+                max_total_runs = resolved_caps[name]
+                total_is_uncapped = 0 if max_total_runs == 0 else 1
+                normalized_total_cap = -max_total_runs if max_total_runs > 0 else 0
+                max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
+                prompt_is_uncapped = 0 if max_runs_per_prompt_condition == 0 else 1
+                normalized_prompt_cap = (
+                    -max_runs_per_prompt_condition if max_runs_per_prompt_condition > 0 else 0
+                )
+                return (
+                    cheap_first_rank,
+                    total_is_uncapped,
+                    normalized_total_cap,
+                    prompt_is_uncapped,
+                    normalized_prompt_cap,
+                    name,
+                )
+
+            return sorted(preset_names, key=cost_priority_prompt_desc_sort_key)
 
         if sort_mode in ("cheap-first-tag-desc", "cheap-first-desc"):
             return sorted(preset_names, key=lambda name: (resolved_cheap_first_tag_flags[name], name))
@@ -1333,6 +1379,8 @@ def parse_args() -> argparse.Namespace:
             "fair-total-cap-desc (alias of fair-allocation-total-cap-desc), "
             "cost-priority (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_model asc with uncapped last), "
             "cost-priority-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_model desc with uncapped first), "
+            "cost-priority-prompt (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_prompt_condition asc with uncapped last), "
+            "cost-priority-prompt-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_prompt_condition desc with uncapped first), "
             "fair-model-allocation (presets with fair_model_allocation=true first), "
             "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
             "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "
