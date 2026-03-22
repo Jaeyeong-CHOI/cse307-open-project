@@ -9020,6 +9020,32 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_tsv_rows_alias_r_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "r",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_tsv_rows_alias_rows_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "rows",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     retention_tsv_rows = [line for line in retention_state_codes_tsv_rows_run.stdout.strip().splitlines() if line.strip()]
     if len(retention_tsv_rows) != 3:
         raise AssertionError("expected retention state-code tsv-rows to emit exactly three rows")
@@ -9027,6 +9053,10 @@ def main() -> int:
         raise AssertionError("expected retention state-code tsv-rows output to be headerless")
     if retention_state_codes_tsv_rows_alias_run.stdout != retention_state_codes_tsv_rows_run.stdout:
         raise AssertionError("expected --list-state-codes-format tr alias to match canonical tsv-rows output")
+    if retention_state_codes_tsv_rows_alias_r_run.stdout != retention_state_codes_tsv_rows_run.stdout:
+        raise AssertionError("expected --list-state-codes-format r alias to match canonical tsv-rows output")
+    if retention_state_codes_tsv_rows_alias_rows_run.stdout != retention_state_codes_tsv_rows_run.stdout:
+        raise AssertionError("expected --list-state-codes-format rows alias to match canonical tsv-rows output")
     retention_state_codes_payload = json.loads(retention_state_codes_run.stdout)
     if retention_state_codes_payload.get("schema") != "planner_retention_state_codes.v1":
         raise AssertionError(

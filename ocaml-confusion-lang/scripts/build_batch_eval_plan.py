@@ -225,6 +225,8 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "j": "json",
     "t": "tsv",
     "tr": "tsv-rows",
+    "r": "tsv-rows",
+    "rows": "tsv-rows",
 }
 
 
@@ -2822,12 +2824,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "tsv", "tsv-rows", "j", "t", "tr"),
+        choices=("json", "tsv", "tsv-rows", "j", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
             "json (default), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, t=tsv, tr=tsv-rows."
+            "Shorthand aliases: j=json, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(
