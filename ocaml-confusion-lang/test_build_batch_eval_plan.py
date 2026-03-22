@@ -5750,6 +5750,14 @@ def main() -> int:
             "expected default list-sort-aliases output_shape_payload_json_sha256_algo=sha256, got: "
             f"{sort_aliases_payload.get('output_shape_payload_json_sha256_algo')}"
         )
+    expected_output_shape_payload_json_bytes = len(
+        (sort_aliases_payload.get("output_shape_payload_json") or "").encode("utf-8")
+    )
+    if sort_aliases_payload.get("output_shape_payload_json_bytes") != expected_output_shape_payload_json_bytes:
+        raise AssertionError(
+            "expected default list-sort-aliases output_shape_payload_json_bytes to match UTF-8 payload size, got: "
+            f"{sort_aliases_payload.get('output_shape_payload_json_bytes')}"
+        )
     if sort_aliases_payload.get("output_shape_payload") != {
         "output": sort_aliases_payload.get("output"),
         "output_transport": sort_aliases_payload.get("output_transport"),
@@ -8146,6 +8154,10 @@ def main() -> int:
     if "output_shape_sha256_algo=sha256" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_shape_sha256_algo=sha256, got: {names_meta_lines[-1]}"
+        )
+    if "output_shape_payload_json_bytes=" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_shape_payload_json_bytes, got: {names_meta_lines[-1]}"
         )
     if "output_shape_payload_json_sha256=" not in names_meta_lines[-1]:
         raise AssertionError(
