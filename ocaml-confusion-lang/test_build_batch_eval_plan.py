@@ -4757,6 +4757,11 @@ def main() -> int:
             "expected default list-sort-aliases sort=alias, got: "
             f"{sort_aliases_payload.get('sort')}"
         )
+    if sort_aliases_payload.get("filter_mode") != "contains":
+        raise AssertionError(
+            "expected default list-sort-aliases filter_mode=contains, got: "
+            f"{sort_aliases_payload.get('filter_mode')}"
+        )
     aliases = sort_aliases_payload.get("aliases", {})
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
@@ -4793,6 +4798,11 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases sort=alias by default, got: "
             f"{grouped_sort_aliases_payload.get('sort')}"
+        )
+    if grouped_sort_aliases_payload.get("filter_mode") != "contains":
+        raise AssertionError(
+            "expected grouped list-sort-aliases filter_mode=contains by default, got: "
+            f"{grouped_sort_aliases_payload.get('filter_mode')}"
         )
     groups = grouped_sort_aliases_payload.get("groups", {})
     total_cap_aliases = groups.get("max-total-runs", [])
@@ -4872,6 +4882,59 @@ def main() -> int:
         raise AssertionError(
             "expected canonical sort prefix to follow canonical key ordering, got: "
             f"{canonical_aliases}"
+        )
+
+    prefix_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "per-task",
+            "--list-sort-aliases-filter-mode",
+            "prefix",
+            "--list-sort-aliases-sort",
+            "alias",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    prefix_filter_payload = json.loads(prefix_filter_run.stdout)
+    if prefix_filter_payload.get("filter_mode") != "prefix":
+        raise AssertionError(
+            "expected prefix filter mode in payload, got: "
+            f"{prefix_filter_payload.get('filter_mode')}"
+        )
+    prefix_aliases = list(prefix_filter_payload.get("aliases", {}).keys())
+    if not prefix_aliases or any(not alias.startswith("per-task") for alias in prefix_aliases):
+        raise AssertionError(
+            "expected prefix filter to keep only aliases starting with per-task, got: "
+            f"{prefix_aliases}"
+        )
+
+    exact_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "FAIR-CAP",
+            "--list-sort-aliases-filter-mode",
+            "exact",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    exact_filter_payload = json.loads(exact_filter_run.stdout)
+    exact_aliases = exact_filter_payload.get("aliases", {})
+    if list(exact_aliases.items()) != [("fair-cap", "fair-allocation-total-cap")]:
+        raise AssertionError(
+            "expected exact filter to match a single case-insensitive alias, got: "
+            f"{exact_aliases}"
         )
 
     invalid_sort_alias_contains_run = subprocess.run(

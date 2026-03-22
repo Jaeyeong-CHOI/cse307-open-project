@@ -102,16 +102,30 @@ def _filter_sort_alias_map(
     alias_name_contains: str | None,
     limit: int | None,
     sort_mode: str = "alias",
+    filter_mode: str = "contains",
 ) -> tuple[dict[str, str], int, bool]:
     normalized_filter = alias_name_contains.strip().lower() if alias_name_contains is not None else None
     if alias_name_contains is not None and not normalized_filter:
         raise ValueError("--list-sort-aliases-name-contains must include at least one non-empty character")
     if limit is not None and limit < 1:
         raise ValueError("--list-sort-aliases-limit must be >= 1")
+    if filter_mode not in {"contains", "prefix", "exact"}:
+        raise ValueError(f"unsupported list-sort-aliases filter mode: {filter_mode}")
+
+    def _matches_filter(alias: str, canonical: str) -> bool:
+        if not normalized_filter:
+            return True
+        alias_l = alias.lower()
+        canonical_l = canonical.lower()
+        if filter_mode == "contains":
+            return normalized_filter in alias_l or normalized_filter in canonical_l
+        if filter_mode == "prefix":
+            return alias_l.startswith(normalized_filter) or canonical_l.startswith(normalized_filter)
+        return alias_l == normalized_filter or canonical_l == normalized_filter
 
     filtered_items: list[tuple[str, str]] = []
     for alias, canonical in PRESET_SORT_ALIAS_MAP.items():
-        if normalized_filter and normalized_filter not in alias.lower() and normalized_filter not in canonical.lower():
+        if not _matches_filter(alias, canonical):
             continue
         filtered_items.append((alias, canonical))
 
@@ -1411,6 +1425,15 @@ def parse_args() -> argparse.Namespace:
         help="Optional max number of alias mappings to emit after filtering",
     )
     parser.add_argument(
+        "--list-sort-aliases-filter-mode",
+        choices=("contains", "prefix", "exact"),
+        default="contains",
+        help=(
+            "Match mode for --list-sort-aliases-name-contains: contains (default), "
+            "prefix, or exact (case-insensitive; matches alias name or canonical sort key)."
+        ),
+    )
+    parser.add_argument(
         "--list-sort-aliases-sort",
         choices=("alias", "alias-desc", "canonical", "canonical-desc"),
         default="alias",
@@ -2004,6 +2027,7 @@ def main() -> int:
                 args.list_sort_aliases_name_contains,
                 args.list_sort_aliases_limit,
                 args.list_sort_aliases_sort,
+                args.list_sort_aliases_filter_mode,
             )
             if args.list_sort_aliases_format == "grouped-json":
                 grouped = _build_sort_alias_groups(alias_map)
@@ -2016,6 +2040,7 @@ def main() -> int:
                             "emitted_count": len(alias_map),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
+                            "filter_mode": args.list_sort_aliases_filter_mode,
                             "limit": args.list_sort_aliases_limit,
                             "sort": args.list_sort_aliases_sort,
                             "groups": grouped,
@@ -2033,6 +2058,7 @@ def main() -> int:
                         "emitted_count": len(alias_map),
                         "truncated": truncated,
                         "name_contains": args.list_sort_aliases_name_contains,
+                        "filter_mode": args.list_sort_aliases_filter_mode,
                         "limit": args.list_sort_aliases_limit,
                         "sort": args.list_sort_aliases_sort,
                         "aliases": alias_map,

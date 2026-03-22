@@ -117,6 +117,9 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format grouped-json
 # sort alias 이름/캐노니컬 substring 필터 + 출력 상한 (비용/로그 길이 절약)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-limit 2
+# sort alias 필터 매칭 모드(prefix/exact)로 더 정밀한 탐색
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains per-task --list-sort-aliases-filter-mode prefix
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair-cap --list-sort-aliases-filter-mode exact
 # 비용 상한(max_total_runs) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # 비용 상한(max_total_runs) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -705,3 +708,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 245. ~~`--list-sort-aliases`에 grouped 출력 모드(`--list-sort-aliases-format grouped-json`)를 추가해 alias→canonical뿐 아니라 canonical→aliases 역인덱스를 단일 호출로 제공하고, 자동화가 canonical 키 기준으로 alias family를 즉시 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 246. ~~`--list-sort-aliases`에 이름 substring 필터/출력 상한(`--list-sort-aliases-name-contains`, `--list-sort-aliases-limit`)을 추가하고 출력 메타(`filtered_count`/`emitted_count`/`truncated`)를 도입해 alias 탐색 시 로그 크기와 파싱 비용을 저비용으로 제어 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 247. ~~`--list-sort-aliases-sort`(`alias|alias-desc|canonical|canonical-desc`)를 추가해 alias/canonical 기준 정렬을 런타임에서 전환 가능하게 하고, JSON 출력에 `sort` 메타를 포함해 downstream parser가 정렬 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+248. ~~`--list-sort-aliases-filter-mode`(`contains|prefix|exact`)를 추가해 alias 탐색 시 부분 일치/접두 일치/완전 일치를 런타임에서 전환 가능하게 하고, JSON 출력에 `filter_mode` 메타를 포함해 downstream parser가 필터 해석 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
