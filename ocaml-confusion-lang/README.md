@@ -128,6 +128,8 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 # sort alias 필터 매칭 모드(prefix/exact)로 더 정밀한 탐색
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains per-task --list-sort-aliases-filter-mode prefix
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair-cap --list-sort-aliases-filter-mode exact
+# 대소문자 구분 매칭이 필요하면 case-sensitive 모드 사용(기본은 대소문자 무시)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains FAIR-CAP --list-sort-aliases-filter-mode exact --list-sort-aliases-case-sensitive
 # filter 대상을 alias/canonical/both로 제어(기본 both)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair-allocation --list-sort-aliases-match-field canonical
 # canonical family 크기 하한으로 단일 alias family(크기 1)를 제외
@@ -730,3 +732,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 253. ~~`--list-sort-aliases-sort`에 canonical family 크기 기반 정렬(`group-size`, `group-size-desc`)을 추가해 alias 탐색 시 fan-out이 큰 family를 우선 triage하고 비용/정렬 의도를 JSON 메타(`sort`)로 일관 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 254. ~~`--list-sort-aliases-min-group-size`를 추가해 canonical family 크기 하한(예: 2+)으로 singleton alias family를 탐색 단계에서 제외하고, JSON/TSV meta에 `min_group_size` 컨텍스트를 함께 기록해 downstream 파서의 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 255. ~~`--list-sort-aliases-max-group-size`를 추가해 canonical family 크기 상한(예: 1)으로 fan-out 큰 alias family를 탐색 단계에서 제외하고, JSON/TSV meta에 `max_group_size` 컨텍스트를 함께 기록해 downstream 파서의 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+256. ~~`--list-sort-aliases-case-sensitive` 옵션을 추가해 alias/canonical 필터를 기본 case-insensitive에서 선택적으로 case-sensitive로 전환하고, JSON/TSV meta에 `case_sensitive` 컨텍스트를 함께 기록해 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

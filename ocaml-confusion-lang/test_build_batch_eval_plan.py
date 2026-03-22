@@ -5258,6 +5258,34 @@ def main() -> int:
             f"{exact_aliases}"
         )
 
+    case_sensitive_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "FAIR-CAP",
+            "--list-sort-aliases-filter-mode",
+            "exact",
+            "--list-sort-aliases-case-sensitive",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    case_sensitive_filter_payload = json.loads(case_sensitive_filter_run.stdout)
+    if case_sensitive_filter_payload.get("case_sensitive") is not True:
+        raise AssertionError(
+            "expected case_sensitive=true in payload when --list-sort-aliases-case-sensitive is set, got: "
+            f"{case_sensitive_filter_payload.get('case_sensitive')}"
+        )
+    if case_sensitive_filter_payload.get("aliases") != {}:
+        raise AssertionError(
+            "expected case-sensitive exact filter to reject uppercase FAIR-CAP for lowercase alias keys, got: "
+            f"{case_sensitive_filter_payload.get('aliases')}"
+        )
+
     canonical_match_field_run = subprocess.run(
         [
             "python3",

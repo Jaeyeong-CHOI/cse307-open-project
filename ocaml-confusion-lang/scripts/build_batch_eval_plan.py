@@ -123,6 +123,7 @@ def _format_sort_aliases_tsv_meta(
     name_contains: str | None,
     filter_mode: str,
     match_field: str,
+    case_sensitive: bool,
     limit: int | None,
     sort_mode: str,
     group_count: int,
@@ -143,6 +144,7 @@ def _format_sort_aliases_tsv_meta(
                 "name_contains": name_contains,
                 "filter_mode": filter_mode,
                 "match_field": match_field,
+                "case_sensitive": case_sensitive,
                 "limit": limit,
                 "sort": sort_mode,
                 "group_count": group_count,
@@ -160,6 +162,7 @@ def _format_sort_aliases_tsv_meta(
         f"name_contains={name_contains or 'none'}\t"
         f"filter_mode={filter_mode}\t"
         f"match_field={match_field}\t"
+        f"case_sensitive={str(case_sensitive).lower()}\t"
         f"limit={limit if limit is not None else 'none'}\t"
         f"sort={sort_mode}\t"
         f"group_count={group_count}\t"
@@ -176,8 +179,11 @@ def _filter_sort_alias_map(
     match_field: str = "both",
     min_group_size: int = 1,
     max_group_size: int | None = None,
+    case_sensitive: bool = False,
 ) -> tuple[dict[str, str], int, bool]:
-    normalized_filter = alias_name_contains.strip().lower() if alias_name_contains is not None else None
+    normalized_filter = alias_name_contains.strip() if alias_name_contains is not None else None
+    if normalized_filter is not None and not case_sensitive:
+        normalized_filter = normalized_filter.lower()
     if alias_name_contains is not None and not normalized_filter:
         raise ValueError("--list-sort-aliases-name-contains must include at least one non-empty character")
     if limit is not None and limit < 1:
@@ -203,13 +209,13 @@ def _filter_sort_alias_map(
     def _matches_filter(alias: str, canonical: str) -> bool:
         if not normalized_filter:
             return True
-        alias_l = alias.lower()
-        canonical_l = canonical.lower()
+        alias_key = alias if case_sensitive else alias.lower()
+        canonical_key = canonical if case_sensitive else canonical.lower()
         if match_field == "alias":
-            return _match_value(alias_l)
+            return _match_value(alias_key)
         if match_field == "canonical":
-            return _match_value(canonical_l)
-        return _match_value(alias_l) or _match_value(canonical_l)
+            return _match_value(canonical_key)
+        return _match_value(alias_key) or _match_value(canonical_key)
 
     filtered_items: list[tuple[str, str]] = []
     for alias, canonical in PRESET_SORT_ALIAS_MAP.items():
@@ -1531,8 +1537,16 @@ def parse_args() -> argparse.Namespace:
         "--list-sort-aliases-name-contains",
         default=None,
         help=(
-            "Optional case-insensitive substring filter for --list-sort-aliases; "
+            "Optional substring filter for --list-sort-aliases; "
             "matches either alias name or canonical sort key."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-case-sensitive",
+        action="store_true",
+        help=(
+            "Treat --list-sort-aliases-name-contains matching as case-sensitive "
+            "(default: case-insensitive)."
         ),
     )
     parser.add_argument(
@@ -1547,7 +1561,7 @@ def parse_args() -> argparse.Namespace:
         default="contains",
         help=(
             "Match mode for --list-sort-aliases-name-contains: contains (default), "
-            "prefix, or exact (case-insensitive)."
+            "prefix, or exact (case-insensitive unless --list-sort-aliases-case-sensitive)."
         ),
     )
     parser.add_argument(
@@ -2207,6 +2221,7 @@ def main() -> int:
                 args.list_sort_aliases_match_field,
                 args.list_sort_aliases_min_group_size,
                 args.list_sort_aliases_max_group_size,
+                args.list_sort_aliases_case_sensitive,
             )
             grouped = _build_sort_alias_groups(alias_map)
             if args.list_sort_aliases_format == "grouped-json":
@@ -2221,6 +2236,7 @@ def main() -> int:
                             "name_contains": args.list_sort_aliases_name_contains,
                             "filter_mode": args.list_sort_aliases_filter_mode,
                             "match_field": args.list_sort_aliases_match_field,
+                            "case_sensitive": args.list_sort_aliases_case_sensitive,
                             "min_group_size": args.list_sort_aliases_min_group_size,
                             "max_group_size": args.list_sort_aliases_max_group_size,
                             "limit": args.list_sort_aliases_limit,
@@ -2243,6 +2259,7 @@ def main() -> int:
                             name_contains=args.list_sort_aliases_name_contains,
                             filter_mode=args.list_sort_aliases_filter_mode,
                             match_field=args.list_sort_aliases_match_field,
+                            case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
                             group_count=len(grouped),
@@ -2264,6 +2281,7 @@ def main() -> int:
                             name_contains=args.list_sort_aliases_name_contains,
                             filter_mode=args.list_sort_aliases_filter_mode,
                             match_field=args.list_sort_aliases_match_field,
+                            case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
                             group_count=len(grouped),
@@ -2284,6 +2302,7 @@ def main() -> int:
                         "name_contains": args.list_sort_aliases_name_contains,
                         "filter_mode": args.list_sort_aliases_filter_mode,
                         "match_field": args.list_sort_aliases_match_field,
+                        "case_sensitive": args.list_sort_aliases_case_sensitive,
                         "min_group_size": args.list_sort_aliases_min_group_size,
                         "max_group_size": args.list_sort_aliases_max_group_size,
                         "limit": args.list_sort_aliases_limit,
