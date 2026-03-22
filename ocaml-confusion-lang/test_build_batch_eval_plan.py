@@ -4755,6 +4755,41 @@ def main() -> int:
             f"unexpected alias mapping for total-cap-desc: {aliases.get('total-cap-desc')}"
         )
 
+    grouped_sort_aliases_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "grouped-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    grouped_sort_aliases_payload = json.loads(grouped_sort_aliases_run.stdout)
+    if grouped_sort_aliases_payload.get("schema_version") != "v1":
+        raise AssertionError(
+            "unexpected grouped list-sort-aliases schema_version: "
+            f"{grouped_sort_aliases_payload.get('schema_version')}"
+        )
+    if grouped_sort_aliases_payload.get("group_schema_version") != "v1":
+        raise AssertionError(
+            "unexpected grouped list-sort-aliases group_schema_version: "
+            f"{grouped_sort_aliases_payload.get('group_schema_version')}"
+        )
+    groups = grouped_sort_aliases_payload.get("groups", {})
+    total_cap_aliases = groups.get("max-total-runs", [])
+    if "total-cap" not in total_cap_aliases:
+        raise AssertionError(f"expected total-cap alias in max-total-runs group, got: {total_cap_aliases}")
+    fair_total_cap_aliases = groups.get("fair-allocation-total-cap", [])
+    if "fair-cap" not in fair_total_cap_aliases:
+        raise AssertionError(
+            "expected fair-cap alias in fair-allocation-total-cap group, "
+            f"got: {fair_total_cap_aliases}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 

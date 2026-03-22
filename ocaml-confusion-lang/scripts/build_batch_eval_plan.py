@@ -87,6 +87,16 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
     "fair-allocation-desc": "fair-model-allocation-desc",
 }
 
+
+def _build_sort_alias_groups() -> dict[str, list[str]]:
+    groups: dict[str, list[str]] = {}
+    for alias, canonical in PRESET_SORT_ALIAS_MAP.items():
+        groups.setdefault(canonical, []).append(alias)
+    for aliases in groups.values():
+        aliases.sort()
+    return dict(sorted(groups.items(), key=lambda item: item[0]))
+
+
 def _utc_now_iso() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -1341,6 +1351,15 @@ def parse_args() -> argparse.Namespace:
         help="List canonical/alias mappings for --list-presets-sort and exit",
     )
     parser.add_argument(
+        "--list-sort-aliases-format",
+        choices=("aliases-json", "grouped-json"),
+        default="aliases-json",
+        help=(
+            "Output format for --list-sort-aliases: aliases-json (default, alias->canonical) "
+            "or grouped-json (canonical->[aliases])."
+        ),
+    )
+    parser.add_argument(
         "--list-presets-format",
         choices=("names", "json", "resolved-json", "summary", "summary-tsv"),
         default="names",
@@ -1921,6 +1940,20 @@ def main() -> int:
             return 0
 
         if args.list_sort_aliases:
+            if args.list_sort_aliases_format == "grouped-json":
+                grouped = _build_sort_alias_groups()
+                print(
+                    json.dumps(
+                        {
+                            "schema_version": "v1",
+                            "group_schema_version": "v1",
+                            "groups": grouped,
+                        },
+                        ensure_ascii=False,
+                        indent=2,
+                    )
+                )
+                return 0
             print(json.dumps({"schema_version": "v1", "aliases": PRESET_SORT_ALIAS_MAP}, ensure_ascii=False, indent=2))
             return 0
 
