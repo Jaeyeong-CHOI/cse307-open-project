@@ -404,6 +404,8 @@ def _sort_preset_names(
         "per-model-cap-desc",
         "max-runs-per-prompt-condition",
         "max-runs-per-prompt-condition-desc",
+        "per-prompt-cap",
+        "per-prompt-cap-desc",
         "description-length",
         "description-length-desc",
         "tag-count",
@@ -510,7 +512,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_model_desc_sort_key)
 
-        if sort_mode == "max-runs-per-prompt-condition":
+        if sort_mode in ("max-runs-per-prompt-condition", "per-prompt-cap"):
             def max_runs_per_prompt_condition_asc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
                 is_uncapped = 1 if max_runs_per_prompt_condition == 0 else 0
@@ -523,7 +525,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_prompt_condition_asc_sort_key)
 
-        if sort_mode == "max-runs-per-prompt-condition-desc":
+        if sort_mode in ("max-runs-per-prompt-condition-desc", "per-prompt-cap-desc"):
             def max_runs_per_prompt_condition_desc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
                 is_uncapped = 0 if max_runs_per_prompt_condition == 0 else 1
@@ -1072,6 +1074,8 @@ def parse_args() -> argparse.Namespace:
             "per-model-cap-desc (alias of max-runs-per-model-desc), "
             "max-runs-per-prompt-condition (ascending; capped presets first, 0/uncapped last), "
             "max-runs-per-prompt-condition-desc (descending; 0/uncapped first), "
+            "per-prompt-cap (alias of max-runs-per-prompt-condition), "
+            "per-prompt-cap-desc (alias of max-runs-per-prompt-condition-desc), "
             "description-length (ascending normalized description length), description-length-desc (descending), "
             "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
