@@ -4920,6 +4920,36 @@ def main() -> int:
             f"{aliases_tsv_lines}"
         )
 
+    aliases_tsv_with_meta_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "aliases-tsv",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-limit",
+            "2",
+            "--list-sort-aliases-tsv-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    aliases_tsv_with_meta_lines = aliases_tsv_with_meta_run.stdout.strip().splitlines()
+    if not aliases_tsv_with_meta_lines[-1].startswith("# meta\tschema=planner_sort_aliases_tsv_meta.v1\t"):
+        raise AssertionError(
+            "expected aliases-tsv meta footer with schema id, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
+    if "\tfiltered_count=" not in aliases_tsv_with_meta_lines[-1] or "\temitted_count=" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include filtered/emitted counters, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
+
     grouped_tsv_run = subprocess.run(
         [
             "python3",
@@ -4944,6 +4974,36 @@ def main() -> int:
         raise AssertionError(
             "expected grouped-tsv exact filter output to collapse to a single canonical family, got: "
             f"{grouped_tsv_lines}"
+        )
+
+    grouped_tsv_with_meta_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "grouped-tsv",
+            "--list-sort-aliases-name-contains",
+            "fair-cap",
+            "--list-sort-aliases-filter-mode",
+            "exact",
+            "--list-sort-aliases-tsv-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    grouped_tsv_with_meta_lines = grouped_tsv_with_meta_run.stdout.strip().splitlines()
+    if not grouped_tsv_with_meta_lines[-1].startswith("# meta\tschema=planner_sort_aliases_tsv_meta.v1\t"):
+        raise AssertionError(
+            "expected grouped-tsv meta footer with schema id, got: "
+            f"{grouped_tsv_with_meta_lines[-1]}"
+        )
+    if "\tfilter_mode=exact\t" not in grouped_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected grouped-tsv meta footer to include filter_mode context, got: "
+            f"{grouped_tsv_with_meta_lines[-1]}"
         )
 
     prefix_filter_run = subprocess.run(

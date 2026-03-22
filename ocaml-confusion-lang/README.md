@@ -119,6 +119,8 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format aliases-tsv
 # canonical alias family 요약을 TSV로 조회
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format grouped-tsv
+# TSV 출력에도 meta footer(schema/counters/filter/sort context)를 붙여 parser가 컨텍스트를 직접 소비
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format aliases-tsv --list-sort-aliases-tsv-with-meta
 # sort alias 이름/캐노니컬 substring 필터 + 출력 상한 (비용/로그 길이 절약)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-limit 2
 # sort alias 필터 매칭 모드(prefix/exact)로 더 정밀한 탐색
@@ -716,3 +718,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 247. ~~`--list-sort-aliases-sort`(`alias|alias-desc|canonical|canonical-desc`)를 추가해 alias/canonical 기준 정렬을 런타임에서 전환 가능하게 하고, JSON 출력에 `sort` 메타를 포함해 downstream parser가 정렬 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 248. ~~`--list-sort-aliases-filter-mode`(`contains|prefix|exact`)를 추가해 alias 탐색 시 부분 일치/접두 일치/완전 일치를 런타임에서 전환 가능하게 하고, JSON 출력에 `filter_mode` 메타를 포함해 downstream parser가 필터 해석 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 249. ~~`--list-sort-aliases-match-field`(`both|alias|canonical`)를 추가해 alias 탐색 시 필터 적용 대상을 런타임에서 제어하고, JSON 출력에 `match_field` 메타를 포함해 downstream parser가 필터 범위를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+250. ~~`--list-sort-aliases-tsv-with-meta`를 추가해 `aliases-tsv`/`grouped-tsv` 출력에도 schema/counter/filter/sort 컨텍스트를 meta footer로 함께 노출하고, TSV 소비 파이프라인이 JSON 모드 없이도 탐색 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

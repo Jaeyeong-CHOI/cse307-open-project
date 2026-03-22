@@ -48,6 +48,7 @@ PRESET_SHOW_TEXT_META_SCHEMA = "planner_preset_show_meta.v1"
 PRESET_SHOW_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_show_meta\.v[1-9][0-9]*$")
 PRESET_TEXT_META_JSON_SCHEMA_VERSION = "v1"
 PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
+SORT_ALIASES_TSV_META_SCHEMA = "planner_sort_aliases_tsv_meta.v1"
 
 
 PRESET_SORT_ALIAS_MAP: dict[str, str] = {
@@ -110,6 +111,31 @@ def _format_sort_alias_groups_tsv(groups: dict[str, list[str]]) -> str:
     for canonical, aliases in groups.items():
         lines.append(f"{canonical}\t{len(aliases)}\t{','.join(aliases)}")
     return "\n".join(lines)
+
+
+def _format_sort_aliases_tsv_meta(
+    *,
+    filtered_count: int,
+    emitted_count: int,
+    truncated: bool,
+    name_contains: str | None,
+    filter_mode: str,
+    match_field: str,
+    limit: int | None,
+    sort_mode: str,
+) -> str:
+    return (
+        "# meta\t"
+        f"schema={SORT_ALIASES_TSV_META_SCHEMA}\t"
+        f"filtered_count={filtered_count}\t"
+        f"emitted_count={emitted_count}\t"
+        f"truncated={str(truncated).lower()}\t"
+        f"name_contains={name_contains or 'none'}\t"
+        f"filter_mode={filter_mode}\t"
+        f"match_field={match_field}\t"
+        f"limit={limit if limit is not None else 'none'}\t"
+        f"sort={sort_mode}"
+    )
 
 
 def _filter_sort_alias_map(
@@ -1476,6 +1502,13 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-tsv-with-meta",
+        action="store_true",
+        help=(
+            "Append '# meta\\t...' footer with filter/sort counters to aliases-tsv/grouped-tsv output."
+        ),
+    )
+    parser.add_argument(
         "--list-presets-format",
         choices=("names", "json", "resolved-json", "summary", "summary-tsv"),
         default="names",
@@ -2087,9 +2120,35 @@ def main() -> int:
                 return 0
             if args.list_sort_aliases_format == "aliases-tsv":
                 print(_format_sort_aliases_tsv(alias_map))
+                if args.list_sort_aliases_tsv_with_meta:
+                    print(
+                        _format_sort_aliases_tsv_meta(
+                            filtered_count=filtered_count,
+                            emitted_count=len(alias_map),
+                            truncated=truncated,
+                            name_contains=args.list_sort_aliases_name_contains,
+                            filter_mode=args.list_sort_aliases_filter_mode,
+                            match_field=args.list_sort_aliases_match_field,
+                            limit=args.list_sort_aliases_limit,
+                            sort_mode=args.list_sort_aliases_sort,
+                        )
+                    )
                 return 0
             if args.list_sort_aliases_format == "grouped-tsv":
                 print(_format_sort_alias_groups_tsv(grouped))
+                if args.list_sort_aliases_tsv_with_meta:
+                    print(
+                        _format_sort_aliases_tsv_meta(
+                            filtered_count=filtered_count,
+                            emitted_count=len(alias_map),
+                            truncated=truncated,
+                            name_contains=args.list_sort_aliases_name_contains,
+                            filter_mode=args.list_sort_aliases_filter_mode,
+                            match_field=args.list_sort_aliases_match_field,
+                            limit=args.list_sort_aliases_limit,
+                            sort_mode=args.list_sort_aliases_sort,
+                        )
+                    )
                 return 0
             print(
                 json.dumps(
