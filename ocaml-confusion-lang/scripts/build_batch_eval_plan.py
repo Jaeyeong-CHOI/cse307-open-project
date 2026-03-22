@@ -3285,6 +3285,8 @@ def main() -> int:
                     json.dumps(
                         {
                             "schema_version": "v2",
+                            "schema": "planner_sort_aliases.v2",
+                            "output": "grouped",
                             "group_schema_version": "v2",
                             "output_format": "grouped-json",
                             "filtered_count": filtered_count,
@@ -3503,6 +3505,8 @@ def main() -> int:
                 json.dumps(
                     {
                         "schema_version": "v2",
+                        "schema": "planner_sort_aliases.v2",
+                        "output": "aliases",
                         "output_format": "aliases-json",
                         "filtered_count": filtered_count,
                         "emitted_count": len(alias_map),

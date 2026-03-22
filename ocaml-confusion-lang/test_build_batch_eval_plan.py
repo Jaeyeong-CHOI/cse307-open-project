@@ -5387,6 +5387,16 @@ def main() -> int:
             "unexpected list-sort-aliases schema_version: "
             f"{sort_aliases_payload.get('schema_version')}"
         )
+    if sort_aliases_payload.get("schema") != "planner_sort_aliases.v2":
+        raise AssertionError(
+            "unexpected list-sort-aliases schema id: "
+            f"{sort_aliases_payload.get('schema')}"
+        )
+    if sort_aliases_payload.get("output") != "aliases":
+        raise AssertionError(
+            "unexpected list-sort-aliases output kind: "
+            f"{sort_aliases_payload.get('output')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -5623,6 +5633,16 @@ def main() -> int:
         raise AssertionError(
             "unexpected grouped list-sort-aliases schema_version: "
             f"{grouped_sort_aliases_payload.get('schema_version')}"
+        )
+    if grouped_sort_aliases_payload.get("schema") != "planner_sort_aliases.v2":
+        raise AssertionError(
+            "unexpected grouped list-sort-aliases schema id: "
+            f"{grouped_sort_aliases_payload.get('schema')}"
+        )
+    if grouped_sort_aliases_payload.get("output") != "grouped":
+        raise AssertionError(
+            "unexpected grouped list-sort-aliases output kind: "
+            f"{grouped_sort_aliases_payload.get('output')}"
         )
     if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(
