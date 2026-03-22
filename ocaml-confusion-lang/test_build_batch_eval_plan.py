@@ -8607,6 +8607,46 @@ def main() -> int:
             f"{grouped_rows_lines[-1]}"
         )
 
+    list_presets_truncated_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+            "--list-presets-limit",
+            "1",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    list_presets_truncated_payload = json.loads(list_presets_truncated_run.stdout)
+    if list_presets_truncated_payload.get("output_has_truncated_records") is not True:
+        raise AssertionError(
+            "expected list-presets JSON payload to expose output_has_truncated_records=true when truncated"
+        )
+
+    list_presets_not_truncated_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "resolved-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    list_presets_not_truncated_payload = json.loads(list_presets_not_truncated_run.stdout)
+    if list_presets_not_truncated_payload.get("output_has_truncated_records") is not False:
+        raise AssertionError(
+            "expected list-presets resolved-json payload to expose output_has_truncated_records=false when not truncated"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
