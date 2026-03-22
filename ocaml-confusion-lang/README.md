@@ -138,6 +138,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-remote
 # list-presets meta footer에 현재 작업트리 상태(git_dirty: clean|dirty|unknown)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-dirty
+# list-presets meta footer에 git repo 이름(git_repo_name)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-repo-name
+# list-presets meta footer에 현재 worktree basename(git_worktree_name)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-include-git-worktree-name
 # preset 설정을 machine-readable JSON으로 확인(자동화/툴링 연동)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format json
 # preset resolved 설정(모델/조건/repeats + 전체 cap 세트 + tags + description preview)을 compact summary 라인으로 확인
@@ -204,6 +208,10 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-remote
 # show-preset meta footer에 현재 작업트리 상태(git_dirty: clean|dirty|unknown)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-dirty
+# show-preset meta footer에 git repo 이름(git_repo_name)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-repo-name
+# show-preset meta footer에 현재 worktree basename(git_worktree_name)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-worktree-name
 # show/list meta footer에 argv token hash(argv_sha256)도 함께 기록(민감 토큰 자체를 저장하지 않고 호출 동일성 추적)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-argv-sha256
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-include-argv-sha256
@@ -491,3 +499,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 207. ~~planner list/show meta footer에 optional `preset_file_sha256` 주입 옵션(`--list-presets-meta-include-preset-file-sha256`, `--show-preset-meta-include-preset-file-sha256`)을 추가하고 `ci-safe/safe-debug/debug` profile에 기본 포함시켜 preset 파일 변경 provenance를 재현성 로그에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 208. ~~planner list/show meta footer에 optional `git_toplevel` 주입 옵션(`--list-presets-meta-include-git-toplevel`, `--show-preset-meta-include-git-toplevel`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 worktree-root provenance를 경량 재현성 로그에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 209. ~~planner list/show meta footer에 optional `git_repo_name` 주입 옵션(`--list-presets-meta-include-git-repo-name`, `--show-preset-meta-include-git-repo-name`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 멀티-worktree/경로 변동 환경에서도 repo 식별자를 안정적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+210. ~~planner list/show meta footer에 optional `git_worktree_name` 주입 옵션(`--list-presets-meta-include-git-worktree-name`, `--show-preset-meta-include-git-worktree-name`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 동일 repo의 다중 worktree 실행 로그를 경로 basename 기준으로 빠르게 구분 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

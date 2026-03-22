@@ -166,6 +166,14 @@ def _git_repo_name(cwd: str | None = None) -> str:
     return name or "unknown"
 
 
+def _git_worktree_name(cwd: str | None = None) -> str:
+    try:
+        base = Path(cwd or os.getcwd()).resolve().name.strip()
+    except OSError:
+        return "unknown"
+    return base or "unknown"
+
+
 def _file_sha256(path: Path) -> str:
     try:
         return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -510,6 +518,7 @@ def _apply_show_meta_profile(args: argparse.Namespace) -> None:
         args.show_preset_meta_include_git_dirty = True
         args.show_preset_meta_include_git_toplevel = True
         args.show_preset_meta_include_git_repo_name = True
+        args.show_preset_meta_include_git_worktree_name = True
         args.show_preset_meta_include_argv_sha256 = True
         args.show_preset_meta_include_argv_count = True
         args.show_preset_meta_include_preset_file_sha256 = True
@@ -537,6 +546,7 @@ def _apply_list_meta_profile(args: argparse.Namespace) -> None:
         args.list_presets_meta_include_git_dirty = True
         args.list_presets_meta_include_git_toplevel = True
         args.list_presets_meta_include_git_repo_name = True
+        args.list_presets_meta_include_git_worktree_name = True
         args.list_presets_meta_include_argv_sha256 = True
         args.list_presets_meta_include_argv_count = True
         args.list_presets_meta_include_preset_file_sha256 = True
@@ -761,6 +771,11 @@ def parse_args() -> argparse.Namespace:
         help="Include git_repo_name (basename of git_toplevel) in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-git-worktree-name",
+        action="store_true",
+        help="Include git_worktree_name (basename of current working directory) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--show-preset-meta-include-argv",
         action="store_true",
         help="Include argv (CLI invocation) in --show-preset text/json meta footer.",
@@ -929,6 +944,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-git-repo-name",
         action="store_true",
         help="Include git_repo_name (basename of git_toplevel) in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-git-worktree-name",
+        action="store_true",
+        help="Include git_worktree_name (basename of current working directory) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--list-presets-meta-include-argv",
@@ -1198,6 +1218,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["git_repo_name"] = _git_repo_name(cwd=os.getcwd())
+            if args.show_preset_meta_include_git_worktree_name:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["git_worktree_name"] = _git_worktree_name(cwd=os.getcwd())
             if args.show_preset_meta_include_argv:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
@@ -1366,6 +1390,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["git_repo_name"] = _git_repo_name(cwd=os.getcwd())
+            if args.list_presets_meta_include_git_worktree_name:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["git_worktree_name"] = _git_worktree_name(cwd=os.getcwd())
             if args.list_presets_meta_include_argv:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
