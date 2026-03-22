@@ -2392,6 +2392,7 @@ def main() -> int:
                         "sort": args.list_sort_aliases_sort,
                         "group_count": len(grouped),
                         "group_sizes": group_sizes,
+                        "group_share_pct": group_share_pct,
                         "aliases": alias_map,
                     },
                     ensure_ascii=False,

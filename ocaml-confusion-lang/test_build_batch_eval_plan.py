@@ -4797,6 +4797,25 @@ def main() -> int:
             "expected list-sort-aliases group_sizes to equal canonical alias fan-out map, got: "
             f"{sort_aliases_payload.get('group_sizes')} vs {alias_group_sizes}"
         )
+    alias_group_share_pct = sort_aliases_payload.get("group_share_pct", {})
+    if set(alias_group_share_pct.keys()) != set(alias_group_sizes.keys()):
+        raise AssertionError(
+            "expected list-sort-aliases group_share_pct keys to match group_sizes keys, got: "
+            f"{sorted(alias_group_share_pct.keys())} vs {sorted(alias_group_sizes.keys())}"
+        )
+    for canonical, alias_count in alias_group_sizes.items():
+        expected_share = round((alias_count / len(aliases)) * 100.0, 2)
+        if alias_group_share_pct.get(canonical) != expected_share:
+            raise AssertionError(
+                "expected list-sort-aliases group_share_pct to equal canonical alias ratio, got: "
+                f"{canonical} -> {alias_group_share_pct.get(canonical)} vs {expected_share}"
+            )
+    total_alias_share = round(sum(float(value) for value in alias_group_share_pct.values()), 2)
+    if abs(total_alias_share - 100.0) > 0.2:
+        raise AssertionError(
+            "expected list-sort-aliases group_share_pct total to be ~100, got: "
+            f"{total_alias_share}"
+        )
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
     if aliases.get("total-cap-desc") != "max-total-runs-desc":
