@@ -2525,6 +2525,17 @@ def main() -> int:
             "expected resolved-json payload output_shape_sha256_algo=sha256, got: "
             f"{preset_list_resolved_json_limited_payload}"
         )
+    expected_preset_output_shape_tuple_bytes = len(
+        (preset_list_resolved_json_limited_payload.get("output_shape_tuple") or "").encode("utf-8")
+    )
+    if (
+        preset_list_resolved_json_limited_payload.get("output_shape_tuple_bytes")
+        != expected_preset_output_shape_tuple_bytes
+    ):
+        raise AssertionError(
+            "expected resolved-json payload output_shape_tuple_bytes to match UTF-8 tuple size, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
 
     preset_list_resolved_json_with_meta = subprocess.run(
         [
@@ -5757,6 +5768,14 @@ def main() -> int:
         raise AssertionError(
             "expected default list-sort-aliases output_shape_payload_json_bytes to match UTF-8 payload size, got: "
             f"{sort_aliases_payload.get('output_shape_payload_json_bytes')}"
+        )
+    expected_output_shape_tuple_bytes = len(
+        (sort_aliases_payload.get("output_shape_tuple") or "").encode("utf-8")
+    )
+    if sort_aliases_payload.get("output_shape_tuple_bytes") != expected_output_shape_tuple_bytes:
+        raise AssertionError(
+            "expected default list-sort-aliases output_shape_tuple_bytes to match UTF-8 tuple size, got: "
+            f"{sort_aliases_payload.get('output_shape_tuple_bytes')}"
         )
     if sort_aliases_payload.get("output_shape_payload") != {
         "output": sort_aliases_payload.get("output"),

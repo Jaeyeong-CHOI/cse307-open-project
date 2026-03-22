@@ -442,6 +442,11 @@ def _resolve_sort_aliases_output_shape_payload_json_bytes(output_format: str) ->
     return len(payload.encode("utf-8"))
 
 
+def _resolve_sort_aliases_output_shape_tuple_bytes(output_format: str) -> int:
+    payload = _resolve_sort_aliases_output_shape_tuple(output_format)
+    return len(payload.encode("utf-8"))
+
+
 def _resolve_sort_aliases_output_shape_payload_json_sha256_algo(output_format: str) -> str:
     _ = output_format
     return "sha256"
@@ -544,6 +549,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_shape_payload_json_sha256": _resolve_sort_aliases_output_shape_payload_json_sha256(output_format),
                 "output_shape_payload_json_sha256_algo": _resolve_sort_aliases_output_shape_payload_json_sha256_algo(output_format),
                 "output_shape_tuple": output_shape_tuple,
+                "output_shape_tuple_bytes": _resolve_sort_aliases_output_shape_tuple_bytes(output_format),
                 "output_shape_sha256": output_shape_sha256,
                 "output_shape_sha256_algo": output_shape_sha256_algo,
                 "output_format": output_format,
@@ -613,6 +619,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_shape_schema={output_shape_schema}\t"
         f"output_shape_fields={','.join(output_shape_fields) if output_shape_fields else 'none'}\t"
         f"output_shape_tuple={output_shape_tuple}\t"
+        f"output_shape_tuple_bytes={_resolve_sort_aliases_output_shape_tuple_bytes(output_format)}\t"
         f"output_shape_sha256={output_shape_sha256}\t"
         f"output_shape_sha256_algo={output_shape_sha256_algo}\t"
         f"output_shape_payload_json_bytes={_resolve_sort_aliases_output_shape_payload_json_bytes(output_format)}\t"
@@ -2146,6 +2153,14 @@ def _resolve_preset_output_shape_payload_json_bytes(output_format: str, with_sch
     return len(payload.encode("utf-8"))
 
 
+def _resolve_preset_output_shape_tuple_bytes(output_format: str, with_schema_column: bool) -> int:
+    payload = _resolve_preset_output_shape_tuple(
+        output_format,
+        with_schema_column=with_schema_column,
+    )
+    return len(payload.encode("utf-8"))
+
+
 def _resolve_preset_output_shape_payload_json_sha256_algo(output_format: str, with_schema_column: bool) -> str:
     _ = (output_format, with_schema_column)
     return "sha256"
@@ -3463,6 +3478,10 @@ def main() -> int:
                     args.show_preset_format,
                     with_schema_column=args.summary_tsv_with_schema_column,
                 ),
+                "output_shape_tuple_bytes": _resolve_preset_output_shape_tuple_bytes(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
                 "output_shape_sha256": _resolve_preset_output_shape_sha256(
                     args.show_preset_format,
                     with_schema_column=args.summary_tsv_with_schema_column,
@@ -3611,6 +3630,10 @@ def main() -> int:
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
                     "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_tuple_bytes": _resolve_preset_output_shape_tuple_bytes(
                         args.show_preset_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
@@ -3829,6 +3852,7 @@ def main() -> int:
                             "output_shape_payload_json_sha256": _resolve_sort_aliases_output_shape_payload_json_sha256(resolved_list_sort_aliases_format),
                             "output_shape_payload_json_sha256_algo": _resolve_sort_aliases_output_shape_payload_json_sha256_algo(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
+                            "output_shape_tuple_bytes": _resolve_sort_aliases_output_shape_tuple_bytes(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_shape_sha256_algo": _resolve_sort_aliases_output_shape_sha256_algo(resolved_list_sort_aliases_format),
                             "group_schema_version": "v2",
@@ -3926,6 +3950,7 @@ def main() -> int:
                             "output_shape_payload_json_sha256": _resolve_sort_aliases_output_shape_payload_json_sha256(resolved_list_sort_aliases_format),
                             "output_shape_payload_json_sha256_algo": _resolve_sort_aliases_output_shape_payload_json_sha256_algo(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
+                            "output_shape_tuple_bytes": _resolve_sort_aliases_output_shape_tuple_bytes(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_shape_sha256_algo": _resolve_sort_aliases_output_shape_sha256_algo(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
@@ -4007,6 +4032,7 @@ def main() -> int:
                             "output_shape_payload_json_sha256": _resolve_sort_aliases_output_shape_payload_json_sha256(resolved_list_sort_aliases_format),
                             "output_shape_payload_json_sha256_algo": _resolve_sort_aliases_output_shape_payload_json_sha256_algo(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
+                            "output_shape_tuple_bytes": _resolve_sort_aliases_output_shape_tuple_bytes(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_shape_sha256_algo": _resolve_sort_aliases_output_shape_sha256_algo(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
@@ -4133,6 +4159,7 @@ def main() -> int:
                             "output_shape_payload_json_sha256": _resolve_sort_aliases_output_shape_payload_json_sha256(resolved_list_sort_aliases_format),
                             "output_shape_payload_json_sha256_algo": _resolve_sort_aliases_output_shape_payload_json_sha256_algo(resolved_list_sort_aliases_format),
                             "output_shape_tuple": _resolve_sort_aliases_output_shape_tuple(resolved_list_sort_aliases_format),
+                            "output_shape_tuple_bytes": _resolve_sort_aliases_output_shape_tuple_bytes(resolved_list_sort_aliases_format),
                             "output_shape_sha256": _resolve_sort_aliases_output_shape_sha256(resolved_list_sort_aliases_format),
                             "output_shape_sha256_algo": _resolve_sort_aliases_output_shape_sha256_algo(resolved_list_sort_aliases_format),
                         "output_format": resolved_list_sort_aliases_format,
@@ -4518,6 +4545,10 @@ def main() -> int:
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
+                    "output_shape_tuple_bytes": _resolve_preset_output_shape_tuple_bytes(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "output_shape_sha256": _resolve_preset_output_shape_sha256(
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
@@ -4610,6 +4641,10 @@ def main() -> int:
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
                     "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_tuple_bytes": _resolve_preset_output_shape_tuple_bytes(
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
@@ -4717,6 +4752,10 @@ def main() -> int:
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
                     "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_tuple_bytes": _resolve_preset_output_shape_tuple_bytes(
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
