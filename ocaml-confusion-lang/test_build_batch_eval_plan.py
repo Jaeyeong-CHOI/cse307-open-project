@@ -1013,6 +1013,30 @@ def main() -> int:
     if "--list-presets-meta-include-argv-tokens" not in names_meta_payload_with_tokens["argv_tokens"]:
         raise AssertionError(f"argv_tokens missing include flag in list-presets json meta payload: {names_meta_payload_with_tokens}")
 
+    preset_list_names_with_meta_json_argv_sha256 = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-format",
+            "json",
+            "--list-presets-meta-include-argv-sha256",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_meta_payload_with_argv_sha256 = json.loads(
+        [line.strip() for line in preset_list_names_with_meta_json_argv_sha256.stdout.splitlines() if line.strip()][-1]
+    )
+    list_argv_sha256 = names_meta_payload_with_argv_sha256.get("argv_sha256")
+    if not isinstance(list_argv_sha256, str) or len(list_argv_sha256) != 64:
+        raise AssertionError(f"invalid argv_sha256 in list-presets json meta payload: {names_meta_payload_with_argv_sha256}")
+
     preset_list_names_with_meta_json_schema_v2 = subprocess.run(
         [
             "python3",
@@ -1313,6 +1337,31 @@ def main() -> int:
         raise AssertionError(
             "missing argv_tokens in list-presets meta footer: "
             f"{names_with_meta_argv_tokens_lines}"
+        )
+
+    preset_list_names_with_meta_argv_sha256 = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-argv-sha256",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_argv_sha256_lines = [
+        line.strip() for line in preset_list_names_with_meta_argv_sha256.stdout.splitlines() if line.strip()
+    ]
+    argv_sha256_value = names_with_meta_argv_sha256_lines[-1].rsplit("argv_sha256=", 1)[-1]
+    if len(argv_sha256_value) != 64 or any(ch not in "0123456789abcdef" for ch in argv_sha256_value):
+        raise AssertionError(
+            "invalid argv_sha256 in list-presets meta footer: "
+            f"{names_with_meta_argv_sha256_lines}"
         )
 
     preset_list_names_with_filter_meta = subprocess.run(
@@ -1842,6 +1891,31 @@ def main() -> int:
     if "--show-preset-meta-include-argv-tokens" not in show_meta_payload_with_tokens["argv_tokens"]:
         raise AssertionError(f"argv_tokens missing include flag in show-preset json meta payload: {show_meta_payload_with_tokens}")
 
+    show_preset_summary_with_meta_json_argv_sha256 = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-format",
+            "json",
+            "--show-preset-meta-include-argv-sha256",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_meta_payload_with_argv_sha256 = json.loads(
+        [line.rstrip("\n") for line in show_preset_summary_with_meta_json_argv_sha256.stdout.splitlines() if line.strip()][-1]
+    )
+    show_argv_sha256 = show_meta_payload_with_argv_sha256.get("argv_sha256")
+    if not isinstance(show_argv_sha256, str) or len(show_argv_sha256) != 64:
+        raise AssertionError(f"invalid argv_sha256 in show-preset json meta payload: {show_meta_payload_with_argv_sha256}")
+
     show_preset_summary_with_meta_json_schema_v2 = subprocess.run(
         [
             "python3",
@@ -2175,6 +2249,34 @@ def main() -> int:
         raise AssertionError(
             "missing argv_tokens in show-preset meta footer: "
             f"{show_preset_with_meta_argv_tokens_lines}"
+        )
+
+    show_preset_summary_with_meta_argv_sha256 = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-argv-sha256",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_argv_sha256_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_argv_sha256.stdout.splitlines()
+        if line.strip()
+    ]
+    show_argv_sha256_value = show_preset_with_meta_argv_sha256_lines[-1].rsplit("argv_sha256=", 1)[-1]
+    if len(show_argv_sha256_value) != 64 or any(ch not in "0123456789abcdef" for ch in show_argv_sha256_value):
+        raise AssertionError(
+            "invalid argv_sha256 in show-preset meta footer: "
+            f"{show_preset_with_meta_argv_sha256_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(
