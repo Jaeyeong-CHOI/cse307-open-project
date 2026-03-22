@@ -118,9 +118,19 @@ FILTER_MODE_ALIAS_MAP: dict[str, str] = {
     "e": "exact",
 }
 
+MATCH_FIELD_ALIAS_MAP: dict[str, str] = {
+    "b": "both",
+    "a": "alias",
+    "c": "canonical",
+}
+
 
 def _resolve_filter_mode(mode: str) -> str:
     return FILTER_MODE_ALIAS_MAP.get(mode, mode)
+
+
+def _resolve_match_field(match_field: str) -> str:
+    return MATCH_FIELD_ALIAS_MAP.get(match_field, match_field)
 
 
 def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
@@ -205,6 +215,8 @@ def _format_sort_aliases_tsv_meta(
     name_not_filter_mode_requested: str,
     name_not_filter_mode_alias_resolved: bool,
     match_field: str,
+    match_field_requested: str,
+    match_field_alias_resolved: bool,
     case_sensitive: bool,
     limit: int | None,
     sort_mode: str,
@@ -252,6 +264,8 @@ def _format_sort_aliases_tsv_meta(
                 "name_not_filter_mode_requested": name_not_filter_mode_requested,
                 "name_not_filter_mode_alias_resolved": name_not_filter_mode_alias_resolved,
                 "match_field": match_field,
+                "match_field_requested": match_field_requested,
+                "match_field_alias_resolved": match_field_alias_resolved,
                 "case_sensitive": case_sensitive,
                 "limit": limit,
                 "sort": sort_mode,
@@ -296,6 +310,8 @@ def _format_sort_aliases_tsv_meta(
         f"name_not_filter_mode_requested={name_not_filter_mode_requested}\t"
         f"name_not_filter_mode_alias_resolved={str(name_not_filter_mode_alias_resolved).lower()}\t"
         f"match_field={match_field}\t"
+        f"match_field_requested={match_field_requested}\t"
+        f"match_field_alias_resolved={str(match_field_alias_resolved).lower()}\t"
         f"case_sensitive={str(case_sensitive).lower()}\t"
         f"limit={limit if limit is not None else 'none'}\t"
         f"sort={sort_mode}\t"
@@ -370,6 +386,7 @@ def _filter_sort_alias_map(
         raise ValueError("--list-sort-aliases-limit must be >= 1")
     filter_mode = _resolve_filter_mode(filter_mode)
     name_not_filter_mode = _resolve_filter_mode(name_not_filter_mode)
+    match_field = _resolve_match_field(match_field)
     if filter_mode not in {"contains", "prefix", "exact"}:
         raise ValueError(f"unsupported list-sort-aliases filter mode: {filter_mode}")
     if name_not_filter_mode not in {"contains", "prefix", "exact"}:
@@ -2076,11 +2093,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-sort-aliases-match-field",
-        choices=("both", "alias", "canonical"),
+        choices=("both", "alias", "canonical", "b", "a", "c"),
         default="both",
         help=(
             "Field scope for --list-sort-aliases-name-contains matching: both (default), "
-            "alias only, or canonical only."
+            "alias only, or canonical only (or shorthand b|a|c)."
         ),
     )
     parser.add_argument(
@@ -2950,6 +2967,11 @@ def main() -> int:
                 resolved_list_sort_aliases_name_not_filter_mode
                 != list_sort_aliases_name_not_filter_mode_requested
             )
+            resolved_list_sort_aliases_match_field = _resolve_match_field(args.list_sort_aliases_match_field)
+            list_sort_aliases_match_field_requested = args.list_sort_aliases_match_field
+            list_sort_aliases_match_field_alias_resolved = (
+                resolved_list_sort_aliases_match_field != list_sort_aliases_match_field_requested
+            )
             alias_map, filtered_count, truncated = _filter_sort_alias_map(
                 args.list_sort_aliases_name_contains,
                 args.list_sort_aliases_name_not_contains,
@@ -2957,7 +2979,7 @@ def main() -> int:
                 resolved_list_sort_aliases_sort,
                 resolved_list_sort_aliases_filter_mode,
                 resolved_list_sort_aliases_name_not_filter_mode,
-                args.list_sort_aliases_match_field,
+                resolved_list_sort_aliases_match_field,
                 args.list_sort_aliases_min_group_size,
                 args.list_sort_aliases_max_group_size,
                 args.list_sort_aliases_min_group_size_global,
@@ -3002,7 +3024,9 @@ def main() -> int:
                             "name_not_filter_mode": resolved_list_sort_aliases_name_not_filter_mode,
                             "name_not_filter_mode_requested": list_sort_aliases_name_not_filter_mode_requested,
                             "name_not_filter_mode_alias_resolved": list_sort_aliases_name_not_filter_mode_alias_resolved,
-                            "match_field": args.list_sort_aliases_match_field,
+                            "match_field": resolved_list_sort_aliases_match_field,
+                            "match_field_requested": list_sort_aliases_match_field_requested,
+                            "match_field_alias_resolved": list_sort_aliases_match_field_alias_resolved,
                             "case_sensitive": args.list_sort_aliases_case_sensitive,
                             "min_group_size": args.list_sort_aliases_min_group_size,
                             "max_group_size": args.list_sort_aliases_max_group_size,
@@ -3063,7 +3087,9 @@ def main() -> int:
                             name_not_filter_mode=resolved_list_sort_aliases_name_not_filter_mode,
                             name_not_filter_mode_requested=list_sort_aliases_name_not_filter_mode_requested,
                             name_not_filter_mode_alias_resolved=list_sort_aliases_name_not_filter_mode_alias_resolved,
-                            match_field=args.list_sort_aliases_match_field,
+                            match_field=resolved_list_sort_aliases_match_field,
+                            match_field_requested=list_sort_aliases_match_field_requested,
+                            match_field_alias_resolved=list_sort_aliases_match_field_alias_resolved,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=resolved_list_sort_aliases_sort,
@@ -3117,7 +3143,9 @@ def main() -> int:
                             name_not_filter_mode=resolved_list_sort_aliases_name_not_filter_mode,
                             name_not_filter_mode_requested=list_sort_aliases_name_not_filter_mode_requested,
                             name_not_filter_mode_alias_resolved=list_sort_aliases_name_not_filter_mode_alias_resolved,
-                            match_field=args.list_sort_aliases_match_field,
+                            match_field=resolved_list_sort_aliases_match_field,
+                            match_field_requested=list_sort_aliases_match_field_requested,
+                            match_field_alias_resolved=list_sort_aliases_match_field_alias_resolved,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=resolved_list_sort_aliases_sort,
@@ -3164,7 +3192,9 @@ def main() -> int:
                         "name_not_filter_mode": resolved_list_sort_aliases_name_not_filter_mode,
                         "name_not_filter_mode_requested": list_sort_aliases_name_not_filter_mode_requested,
                         "name_not_filter_mode_alias_resolved": list_sort_aliases_name_not_filter_mode_alias_resolved,
-                        "match_field": args.list_sort_aliases_match_field,
+                        "match_field": resolved_list_sort_aliases_match_field,
+                            "match_field_requested": list_sort_aliases_match_field_requested,
+                            "match_field_alias_resolved": list_sort_aliases_match_field_alias_resolved,
                         "case_sensitive": args.list_sort_aliases_case_sensitive,
                         "min_group_size": args.list_sort_aliases_min_group_size,
                         "max_group_size": args.list_sort_aliases_max_group_size,

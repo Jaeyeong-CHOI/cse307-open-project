@@ -4787,6 +4787,16 @@ def main() -> int:
             "expected default list-sort-aliases match_field=both, got: "
             f"{sort_aliases_payload.get('match_field')}"
         )
+    if sort_aliases_payload.get("match_field_requested") != "both":
+        raise AssertionError(
+            "expected default list-sort-aliases match_field_requested=both, got: "
+            f"{sort_aliases_payload.get('match_field_requested')}"
+        )
+    if sort_aliases_payload.get("match_field_alias_resolved") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases match_field_alias_resolved=false, got: "
+            f"{sort_aliases_payload.get('match_field_alias_resolved')}"
+        )
     if sort_aliases_payload.get("name_not_filter_mode") != "contains":
         raise AssertionError(
             "expected default list-sort-aliases name_not_filter_mode=contains, got: "
@@ -4875,6 +4885,8 @@ def main() -> int:
             "c",
             "--list-sort-aliases-name-not-filter-mode",
             "e",
+            "--list-sort-aliases-match-field",
+            "c",
         ],
         cwd=ROOT,
         check=True,
@@ -4911,6 +4923,21 @@ def main() -> int:
         raise AssertionError(
             "expected shorthand list-sort-aliases name_not_filter_mode_alias_resolved=true, got: "
             f"{filter_alias_payload.get('name_not_filter_mode_alias_resolved')}"
+        )
+    if filter_alias_payload.get("match_field") != "canonical":
+        raise AssertionError(
+            "expected shorthand list-sort-aliases match_field c to resolve to canonical, got: "
+            f"{filter_alias_payload.get('match_field')}"
+        )
+    if filter_alias_payload.get("match_field_requested") != "c":
+        raise AssertionError(
+            "expected shorthand list-sort-aliases match_field_requested=c, got: "
+            f"{filter_alias_payload.get('match_field_requested')}"
+        )
+    if filter_alias_payload.get("match_field_alias_resolved") is not True:
+        raise AssertionError(
+            "expected shorthand list-sort-aliases match_field_alias_resolved=true, got: "
+            f"{filter_alias_payload.get('match_field_alias_resolved')}"
         )
 
     grouped_sort_aliases_run = subprocess.run(
