@@ -210,10 +210,13 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 -
 # show/list meta footer에 argv token 개수(argv_count)도 함께 기록(토큰 배열/원문 없이 호출 규모만 추적)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-argv-count
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-include-argv-count
-# meta footer 옵션들을 profile로 묶어 짧게 호출(minimal|safe-debug|debug)
+# meta footer 옵션들을 profile로 묶어 짧게 호출(minimal|ci-safe|safe-debug|debug)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile debug
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile debug
-# safe-debug: raw argv/argv_tokens 없이 hash/count 중심 디버그 메타만 포함
+# ci-safe: CI/재현성 중심 안정 필드(cwd/git/argv hash/count)만 포함, host/time 변동 필드는 제외
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile ci-safe
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile ci-safe
+# safe-debug: raw argv/argv_tokens 없이 hash/count 중심 디버그 메타(변동 필드 포함)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile safe-debug
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile safe-debug
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
@@ -484,3 +487,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 203. ~~planner meta profile에 `safe-debug`를 추가해(`--list-presets-meta-profile/--show-preset-meta-profile`) raw argv/argv_tokens 노출 없이도 재현성 해시(`argv_sha256`)·규모(`argv_count`) 중심 디버깅을 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 204. ~~planner list/show meta footer에 optional `git_head_date_utc` 주입 옵션(`--list-presets-meta-include-git-head-date-utc`, `--show-preset-meta-include-git-head-date-utc`)을 추가해 리비전 식별(`git_head`)뿐 아니라 해당 커밋 시각까지 로그에서 즉시 상관 분석 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 205. ~~planner list/show meta footer에 optional `git_head_subject` 주입 옵션(`--list-presets-meta-include-git-head-subject`, `--show-preset-meta-include-git-head-subject`)을 추가해 로그를 커밋 제목 단위로 빠르게 식별/상관 분석 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+206. ~~planner meta profile에 `ci-safe`를 추가해(`--list-presets-meta-profile/--show-preset-meta-profile`) CI/재현성 중심 안정 필드(cwd/git/argv hash/count)는 유지하면서 host/time 기반 변동 필드(generated_at/pid/hostname 등)는 기본 제외할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

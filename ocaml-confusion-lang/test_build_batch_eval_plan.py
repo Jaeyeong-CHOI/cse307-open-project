@@ -1170,6 +1170,52 @@ def main() -> int:
         if forbidden_key in list_safe_debug_meta_payload:
             raise AssertionError(f"unexpected {forbidden_key} in list-presets meta safe-debug profile payload: {list_safe_debug_meta_payload}")
 
+    preset_list_names_with_meta_profile_ci_safe = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "1",
+            "--list-presets-with-meta",
+            "--list-presets-meta-format",
+            "json",
+            "--list-presets-meta-profile",
+            "ci-safe",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    list_ci_safe_meta_payload = json.loads(
+        [line.strip() for line in preset_list_names_with_meta_profile_ci_safe.stdout.splitlines() if line.strip()][-1]
+    )
+    for required_key in (
+        "tag_filter",
+        "cwd",
+        "python_version",
+        "git_head",
+        "git_branch",
+        "git_dirty",
+        "argv_sha256",
+        "argv_count",
+    ):
+        if required_key not in list_ci_safe_meta_payload:
+            raise AssertionError(f"missing {required_key} in list-presets meta ci-safe profile payload: {list_ci_safe_meta_payload}")
+    for forbidden_key in (
+        "generated_at_utc",
+        "pid",
+        "hostname",
+        "git_head_date_utc",
+        "git_head_subject",
+        "git_remote",
+        "argv",
+        "argv_tokens",
+    ):
+        if forbidden_key in list_ci_safe_meta_payload:
+            raise AssertionError(f"unexpected {forbidden_key} in list-presets meta ci-safe profile payload: {list_ci_safe_meta_payload}")
+
     preset_list_names_with_meta_generated_at = subprocess.run(
         [
             "python3",
@@ -2186,6 +2232,53 @@ def main() -> int:
     for forbidden_key in ("argv", "argv_tokens"):
         if forbidden_key in show_safe_debug_meta_payload:
             raise AssertionError(f"unexpected {forbidden_key} in show-preset meta safe-debug profile payload: {show_safe_debug_meta_payload}")
+
+    show_preset_summary_with_meta_profile_ci_safe = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-format",
+            "json",
+            "--show-preset-meta-profile",
+            "ci-safe",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_ci_safe_meta_payload = json.loads(
+        [line.rstrip("\n") for line in show_preset_summary_with_meta_profile_ci_safe.stdout.splitlines() if line.strip()][-1]
+    )
+    for required_key in (
+        "override_count",
+        "cwd",
+        "python_version",
+        "git_head",
+        "git_branch",
+        "git_dirty",
+        "argv_sha256",
+        "argv_count",
+    ):
+        if required_key not in show_ci_safe_meta_payload:
+            raise AssertionError(f"missing {required_key} in show-preset meta ci-safe profile payload: {show_ci_safe_meta_payload}")
+    for forbidden_key in (
+        "generated_at_utc",
+        "pid",
+        "hostname",
+        "git_head_date_utc",
+        "git_head_subject",
+        "git_remote",
+        "argv",
+        "argv_tokens",
+    ):
+        if forbidden_key in show_ci_safe_meta_payload:
+            raise AssertionError(f"unexpected {forbidden_key} in show-preset meta ci-safe profile payload: {show_ci_safe_meta_payload}")
 
     show_preset_summary_with_meta_generated_at = subprocess.run(
         [
