@@ -103,6 +103,7 @@ def _filter_sort_alias_map(
     limit: int | None,
     sort_mode: str = "alias",
     filter_mode: str = "contains",
+    match_field: str = "both",
 ) -> tuple[dict[str, str], int, bool]:
     normalized_filter = alias_name_contains.strip().lower() if alias_name_contains is not None else None
     if alias_name_contains is not None and not normalized_filter:
@@ -111,17 +112,26 @@ def _filter_sort_alias_map(
         raise ValueError("--list-sort-aliases-limit must be >= 1")
     if filter_mode not in {"contains", "prefix", "exact"}:
         raise ValueError(f"unsupported list-sort-aliases filter mode: {filter_mode}")
+    if match_field not in {"both", "alias", "canonical"}:
+        raise ValueError(f"unsupported list-sort-aliases match field: {match_field}")
+
+    def _match_value(candidate: str) -> bool:
+        if filter_mode == "contains":
+            return normalized_filter in candidate
+        if filter_mode == "prefix":
+            return candidate.startswith(normalized_filter)
+        return candidate == normalized_filter
 
     def _matches_filter(alias: str, canonical: str) -> bool:
         if not normalized_filter:
             return True
         alias_l = alias.lower()
         canonical_l = canonical.lower()
-        if filter_mode == "contains":
-            return normalized_filter in alias_l or normalized_filter in canonical_l
-        if filter_mode == "prefix":
-            return alias_l.startswith(normalized_filter) or canonical_l.startswith(normalized_filter)
-        return alias_l == normalized_filter or canonical_l == normalized_filter
+        if match_field == "alias":
+            return _match_value(alias_l)
+        if match_field == "canonical":
+            return _match_value(canonical_l)
+        return _match_value(alias_l) or _match_value(canonical_l)
 
     filtered_items: list[tuple[str, str]] = []
     for alias, canonical in PRESET_SORT_ALIAS_MAP.items():
@@ -1430,7 +1440,16 @@ def parse_args() -> argparse.Namespace:
         default="contains",
         help=(
             "Match mode for --list-sort-aliases-name-contains: contains (default), "
-            "prefix, or exact (case-insensitive; matches alias name or canonical sort key)."
+            "prefix, or exact (case-insensitive)."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-match-field",
+        choices=("both", "alias", "canonical"),
+        default="both",
+        help=(
+            "Field scope for --list-sort-aliases-name-contains matching: both (default), "
+            "alias only, or canonical only."
         ),
     )
     parser.add_argument(
@@ -2028,6 +2047,7 @@ def main() -> int:
                 args.list_sort_aliases_limit,
                 args.list_sort_aliases_sort,
                 args.list_sort_aliases_filter_mode,
+                args.list_sort_aliases_match_field,
             )
             if args.list_sort_aliases_format == "grouped-json":
                 grouped = _build_sort_alias_groups(alias_map)
@@ -2041,6 +2061,7 @@ def main() -> int:
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "filter_mode": args.list_sort_aliases_filter_mode,
+                            "match_field": args.list_sort_aliases_match_field,
                             "limit": args.list_sort_aliases_limit,
                             "sort": args.list_sort_aliases_sort,
                             "groups": grouped,
@@ -2059,6 +2080,7 @@ def main() -> int:
                         "truncated": truncated,
                         "name_contains": args.list_sort_aliases_name_contains,
                         "filter_mode": args.list_sort_aliases_filter_mode,
+                        "match_field": args.list_sort_aliases_match_field,
                         "limit": args.list_sort_aliases_limit,
                         "sort": args.list_sort_aliases_sort,
                         "aliases": alias_map,

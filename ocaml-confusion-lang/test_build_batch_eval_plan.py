@@ -4762,6 +4762,11 @@ def main() -> int:
             "expected default list-sort-aliases filter_mode=contains, got: "
             f"{sort_aliases_payload.get('filter_mode')}"
         )
+    if sort_aliases_payload.get("match_field") != "both":
+        raise AssertionError(
+            "expected default list-sort-aliases match_field=both, got: "
+            f"{sort_aliases_payload.get('match_field')}"
+        )
     aliases = sort_aliases_payload.get("aliases", {})
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
@@ -4803,6 +4808,11 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases filter_mode=contains by default, got: "
             f"{grouped_sort_aliases_payload.get('filter_mode')}"
+        )
+    if grouped_sort_aliases_payload.get("match_field") != "both":
+        raise AssertionError(
+            "expected grouped list-sort-aliases match_field=both by default, got: "
+            f"{grouped_sort_aliases_payload.get('match_field')}"
         )
     groups = grouped_sort_aliases_payload.get("groups", {})
     total_cap_aliases = groups.get("max-total-runs", [])
@@ -4935,6 +4945,58 @@ def main() -> int:
         raise AssertionError(
             "expected exact filter to match a single case-insensitive alias, got: "
             f"{exact_aliases}"
+        )
+
+    canonical_match_field_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "max-total-runs",
+            "--list-sort-aliases-match-field",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    canonical_match_field_payload = json.loads(canonical_match_field_run.stdout)
+    canonical_field_aliases = canonical_match_field_payload.get("aliases", {})
+    if not canonical_field_aliases:
+        raise AssertionError("expected canonical match_field filter to emit aliases")
+    if canonical_match_field_payload.get("match_field") != "canonical":
+        raise AssertionError(
+            "expected canonical match_field in payload, got: "
+            f"{canonical_match_field_payload.get('match_field')}"
+        )
+    if any("max-total-runs" not in canonical for canonical in canonical_field_aliases.values()):
+        raise AssertionError(
+            "expected canonical match_field filter to keep only matching canonical values, got: "
+            f"{canonical_field_aliases}"
+        )
+
+    alias_only_no_hit_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "max-total-runs",
+            "--list-sort-aliases-match-field",
+            "alias",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    alias_only_no_hit_payload = json.loads(alias_only_no_hit_run.stdout)
+    if alias_only_no_hit_payload.get("aliases") != {}:
+        raise AssertionError(
+            "expected alias-only match_field to exclude canonical-only matches, got: "
+            f"{alias_only_no_hit_payload.get('aliases')}"
         )
 
     invalid_sort_alias_contains_run = subprocess.run(
