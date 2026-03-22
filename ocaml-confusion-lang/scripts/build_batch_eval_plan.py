@@ -571,6 +571,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_has_multiple_records": emitted_count > 1,
                 "output_has_truncated_records": max(filtered_count - emitted_count, 0) > 0,
                 "output_is_fully_retained": max(filtered_count - emitted_count, 0) == 0,
+                "output_is_partially_retained": emitted_count > 0 and max(filtered_count - emitted_count, 0) > 0,
                 "output_truncated_count": max(filtered_count - emitted_count, 0),
                 "output_truncated_ratio": (
                     max(filtered_count - emitted_count, 0) / filtered_count if filtered_count > 0 else 0.0
@@ -658,6 +659,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_is_single_record={str(emitted_count == 1).lower()}\t"
         f"output_has_multiple_records={str(emitted_count > 1).lower()}\t"
         f"output_has_truncated_records={str(max(filtered_count - emitted_count, 0) > 0).lower()}\t"
+        f"output_is_partially_retained={str((emitted_count > 0) and (max(filtered_count - emitted_count, 0) > 0)).lower()}\t"
         f"output_truncated_count={max(filtered_count - emitted_count, 0)}\t"
         f"output_truncated_ratio={(max(filtered_count - emitted_count, 0) / filtered_count) if filtered_count > 0 else 0.0:.6f}\t"
         f"output_truncated_pct={((max(filtered_count - emitted_count, 0) / filtered_count) * 100.0) if filtered_count > 0 else 0.0:.6f}\t"
@@ -3931,6 +3933,7 @@ def main() -> int:
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
                             "output_is_fully_retained": max(filtered_count - len(alias_map), 0) == 0,
+                            "output_is_partially_retained": len(alias_map) > 0 and max(filtered_count - len(alias_map), 0) > 0,
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4043,6 +4046,7 @@ def main() -> int:
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
                             "output_is_fully_retained": max(filtered_count - len(alias_map), 0) == 0,
+                            "output_is_partially_retained": len(alias_map) > 0 and max(filtered_count - len(alias_map), 0) > 0,
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4620,6 +4624,7 @@ def main() -> int:
                     "output_has_multiple_records": len(preset_names) > 1,
                     "output_has_truncated_records": max(len(filtered_presets) - len(preset_names), 0) > 0,
                     "output_is_fully_retained": max(len(filtered_presets) - len(preset_names), 0) == 0,
+                    "output_is_partially_retained": len(preset_names) > 0 and max(len(filtered_presets) - len(preset_names), 0) > 0,
                     "output_truncated_count": max(len(filtered_presets) - len(preset_names), 0),
                     "truncated": truncated,
                     "output_format": args.list_presets_format,
@@ -4782,6 +4787,7 @@ def main() -> int:
                     "output_has_multiple_records": len(limited_presets) > 1,
                     "output_has_truncated_records": max(len(filtered_presets) - len(limited_presets), 0) > 0,
                     "output_is_fully_retained": max(len(filtered_presets) - len(limited_presets), 0) == 0,
+                    "output_is_partially_retained": len(limited_presets) > 0 and max(len(filtered_presets) - len(limited_presets), 0) > 0,
                     "output_truncated_count": max(len(filtered_presets) - len(limited_presets), 0),
                     "output_truncated_ratio": (
                         max(len(filtered_presets) - len(limited_presets), 0) / len(filtered_presets)
@@ -4917,6 +4923,7 @@ def main() -> int:
                     "output_has_multiple_records": len(resolved_presets) > 1,
                     "output_has_truncated_records": False,
                     "output_is_fully_retained": True,
+                    "output_is_partially_retained": False,
                     "output_truncated_count": 0,
                     "output_truncated_ratio": 0.0,
                     "output_truncated_pct": 0.0,
