@@ -112,6 +112,17 @@ LIST_SORT_ALIASES_SORT_ALIAS_MAP: dict[str, str] = {
 }
 
 
+FILTER_MODE_ALIAS_MAP: dict[str, str] = {
+    "c": "contains",
+    "p": "prefix",
+    "e": "exact",
+}
+
+
+def _resolve_filter_mode(mode: str) -> str:
+    return FILTER_MODE_ALIAS_MAP.get(mode, mode)
+
+
 def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
     return LIST_SORT_ALIASES_SORT_ALIAS_MAP.get(sort_mode, sort_mode)
 
@@ -188,7 +199,11 @@ def _format_sort_aliases_tsv_meta(
     name_contains: str | None,
     name_not_contains: str | None,
     filter_mode: str,
+    filter_mode_requested: str,
+    filter_mode_alias_resolved: bool,
     name_not_filter_mode: str,
+    name_not_filter_mode_requested: str,
+    name_not_filter_mode_alias_resolved: bool,
     match_field: str,
     case_sensitive: bool,
     limit: int | None,
@@ -231,7 +246,11 @@ def _format_sort_aliases_tsv_meta(
                 "name_contains": name_contains,
                 "name_not_contains": name_not_contains,
                 "filter_mode": filter_mode,
+                "filter_mode_requested": filter_mode_requested,
+                "filter_mode_alias_resolved": filter_mode_alias_resolved,
                 "name_not_filter_mode": name_not_filter_mode,
+                "name_not_filter_mode_requested": name_not_filter_mode_requested,
+                "name_not_filter_mode_alias_resolved": name_not_filter_mode_alias_resolved,
                 "match_field": match_field,
                 "case_sensitive": case_sensitive,
                 "limit": limit,
@@ -271,7 +290,11 @@ def _format_sort_aliases_tsv_meta(
         f"name_contains={name_contains or 'none'}\t"
         f"name_not_contains={name_not_contains or 'none'}\t"
         f"filter_mode={filter_mode}\t"
+        f"filter_mode_requested={filter_mode_requested}\t"
+        f"filter_mode_alias_resolved={str(filter_mode_alias_resolved).lower()}\t"
         f"name_not_filter_mode={name_not_filter_mode}\t"
+        f"name_not_filter_mode_requested={name_not_filter_mode_requested}\t"
+        f"name_not_filter_mode_alias_resolved={str(name_not_filter_mode_alias_resolved).lower()}\t"
         f"match_field={match_field}\t"
         f"case_sensitive={str(case_sensitive).lower()}\t"
         f"limit={limit if limit is not None else 'none'}\t"
@@ -345,6 +368,8 @@ def _filter_sort_alias_map(
         raise ValueError("--list-sort-aliases-name-not-contains must include at least one non-empty character")
     if limit is not None and limit < 1:
         raise ValueError("--list-sort-aliases-limit must be >= 1")
+    filter_mode = _resolve_filter_mode(filter_mode)
+    name_not_filter_mode = _resolve_filter_mode(name_not_filter_mode)
     if filter_mode not in {"contains", "prefix", "exact"}:
         raise ValueError(f"unsupported list-sort-aliases filter mode: {filter_mode}")
     if name_not_filter_mode not in {"contains", "prefix", "exact"}:
@@ -2027,11 +2052,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-sort-aliases-name-not-filter-mode",
-        choices=("contains", "prefix", "exact"),
+        choices=("contains", "prefix", "exact", "c", "p", "e"),
         default="contains",
         help=(
-            "Match mode for --list-sort-aliases-name-not-contains: contains (default), "
-            "prefix, or exact (case-insensitive unless --list-sort-aliases-case-sensitive)."
+            "Match mode for --list-sort-aliases-name-not-contains: contains|prefix|exact "
+            "(or shorthand c|p|e; default: contains; case-insensitive unless --list-sort-aliases-case-sensitive)."
         ),
     )
     parser.add_argument(
@@ -2042,11 +2067,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-sort-aliases-filter-mode",
-        choices=("contains", "prefix", "exact"),
+        choices=("contains", "prefix", "exact", "c", "p", "e"),
         default="contains",
         help=(
-            "Match mode for --list-sort-aliases-name-contains: contains (default), "
-            "prefix, or exact (case-insensitive unless --list-sort-aliases-case-sensitive)."
+            "Match mode for --list-sort-aliases-name-contains: contains|prefix|exact "
+            "(or shorthand c|p|e; default: contains; case-insensitive unless --list-sort-aliases-case-sensitive)."
         ),
     )
     parser.add_argument(
@@ -2912,13 +2937,26 @@ def main() -> int:
             list_sort_aliases_sort_alias_resolved = (
                 resolved_list_sort_aliases_sort != list_sort_aliases_sort_requested
             )
+            resolved_list_sort_aliases_filter_mode = _resolve_filter_mode(args.list_sort_aliases_filter_mode)
+            list_sort_aliases_filter_mode_requested = args.list_sort_aliases_filter_mode
+            list_sort_aliases_filter_mode_alias_resolved = (
+                resolved_list_sort_aliases_filter_mode != list_sort_aliases_filter_mode_requested
+            )
+            resolved_list_sort_aliases_name_not_filter_mode = _resolve_filter_mode(
+                args.list_sort_aliases_name_not_filter_mode
+            )
+            list_sort_aliases_name_not_filter_mode_requested = args.list_sort_aliases_name_not_filter_mode
+            list_sort_aliases_name_not_filter_mode_alias_resolved = (
+                resolved_list_sort_aliases_name_not_filter_mode
+                != list_sort_aliases_name_not_filter_mode_requested
+            )
             alias_map, filtered_count, truncated = _filter_sort_alias_map(
                 args.list_sort_aliases_name_contains,
                 args.list_sort_aliases_name_not_contains,
                 args.list_sort_aliases_limit,
                 resolved_list_sort_aliases_sort,
-                args.list_sort_aliases_filter_mode,
-                args.list_sort_aliases_name_not_filter_mode,
+                resolved_list_sort_aliases_filter_mode,
+                resolved_list_sort_aliases_name_not_filter_mode,
                 args.list_sort_aliases_match_field,
                 args.list_sort_aliases_min_group_size,
                 args.list_sort_aliases_max_group_size,
@@ -2958,8 +2996,12 @@ def main() -> int:
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
-                            "filter_mode": args.list_sort_aliases_filter_mode,
-                            "name_not_filter_mode": args.list_sort_aliases_name_not_filter_mode,
+                            "filter_mode": resolved_list_sort_aliases_filter_mode,
+                            "filter_mode_requested": list_sort_aliases_filter_mode_requested,
+                            "filter_mode_alias_resolved": list_sort_aliases_filter_mode_alias_resolved,
+                            "name_not_filter_mode": resolved_list_sort_aliases_name_not_filter_mode,
+                            "name_not_filter_mode_requested": list_sort_aliases_name_not_filter_mode_requested,
+                            "name_not_filter_mode_alias_resolved": list_sort_aliases_name_not_filter_mode_alias_resolved,
                             "match_field": args.list_sort_aliases_match_field,
                             "case_sensitive": args.list_sort_aliases_case_sensitive,
                             "min_group_size": args.list_sort_aliases_min_group_size,
@@ -3015,8 +3057,12 @@ def main() -> int:
                             truncated=truncated,
                             name_contains=args.list_sort_aliases_name_contains,
                             name_not_contains=args.list_sort_aliases_name_not_contains,
-                            filter_mode=args.list_sort_aliases_filter_mode,
-                            name_not_filter_mode=args.list_sort_aliases_name_not_filter_mode,
+                            filter_mode=resolved_list_sort_aliases_filter_mode,
+                            filter_mode_requested=list_sort_aliases_filter_mode_requested,
+                            filter_mode_alias_resolved=list_sort_aliases_filter_mode_alias_resolved,
+                            name_not_filter_mode=resolved_list_sort_aliases_name_not_filter_mode,
+                            name_not_filter_mode_requested=list_sort_aliases_name_not_filter_mode_requested,
+                            name_not_filter_mode_alias_resolved=list_sort_aliases_name_not_filter_mode_alias_resolved,
                             match_field=args.list_sort_aliases_match_field,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
@@ -3065,8 +3111,12 @@ def main() -> int:
                             truncated=truncated,
                             name_contains=args.list_sort_aliases_name_contains,
                             name_not_contains=args.list_sort_aliases_name_not_contains,
-                            filter_mode=args.list_sort_aliases_filter_mode,
-                            name_not_filter_mode=args.list_sort_aliases_name_not_filter_mode,
+                            filter_mode=resolved_list_sort_aliases_filter_mode,
+                            filter_mode_requested=list_sort_aliases_filter_mode_requested,
+                            filter_mode_alias_resolved=list_sort_aliases_filter_mode_alias_resolved,
+                            name_not_filter_mode=resolved_list_sort_aliases_name_not_filter_mode,
+                            name_not_filter_mode_requested=list_sort_aliases_name_not_filter_mode_requested,
+                            name_not_filter_mode_alias_resolved=list_sort_aliases_name_not_filter_mode_alias_resolved,
                             match_field=args.list_sort_aliases_match_field,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
@@ -3108,8 +3158,12 @@ def main() -> int:
                         "truncated": truncated,
                         "name_contains": args.list_sort_aliases_name_contains,
                         "name_not_contains": args.list_sort_aliases_name_not_contains,
-                        "filter_mode": args.list_sort_aliases_filter_mode,
-                        "name_not_filter_mode": args.list_sort_aliases_name_not_filter_mode,
+                        "filter_mode": resolved_list_sort_aliases_filter_mode,
+                        "filter_mode_requested": list_sort_aliases_filter_mode_requested,
+                        "filter_mode_alias_resolved": list_sort_aliases_filter_mode_alias_resolved,
+                        "name_not_filter_mode": resolved_list_sort_aliases_name_not_filter_mode,
+                        "name_not_filter_mode_requested": list_sort_aliases_name_not_filter_mode_requested,
+                        "name_not_filter_mode_alias_resolved": list_sort_aliases_name_not_filter_mode_alias_resolved,
                         "match_field": args.list_sort_aliases_match_field,
                         "case_sensitive": args.list_sort_aliases_case_sensitive,
                         "min_group_size": args.list_sort_aliases_min_group_size,

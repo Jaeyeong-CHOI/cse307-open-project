@@ -4772,6 +4772,16 @@ def main() -> int:
             "expected default list-sort-aliases filter_mode=contains, got: "
             f"{sort_aliases_payload.get('filter_mode')}"
         )
+    if sort_aliases_payload.get("filter_mode_requested") != "contains":
+        raise AssertionError(
+            "expected default list-sort-aliases filter_mode_requested=contains, got: "
+            f"{sort_aliases_payload.get('filter_mode_requested')}"
+        )
+    if sort_aliases_payload.get("filter_mode_alias_resolved") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases filter_mode_alias_resolved=false, got: "
+            f"{sort_aliases_payload.get('filter_mode_alias_resolved')}"
+        )
     if sort_aliases_payload.get("match_field") != "both":
         raise AssertionError(
             "expected default list-sort-aliases match_field=both, got: "
@@ -4781,6 +4791,16 @@ def main() -> int:
         raise AssertionError(
             "expected default list-sort-aliases name_not_filter_mode=contains, got: "
             f"{sort_aliases_payload.get('name_not_filter_mode')}"
+        )
+    if sort_aliases_payload.get("name_not_filter_mode_requested") != "contains":
+        raise AssertionError(
+            "expected default list-sort-aliases name_not_filter_mode_requested=contains, got: "
+            f"{sort_aliases_payload.get('name_not_filter_mode_requested')}"
+        )
+    if sort_aliases_payload.get("name_not_filter_mode_alias_resolved") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases name_not_filter_mode_alias_resolved=false, got: "
+            f"{sort_aliases_payload.get('name_not_filter_mode_alias_resolved')}"
         )
     if sort_aliases_payload.get("min_group_size") != 1:
         raise AssertionError(
@@ -4844,6 +4864,53 @@ def main() -> int:
     if aliases.get("total-cap-desc") != "max-total-runs-desc":
         raise AssertionError(
             f"unexpected alias mapping for total-cap-desc: {aliases.get('total-cap-desc')}"
+        )
+
+    list_sort_aliases_filter_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-filter-mode",
+            "c",
+            "--list-sort-aliases-name-not-filter-mode",
+            "e",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    filter_alias_payload = json.loads(list_sort_aliases_filter_alias_run.stdout)
+    if filter_alias_payload.get("filter_mode") != "contains":
+        raise AssertionError(
+            "expected shorthand list-sort-aliases filter_mode c to resolve to contains, got: "
+            f"{filter_alias_payload.get('filter_mode')}"
+        )
+    if filter_alias_payload.get("filter_mode_requested") != "c":
+        raise AssertionError(
+            "expected shorthand list-sort-aliases filter_mode_requested=c, got: "
+            f"{filter_alias_payload.get('filter_mode_requested')}"
+        )
+    if filter_alias_payload.get("filter_mode_alias_resolved") is not True:
+        raise AssertionError(
+            "expected shorthand list-sort-aliases filter_mode_alias_resolved=true, got: "
+            f"{filter_alias_payload.get('filter_mode_alias_resolved')}"
+        )
+    if filter_alias_payload.get("name_not_filter_mode") != "exact":
+        raise AssertionError(
+            "expected shorthand list-sort-aliases name_not_filter_mode e to resolve to exact, got: "
+            f"{filter_alias_payload.get('name_not_filter_mode')}"
+        )
+    if filter_alias_payload.get("name_not_filter_mode_requested") != "e":
+        raise AssertionError(
+            "expected shorthand list-sort-aliases name_not_filter_mode_requested=e, got: "
+            f"{filter_alias_payload.get('name_not_filter_mode_requested')}"
+        )
+    if filter_alias_payload.get("name_not_filter_mode_alias_resolved") is not True:
+        raise AssertionError(
+            "expected shorthand list-sort-aliases name_not_filter_mode_alias_resolved=true, got: "
+            f"{filter_alias_payload.get('name_not_filter_mode_alias_resolved')}"
         )
 
     grouped_sort_aliases_run = subprocess.run(
