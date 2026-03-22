@@ -5256,6 +5256,37 @@ def main() -> int:
             f"{group_size_delta_pct_abs_aliases}"
         )
 
+    skew_size_pct_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-name-not-contains",
+            "total",
+            "--list-sort-aliases-match-field",
+            "alias",
+            "--list-sort-aliases-sort",
+            "skew-size-pct",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    skew_size_pct_sort_payload = json.loads(skew_size_pct_sort_run.stdout)
+    if skew_size_pct_sort_payload.get("sort") != "group-size-delta-pct-abs-desc":
+        raise AssertionError(
+            "expected skew-size-pct to resolve to group-size-delta-pct-abs-desc, got: "
+            f"{skew_size_pct_sort_payload.get('sort')}"
+        )
+    if list(skew_size_pct_sort_payload.get("aliases", {}).items()) != expected_group_size_delta_pct_abs_aliases:
+        raise AssertionError(
+            "expected skew-size-pct alias ordering to match group-size-delta-pct-abs-desc, got: "
+            f"{list(skew_size_pct_sort_payload.get('aliases', {}).items())}"
+        )
+
     min_group_size_run = subprocess.run(
         [
             "python3",

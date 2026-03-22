@@ -90,6 +90,22 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
     "fair-allocation-desc": "fair-model-allocation-desc",
 }
 
+LIST_SORT_ALIASES_SORT_ALIAS_MAP: dict[str, str] = {
+    "skew-share": "group-share-delta-abs-desc",
+    "skew-share-desc": "group-share-delta-abs-desc",
+    "skew-share-asc": "group-share-delta-abs",
+    "skew-size": "group-size-delta-abs-desc",
+    "skew-size-desc": "group-size-delta-abs-desc",
+    "skew-size-asc": "group-size-delta-abs",
+    "skew-size-pct": "group-size-delta-pct-abs-desc",
+    "skew-size-pct-desc": "group-size-delta-pct-abs-desc",
+    "skew-size-pct-asc": "group-size-delta-pct-abs",
+}
+
+
+def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
+    return LIST_SORT_ALIASES_SORT_ALIAS_MAP.get(sort_mode, sort_mode)
+
 
 def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[str, list[str]]:
     groups: dict[str, list[str]] = {}
@@ -2234,6 +2250,15 @@ def parse_args() -> argparse.Namespace:
             "group-size-delta-pct-desc",
             "group-size-delta-pct-abs",
             "group-size-delta-pct-abs-desc",
+            "skew-share",
+            "skew-share-desc",
+            "skew-share-asc",
+            "skew-size",
+            "skew-size-desc",
+            "skew-size-asc",
+            "skew-size-pct",
+            "skew-size-pct-desc",
+            "skew-size-pct-asc",
         ),
         default="alias",
         help=(
@@ -2248,7 +2273,8 @@ def parse_args() -> argparse.Namespace:
             "group-size-delta/group-size-delta-desc (by signed local-global canonical family size delta), "
             "group-size-delta-abs/group-size-delta-abs-desc (by absolute local-global canonical family size delta), "
             "group-size-delta-pct/group-size-delta-pct-desc (by signed local-global canonical family size delta %% relative to global family size), or "
-            "group-size-delta-pct-abs/group-size-delta-pct-abs-desc (by absolute local-global canonical family size delta %% relative to global family size)."
+            "group-size-delta-pct-abs/group-size-delta-pct-abs-desc (by absolute local-global canonical family size delta %% relative to global family size). "
+            "Shorthand aliases: skew-share[/desc|/asc], skew-size[/desc|/asc], skew-size-pct[/desc|/asc]."
         ),
     )
     parser.add_argument(
@@ -2856,11 +2882,12 @@ def main() -> int:
             return 0
 
         if args.list_sort_aliases:
+            resolved_list_sort_aliases_sort = _resolve_list_sort_aliases_sort(args.list_sort_aliases_sort)
             alias_map, filtered_count, truncated = _filter_sort_alias_map(
                 args.list_sort_aliases_name_contains,
                 args.list_sort_aliases_name_not_contains,
                 args.list_sort_aliases_limit,
-                args.list_sort_aliases_sort,
+                resolved_list_sort_aliases_sort,
                 args.list_sort_aliases_filter_mode,
                 args.list_sort_aliases_name_not_filter_mode,
                 args.list_sort_aliases_match_field,
@@ -2927,7 +2954,7 @@ def main() -> int:
                             "min_group_size_delta_abs_pct": args.list_sort_aliases_min_group_size_delta_abs_pct,
                             "max_group_size_delta_abs_pct": args.list_sort_aliases_max_group_size_delta_abs_pct,
                             "limit": args.list_sort_aliases_limit,
-                            "sort": args.list_sort_aliases_sort,
+                            "sort": resolved_list_sort_aliases_sort,
                             "group_count": len(grouped),
                             "group_sizes": group_sizes,
                             "group_share_pct": group_share_pct,
@@ -2962,7 +2989,7 @@ def main() -> int:
                             match_field=args.list_sort_aliases_match_field,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
-                            sort_mode=args.list_sort_aliases_sort,
+                            sort_mode=resolved_list_sort_aliases_sort,
                             group_count=len(grouped),
                             min_group_size=args.list_sort_aliases_min_group_size,
                             max_group_size=args.list_sort_aliases_max_group_size,
@@ -3010,7 +3037,7 @@ def main() -> int:
                             match_field=args.list_sort_aliases_match_field,
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
-                            sort_mode=args.list_sort_aliases_sort,
+                            sort_mode=resolved_list_sort_aliases_sort,
                             group_count=len(grouped),
                             min_group_size=args.list_sort_aliases_min_group_size,
                             max_group_size=args.list_sort_aliases_max_group_size,
@@ -3071,7 +3098,7 @@ def main() -> int:
                         "min_group_size_delta_abs_pct": args.list_sort_aliases_min_group_size_delta_abs_pct,
                         "max_group_size_delta_abs_pct": args.list_sort_aliases_max_group_size_delta_abs_pct,
                         "limit": args.list_sort_aliases_limit,
-                        "sort": args.list_sort_aliases_sort,
+                        "sort": resolved_list_sort_aliases_sort,
                         "group_count": len(grouped),
                         "group_sizes": group_sizes,
                         "group_share_pct": group_share_pct,
