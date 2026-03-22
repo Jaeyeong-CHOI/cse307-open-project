@@ -1,6 +1,7 @@
 # Docs Hub
 
 ## 1) Research
+- `research/status.md` : 라이브 진행 대시보드(진행률/병목/KPI)
 - `research/roadmap.md` : 연구 전체 설계/운영 정책
 - `research/log/` : 일자별 진행 로그
 - `research/results/` : 결과 산출물(JSON/표/요약)
