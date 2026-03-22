@@ -146,6 +146,17 @@ def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
     return LIST_SORT_ALIASES_SORT_ALIAS_MAP.get(sort_mode, sort_mode)
 
 
+def _describe_list_sort_aliases_sort_mode(sort_mode: str) -> dict[str, Any]:
+    descending = sort_mode.endswith("-desc")
+    sort_key = sort_mode[: -len("-desc")] if descending else sort_mode
+    return {
+        "sort_family": "builtin",
+        "sort_key": sort_key,
+        "sort_direction": "desc" if descending else "asc",
+        "sort_is_desc": descending,
+    }
+
+
 def _resolve_list_presets_sort_mode(sort_mode: str) -> str:
     if sort_mode.startswith("t:"):
         return f"tag:{sort_mode[len('t:') :]}"
@@ -257,6 +268,10 @@ def _format_sort_aliases_tsv_meta(
     sort_mode: str,
     sort_requested: str,
     sort_alias_resolved: bool,
+    sort_family: str,
+    sort_key: str,
+    sort_direction: str,
+    sort_is_desc: bool,
     group_count: int,
     min_group_size: int,
     max_group_size: int | None,
@@ -306,6 +321,10 @@ def _format_sort_aliases_tsv_meta(
                 "sort": sort_mode,
                 "sort_requested": sort_requested,
                 "sort_alias_resolved": sort_alias_resolved,
+                "sort_family": sort_family,
+                "sort_key": sort_key,
+                "sort_direction": sort_direction,
+                "sort_is_desc": sort_is_desc,
                 "group_count": group_count,
                 "min_group_size": min_group_size,
                 "max_group_size": max_group_size,
@@ -352,6 +371,10 @@ def _format_sort_aliases_tsv_meta(
         f"sort={sort_mode}\t"
         f"sort_requested={sort_requested}\t"
         f"sort_alias_resolved={str(sort_alias_resolved).lower()}\t"
+        f"sort_family={sort_family}\t"
+        f"sort_key={sort_key}\t"
+        f"sort_direction={sort_direction}\t"
+        f"sort_is_desc={str(sort_is_desc).lower()}\t"
         f"group_count={group_count}\t"
         f"min_group_size={min_group_size}\t"
         f"max_group_size={max_group_size if max_group_size is not None else 'none'}\t"
@@ -3101,6 +3124,9 @@ def main() -> int:
             list_sort_aliases_sort_alias_resolved = (
                 resolved_list_sort_aliases_sort != list_sort_aliases_sort_requested
             )
+            list_sort_aliases_sort_info = _describe_list_sort_aliases_sort_mode(
+                resolved_list_sort_aliases_sort
+            )
             resolved_list_sort_aliases_filter_mode = _resolve_filter_mode(args.list_sort_aliases_filter_mode)
             list_sort_aliases_filter_mode_requested = args.list_sort_aliases_filter_mode
             list_sort_aliases_filter_mode_alias_resolved = (
@@ -3199,6 +3225,10 @@ def main() -> int:
                             "sort": resolved_list_sort_aliases_sort,
                             "sort_requested": list_sort_aliases_sort_requested,
                             "sort_alias_resolved": list_sort_aliases_sort_alias_resolved,
+                            "sort_family": list_sort_aliases_sort_info["sort_family"],
+                            "sort_key": list_sort_aliases_sort_info["sort_key"],
+                            "sort_direction": list_sort_aliases_sort_info["sort_direction"],
+                            "sort_is_desc": list_sort_aliases_sort_info["sort_is_desc"],
                             "group_count": len(grouped),
                             "group_sizes": group_sizes,
                             "group_share_pct": group_share_pct,
@@ -3242,6 +3272,10 @@ def main() -> int:
                             sort_mode=resolved_list_sort_aliases_sort,
                             sort_requested=list_sort_aliases_sort_requested,
                             sort_alias_resolved=list_sort_aliases_sort_alias_resolved,
+                            sort_family=list_sort_aliases_sort_info["sort_family"],
+                            sort_key=list_sort_aliases_sort_info["sort_key"],
+                            sort_direction=list_sort_aliases_sort_info["sort_direction"],
+                            sort_is_desc=list_sort_aliases_sort_info["sort_is_desc"],
                             group_count=len(grouped),
                             min_group_size=args.list_sort_aliases_min_group_size,
                             max_group_size=args.list_sort_aliases_max_group_size,
@@ -3298,6 +3332,10 @@ def main() -> int:
                             sort_mode=resolved_list_sort_aliases_sort,
                             sort_requested=list_sort_aliases_sort_requested,
                             sort_alias_resolved=list_sort_aliases_sort_alias_resolved,
+                            sort_family=list_sort_aliases_sort_info["sort_family"],
+                            sort_key=list_sort_aliases_sort_info["sort_key"],
+                            sort_direction=list_sort_aliases_sort_info["sort_direction"],
+                            sort_is_desc=list_sort_aliases_sort_info["sort_is_desc"],
                             group_count=len(grouped),
                             min_group_size=args.list_sort_aliases_min_group_size,
                             max_group_size=args.list_sort_aliases_max_group_size,
@@ -3367,6 +3405,10 @@ def main() -> int:
                         "sort": resolved_list_sort_aliases_sort,
                         "sort_requested": list_sort_aliases_sort_requested,
                         "sort_alias_resolved": list_sort_aliases_sort_alias_resolved,
+                        "sort_family": list_sort_aliases_sort_info["sort_family"],
+                        "sort_key": list_sort_aliases_sort_info["sort_key"],
+                        "sort_direction": list_sort_aliases_sort_info["sort_direction"],
+                        "sort_is_desc": list_sort_aliases_sort_info["sort_is_desc"],
                         "group_count": len(grouped),
                         "group_sizes": group_sizes,
                         "group_share_pct": group_share_pct,

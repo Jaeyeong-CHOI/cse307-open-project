@@ -5407,6 +5407,26 @@ def main() -> int:
             "expected default list-sort-aliases sort_alias_resolved=false, got: "
             f"{sort_aliases_payload.get('sort_alias_resolved')}"
         )
+    if sort_aliases_payload.get("sort_family") != "builtin":
+        raise AssertionError(
+            "expected default list-sort-aliases sort_family=builtin, got: "
+            f"{sort_aliases_payload.get('sort_family')}"
+        )
+    if sort_aliases_payload.get("sort_key") != "alias":
+        raise AssertionError(
+            "expected default list-sort-aliases sort_key=alias, got: "
+            f"{sort_aliases_payload.get('sort_key')}"
+        )
+    if sort_aliases_payload.get("sort_direction") != "asc":
+        raise AssertionError(
+            "expected default list-sort-aliases sort_direction=asc, got: "
+            f"{sort_aliases_payload.get('sort_direction')}"
+        )
+    if sort_aliases_payload.get("sort_is_desc") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases sort_is_desc=false, got: "
+            f"{sort_aliases_payload.get('sort_is_desc')}"
+        )
     if sort_aliases_payload.get("filter_mode") != "contains":
         raise AssertionError(
             "expected default list-sort-aliases filter_mode=contains, got: "
@@ -5608,6 +5628,26 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases sort=alias by default, got: "
             f"{grouped_sort_aliases_payload.get('sort')}"
+        )
+    if grouped_sort_aliases_payload.get("sort_family") != "builtin":
+        raise AssertionError(
+            "expected grouped list-sort-aliases sort_family=builtin by default, got: "
+            f"{grouped_sort_aliases_payload.get('sort_family')}"
+        )
+    if grouped_sort_aliases_payload.get("sort_key") != "alias":
+        raise AssertionError(
+            "expected grouped list-sort-aliases sort_key=alias by default, got: "
+            f"{grouped_sort_aliases_payload.get('sort_key')}"
+        )
+    if grouped_sort_aliases_payload.get("sort_direction") != "asc":
+        raise AssertionError(
+            "expected grouped list-sort-aliases sort_direction=asc by default, got: "
+            f"{grouped_sort_aliases_payload.get('sort_direction')}"
+        )
+    if grouped_sort_aliases_payload.get("sort_is_desc") is not False:
+        raise AssertionError(
+            "expected grouped list-sort-aliases sort_is_desc=false by default, got: "
+            f"{grouped_sort_aliases_payload.get('sort_is_desc')}"
         )
     if grouped_sort_aliases_payload.get("filter_mode") != "contains":
         raise AssertionError(
@@ -6468,6 +6508,26 @@ def main() -> int:
     if not isinstance(aliases_tsv_meta_json_payload.get("group_count"), int):
         raise AssertionError(
             "expected aliases-tsv JSON meta footer to include integer group_count, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("sort_family") != "builtin":
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer sort_family=builtin, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("sort_key") != "alias":
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer sort_key=alias, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("sort_direction") != "asc":
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer sort_direction=asc, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("sort_is_desc") is not False:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer sort_is_desc=false, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
     if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
