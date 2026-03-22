@@ -2124,11 +2124,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-sort-aliases-format",
-        choices=("aliases-json", "grouped-json", "aliases-tsv", "grouped-tsv", "names"),
+        choices=("aliases-json", "grouped-json", "aliases-tsv", "grouped-tsv", "names", "canonical-names"),
         default="aliases-json",
         help=(
             "Output format for --list-sort-aliases: aliases-json (default, alias->canonical), "
-            "grouped-json (canonical->[aliases]), aliases-tsv, grouped-tsv, or names (alias-only list)."
+            "grouped-json (canonical->[aliases]), aliases-tsv, grouped-tsv, names (alias-only list), "
+            "or canonical-names (canonical-key-only list)."
         ),
     )
     parser.add_argument(
@@ -3244,6 +3245,9 @@ def main() -> int:
                 return 0
             if args.list_sort_aliases_format == "names":
                 print("\n".join(alias_map.keys()))
+                return 0
+            if args.list_sort_aliases_format == "canonical-names":
+                print("\n".join(grouped.keys()))
                 return 0
             if args.list_sort_aliases_format == "aliases-tsv":
                 print(

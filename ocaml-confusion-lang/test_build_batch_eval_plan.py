@@ -7381,6 +7381,45 @@ def main() -> int:
             f"{names_lines}"
         )
 
+    canonical_names_sort_aliases_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "canonical-names",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "canonical",
+            "--list-sort-aliases-limit",
+            "3",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    canonical_names_lines = [line for line in (canonical_names_sort_aliases_run.stdout or "").splitlines() if line.strip()]
+    if not canonical_names_lines:
+        raise AssertionError("expected canonical-names list-sort-aliases output to include at least one canonical key")
+    if len(canonical_names_lines) > 3:
+        raise AssertionError(
+            f"expected canonical-names output to respect --list-sort-aliases-limit=3, got {len(canonical_names_lines)}"
+        )
+    if any("\t" in line for line in canonical_names_lines):
+        raise AssertionError(
+            "expected canonical-names output to be canonical-key-only (no TSV columns), got: "
+            f"{canonical_names_lines}"
+        )
+    if any(line.startswith("{") for line in canonical_names_lines):
+        raise AssertionError(f"expected canonical-names output to be plain lines (not JSON), got: {canonical_names_lines}")
+    if any("fair" not in line for line in canonical_names_lines):
+        raise AssertionError(
+            "expected --list-sort-aliases-name-contains=fair to constrain canonical-names output, got: "
+            f"{canonical_names_lines}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
