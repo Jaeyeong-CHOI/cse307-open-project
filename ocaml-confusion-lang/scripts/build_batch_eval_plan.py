@@ -400,6 +400,8 @@ def _sort_preset_names(
         "prompt-condition-count-desc",
         "max-runs-per-model",
         "max-runs-per-model-desc",
+        "per-model-cap",
+        "per-model-cap-desc",
         "max-runs-per-prompt-condition",
         "max-runs-per-prompt-condition-desc",
         "description-length",
@@ -490,7 +492,7 @@ def _sort_preset_names(
         if sort_mode == "prompt-condition-count-desc":
             return sorted(preset_names, key=lambda name: (-resolved_prompt_condition_counts[name], name))
 
-        if sort_mode == "max-runs-per-model":
+        if sort_mode in ("max-runs-per-model", "per-model-cap"):
             def max_runs_per_model_asc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_model = resolved_max_runs_per_model[name]
                 is_uncapped = 1 if max_runs_per_model == 0 else 0
@@ -499,7 +501,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_model_asc_sort_key)
 
-        if sort_mode == "max-runs-per-model-desc":
+        if sort_mode in ("max-runs-per-model-desc", "per-model-cap-desc"):
             def max_runs_per_model_desc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_model = resolved_max_runs_per_model[name]
                 is_uncapped = 0 if max_runs_per_model == 0 else 1
@@ -1066,6 +1068,8 @@ def parse_args() -> argparse.Namespace:
             "prompt-condition-count (ascending), prompt-condition-count-desc (descending), "
             "max-runs-per-model (ascending; capped presets first, 0/uncapped last), "
             "max-runs-per-model-desc (descending; 0/uncapped first), "
+            "per-model-cap (alias of max-runs-per-model), "
+            "per-model-cap-desc (alias of max-runs-per-model-desc), "
             "max-runs-per-prompt-condition (ascending; capped presets first, 0/uncapped last), "
             "max-runs-per-prompt-condition-desc (descending; 0/uncapped first), "
             "description-length (ascending normalized description length), description-length-desc (descending), "
