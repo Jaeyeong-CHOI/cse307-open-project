@@ -3286,6 +3286,7 @@ def main() -> int:
                         {
                             "schema_version": "v2",
                             "group_schema_version": "v2",
+                            "output_format": "grouped-json",
                             "filtered_count": filtered_count,
                             "emitted_count": len(alias_map),
                             "truncated": truncated,
@@ -3502,6 +3503,7 @@ def main() -> int:
                 json.dumps(
                     {
                         "schema_version": "v2",
+                        "output_format": "aliases-json",
                         "filtered_count": filtered_count,
                         "emitted_count": len(alias_map),
                         "truncated": truncated,
