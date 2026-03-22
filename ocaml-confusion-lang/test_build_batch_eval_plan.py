@@ -988,6 +988,31 @@ def main() -> int:
     }:
         raise AssertionError(f"unexpected names-with-meta json payload: {names_meta_payload}")
 
+    preset_list_names_with_meta_json_argv_tokens = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-format",
+            "json",
+            "--list-presets-meta-include-argv-tokens",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_meta_payload_with_tokens = json.loads(
+        [line.strip() for line in preset_list_names_with_meta_json_argv_tokens.stdout.splitlines() if line.strip()][-1]
+    )
+    if not isinstance(names_meta_payload_with_tokens.get("argv_tokens"), list):
+        raise AssertionError(f"argv_tokens should be a list in list-presets json meta payload: {names_meta_payload_with_tokens}")
+    if "--list-presets-meta-include-argv-tokens" not in names_meta_payload_with_tokens["argv_tokens"]:
+        raise AssertionError(f"argv_tokens missing include flag in list-presets json meta payload: {names_meta_payload_with_tokens}")
+
     preset_list_names_with_meta_json_schema_v2 = subprocess.run(
         [
             "python3",
@@ -1262,6 +1287,32 @@ def main() -> int:
         raise AssertionError(
             "missing argv in list-presets meta footer: "
             f"{names_with_meta_argv_lines}"
+        )
+
+    preset_list_names_with_meta_argv_tokens = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-argv-tokens",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_argv_tokens_lines = [
+        line.strip() for line in preset_list_names_with_meta_argv_tokens.stdout.splitlines() if line.strip()
+    ]
+    argv_tokens_value = names_with_meta_argv_tokens_lines[-1].rsplit("argv_tokens=", 1)[-1]
+    argv_tokens = json.loads(argv_tokens_value)
+    if "--list-presets-meta-include-argv-tokens" not in argv_tokens:
+        raise AssertionError(
+            "missing argv_tokens in list-presets meta footer: "
+            f"{names_with_meta_argv_tokens_lines}"
         )
 
     preset_list_names_with_filter_meta = subprocess.run(
@@ -1765,6 +1816,32 @@ def main() -> int:
     if show_meta_payload.get("preset") != "quick-smoke" or show_meta_payload.get("format") != "summary":
         raise AssertionError(f"unexpected show-preset json meta payload core fields: {show_meta_payload}")
 
+    show_preset_summary_with_meta_json_argv_tokens = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-format",
+            "json",
+            "--show-preset-meta-include-argv-tokens",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_meta_payload_with_tokens = json.loads(
+        [line.rstrip("\n") for line in show_preset_summary_with_meta_json_argv_tokens.stdout.splitlines() if line.strip()][-1]
+    )
+    if not isinstance(show_meta_payload_with_tokens.get("argv_tokens"), list):
+        raise AssertionError(f"argv_tokens should be a list in show-preset json meta payload: {show_meta_payload_with_tokens}")
+    if "--show-preset-meta-include-argv-tokens" not in show_meta_payload_with_tokens["argv_tokens"]:
+        raise AssertionError(f"argv_tokens missing include flag in show-preset json meta payload: {show_meta_payload_with_tokens}")
+
     show_preset_summary_with_meta_json_schema_v2 = subprocess.run(
         [
             "python3",
@@ -2069,6 +2146,35 @@ def main() -> int:
         raise AssertionError(
             "missing argv in show-preset meta footer: "
             f"{show_preset_with_meta_argv_lines}"
+        )
+
+    show_preset_summary_with_meta_argv_tokens = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-argv-tokens",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_argv_tokens_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_argv_tokens.stdout.splitlines()
+        if line.strip()
+    ]
+    show_argv_tokens_value = show_preset_with_meta_argv_tokens_lines[-1].rsplit("argv_tokens=", 1)[-1]
+    show_argv_tokens = json.loads(show_argv_tokens_value)
+    if "--show-preset-meta-include-argv-tokens" not in show_argv_tokens:
+        raise AssertionError(
+            "missing argv_tokens in show-preset meta footer: "
+            f"{show_preset_with_meta_argv_tokens_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(

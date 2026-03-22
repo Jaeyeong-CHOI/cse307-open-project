@@ -370,7 +370,7 @@ def _format_preset_summary_tsv_row(
 
 
 def _emit_text_or_json_meta(
-    fields: dict[str, str],
+    fields: dict[str, Any],
     meta_format: str = "text",
     json_schema_version: str = PRESET_TEXT_META_JSON_SCHEMA_VERSION,
 ) -> None:
@@ -391,7 +391,7 @@ def _emit_list_presets_text_meta(
     emitted_count: int,
     truncated: bool,
     schema_id: str,
-    extra_fields: dict[str, str] | None = None,
+    extra_fields: dict[str, Any] | None = None,
     meta_format: str = "text",
     json_schema_version: str = PRESET_TEXT_META_JSON_SCHEMA_VERSION,
 ) -> None:
@@ -415,7 +415,7 @@ def _emit_show_preset_text_meta(
     output_format: str,
     preset_file: Path,
     schema_id: str,
-    extra_fields: dict[str, str] | None = None,
+    extra_fields: dict[str, Any] | None = None,
     meta_format: str = "text",
     json_schema_version: str = PRESET_TEXT_META_JSON_SCHEMA_VERSION,
 ) -> None:
@@ -621,6 +621,11 @@ def parse_args() -> argparse.Namespace:
         help="Include argv (CLI invocation) in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-argv-tokens",
+        action="store_true",
+        help="Include argv_tokens (CLI invocation token array) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -739,6 +744,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-argv",
         action="store_true",
         help="Include argv (CLI invocation) in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-argv-tokens",
+        action="store_true",
+        help="Include argv_tokens (CLI invocation token array) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -922,7 +932,7 @@ def main() -> int:
                 "preset": args.show_preset,
                 "resolved": resolved,
             }
-            show_meta_extra_fields: dict[str, str] | None = None
+            show_meta_extra_fields: dict[str, Any] | None = None
             if args.show_preset_meta_include_overrides:
                 show_meta_extra_fields = {
                     "override_count": str(len(active_overrides)),
@@ -968,6 +978,15 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["argv"] = " ".join(sys.argv)
+            if args.show_preset_meta_include_argv_tokens:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                if args.show_preset_meta_format == "json":
+                    show_meta_extra_fields["argv_tokens"] = list(sys.argv)
+                else:
+                    show_meta_extra_fields["argv_tokens"] = json.dumps(
+                        list(sys.argv), ensure_ascii=False, separators=(",", ":")
+                    )
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -1041,7 +1060,7 @@ def main() -> int:
             if args.list_presets_limit is not None and len(preset_names) > args.list_presets_limit:
                 preset_names = preset_names[: args.list_presets_limit]
                 truncated = True
-            list_meta_extra_fields: dict[str, str] | None = None
+            list_meta_extra_fields: dict[str, Any] | None = None
             if args.list_presets_meta_include_filters:
                 tag_filter = args.list_presets_tag.strip() if isinstance(args.list_presets_tag, str) else ""
                 name_contains = (
@@ -1097,6 +1116,15 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["argv"] = " ".join(sys.argv)
+            if args.list_presets_meta_include_argv_tokens:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                if args.list_presets_meta_format == "json":
+                    list_meta_extra_fields["argv_tokens"] = list(sys.argv)
+                else:
+                    list_meta_extra_fields["argv_tokens"] = json.dumps(
+                        list(sys.argv), ensure_ascii=False, separators=(",", ":")
+                    )
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}
