@@ -229,6 +229,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "rows": "tsv-rows",
     "rj": "rows-json",
     "cj": "codes-json",
+    "n": "names",
 }
 
 
@@ -2392,6 +2393,14 @@ def _render_state_code_rows_codes_json(rows: list[dict[str, Any]]) -> dict[str, 
     return payload
 
 
+def _render_state_code_rows_names(rows: list[dict[str, Any]]) -> str:
+    return "\n".join(
+        str(state)
+        for state in (row.get("state") for row in rows)
+        if isinstance(state, str)
+    )
+
+
 def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any], output_format: str, kind: str) -> None:
     if output_format == "json":
         print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -2401,6 +2410,9 @@ def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any]
         return
     if output_format == "codes-json":
         print(json.dumps(_render_state_code_rows_codes_json(rows), ensure_ascii=False, indent=2))
+        return
+    if output_format == "names":
+        print(_render_state_code_rows_names(rows))
         return
     if output_format == "tsv":
         print(_render_state_code_rows_tsv(rows, kind=kind, include_header=True))
@@ -2841,12 +2853,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "rows-json", "codes-json", "tsv", "tsv-rows", "j", "rj", "cj", "t", "tr", "r", "rows"),
+        choices=("json", "rows-json", "codes-json", "names", "tsv", "tsv-rows", "j", "rj", "cj", "n", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
-            "json (default), rows-json (row list only), codes-json (code-keyed map), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, rj=rows-json, cj=codes-json, t=tsv, tr/r/rows=tsv-rows."
+            "json (default), rows-json (row list only), codes-json (code-keyed map), names (newline state labels), tsv (header), or tsv-rows (headerless rows). "
+            "Shorthand aliases: j=json, rj=rows-json, cj=codes-json, n=names, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(
