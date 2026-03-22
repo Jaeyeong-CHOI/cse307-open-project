@@ -2287,6 +2287,15 @@ def main() -> int:
             )
             grouped = _build_sort_alias_groups(alias_map)
             group_sizes = {canonical: len(aliases) for canonical, aliases in grouped.items()}
+            total_alias_count = sum(group_sizes.values())
+            group_share_pct = {
+                canonical: (
+                    0.0
+                    if total_alias_count == 0
+                    else round((group_sizes[canonical] / total_alias_count) * 100.0, 2)
+                )
+                for canonical in grouped
+            }
             if args.list_sort_aliases_format == "grouped-json":
                 print(
                     json.dumps(
@@ -2308,6 +2317,7 @@ def main() -> int:
                             "sort": args.list_sort_aliases_sort,
                             "group_count": len(grouped),
                             "group_sizes": group_sizes,
+                            "group_share_pct": group_share_pct,
                             "groups": grouped,
                         },
                         ensure_ascii=False,

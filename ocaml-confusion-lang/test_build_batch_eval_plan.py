@@ -4860,12 +4860,30 @@ def main() -> int:
             "expected grouped list-sort-aliases group_sizes keys to match groups keys, got: "
             f"{sorted(group_sizes.keys())} vs {sorted(groups.keys())}"
         )
+    group_share_pct = grouped_sort_aliases_payload.get("group_share_pct", {})
+    if set(group_share_pct.keys()) != set(groups.keys()):
+        raise AssertionError(
+            "expected grouped list-sort-aliases group_share_pct keys to match groups keys, got: "
+            f"{sorted(group_share_pct.keys())} vs {sorted(groups.keys())}"
+        )
     for canonical, aliases_in_group in groups.items():
         if group_sizes.get(canonical) != len(aliases_in_group):
             raise AssertionError(
                 "expected grouped list-sort-aliases group_sizes to equal per-group alias counts, got: "
                 f"{canonical} -> {group_sizes.get(canonical)} vs {len(aliases_in_group)}"
             )
+        expected_share = round((len(aliases_in_group) / len(aliases)) * 100.0, 2)
+        if group_share_pct.get(canonical) != expected_share:
+            raise AssertionError(
+                "expected grouped list-sort-aliases group_share_pct to equal per-group alias ratio, got: "
+                f"{canonical} -> {group_share_pct.get(canonical)} vs {expected_share}"
+            )
+    total_share = round(sum(float(value) for value in group_share_pct.values()), 2)
+    if abs(total_share - 100.0) > 0.2:
+        raise AssertionError(
+            "expected grouped list-sort-aliases group_share_pct total to be ~100, got: "
+            f"{total_share}"
+        )
     total_cap_aliases = groups.get("max-total-runs", [])
     if "total-cap" not in total_cap_aliases:
         raise AssertionError(f"expected total-cap alias in max-total-runs group, got: {total_cap_aliases}")

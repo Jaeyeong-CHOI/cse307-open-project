@@ -113,7 +113,7 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort name-desc
 # sort alias canonical 매핑(JSON) 조회 (alias -> canonical)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases
-# sort alias 그룹 매핑(JSON) 조회 (canonical -> aliases)
+# sort alias 그룹 매핑(JSON) 조회 (canonical -> aliases, group_sizes, group_share_pct)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format grouped-json
 # sort alias 매핑을 TSV로 조회 (jq 없이 shell/CI에서 바로 소비)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format aliases-tsv
@@ -744,3 +744,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 261. ~~`--list-sort-aliases-format grouped-json` 출력에 `group_sizes`(canonical -> alias count) 맵을 추가해 downstream 자동화가 alias list length 재계산 없이 canonical family 크기를 즉시 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 262. ~~`--list-sort-aliases-format grouped-tsv` row에 `alias_share_pct` 컬럼을 추가해 canonical family별 alias 비중(%)을 TSV 단독 소비 경로에서도 즉시 파악 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 263. ~~`--list-sort-aliases` 기본 JSON 출력(`aliases-json`)에도 `group_sizes`(canonical -> alias count) 맵을 추가해 alias 단위 소비 경로에서 canonical fan-out 규모를 별도 grouped 호출 없이 즉시 활용 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+264. ~~`--list-sort-aliases-format grouped-json` 출력에 `group_share_pct`(canonical -> alias share %) 맵을 추가해 grouped-tsv의 비중 정보를 JSON 단독 소비 경로에서도 별도 재계산 없이 즉시 활용 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
