@@ -109,6 +109,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match o
 # preset 이름 substring 필터(대소문자 무시)로 후보 빠르게 좁히기
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains ci
+# preset 이름 필터 매칭 모드(prefix/exact) 전환
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains balanced --list-presets-name-filter-mode prefix
+# 매칭 모드 shorthand alias: c=contains, p=prefix, e=exact
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains balanced-ci --list-presets-name-filter-mode e
 # preset 탐색 결과를 상위 N개로 제한(기본 정렬: preset 이름 오름차순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 # preset 이름 기준 내림차순 정렬
@@ -805,3 +809,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 286. ~~`--list-sort-aliases-match-field`에 shorthand alias(`b|a|c`)를 추가하고, 출력에 `match_field_requested`/`match_field_alias_resolved` provenance 필드를 확장해 match-field alias 해석 경로를 JSON/TSV 메타데이터에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 287. ~~`--list-presets-tag-match`에 shorthand alias(`a|o`)를 추가하고, list-presets 출력/메타데이터에 `tag_match_requested`/`tag_match_alias_resolved` provenance 필드를 확장해 tag-match alias 해석 경로를 JSON/텍스트 메타에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 288. ~~`--list-presets-sort` custom tag 모드에 shorthand alias(`t:<name>`, `t:<name>-desc`)를 추가하고 list-presets JSON/메타데이터에 `sort_requested`/`sort_alias_resolved` provenance 필드를 확장해 sort alias 해석 경로를 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+289. ~~`--list-presets-name-filter-mode`(`contains|prefix|exact` + shorthand `c|p|e`)를 추가해 preset 이름 필터의 매칭 정밀도를 런타임에서 제어하고, list-presets JSON/메타데이터에 `name_filter_mode_requested`/`name_filter_mode_alias_resolved` provenance를 노출해 필터 해석 경로를 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

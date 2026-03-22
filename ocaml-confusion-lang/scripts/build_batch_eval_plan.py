@@ -1083,10 +1083,17 @@ def _matches_preset_tags(
     return required_tags.issubset(preset_tags)
 
 
-def _matches_preset_name(name: str, name_filter: str | None) -> bool:
+def _matches_preset_name(name: str, name_filter: str | None, filter_mode: str = "contains") -> bool:
     if not name_filter:
         return True
-    return name_filter.lower() in name.lower()
+    mode = _resolve_filter_mode(filter_mode)
+    normalized_name = name.lower()
+    normalized_filter = name_filter.lower()
+    if mode == "prefix":
+        return normalized_name.startswith(normalized_filter)
+    if mode == "exact":
+        return normalized_name == normalized_filter
+    return normalized_filter in normalized_name
 
 
 def _preset_description_text(raw_description: str) -> str:
@@ -2406,6 +2413,15 @@ def parse_args() -> argparse.Namespace:
         help="Optional case-insensitive substring filter for preset names in --list-presets",
     )
     parser.add_argument(
+        "--list-presets-name-filter-mode",
+        choices=("contains", "prefix", "exact", "c", "p", "e"),
+        default="contains",
+        help=(
+            "Match mode for --list-presets-name-contains: contains (default), prefix, exact; "
+            "shorthand aliases: c=contains, p=prefix, e=exact"
+        ),
+    )
+    parser.add_argument(
         "--list-presets-limit",
         type=int,
         default=None,
@@ -3268,6 +3284,11 @@ def main() -> int:
                 required_tags = {tag.strip().lower() for tag in args.list_presets_tag.split(",") if tag.strip()}
                 if not required_tags:
                     raise ValueError("--list-presets-tag must include at least one non-empty tag")
+            list_presets_name_filter_mode_requested = args.list_presets_name_filter_mode
+            resolved_list_presets_name_filter_mode = _resolve_filter_mode(args.list_presets_name_filter_mode)
+            list_presets_name_filter_mode_alias_resolved = (
+                list_presets_name_filter_mode_requested != resolved_list_presets_name_filter_mode
+            )
             name_filter = args.list_presets_name_contains.strip() if args.list_presets_name_contains else None
             if args.list_presets_name_contains is not None and not name_filter:
                 raise ValueError("--list-presets-name-contains must include at least one non-empty character")
@@ -3277,7 +3298,11 @@ def main() -> int:
                 name: preset
                 for name, preset in presets.items()
                 if isinstance(preset, dict)
-                and _matches_preset_name(name, name_filter)
+                and _matches_preset_name(
+                    name,
+                    name_filter,
+                    filter_mode=resolved_list_presets_name_filter_mode,
+                )
                 and _matches_preset_tags(
                     preset,
                     required_tags,
@@ -3307,6 +3332,9 @@ def main() -> int:
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": str(list_presets_tag_match_alias_resolved).lower(),
                     "name_contains": name_contains or "none",
+                    "name_filter_mode": resolved_list_presets_name_filter_mode,
+                    "name_filter_mode_requested": list_presets_name_filter_mode_requested,
+                    "name_filter_mode_alias_resolved": str(list_presets_name_filter_mode_alias_resolved).lower(),
                     "limit": str(args.list_presets_limit)
                     if args.list_presets_limit is not None
                     else "none",
@@ -3403,6 +3431,9 @@ def main() -> int:
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(preset_names),
                     "truncated": truncated,
+                    "name_filter_mode": resolved_list_presets_name_filter_mode,
+                    "name_filter_mode_requested": list_presets_name_filter_mode_requested,
+                    "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
@@ -3421,6 +3452,9 @@ def main() -> int:
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
                     "truncated": truncated,
+                    "name_filter_mode": resolved_list_presets_name_filter_mode,
+                    "name_filter_mode_requested": list_presets_name_filter_mode_requested,
+                    "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
@@ -3446,6 +3480,9 @@ def main() -> int:
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(resolved_presets),
                     "truncated": truncated,
+                    "name_filter_mode": resolved_list_presets_name_filter_mode,
+                    "name_filter_mode_requested": list_presets_name_filter_mode_requested,
+                    "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,

@@ -3197,8 +3197,9 @@ def main() -> int:
     expected_filter_meta_footer = (
         "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
         "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
-        "\ttag_match_alias_resolved=false\tname_contains=quick\tlimit=1\tsort=name"
-        "\tsort_requested=name\tsort_alias_resolved=false"
+        "\ttag_match_alias_resolved=false\tname_contains=quick\tname_filter_mode=contains"
+        "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
+        "\tlimit=1\tsort=name\tsort_requested=name\tsort_alias_resolved=false"
     )
     if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
         raise AssertionError(
@@ -4675,6 +4676,46 @@ def main() -> int:
     if name_filtered_run.stdout.strip().splitlines() != ["balanced-ci"]:
         raise AssertionError(
             f"unexpected preset name substring filter output: {name_filtered_run.stdout!r}"
+        )
+
+    name_prefix_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "balanced",
+            "--list-presets-name-filter-mode",
+            "prefix",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if name_prefix_filtered_run.stdout.strip().splitlines() != ["balanced-ci"]:
+        raise AssertionError(
+            f"unexpected preset name prefix filter output: {name_prefix_filtered_run.stdout!r}"
+        )
+
+    name_exact_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "balanced-ci",
+            "--list-presets-name-filter-mode",
+            "e",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if name_exact_filtered_run.stdout.strip().splitlines() != ["balanced-ci"]:
+        raise AssertionError(
+            f"unexpected preset name exact filter output: {name_exact_filtered_run.stdout!r}"
         )
 
     name_and_tag_filtered_run = subprocess.run(
