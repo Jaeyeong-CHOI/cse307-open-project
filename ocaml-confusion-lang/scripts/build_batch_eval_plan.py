@@ -49,6 +49,8 @@ PRESET_SHOW_TEXT_META_SCHEMA_PATTERN = re.compile(r"^planner_preset_show_meta\.v
 PRESET_TEXT_META_JSON_SCHEMA_VERSION = "v1"
 PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
 SORT_ALIASES_TSV_META_SCHEMA = "planner_sort_aliases_tsv_meta.v1"
+SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION = "v1"
+SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
 
 
 PRESET_SORT_ALIAS_MAP: dict[str, str] = {
@@ -123,7 +125,26 @@ def _format_sort_aliases_tsv_meta(
     match_field: str,
     limit: int | None,
     sort_mode: str,
+    meta_format: str = "text",
+    json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
+    if meta_format == "json":
+        return json.dumps(
+            {
+                "meta": True,
+                "schema_version": json_schema_version,
+                "schema": SORT_ALIASES_TSV_META_SCHEMA,
+                "filtered_count": filtered_count,
+                "emitted_count": emitted_count,
+                "truncated": truncated,
+                "name_contains": name_contains,
+                "filter_mode": filter_mode,
+                "match_field": match_field,
+                "limit": limit,
+                "sort": sort_mode,
+            },
+            ensure_ascii=False,
+        )
     return (
         "# meta\t"
         f"schema={SORT_ALIASES_TSV_META_SCHEMA}\t"
@@ -1505,7 +1526,21 @@ def parse_args() -> argparse.Namespace:
         "--list-sort-aliases-tsv-with-meta",
         action="store_true",
         help=(
-            "Append '# meta\\t...' footer with filter/sort counters to aliases-tsv/grouped-tsv output."
+            "Append meta footer with filter/sort counters to aliases-tsv/grouped-tsv output."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-tsv-meta-format",
+        choices=("text", "json"),
+        default="text",
+        help="Meta footer format for --list-sort-aliases-tsv-with-meta (default: text)",
+    )
+    parser.add_argument(
+        "--list-sort-aliases-tsv-meta-json-schema-version",
+        default=SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
+        help=(
+            "Wrapper schema_version for JSON meta footer in --list-sort-aliases TSV output "
+            "(must match ^v[1-9][0-9]*$, default: v1)."
         ),
     )
     parser.add_argument(
@@ -1844,6 +1879,9 @@ def main() -> int:
         show_meta_json_schema_version = str(args.show_preset_meta_json_schema_version).strip()
         if not PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN.match(show_meta_json_schema_version):
             raise ValueError("--show-preset-meta-json-schema-version must match vN (N>=1)")
+        sort_aliases_meta_json_schema_version = str(args.list_sort_aliases_tsv_meta_json_schema_version).strip()
+        if not SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION_PATTERN.match(sort_aliases_meta_json_schema_version):
+            raise ValueError("--list-sort-aliases-tsv-meta-json-schema-version must match vN (N>=1)")
         if args.summary_tsv_description_max_len is not None and args.summary_tsv_description_max_len < 4:
             raise ValueError("--summary-tsv-description-max-len must be >= 4")
 
@@ -2131,6 +2169,8 @@ def main() -> int:
                             match_field=args.list_sort_aliases_match_field,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
+                            meta_format=args.list_sort_aliases_tsv_meta_format,
+                            json_schema_version=sort_aliases_meta_json_schema_version,
                         )
                     )
                 return 0
@@ -2147,6 +2187,8 @@ def main() -> int:
                             match_field=args.list_sort_aliases_match_field,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
+                            meta_format=args.list_sort_aliases_tsv_meta_format,
+                            json_schema_version=sort_aliases_meta_json_schema_version,
                         )
                     )
                 return 0

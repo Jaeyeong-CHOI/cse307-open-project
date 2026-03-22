@@ -5006,6 +5006,74 @@ def main() -> int:
             f"{grouped_tsv_with_meta_lines[-1]}"
         )
 
+    aliases_tsv_with_meta_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "aliases-tsv",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-limit",
+            "2",
+            "--list-sort-aliases-tsv-with-meta",
+            "--list-sort-aliases-tsv-meta-format",
+            "json",
+            "--list-sort-aliases-tsv-meta-json-schema-version",
+            "v2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    aliases_tsv_with_meta_json_lines = aliases_tsv_with_meta_json_run.stdout.strip().splitlines()
+    aliases_tsv_meta_json_payload = json.loads(aliases_tsv_with_meta_json_lines[-1])
+    if aliases_tsv_meta_json_payload.get("meta") is not True:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer to include meta=true, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("schema") != "planner_sort_aliases_tsv_meta.v1":
+        raise AssertionError(
+            "unexpected aliases-tsv JSON meta schema id, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("schema_version") != "v2":
+        raise AssertionError(
+            "unexpected aliases-tsv JSON meta schema_version, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+
+    invalid_aliases_meta_schema_version_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "aliases-tsv",
+            "--list-sort-aliases-tsv-with-meta",
+            "--list-sort-aliases-tsv-meta-format",
+            "json",
+            "--list-sort-aliases-tsv-meta-json-schema-version",
+            "oops",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_aliases_meta_schema_version_run.returncode == 0:
+        raise AssertionError("expected invalid list-sort-aliases meta JSON schema version to fail-fast")
+    if "--list-sort-aliases-tsv-meta-json-schema-version must match vN (N>=1)" not in (
+        invalid_aliases_meta_schema_version_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected list-sort-aliases meta schema-version validation error, got: "
+            f"{invalid_aliases_meta_schema_version_run.stderr}"
+        )
+
     prefix_filter_run = subprocess.run(
         [
             "python3",
