@@ -1927,6 +1927,32 @@ def main() -> int:
             f"{preset_names_sorted_by_cc_alias}"
         )
 
+    preset_list_sorted_by_cpp_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cpp",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cpp_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cpp_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cpp_alias != preset_names_sorted_by_cost_priority_prompt:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cpp alias output: "
+            f"{preset_names_sorted_by_cpp_alias}"
+        )
+
     preset_list_sorted_by_cost_priority_prompt_desc = subprocess.run(
         [
             "python3",
@@ -2007,6 +2033,32 @@ def main() -> int:
         raise AssertionError(
             "unexpected --list-presets-sort=ccd alias output: "
             f"{preset_names_sorted_by_ccd_alias}"
+        )
+
+    preset_list_sorted_by_cppd_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cppd",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cppd_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cppd_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cppd_alias != preset_names_sorted_by_cost_priority_prompt_desc:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cppd alias output: "
+            f"{preset_names_sorted_by_cppd_alias}"
         )
 
     preset_list_sorted_by_cheap_first_total_cap_desc = subprocess.run(

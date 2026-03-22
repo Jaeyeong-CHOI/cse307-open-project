@@ -348,10 +348,14 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority-prompt
 # condition cap까지 반영한 비용 우선 정렬 초단축 alias(=cost-priority-prompt)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-prompt
+# condition cap까지 반영한 비용 우선 정렬 초단축 alias(=cost-priority-prompt) - ultra-short
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cpp
 # condition cap까지 반영한 비용 우선 정렬 역방향(untagged/uncapped/high-cap 우선)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority-prompt-desc
 # condition cap까지 반영한 비용 우선 정렬 역방향 초단축 alias(=cost-priority-prompt-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-prompt-desc
+# condition cap까지 반영한 비용 우선 정렬 역방향 초단축 alias(=cost-priority-prompt-desc) - ultra-short
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cppd
 # fair-model-allocation 정렬 단축 alias 내림차순(=false 우선)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-desc
 # 임의 태그 기준 정렬(tag:<name>): 해당 태그 포함 preset 우선(동률은 이름순)
@@ -902,3 +906,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 350. ~~planner preset/sort-aliases 출력 JSON+meta에 `output_retention_state`(`fully_retained|partially_retained|fully_truncated`)를 추가해 retention 분기 로직을 bool 조합 재해석 없이 단일 enum 키로 즉시 처리 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 351. ~~planner preset/sort-aliases 출력 JSON+meta에 `output_retention_state_code`(`0=fully_retained`, `1=partially_retained`, `2=fully_truncated`)를 추가해 문자열 enum 파싱 없이 정수 분기(fail-fast switch/case) 경로를 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 352. ~~planner preset discovery 정렬 모드에 ultra-short 비용 정렬 alias(`cp`, `cpd`)를 추가해 `cost-priority`/`cost-priority-desc` 장문 입력 없이도 동일 triage 호출을 더 빠르게 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+353. ~~planner preset discovery 정렬 모드에 ultra-short condition-cost alias(`cpp`, `cppd`)를 추가해 `cost-priority-prompt`/`cost-priority-prompt-desc` 장문 입력 없이도 동일 triage 호출을 더 빠르게 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

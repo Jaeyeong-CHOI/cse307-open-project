@@ -98,6 +98,8 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
     "cost-condition-desc": "cost-priority-prompt-desc",
     "cc": "cost-priority-prompt",
     "ccd": "cost-priority-prompt-desc",
+    "cpp": "cost-priority-prompt",
+    "cppd": "cost-priority-prompt-desc",
     "fair-allocation": "fair-model-allocation",
     "fair-allocation-desc": "fair-model-allocation-desc",
 }
@@ -1602,6 +1604,8 @@ def _sort_preset_names(
         "cost-condition-desc",
         "cc",
         "ccd",
+        "cpp",
+        "cppd",
         "fair-model-allocation",
         "fair-model-allocation-desc",
         "fair-allocation",
@@ -1916,7 +1920,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cost_priority_desc_sort_key)
 
-        if sort_mode in ("cost-priority-prompt", "cost-prompt", "cost-condition", "cc"):
+        if sort_mode in ("cost-priority-prompt", "cost-prompt", "cost-condition", "cc", "cpp"):
             def cost_priority_prompt_sort_key(name: str) -> tuple[int, int, int, int, int, str]:
                 cheap_first_rank = -resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1938,7 +1942,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cost_priority_prompt_sort_key)
 
-        if sort_mode in ("cost-priority-prompt-desc", "cost-prompt-desc", "cost-condition-desc", "ccd"):
+        if sort_mode in ("cost-priority-prompt-desc", "cost-prompt-desc", "cost-condition-desc", "ccd", "cppd"):
             def cost_priority_prompt_desc_sort_key(name: str) -> tuple[int, int, int, int, int, str]:
                 cheap_first_rank = resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -3179,10 +3183,12 @@ def parse_args() -> argparse.Namespace:
             "cost-prompt (alias of cost-priority-prompt), "
             "cost-condition (alias of cost-priority-prompt), "
             "cc (alias of cost-priority-prompt), "
+            "cpp (alias of cost-priority-prompt), "
             "cost-priority-prompt-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_prompt_condition desc with uncapped first), "
             "cost-prompt-desc (alias of cost-priority-prompt-desc), "
             "cost-condition-desc (alias of cost-priority-prompt-desc), "
             "ccd (alias of cost-priority-prompt-desc), "
+            "cppd (alias of cost-priority-prompt-desc), "
             "fair-model-allocation (presets with fair_model_allocation=true first), "
             "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
             "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "
