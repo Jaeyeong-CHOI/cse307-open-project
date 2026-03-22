@@ -8962,6 +8962,43 @@ def main() -> int:
         raise AssertionError(
             "expected retained-records state-code payload schema to be planner_retained_records_state_codes.v1"
         )
+    retained_state_codes_bundle_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "bundle-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_bundle_json_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "bj",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retained_state_codes_bundle_json_alias_run.stdout != retained_state_codes_bundle_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format bj alias to match canonical bundle-json output")
+    retained_state_codes_bundle_json_payload = json.loads(retained_state_codes_bundle_json_run.stdout)
+    if retained_state_codes_bundle_json_payload.get("state_codes") != {"no_retained_records": 0, "has_retained_records": 1}:
+        raise AssertionError(
+            f"unexpected retained-records bundle-json state_codes payload: {retained_state_codes_bundle_json_payload.get('state_codes')}"
+        )
+    if retained_state_codes_bundle_json_payload.get("codes") != [0, 1]:
+        raise AssertionError(
+            f"unexpected retained-records bundle-json codes payload: {retained_state_codes_bundle_json_payload.get('codes')}"
+        )
     retained_state_codes_rows_json_run = subprocess.run(
         [
             "python3",
@@ -9445,6 +9482,47 @@ def main() -> int:
     if retention_state_codes_payload.get("schema") != "planner_retention_state_codes.v1":
         raise AssertionError(
             "expected retention state-code payload schema to be planner_retention_state_codes.v1"
+        )
+    retention_state_codes_bundle_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "bundle-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_bundle_json_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "bj",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retention_state_codes_bundle_json_alias_run.stdout != retention_state_codes_bundle_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format bj alias to match canonical bundle-json output")
+    retention_state_codes_bundle_json_payload = json.loads(retention_state_codes_bundle_json_run.stdout)
+    if retention_state_codes_bundle_json_payload.get("codes") != [0, 1, 2]:
+        raise AssertionError(
+            f"unexpected retention bundle-json codes payload: {retention_state_codes_bundle_json_payload.get('codes')}"
+        )
+    if retention_state_codes_bundle_json_payload.get("codes_state") != {
+        "0": "fully_retained",
+        "1": "partially_retained",
+        "2": "fully_truncated",
+    }:
+        raise AssertionError(
+            f"unexpected retention bundle-json codes_state payload: {retention_state_codes_bundle_json_payload.get('codes_state')}"
         )
     retention_state_codes_rows_json_run = subprocess.run(
         [
