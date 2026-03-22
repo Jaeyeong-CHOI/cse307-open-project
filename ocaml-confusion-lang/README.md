@@ -188,6 +188,7 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 # meta footer schema id 정책(파서 구현 참고용 단일 규약)
 # - list-presets text meta footer: planner_preset_list_meta.vN (기본: planner_preset_list_meta.v1)
 # - show-preset text meta footer: planner_preset_show_meta.vN (기본: planner_preset_show_meta.v1)
+# - 단, non-minimal profile(privacy-safe|ci-safe|safe-debug|debug) 사용 + 기본 schema id 미지정 시 자동으로 v2로 승격
 # - 공통 규칙: ^planner_preset_(list|show)_meta\.v[1-9][0-9]*$
 # - major 변경(키 삭제/의미 변경) 시 N 증가, minor 확장(새 optional key 추가)은 동일 vN 유지 가능
 # show-preset에서도 CLI override가 최종값에 어떻게 반영되는지 미리 확인
@@ -515,3 +516,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 212. ~~planner preset discovery에 정렬 모드(`--list-presets-sort name|max-total-runs`)를 추가해 운영자가 비용 상한 기준으로 cheap-first preset 후보를 빠르게 나열할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 213. ~~planner preset discovery 정렬 모드에 `max-total-runs-desc`를 추가해(0=uncapped first) 고커버리지/고비용 preset을 우선 점검하는 역방향 리뷰 흐름을 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 214. ~~planner list/show preset의 JSON 출력(`--list-presets-format json|resolved-json`, `--show-preset-format json`)에도 `--*-with-meta`가 top-level `meta` object를 주입하도록 확장해 단일 JSON 파싱만으로 provenance/profile 관측 필드를 수집 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+215. ~~planner meta profile(non-minimal) 사용 시 기본 text meta schema id를 자동으로 v2로 승격해(`planner_preset_{list|show}_meta.v2`) parser가 키셋 추론 대신 schema id 기반 분기만으로 안정적으로 처리하도록 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

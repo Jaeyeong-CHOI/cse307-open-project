@@ -609,6 +609,19 @@ def _apply_list_meta_profile(args: argparse.Namespace) -> None:
         args.list_presets_meta_include_argv_tokens = True
 
 
+def _resolve_profile_schema_id(profile: str | None, schema_id: str, default_schema_id: str) -> str:
+    """Auto-upgrade default schema id for non-minimal meta profiles.
+
+    If callers use a richer profile but keep the default v1 schema id, bump to v2 so
+    downstream parsers can branch by schema id instead of probing optional keys.
+    """
+    if profile in (None, "minimal"):
+        return schema_id
+    if schema_id == default_schema_id:
+        return default_schema_id.rsplit(".v", 1)[0] + ".v2"
+    return schema_id
+
+
 def _dedupe_keep_order(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -1127,15 +1140,7 @@ def main() -> int:
                 "--summary-tsv-schema-id must match planner_preset_summary_tsv.vN (N>=1)"
             )
         list_meta_schema_id = str(args.list_presets_meta_schema_id).strip()
-        if not PRESET_LIST_TEXT_META_SCHEMA_PATTERN.match(list_meta_schema_id):
-            raise ValueError(
-                "--list-presets-meta-schema-id must match planner_preset_list_meta.vN (N>=1)"
-            )
         show_meta_schema_id = str(args.show_preset_meta_schema_id).strip()
-        if not PRESET_SHOW_TEXT_META_SCHEMA_PATTERN.match(show_meta_schema_id):
-            raise ValueError(
-                "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)"
-            )
         list_meta_json_schema_version = str(args.list_presets_meta_json_schema_version).strip()
         if not PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN.match(list_meta_json_schema_version):
             raise ValueError("--list-presets-meta-json-schema-version must match vN (N>=1)")
@@ -1147,6 +1152,25 @@ def main() -> int:
 
         _apply_show_meta_profile(args)
         _apply_list_meta_profile(args)
+
+        list_meta_schema_id = _resolve_profile_schema_id(
+            args.list_presets_meta_profile,
+            list_meta_schema_id,
+            PRESET_LIST_TEXT_META_SCHEMA,
+        )
+        show_meta_schema_id = _resolve_profile_schema_id(
+            args.show_preset_meta_profile,
+            show_meta_schema_id,
+            PRESET_SHOW_TEXT_META_SCHEMA,
+        )
+        if not PRESET_LIST_TEXT_META_SCHEMA_PATTERN.match(list_meta_schema_id):
+            raise ValueError(
+                "--list-presets-meta-schema-id must match planner_preset_list_meta.vN (N>=1)"
+            )
+        if not PRESET_SHOW_TEXT_META_SCHEMA_PATTERN.match(show_meta_schema_id):
+            raise ValueError(
+                "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)"
+            )
 
         if args.show_preset:
             preset = load_preset_config(args.preset_file, args.show_preset)

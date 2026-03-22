@@ -980,7 +980,7 @@ def main() -> int:
             "expected top-level meta object in resolved-json list payload: "
             f"{preset_list_resolved_json_with_meta_payload}"
         )
-    if list_meta_payload.get("schema") != "planner_preset_list_meta.v1":
+    if list_meta_payload.get("schema") != "planner_preset_list_meta.v2":
         raise AssertionError(
             "unexpected schema in resolved-json list meta payload: "
             f"{list_meta_payload}"
@@ -2099,7 +2099,7 @@ def main() -> int:
             "expected top-level meta object in show-preset json payload: "
             f"{show_preset_json_with_meta_payload}"
         )
-    if show_meta_payload.get("schema") != "planner_preset_show_meta.v1":
+    if show_meta_payload.get("schema") != "planner_preset_show_meta.v2":
         raise AssertionError(f"unexpected show-preset json meta schema: {show_meta_payload}")
     if show_meta_payload.get("preset") != "quick-smoke" or show_meta_payload.get("format") != "json":
         raise AssertionError(f"unexpected show-preset json meta identity fields: {show_meta_payload}")
