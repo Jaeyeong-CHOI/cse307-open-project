@@ -4767,6 +4767,11 @@ def main() -> int:
             "expected default list-sort-aliases match_field=both, got: "
             f"{sort_aliases_payload.get('match_field')}"
         )
+    if sort_aliases_payload.get("name_not_filter_mode") != "contains":
+        raise AssertionError(
+            "expected default list-sort-aliases name_not_filter_mode=contains, got: "
+            f"{sort_aliases_payload.get('name_not_filter_mode')}"
+        )
     if sort_aliases_payload.get("min_group_size") != 1:
         raise AssertionError(
             "expected default list-sort-aliases min_group_size=1, got: "
@@ -4823,6 +4828,11 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases match_field=both by default, got: "
             f"{grouped_sort_aliases_payload.get('match_field')}"
+        )
+    if grouped_sort_aliases_payload.get("name_not_filter_mode") != "contains":
+        raise AssertionError(
+            "expected grouped list-sort-aliases name_not_filter_mode=contains by default, got: "
+            f"{grouped_sort_aliases_payload.get('name_not_filter_mode')}"
         )
     groups = grouped_sort_aliases_payload.get("groups", {})
     total_cap_aliases = groups.get("max-total-runs", [])
@@ -5126,6 +5136,11 @@ def main() -> int:
             "expected grouped-tsv meta footer to include filter_mode context, got: "
             f"{grouped_tsv_with_meta_lines[-1]}"
         )
+    if "\tname_not_filter_mode=contains\t" not in grouped_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected grouped-tsv meta footer to include name_not_filter_mode context, got: "
+            f"{grouped_tsv_with_meta_lines[-1]}"
+        )
 
     aliases_tsv_with_meta_json_run = subprocess.run(
         [
@@ -5427,6 +5442,41 @@ def main() -> int:
             "expected --list-sort-aliases-name-not-contains to drop aliases/canonical keys containing exclusion substring"
         )
 
+    include_exclude_exact_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-name-not-contains",
+            "fair-cap",
+            "--list-sort-aliases-name-not-filter-mode",
+            "exact",
+            "--list-sort-aliases-sort",
+            "alias",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    include_exclude_exact_payload = json.loads(include_exclude_exact_run.stdout)
+    if include_exclude_exact_payload.get("name_not_filter_mode") != "exact":
+        raise AssertionError(
+            "expected name_not_filter_mode=exact in payload, got: "
+            f"{include_exclude_exact_payload.get('name_not_filter_mode')}"
+        )
+    include_exclude_exact_aliases = include_exclude_exact_payload.get("aliases", {})
+    if "fair-cap" in include_exclude_exact_aliases:
+        raise AssertionError(
+            "expected exact exclusion to remove fair-cap alias key"
+        )
+    if "fair-cap-desc" not in include_exclude_exact_aliases:
+        raise AssertionError(
+            "expected exact exclusion not to remove fair-cap-desc alias key"
+        )
+
     invalid_sort_alias_not_contains_run = subprocess.run(
         [
             "python3",
@@ -5471,6 +5521,27 @@ def main() -> int:
         raise AssertionError(
             "expected list-sort-aliases-name-contains validation error, got: "
             f"{invalid_sort_alias_contains_run.stderr}"
+        )
+
+    invalid_sort_alias_not_filter_mode_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-not-filter-mode",
+            "suffix",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_sort_alias_not_filter_mode_run.returncode == 0:
+        raise AssertionError("expected unsupported --list-sort-aliases-name-not-filter-mode to fail-fast")
+    if "invalid choice" not in (invalid_sort_alias_not_filter_mode_run.stderr or ""):
+        raise AssertionError(
+            "expected argparse invalid choice error for name-not-filter-mode, got: "
+            f"{invalid_sort_alias_not_filter_mode_run.stderr}"
         )
 
     print("OK: build_batch_eval_plan regression passed")
