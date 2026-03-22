@@ -4815,7 +4815,7 @@ def main() -> int:
             "unexpected grouped list-sort-aliases schema_version: "
             f"{grouped_sort_aliases_payload.get('schema_version')}"
         )
-    if grouped_sort_aliases_payload.get("group_schema_version") != "v1":
+    if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(
             "unexpected grouped list-sort-aliases group_schema_version: "
             f"{grouped_sort_aliases_payload.get('group_schema_version')}"
@@ -4846,6 +4846,18 @@ def main() -> int:
             "expected grouped list-sort-aliases group_count to match groups size, got: "
             f"{grouped_sort_aliases_payload.get('group_count')} vs {len(groups)}"
         )
+    group_sizes = grouped_sort_aliases_payload.get("group_sizes", {})
+    if set(group_sizes.keys()) != set(groups.keys()):
+        raise AssertionError(
+            "expected grouped list-sort-aliases group_sizes keys to match groups keys, got: "
+            f"{sorted(group_sizes.keys())} vs {sorted(groups.keys())}"
+        )
+    for canonical, aliases_in_group in groups.items():
+        if group_sizes.get(canonical) != len(aliases_in_group):
+            raise AssertionError(
+                "expected grouped list-sort-aliases group_sizes to equal per-group alias counts, got: "
+                f"{canonical} -> {group_sizes.get(canonical)} vs {len(aliases_in_group)}"
+            )
     total_cap_aliases = groups.get("max-total-runs", [])
     if "total-cap" not in total_cap_aliases:
         raise AssertionError(f"expected total-cap alias in max-total-runs group, got: {total_cap_aliases}")

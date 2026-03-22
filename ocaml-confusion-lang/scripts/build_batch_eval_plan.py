@@ -2283,12 +2283,13 @@ def main() -> int:
                 args.list_sort_aliases_case_sensitive,
             )
             grouped = _build_sort_alias_groups(alias_map)
+            group_sizes = {canonical: len(aliases) for canonical, aliases in grouped.items()}
             if args.list_sort_aliases_format == "grouped-json":
                 print(
                     json.dumps(
                         {
                             "schema_version": "v2",
-                            "group_schema_version": "v1",
+                            "group_schema_version": "v2",
                             "filtered_count": filtered_count,
                             "emitted_count": len(alias_map),
                             "truncated": truncated,
@@ -2303,6 +2304,7 @@ def main() -> int:
                             "limit": args.list_sort_aliases_limit,
                             "sort": args.list_sort_aliases_sort,
                             "group_count": len(grouped),
+                            "group_sizes": group_sizes,
                             "groups": grouped,
                         },
                         ensure_ascii=False,
