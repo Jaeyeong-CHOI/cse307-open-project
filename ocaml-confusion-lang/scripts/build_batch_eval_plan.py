@@ -193,6 +193,8 @@ def _format_sort_aliases_tsv_meta(
     case_sensitive: bool,
     limit: int | None,
     sort_mode: str,
+    sort_requested: str,
+    sort_alias_resolved: bool,
     group_count: int,
     min_group_size: int,
     max_group_size: int | None,
@@ -234,6 +236,8 @@ def _format_sort_aliases_tsv_meta(
                 "case_sensitive": case_sensitive,
                 "limit": limit,
                 "sort": sort_mode,
+                "sort_requested": sort_requested,
+                "sort_alias_resolved": sort_alias_resolved,
                 "group_count": group_count,
                 "min_group_size": min_group_size,
                 "max_group_size": max_group_size,
@@ -272,6 +276,8 @@ def _format_sort_aliases_tsv_meta(
         f"case_sensitive={str(case_sensitive).lower()}\t"
         f"limit={limit if limit is not None else 'none'}\t"
         f"sort={sort_mode}\t"
+        f"sort_requested={sort_requested}\t"
+        f"sort_alias_resolved={str(sort_alias_resolved).lower()}\t"
         f"group_count={group_count}\t"
         f"min_group_size={min_group_size}\t"
         f"max_group_size={max_group_size if max_group_size is not None else 'none'}\t"
@@ -2902,6 +2908,10 @@ def main() -> int:
 
         if args.list_sort_aliases:
             resolved_list_sort_aliases_sort = _resolve_list_sort_aliases_sort(args.list_sort_aliases_sort)
+            list_sort_aliases_sort_requested = args.list_sort_aliases_sort
+            list_sort_aliases_sort_alias_resolved = (
+                resolved_list_sort_aliases_sort != list_sort_aliases_sort_requested
+            )
             alias_map, filtered_count, truncated = _filter_sort_alias_map(
                 args.list_sort_aliases_name_contains,
                 args.list_sort_aliases_name_not_contains,
@@ -2974,6 +2984,8 @@ def main() -> int:
                             "max_group_size_delta_abs_pct": args.list_sort_aliases_max_group_size_delta_abs_pct,
                             "limit": args.list_sort_aliases_limit,
                             "sort": resolved_list_sort_aliases_sort,
+                            "sort_requested": list_sort_aliases_sort_requested,
+                            "sort_alias_resolved": list_sort_aliases_sort_alias_resolved,
                             "group_count": len(grouped),
                             "group_sizes": group_sizes,
                             "group_share_pct": group_share_pct,
@@ -3009,6 +3021,8 @@ def main() -> int:
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=resolved_list_sort_aliases_sort,
+                            sort_requested=list_sort_aliases_sort_requested,
+                            sort_alias_resolved=list_sort_aliases_sort_alias_resolved,
                             group_count=len(grouped),
                             min_group_size=args.list_sort_aliases_min_group_size,
                             max_group_size=args.list_sort_aliases_max_group_size,
@@ -3057,6 +3071,8 @@ def main() -> int:
                             case_sensitive=args.list_sort_aliases_case_sensitive,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=resolved_list_sort_aliases_sort,
+                            sort_requested=list_sort_aliases_sort_requested,
+                            sort_alias_resolved=list_sort_aliases_sort_alias_resolved,
                             group_count=len(grouped),
                             min_group_size=args.list_sort_aliases_min_group_size,
                             max_group_size=args.list_sort_aliases_max_group_size,
@@ -3118,6 +3134,8 @@ def main() -> int:
                         "max_group_size_delta_abs_pct": args.list_sort_aliases_max_group_size_delta_abs_pct,
                         "limit": args.list_sort_aliases_limit,
                         "sort": resolved_list_sort_aliases_sort,
+                        "sort_requested": list_sort_aliases_sort_requested,
+                        "sort_alias_resolved": list_sort_aliases_sort_alias_resolved,
                         "group_count": len(grouped),
                         "group_sizes": group_sizes,
                         "group_share_pct": group_share_pct,

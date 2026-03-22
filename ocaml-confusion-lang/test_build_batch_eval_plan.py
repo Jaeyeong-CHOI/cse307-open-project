@@ -4757,6 +4757,16 @@ def main() -> int:
             "expected default list-sort-aliases sort=alias, got: "
             f"{sort_aliases_payload.get('sort')}"
         )
+    if sort_aliases_payload.get("sort_requested") != "alias":
+        raise AssertionError(
+            "expected default list-sort-aliases sort_requested=alias, got: "
+            f"{sort_aliases_payload.get('sort_requested')}"
+        )
+    if sort_aliases_payload.get("sort_alias_resolved") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases sort_alias_resolved=false, got: "
+            f"{sort_aliases_payload.get('sort_alias_resolved')}"
+        )
     if sort_aliases_payload.get("filter_mode") != "contains":
         raise AssertionError(
             "expected default list-sort-aliases filter_mode=contains, got: "
@@ -5280,6 +5290,16 @@ def main() -> int:
         raise AssertionError(
             "expected skew-size-pct to resolve to group-size-delta-pct-abs-desc, got: "
             f"{skew_size_pct_sort_payload.get('sort')}"
+        )
+    if skew_size_pct_sort_payload.get("sort_requested") != "skew-size-pct":
+        raise AssertionError(
+            "expected skew-size-pct payload to preserve sort_requested, got: "
+            f"{skew_size_pct_sort_payload.get('sort_requested')}"
+        )
+    if skew_size_pct_sort_payload.get("sort_alias_resolved") is not True:
+        raise AssertionError(
+            "expected skew-size-pct payload sort_alias_resolved=true, got: "
+            f"{skew_size_pct_sort_payload.get('sort_alias_resolved')}"
         )
     if list(skew_size_pct_sort_payload.get("aliases", {}).items()) != expected_group_size_delta_pct_abs_aliases:
         raise AssertionError(

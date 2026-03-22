@@ -113,6 +113,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort name-desc
 # sort alias canonical 매핑(JSON) 조회 (alias -> canonical)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases
+# sort 모드 provenance 확인(sort_requested/sort_alias_resolved): alias 입력이 canonical sort로 어떻게 해석됐는지 추적
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-sort skew-size-pct
 # sort alias 그룹 매핑(JSON) 조회 (canonical -> aliases, group_sizes, group_share_pct)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format grouped-json
 # sort alias 매핑을 TSV로 조회 (jq 없이 shell/CI에서 바로 소비; canonical_group_count/share_pct 포함)
@@ -796,3 +798,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 281. ~~`--list-sort-aliases`에 local-global canonical family 크기 변화율(%) 필터(`--list-sort-aliases-min/max-group-size-delta-pct`, `--list-sort-aliases-min/max-group-size-delta-abs-pct`)를 추가해 상대 fan-out skew를 정렬 전에 임계값 기반으로 fail-fast 선별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 282. ~~`--list-sort-aliases-sort`에 skew triage shorthand alias(`skew-share`, `skew-size`, `skew-size-pct` + asc/desc 변형)를 추가해 긴 delta sort 키 입력 부담을 줄이고 편향 점검 루프를 빠르게 수행할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 283. ~~`--list-sort-aliases-sort`에 ultra-short skew alias(`skew`, `skew-count`, `skew-pct` + asc/desc 변형)를 추가해 share/size/size%% triage 호출 길이를 더 줄이고 모바일/CI 로그 복붙 ergonomics를 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+284. ~~`--list-sort-aliases` 출력에 `sort_requested`/`sort_alias_resolved` provenance 필드를 추가해 sort alias(`skew-*`)가 canonical sort key로 해석된 경로를 JSON/TSV 메타데이터에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
