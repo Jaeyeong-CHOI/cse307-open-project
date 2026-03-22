@@ -400,6 +400,8 @@ def _sort_preset_names(
         "prompt-condition-count-desc",
         "max-runs-per-model",
         "max-runs-per-model-desc",
+        "max-runs-per-prompt-condition",
+        "max-runs-per-prompt-condition-desc",
         "description-length",
         "description-length-desc",
         "tag-count",
@@ -413,6 +415,7 @@ def _sort_preset_names(
         resolved_prompt_condition_counts: dict[str, int] = {}
         resolved_description_lengths: dict[str, int] = {}
         resolved_max_runs_per_model: dict[str, int] = {}
+        resolved_max_runs_per_prompt_condition: dict[str, int] = {}
         resolved_cheap_first_tag_flags: dict[str, int] = {}
         resolved_custom_tag_flags: dict[str, int] = {}
         resolved_tag_counts: dict[str, int] = {}
@@ -438,6 +441,9 @@ def _sort_preset_names(
             else:
                 resolved_prompt_condition_counts[name] = 0
             resolved_max_runs_per_model[name] = int(resolved.get("max_runs_per_model", 0))
+            resolved_max_runs_per_prompt_condition[name] = int(
+                resolved.get("max_runs_per_prompt_condition", 0)
+            )
             description_text = _preset_description_text(resolved.get("description", ""))
             resolved_description_lengths[name] = 0 if description_text == "-" else len(description_text)
             tags = resolved.get("tags", [])
@@ -501,6 +507,28 @@ def _sort_preset_names(
                 return (is_uncapped, normalized_cap, name)
 
             return sorted(preset_names, key=max_runs_per_model_desc_sort_key)
+
+        if sort_mode == "max-runs-per-prompt-condition":
+            def max_runs_per_prompt_condition_asc_sort_key(name: str) -> tuple[int, int, str]:
+                max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
+                is_uncapped = 1 if max_runs_per_prompt_condition == 0 else 0
+                normalized_cap = (
+                    max_runs_per_prompt_condition
+                    if max_runs_per_prompt_condition > 0
+                    else sys.maxsize
+                )
+                return (is_uncapped, normalized_cap, name)
+
+            return sorted(preset_names, key=max_runs_per_prompt_condition_asc_sort_key)
+
+        if sort_mode == "max-runs-per-prompt-condition-desc":
+            def max_runs_per_prompt_condition_desc_sort_key(name: str) -> tuple[int, int, str]:
+                max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
+                is_uncapped = 0 if max_runs_per_prompt_condition == 0 else 1
+                normalized_cap = -max_runs_per_prompt_condition if max_runs_per_prompt_condition > 0 else 0
+                return (is_uncapped, normalized_cap, name)
+
+            return sorted(preset_names, key=max_runs_per_prompt_condition_desc_sort_key)
 
         if sort_mode == "description-length":
             return sorted(preset_names, key=lambda name: (resolved_description_lengths[name], name))
@@ -1038,6 +1066,8 @@ def parse_args() -> argparse.Namespace:
             "prompt-condition-count (ascending), prompt-condition-count-desc (descending), "
             "max-runs-per-model (ascending; capped presets first, 0/uncapped last), "
             "max-runs-per-model-desc (descending; 0/uncapped first), "
+            "max-runs-per-prompt-condition (ascending; capped presets first, 0/uncapped last), "
+            "max-runs-per-prompt-condition-desc (descending; 0/uncapped first), "
             "description-length (ascending normalized description length), description-length-desc (descending), "
             "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "

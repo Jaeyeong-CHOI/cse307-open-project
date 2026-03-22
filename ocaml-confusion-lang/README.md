@@ -131,6 +131,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort prom
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-runs-per-model
 # 모델별 run cap(max_runs_per_model) 기준 내림차순 정렬(0=uncapped는 처음)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-runs-per-model-desc
+# 프롬프트 조건별 run cap(max_runs_per_prompt_condition) 기준 오름차순 정렬(0=uncapped는 마지막)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-runs-per-prompt-condition
+# 프롬프트 조건별 run cap(max_runs_per_prompt_condition) 기준 내림차순 정렬(0=uncapped는 처음)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-runs-per-prompt-condition-desc
 # 설명 길이(description length) 기준 오름차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort description-length
 # 설명 길이(description length) 기준 내림차순 정렬(동률은 이름순)
@@ -561,3 +565,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 223. ~~planner preset discovery 정렬 모드에 `prompt-condition-count`/`prompt-condition-count-desc`를 추가해 프롬프트 조건 축 복잡도(단일 조건 smoke ↔ 다조건 분석) 기준으로 preset 탐색 순서를 즉시 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 224. ~~planner preset discovery 정렬 모드에 `name-desc`를 추가해 preset 이름 역순(최근/우선순위 네이밍 관례 기반) 탐색을 빠르게 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 225. ~~planner preset discovery 정렬 모드에 `max-runs-per-model`/`max-runs-per-model-desc`를 추가해 모델별 cap 강도(제한적 CI preset ↔ uncapped 분석 preset) 기준으로 저비용 우선 triage를 빠르게 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+226. ~~planner preset discovery 정렬 모드에 `max-runs-per-prompt-condition`/`max-runs-per-prompt-condition-desc`를 추가해 프롬프트 조건별 cap 강도(제한적 CI preset ↔ uncapped 분석 preset) 기준으로 저비용 우선 triage를 빠르게 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
