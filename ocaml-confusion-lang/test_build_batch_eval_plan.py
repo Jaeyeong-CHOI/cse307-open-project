@@ -2429,6 +2429,11 @@ def main() -> int:
             "expected resolved-json payload output_format=resolved-json, got: "
             f"{preset_list_resolved_json_limited_payload}"
         )
+    if preset_list_resolved_json_limited_payload.get("output_delimiter") != "none":
+        raise AssertionError(
+            "expected resolved-json payload output_delimiter=none, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
 
     preset_list_resolved_json_with_meta = subprocess.run(
         [
@@ -2473,6 +2478,11 @@ def main() -> int:
     if list_meta_payload.get("output_format") != "resolved-json":
         raise AssertionError(
             "expected resolved-json list meta output_format=resolved-json, got: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("output_delimiter") != "none":
+        raise AssertionError(
+            "expected resolved-json list meta output_delimiter=none, got: "
             f"{list_meta_payload}"
         )
     for required_key in (
@@ -3567,6 +3577,8 @@ def main() -> int:
         raise AssertionError(f"unexpected show-preset name: {show_preset_payload}")
     if show_preset_payload.get("output_format") != "json":
         raise AssertionError(f"unexpected show-preset output_format: {show_preset_payload}")
+    if show_preset_payload.get("output_delimiter") != "none":
+        raise AssertionError(f"unexpected show-preset output_delimiter: {show_preset_payload}")
     resolved = show_preset_payload.get("resolved")
     if not isinstance(resolved, dict):
         raise AssertionError(f"missing resolved preset payload: {show_preset_payload}")
@@ -3603,6 +3615,7 @@ def main() -> int:
         show_meta_payload.get("preset") != "quick-smoke"
         or show_meta_payload.get("format") != "json"
         or show_meta_payload.get("output_format") != "json"
+        or show_meta_payload.get("output_delimiter") != "none"
     ):
         raise AssertionError(f"unexpected show-preset json meta identity fields: {show_meta_payload}")
     if show_meta_payload.get("filtered_count") != 1 or show_meta_payload.get("emitted_count") != 1:

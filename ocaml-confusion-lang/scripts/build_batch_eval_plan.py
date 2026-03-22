@@ -2004,6 +2004,14 @@ def _emit_text_or_json_meta(
     print("# meta\t" + "\t".join(text_fields))
 
 
+def _resolve_preset_output_delimiter(output_format: str) -> str:
+    if output_format == "summary-tsv":
+        return "tab"
+    if output_format in {"json", "resolved-json"}:
+        return "none"
+    return "newline"
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -3268,6 +3276,7 @@ def main() -> int:
                 "preset_file": str(args.preset_file),
                 "preset": args.show_preset,
                 "output_format": args.show_preset_format,
+                "output_delimiter": _resolve_preset_output_delimiter(args.show_preset_format),
                 "resolved": resolved,
             }
             show_meta_extra_fields: dict[str, Any] | None = None
@@ -3368,6 +3377,7 @@ def main() -> int:
                     "preset": args.show_preset,
                     "format": args.show_preset_format,
                     "output_format": args.show_preset_format,
+                    "output_delimiter": _resolve_preset_output_delimiter(args.show_preset_format),
                     "preset_file": str(args.preset_file),
                 },
                 show_meta_extra_fields,
@@ -4217,6 +4227,7 @@ def main() -> int:
                     "emitted_count": len(preset_names),
                     "truncated": truncated,
                     "output_format": args.list_presets_format,
+                    "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
                     "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
@@ -4261,6 +4272,7 @@ def main() -> int:
                 payload = {
                     "schema_version": "v1",
                     "output_format": args.list_presets_format,
+                    "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
                     "presets": limited_presets,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
@@ -4315,6 +4327,7 @@ def main() -> int:
                 payload = {
                     "schema_version": "v1",
                     "output_format": args.list_presets_format,
+                    "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
                     "preset_file": str(args.preset_file),
                     "presets": resolved_presets,
                     "filtered_count": len(filtered_presets),

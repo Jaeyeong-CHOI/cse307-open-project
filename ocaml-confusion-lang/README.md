@@ -354,6 +354,7 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort tag:
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --list-presets-limit 2 --list-presets-with-meta
 # list-presets meta를 JSON 한 줄로 출력(텍스트 key=value split 없이 parser-friendly)
 # JSON meta line은 wrapper 버전 식별용 schema_version(v1) 필드를 포함
+# list-presets JSON payload/meta에는 output_delimiter(none|newline|tab) provenance도 포함
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-format json
 # JSON meta wrapper schema_version을 override(v2 migration rehearsal)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-json-schema-version v2
@@ -417,6 +418,7 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary-tsv --show-preset-with-meta
 # show-preset meta를 JSON 한 줄로 출력(자동화 parser 친화)
 # JSON meta line은 schema id와 별도로 wrapper schema_version(v1)을 함께 제공
+# show-preset JSON payload/meta에는 output_delimiter(none|newline|tab) provenance도 포함
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json
 # show-preset JSON meta wrapper schema_version을 override(v2 migration rehearsal)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-json-schema-version v2
