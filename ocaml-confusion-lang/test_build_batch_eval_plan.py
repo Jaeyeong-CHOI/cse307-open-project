@@ -5402,6 +5402,16 @@ def main() -> int:
             "expected default list-sort-aliases output_format=aliases-json, got: "
             f"{sort_aliases_payload.get('output_format')}"
         )
+    if sort_aliases_payload.get("output_format_requested") != "aliases-json":
+        raise AssertionError(
+            "expected default list-sort-aliases output_format_requested=aliases-json, got: "
+            f"{sort_aliases_payload.get('output_format_requested')}"
+        )
+    if sort_aliases_payload.get("output_format_alias_resolved") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases output_format_alias_resolved=false, got: "
+            f"{sort_aliases_payload.get('output_format_alias_resolved')}"
+        )
     if sort_aliases_payload.get("filtered_count") != len(sort_aliases_payload.get("aliases", {})):
         raise AssertionError(
             "expected filtered_count to match emitted aliases without limit, got: "
@@ -5654,6 +5664,47 @@ def main() -> int:
             "expected grouped list-sort-aliases output_format=grouped-json, got: "
             f"{grouped_sort_aliases_payload.get('output_format')}"
         )
+    if grouped_sort_aliases_payload.get("output_format_requested") != "grouped-json":
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_format_requested=grouped-json, got: "
+            f"{grouped_sort_aliases_payload.get('output_format_requested')}"
+        )
+    if grouped_sort_aliases_payload.get("output_format_alias_resolved") is not False:
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_format_alias_resolved=false, got: "
+            f"{grouped_sort_aliases_payload.get('output_format_alias_resolved')}"
+        )
+
+    grouped_sort_aliases_alias_format_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "gj",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    grouped_sort_aliases_alias_format_payload = json.loads(grouped_sort_aliases_alias_format_run.stdout)
+    if grouped_sort_aliases_alias_format_payload.get("output_format") != "grouped-json":
+        raise AssertionError(
+            "expected shorthand format gj to resolve output_format=grouped-json, got: "
+            f"{grouped_sort_aliases_alias_format_payload.get('output_format')}"
+        )
+    if grouped_sort_aliases_alias_format_payload.get("output_format_requested") != "gj":
+        raise AssertionError(
+            "expected shorthand format gj to preserve output_format_requested=gj, got: "
+            f"{grouped_sort_aliases_alias_format_payload.get('output_format_requested')}"
+        )
+    if grouped_sort_aliases_alias_format_payload.get("output_format_alias_resolved") is not True:
+        raise AssertionError(
+            "expected shorthand format gj to set output_format_alias_resolved=true, got: "
+            f"{grouped_sort_aliases_alias_format_payload.get('output_format_alias_resolved')}"
+        )
+
     if grouped_sort_aliases_payload.get("sort") != "alias":
         raise AssertionError(
             "expected grouped list-sort-aliases sort=alias by default, got: "

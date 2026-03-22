@@ -129,6 +129,19 @@ TAG_MATCH_MODE_ALIAS_MAP: dict[str, str] = {
     "o": "any",
 }
 
+LIST_SORT_ALIASES_FORMAT_ALIAS_MAP: dict[str, str] = {
+    "aj": "aliases-json",
+    "gj": "grouped-json",
+    "at": "aliases-tsv",
+    "gt": "grouped-tsv",
+    "atr": "aliases-tsv-rows",
+    "gtr": "grouped-tsv-rows",
+    "n": "names",
+    "cn": "canonical-names",
+    "nj": "names-json",
+    "cnj": "canonical-names-json",
+}
+
 
 def _resolve_filter_mode(mode: str) -> str:
     return FILTER_MODE_ALIAS_MAP.get(mode, mode)
@@ -144,6 +157,10 @@ def _resolve_tag_match_mode(match_mode: str) -> str:
 
 def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
     return LIST_SORT_ALIASES_SORT_ALIAS_MAP.get(sort_mode, sort_mode)
+
+
+def _resolve_list_sort_aliases_format(output_format: str) -> str:
+    return LIST_SORT_ALIASES_FORMAT_ALIAS_MAP.get(output_format, output_format)
 
 
 def _normalize_sort_alias_name_filter_value(value: str | None, *, case_sensitive: bool) -> str | None:
@@ -277,6 +294,8 @@ def _resolve_sort_aliases_output_kind(output_format: str) -> str:
 def _format_sort_aliases_tsv_meta(
     *,
     output_format: str,
+    output_format_requested: str,
+    output_format_alias_resolved: bool,
     filtered_count: int,
     emitted_count: int,
     truncated: bool,
@@ -336,6 +355,8 @@ def _format_sort_aliases_tsv_meta(
                 "schema": SORT_ALIASES_TSV_META_SCHEMA,
                 "output": output,
                 "output_format": output_format,
+                "output_format_requested": output_format_requested,
+                "output_format_alias_resolved": output_format_alias_resolved,
                 "filtered_count": filtered_count,
                 "emitted_count": emitted_count,
                 "truncated": truncated,
@@ -390,6 +411,8 @@ def _format_sort_aliases_tsv_meta(
         f"schema={SORT_ALIASES_TSV_META_SCHEMA}\t"
         f"output={output}\t"
         f"output_format={output_format}\t"
+        f"output_format_requested={output_format_requested}\t"
+        f"output_format_alias_resolved={str(output_format_alias_resolved).lower()}\t"
         f"filtered_count={filtered_count}\t"
         f"emitted_count={emitted_count}\t"
         f"truncated={str(truncated).lower()}\t"
@@ -2175,13 +2198,24 @@ def parse_args() -> argparse.Namespace:
             "canonical-names",
             "names-json",
             "canonical-names-json",
+            "aj",
+            "gj",
+            "at",
+            "gt",
+            "atr",
+            "gtr",
+            "n",
+            "cn",
+            "nj",
+            "cnj",
         ),
         default="aliases-json",
         help=(
             "Output format for --list-sort-aliases: aliases-json (default, alias->canonical), "
             "grouped-json (canonical->[aliases]), aliases-tsv/grouped-tsv (with header), "
             "aliases-tsv-rows/grouped-tsv-rows (headerless rows), names (alias-only list), "
-            "canonical-names (canonical-key-only list), names-json, or canonical-names-json."
+            "canonical-names (canonical-key-only list), names-json, or canonical-names-json. "
+            "Shorthand aliases: aj|gj|at|gt|atr|gtr|n|cn|nj|cnj."
         ),
     )
     parser.add_argument(
@@ -3181,6 +3215,11 @@ def main() -> int:
             return 0
 
         if args.list_sort_aliases:
+            resolved_list_sort_aliases_format = _resolve_list_sort_aliases_format(args.list_sort_aliases_format)
+            list_sort_aliases_format_requested = args.list_sort_aliases_format
+            list_sort_aliases_format_alias_resolved = (
+                resolved_list_sort_aliases_format != list_sort_aliases_format_requested
+            )
             resolved_list_sort_aliases_sort = _resolve_list_sort_aliases_sort(args.list_sort_aliases_sort)
             list_sort_aliases_sort_requested = args.list_sort_aliases_sort
             list_sort_aliases_sort_alias_resolved = (
@@ -3255,7 +3294,9 @@ def main() -> int:
 
             def build_sort_aliases_meta_footer() -> str:
                 return _format_sort_aliases_tsv_meta(
-                    output_format=args.list_sort_aliases_format,
+                    output_format=resolved_list_sort_aliases_format,
+                    output_format_requested=list_sort_aliases_format_requested,
+                    output_format_alias_resolved=list_sort_aliases_format_alias_resolved,
                     filtered_count=filtered_count,
                     emitted_count=len(alias_map),
                     truncated=truncated,
@@ -3306,7 +3347,7 @@ def main() -> int:
                     json_schema_version=sort_aliases_meta_json_schema_version,
                 )
 
-            if args.list_sort_aliases_format == "grouped-json":
+            if resolved_list_sort_aliases_format == "grouped-json":
                 print(
                     json.dumps(
                         {
@@ -3314,7 +3355,9 @@ def main() -> int:
                             "schema": "planner_sort_aliases.v2",
                             "output": "grouped",
                             "group_schema_version": "v2",
-                            "output_format": "grouped-json",
+                            "output_format": resolved_list_sort_aliases_format,
+                            "output_format_requested": list_sort_aliases_format_requested,
+                            "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                             "filtered_count": filtered_count,
                             "emitted_count": len(alias_map),
                             "truncated": truncated,
@@ -3373,24 +3416,26 @@ def main() -> int:
                     )
                 )
                 return 0
-            if args.list_sort_aliases_format == "names":
+            if resolved_list_sort_aliases_format == "names":
                 print("\n".join(alias_map.keys()))
                 if args.list_sort_aliases_names_with_meta:
                     print(build_sort_aliases_meta_footer())
                 return 0
-            if args.list_sort_aliases_format == "canonical-names":
+            if resolved_list_sort_aliases_format == "canonical-names":
                 print("\n".join(grouped.keys()))
                 if args.list_sort_aliases_names_with_meta:
                     print(build_sort_aliases_meta_footer())
                 return 0
-            if args.list_sort_aliases_format == "names-json":
+            if resolved_list_sort_aliases_format == "names-json":
                 print(
                     json.dumps(
                         {
                             "schema_version": "v1",
                             "schema": "planner_sort_alias_names.v1",
                             "output": "names",
-                            "output_format": "names-json",
+                            "output_format": resolved_list_sort_aliases_format,
+                            "output_format_requested": list_sort_aliases_format_requested,
+                            "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                             "filtered_count": filtered_count,
                             "emitted_count": len(alias_map),
                             "truncated": truncated,
@@ -3444,14 +3489,16 @@ def main() -> int:
                     )
                 )
                 return 0
-            if args.list_sort_aliases_format == "canonical-names-json":
+            if resolved_list_sort_aliases_format == "canonical-names-json":
                 print(
                     json.dumps(
                         {
                             "schema_version": "v1",
                             "schema": "planner_sort_alias_names.v1",
                             "output": "canonical-names",
-                            "output_format": "canonical-names-json",
+                            "output_format": resolved_list_sort_aliases_format,
+                            "output_format_requested": list_sort_aliases_format_requested,
+                            "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                             "filtered_count": filtered_count,
                             "emitted_count": len(grouped),
                             "truncated": truncated,
@@ -3505,7 +3552,7 @@ def main() -> int:
                     )
                 )
                 return 0
-            if args.list_sort_aliases_format == "aliases-tsv":
+            if resolved_list_sort_aliases_format == "aliases-tsv":
                 print(
                     _format_sort_aliases_tsv(
                         alias_map,
@@ -3516,7 +3563,7 @@ def main() -> int:
                 if args.list_sort_aliases_tsv_with_meta:
                     print(build_sort_aliases_meta_footer())
                 return 0
-            if args.list_sort_aliases_format == "grouped-tsv":
+            if resolved_list_sort_aliases_format == "grouped-tsv":
                 print(
                     _format_sort_alias_groups_tsv(
                         grouped,
@@ -3527,7 +3574,7 @@ def main() -> int:
                 if args.list_sort_aliases_tsv_with_meta:
                     print(build_sort_aliases_meta_footer())
                 return 0
-            if args.list_sort_aliases_format == "aliases-tsv-rows":
+            if resolved_list_sort_aliases_format == "aliases-tsv-rows":
                 print(
                     _format_sort_aliases_tsv(
                         alias_map,
@@ -3539,7 +3586,7 @@ def main() -> int:
                 if args.list_sort_aliases_tsv_with_meta:
                     print(build_sort_aliases_meta_footer())
                 return 0
-            if args.list_sort_aliases_format == "grouped-tsv-rows":
+            if resolved_list_sort_aliases_format == "grouped-tsv-rows":
                 print(
                     _format_sort_alias_groups_tsv(
                         grouped,
@@ -3557,7 +3604,9 @@ def main() -> int:
                         "schema_version": "v2",
                         "schema": "planner_sort_aliases.v2",
                         "output": "aliases",
-                        "output_format": "aliases-json",
+                        "output_format": resolved_list_sort_aliases_format,
+                        "output_format_requested": list_sort_aliases_format_requested,
+                        "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
                         "filtered_count": filtered_count,
                         "emitted_count": len(alias_map),
                         "truncated": truncated,
