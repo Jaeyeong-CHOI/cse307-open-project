@@ -414,14 +414,20 @@ def _sort_preset_names(
         "max-runs-per-task-desc",
         "per-task-cap",
         "per-task-cap-desc",
+        "task-cap",
+        "task-cap-desc",
         "max-runs-per-task-model",
         "max-runs-per-task-model-desc",
         "per-task-model-cap",
         "per-task-model-cap-desc",
+        "task-model-cap",
+        "task-model-cap-desc",
         "max-runs-per-task-prompt-condition",
         "max-runs-per-task-prompt-condition-desc",
         "per-task-prompt-cap",
         "per-task-prompt-cap-desc",
+        "task-condition-cap",
+        "task-condition-cap-desc",
         "description-length",
         "description-length-desc",
         "tag-count",
@@ -562,7 +568,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_prompt_condition_desc_sort_key)
 
-        if sort_mode in ("max-runs-per-task", "per-task-cap"):
+        if sort_mode in ("max-runs-per-task", "per-task-cap", "task-cap"):
             def max_runs_per_task_asc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_task = resolved_max_runs_per_task[name]
                 is_uncapped = 1 if max_runs_per_task == 0 else 0
@@ -571,7 +577,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_task_asc_sort_key)
 
-        if sort_mode in ("max-runs-per-task-desc", "per-task-cap-desc"):
+        if sort_mode in ("max-runs-per-task-desc", "per-task-cap-desc", "task-cap-desc"):
             def max_runs_per_task_desc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_task = resolved_max_runs_per_task[name]
                 is_uncapped = 0 if max_runs_per_task == 0 else 1
@@ -580,7 +586,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_task_desc_sort_key)
 
-        if sort_mode in ("max-runs-per-task-model", "per-task-model-cap"):
+        if sort_mode in ("max-runs-per-task-model", "per-task-model-cap", "task-model-cap"):
             def max_runs_per_task_model_asc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_task_model = resolved_max_runs_per_task_model[name]
                 is_uncapped = 1 if max_runs_per_task_model == 0 else 0
@@ -589,7 +595,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_task_model_asc_sort_key)
 
-        if sort_mode in ("max-runs-per-task-model-desc", "per-task-model-cap-desc"):
+        if sort_mode in ("max-runs-per-task-model-desc", "per-task-model-cap-desc", "task-model-cap-desc"):
             def max_runs_per_task_model_desc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_task_model = resolved_max_runs_per_task_model[name]
                 is_uncapped = 0 if max_runs_per_task_model == 0 else 1
@@ -598,7 +604,11 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_task_model_desc_sort_key)
 
-        if sort_mode in ("max-runs-per-task-prompt-condition", "per-task-prompt-cap"):
+        if sort_mode in (
+            "max-runs-per-task-prompt-condition",
+            "per-task-prompt-cap",
+            "task-condition-cap",
+        ):
             def max_runs_per_task_prompt_condition_asc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_task_prompt_condition = resolved_max_runs_per_task_prompt_condition[name]
                 is_uncapped = 1 if max_runs_per_task_prompt_condition == 0 else 0
@@ -611,7 +621,11 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_task_prompt_condition_asc_sort_key)
 
-        if sort_mode in ("max-runs-per-task-prompt-condition-desc", "per-task-prompt-cap-desc"):
+        if sort_mode in (
+            "max-runs-per-task-prompt-condition-desc",
+            "per-task-prompt-cap-desc",
+            "task-condition-cap-desc",
+        ):
             def max_runs_per_task_prompt_condition_desc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_task_prompt_condition = resolved_max_runs_per_task_prompt_condition[name]
                 is_uncapped = 0 if max_runs_per_task_prompt_condition == 0 else 1
@@ -1171,14 +1185,20 @@ def parse_args() -> argparse.Namespace:
             "max-runs-per-task-desc (descending; 0/uncapped first), "
             "per-task-cap (alias of max-runs-per-task), "
             "per-task-cap-desc (alias of max-runs-per-task-desc), "
+            "task-cap (alias of max-runs-per-task), "
+            "task-cap-desc (alias of max-runs-per-task-desc), "
             "max-runs-per-task-model (ascending; capped presets first, 0/uncapped last), "
             "max-runs-per-task-model-desc (descending; 0/uncapped first), "
             "per-task-model-cap (alias of max-runs-per-task-model), "
             "per-task-model-cap-desc (alias of max-runs-per-task-model-desc), "
+            "task-model-cap (alias of max-runs-per-task-model), "
+            "task-model-cap-desc (alias of max-runs-per-task-model-desc), "
             "max-runs-per-task-prompt-condition (ascending; capped presets first, 0/uncapped last), "
             "max-runs-per-task-prompt-condition-desc (descending; 0/uncapped first), "
             "per-task-prompt-cap (alias of max-runs-per-task-prompt-condition), "
             "per-task-prompt-cap-desc (alias of max-runs-per-task-prompt-condition-desc), "
+            "task-condition-cap (alias of max-runs-per-task-prompt-condition), "
+            "task-condition-cap-desc (alias of max-runs-per-task-prompt-condition-desc), "
             "description-length (ascending normalized description length), description-length-desc (descending), "
             "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "

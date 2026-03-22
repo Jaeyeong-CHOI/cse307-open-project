@@ -159,6 +159,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-cap
 # task별 run cap 정렬 단축 alias 내림차순(=max-runs-per-task-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-cap-desc
+# task별 run cap 정렬 초단축 alias(=max-runs-per-task)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-cap
+# task별 run cap 정렬 초단축 alias 내림차순(=max-runs-per-task-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-cap-desc
 # task×model run cap(max_runs_per_task_model) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-runs-per-task-model
 # task×model run cap(max_runs_per_task_model) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -167,6 +171,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-model-cap
 # task×model run cap 정렬 단축 alias 내림차순(=max-runs-per-task-model-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-model-cap-desc
+# task×model run cap 정렬 초단축 alias(=max-runs-per-task-model)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-model-cap
+# task×model run cap 정렬 초단축 alias 내림차순(=max-runs-per-task-model-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-model-cap-desc
 # task×prompt_condition run cap(max_runs_per_task_prompt_condition) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-runs-per-task-prompt-condition
 # task×prompt_condition run cap(max_runs_per_task_prompt_condition) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -175,6 +183,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-prompt-cap
 # task×prompt_condition run cap 정렬 단축 alias 내림차순(=max-runs-per-task-prompt-condition-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort per-task-prompt-cap-desc
+# task×condition run cap 정렬 초단축 alias(=max-runs-per-task-prompt-condition)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-condition-cap
+# task×condition run cap 정렬 초단축 alias 내림차순(=max-runs-per-task-prompt-condition-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort task-condition-cap-desc
 # 설명 길이(description length) 기준 오름차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort description-length
 # 설명 길이(description length) 기준 내림차순 정렬(동률은 이름순)
@@ -611,3 +623,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 229. ~~planner preset discovery 정렬 모드에 `per-condition-cap`/`per-condition-cap-desc` alias를 추가해 condition 축 의미를 직접 드러내는 짧은 호출명을 제공하고 `per-prompt-cap*`와 동일 정렬 동작을 유지~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 230. ~~planner preset discovery 정렬 모드에 `total-cap`/`total-cap-desc` alias를 추가해 `max-total-runs*` 장문 옵션 없이도 총 실행 cap 축 정렬을 짧게 호출 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 231. ~~planner preset discovery 정렬 모드에 task 축 cap 기반 정렬(`max-runs-per-task*`, `max-runs-per-task-model*`, `max-runs-per-task-prompt-condition*` + alias)을 추가해 task 과샘플링 리스크를 preset 탐색 단계에서 즉시 진단 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+232. ~~planner preset discovery 정렬 모드에 초단축 task cap alias(`task-cap*`, `task-model-cap*`, `task-condition-cap*`)를 추가해 task 축 triage 명령 길이를 줄이고 cap family 네이밍 일관성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
