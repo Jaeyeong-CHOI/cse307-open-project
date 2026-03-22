@@ -54,6 +54,7 @@ SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$"
 SORT_ALIASES_OUTPUT_SHAPE_SCHEMA = "planner_sort_alias_output_shape.v1"
 PRESET_OUTPUT_SHAPE_SCHEMA = "planner_preset_output_shape.v1"
 RETAINED_RECORDS_STATE_CODES_SCHEMA = "planner_retained_records_state_codes.v1"
+RETENTION_STATE_CODES_SCHEMA = "planner_retention_state_codes.v1"
 RETAINED_RECORDS_STATE_CODE_ROWS: list[dict[str, Any]] = [
     {
         "state": "no_retained_records",
@@ -68,6 +69,32 @@ RETAINED_RECORDS_STATE_CODE_ROWS: list[dict[str, Any]] = [
         "has_retained_records": True,
         "has_no_retained_records": False,
         "description": "At least one record was retained in the emitted output.",
+    },
+]
+RETENTION_STATE_CODE_ROWS: list[dict[str, Any]] = [
+    {
+        "state": "fully_retained",
+        "code": 0,
+        "is_fully_retained": True,
+        "is_partially_retained": False,
+        "is_fully_truncated": False,
+        "description": "All filtered records were retained (no truncation).",
+    },
+    {
+        "state": "partially_retained",
+        "code": 1,
+        "is_fully_retained": False,
+        "is_partially_retained": True,
+        "is_fully_truncated": False,
+        "description": "Some records were retained and some were truncated.",
+    },
+    {
+        "state": "fully_truncated",
+        "code": 2,
+        "is_fully_retained": False,
+        "is_partially_retained": False,
+        "is_fully_truncated": True,
+        "description": "No records were retained; all filtered records were truncated.",
     },
 ]
 
@@ -2298,6 +2325,19 @@ def _resolve_retained_records_state_code_payload() -> dict[str, Any]:
     }
 
 
+def _resolve_retention_state_code_rows() -> list[dict[str, Any]]:
+    return [dict(row) for row in RETENTION_STATE_CODE_ROWS]
+
+
+def _resolve_retention_state_code_payload() -> dict[str, Any]:
+    rows = _resolve_retention_state_code_rows()
+    return {
+        "schema_version": "v1",
+        "schema": RETENTION_STATE_CODES_SCHEMA,
+        "states": rows,
+    }
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -2716,6 +2756,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "List parser-friendly retained-records state/code mappings used by "
             "output_retained_records_state_code and exit"
+        ),
+    )
+    parser.add_argument(
+        "--list-retention-state-codes",
+        action="store_true",
+        help=(
+            "List parser-friendly retention state/code mappings used by "
+            "output_retention_state and output_retention_state_code and exit"
         ),
     )
     parser.add_argument(
@@ -3546,6 +3594,10 @@ def main() -> int:
 
         if args.list_retained_records_state_codes:
             print(json.dumps(_resolve_retained_records_state_code_payload(), ensure_ascii=False, indent=2))
+            return 0
+
+        if args.list_retention_state_codes:
+            print(json.dumps(_resolve_retention_state_code_payload(), ensure_ascii=False, indent=2))
             return 0
 
         if args.show_preset:

@@ -8950,6 +8950,49 @@ def main() -> int:
     if row_by_state["has_retained_records"].get("has_retained_records") is not True:
         raise AssertionError("expected has_retained_records row to expose has_retained_records=true")
 
+    retention_state_codes_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_payload = json.loads(retention_state_codes_run.stdout)
+    if retention_state_codes_payload.get("schema") != "planner_retention_state_codes.v1":
+        raise AssertionError(
+            "expected retention state-code payload schema to be planner_retention_state_codes.v1"
+        )
+    retention_rows = retention_state_codes_payload.get("states")
+    if not isinstance(retention_rows, list) or len(retention_rows) != 3:
+        raise AssertionError("expected retention state-code payload to emit exactly three states")
+    retention_row_by_state = {
+        row.get("state"): row
+        for row in retention_rows
+        if isinstance(row, dict) and isinstance(row.get("state"), str)
+    }
+    if set(retention_row_by_state.keys()) != {
+        "fully_retained",
+        "partially_retained",
+        "fully_truncated",
+    }:
+        raise AssertionError(
+            f"unexpected retention states: {sorted(retention_row_by_state.keys())}"
+        )
+    if retention_row_by_state["fully_retained"].get("code") != 0:
+        raise AssertionError("expected fully_retained code to be 0")
+    if retention_row_by_state["partially_retained"].get("code") != 1:
+        raise AssertionError("expected partially_retained code to be 1")
+    if retention_row_by_state["fully_truncated"].get("code") != 2:
+        raise AssertionError("expected fully_truncated code to be 2")
+    if retention_row_by_state["partially_retained"].get("is_partially_retained") is not True:
+        raise AssertionError("expected partially_retained row to expose is_partially_retained=true")
+    if retention_row_by_state["fully_truncated"].get("is_fully_truncated") is not True:
+        raise AssertionError("expected fully_truncated row to expose is_fully_truncated=true")
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
