@@ -1549,6 +1549,54 @@ def main() -> int:
             f"{preset_names_sorted_by_cheap_first_tag_desc}"
         )
 
+    preset_list_sorted_by_fair_model_allocation = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "fair-model-allocation",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_fair_model_allocation = [
+        line.strip()
+        for line in preset_list_sorted_by_fair_model_allocation.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_fair_model_allocation != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=fair-model-allocation output: "
+            f"{preset_names_sorted_by_fair_model_allocation}"
+        )
+
+    preset_list_sorted_by_fair_allocation_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "fair-allocation-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_fair_allocation_desc = [
+        line.strip()
+        for line in preset_list_sorted_by_fair_allocation_desc.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_fair_allocation_desc != ["quick-smoke", "balanced-ci", "full-analysis"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=fair-allocation-desc output: "
+            f"{preset_names_sorted_by_fair_allocation_desc}"
+        )
+
     preset_list_sorted_by_custom_tag = subprocess.run(
         [
             "python3",

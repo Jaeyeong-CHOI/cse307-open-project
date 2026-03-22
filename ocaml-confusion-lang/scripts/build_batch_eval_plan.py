@@ -438,6 +438,10 @@ def _sort_preset_names(
         "tag-count-desc",
         "cheap-first-tag",
         "cheap-first-tag-desc",
+        "fair-model-allocation",
+        "fair-model-allocation-desc",
+        "fair-allocation",
+        "fair-allocation-desc",
     ) or custom_tag_sort:
         resolved_caps: dict[str, int] = {}
         resolved_repeats: dict[str, int] = {}
@@ -450,6 +454,7 @@ def _sort_preset_names(
         resolved_max_runs_per_task_model: dict[str, int] = {}
         resolved_max_runs_per_task_prompt_condition: dict[str, int] = {}
         resolved_cheap_first_tag_flags: dict[str, int] = {}
+        resolved_fair_model_allocation_flags: dict[str, int] = {}
         resolved_custom_tag_flags: dict[str, int] = {}
         resolved_tag_counts: dict[str, int] = {}
         for name in preset_names:
@@ -489,6 +494,7 @@ def _sort_preset_names(
                 {str(tag).strip().lower() for tag in tags if str(tag).strip()} if isinstance(tags, list) else set()
             )
             resolved_cheap_first_tag_flags[name] = 1 if "cheap-first" in normalized_tags else 0
+            resolved_fair_model_allocation_flags[name] = 1 if resolved.get("fair_model_allocation") else 0
             resolved_custom_tag_flags[name] = 1 if custom_tag_name and custom_tag_name in normalized_tags else 0
             resolved_tag_counts[name] = len(normalized_tags)
 
@@ -665,6 +671,12 @@ def _sort_preset_names(
 
         if sort_mode == "cheap-first-tag":
             return sorted(preset_names, key=lambda name: (-resolved_cheap_first_tag_flags[name], name))
+
+        if sort_mode in ("fair-model-allocation", "fair-allocation"):
+            return sorted(preset_names, key=lambda name: (-resolved_fair_model_allocation_flags[name], name))
+
+        if sort_mode in ("fair-model-allocation-desc", "fair-allocation-desc"):
+            return sorted(preset_names, key=lambda name: (resolved_fair_model_allocation_flags[name], name))
 
         return sorted(preset_names, key=lambda name: (resolved_cheap_first_tag_flags[name], name))
 
@@ -1214,8 +1226,10 @@ def parse_args() -> argparse.Namespace:
             "description-length (ascending normalized description length), description-length-desc (descending), "
             "tag-count (ascending normalized unique tag count), tag-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
-            "(presets without cheap-first tag first), tag:<name> (presets containing that tag first), "
-            "or tag:<name>-desc (presets without that tag first)."
+            "(presets without cheap-first tag first), fair-model-allocation (presets with fair_model_allocation=true first), "
+            "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
+            "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "
+            "tag:<name> (presets containing that tag first), or tag:<name>-desc (presets without that tag first)."
         ),
     )
     parser.add_argument(

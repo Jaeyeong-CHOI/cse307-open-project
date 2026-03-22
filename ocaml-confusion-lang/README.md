@@ -207,6 +207,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort tag-
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-first-tag
 # cheap-first 태그 미포함 preset 우선 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-first-tag-desc
+# fair_model_allocation=true preset 우선 정렬(동률은 이름순)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-model-allocation
+# fair-model-allocation 정렬 단축 alias 내림차순(=false 우선)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-desc
 # 임의 태그 기준 정렬(tag:<name>): 해당 태그 포함 preset 우선(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort tag:analysis
 # 임의 태그 역방향 정렬(tag:<name>-desc): 해당 태그 미포함 preset 우선(동률은 이름순)
@@ -634,3 +638,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 232. ~~planner preset discovery 정렬 모드에 초단축 task cap alias(`task-cap*`, `task-model-cap*`, `task-condition-cap*`)를 추가해 task 축 triage 명령 길이를 줄이고 cap family 네이밍 일관성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 233. ~~planner preset discovery 정렬 모드에 `task-prompt-cap`/`task-prompt-cap-desc` alias를 추가해 `task-condition-cap*`와 병행 가능한 직관적 네이밍(프롬프트 축 강조)을 제공하고 task×prompt_condition cap triage 호출 가독성을 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 234. ~~planner preset discovery 정렬 모드에 `per-task-condition-cap`/`per-task-condition-cap-desc` alias를 추가해 `per-task-prompt-cap*`와 동일 의미의 condition 축 네이밍을 제공하고 task×condition cap triage 호출 일관성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+235. ~~planner preset discovery 정렬 모드에 `fair-model-allocation`/`fair-model-allocation-desc`(+ alias `fair-allocation*`)를 추가해 모델 공정 배분 사용 preset 우선/역방향 triage를 즉시 전환 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
