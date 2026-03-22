@@ -1789,6 +1789,32 @@ def main() -> int:
             f"{preset_names_sorted_by_cost_priority}"
         )
 
+    preset_list_sorted_by_cost_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cost",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cost_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cost_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cost_alias != preset_names_sorted_by_cost_priority:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cost alias output: "
+            f"{preset_names_sorted_by_cost_alias}"
+        )
+
     preset_list_sorted_by_cost_priority_desc = subprocess.run(
         [
             "python3",

@@ -338,12 +338,20 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-cap-desc
 # 비용 우선 복합 정렬(cheap-first 태그 -> total cap -> per-model cap)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority
+# 비용 우선 복합 정렬 초단축 alias(=cost-priority)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost
 # 비용 우선 복합 정렬 역방향(untagged/uncapped/high-cap 우선)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority-desc
+# 비용 우선 복합 정렬 역방향 초단축 alias(=cost-priority-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-desc
 # condition cap까지 반영한 비용 우선 정렬(cheap-first 태그 -> total cap -> per-condition cap)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority-prompt
+# condition cap까지 반영한 비용 우선 정렬 초단축 alias(=cost-priority-prompt)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-prompt
 # condition cap까지 반영한 비용 우선 정렬 역방향(untagged/uncapped/high-cap 우선)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority-prompt-desc
+# condition cap까지 반영한 비용 우선 정렬 역방향 초단축 alias(=cost-priority-prompt-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-prompt-desc
 # fair-model-allocation 정렬 단축 alias 내림차순(=false 우선)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-desc
 # 임의 태그 기준 정렬(tag:<name>): 해당 태그 포함 preset 우선(동률은 이름순)
@@ -874,3 +882,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 330. ~~preset discovery/show `output_shape_sha256_algo`를 공용 helper(`_resolve_preset_output_shape_sha256_algo`)로 단일 소스화해 list/show/meta 경로 하드코딩 drift 위험을 줄이고 향후 해시 알고리즘 전환 시 변경 지점을 최소화~~ ✅ (`scripts/build_batch_eval_plan.py`, `README.md`)
 331. ~~sort-aliases/preset 출력의 shape provenance에 `output_shape_payload_json_bytes`를 추가해 canonical payload JSON 크기(UTF-8)를 재계산 없이 바로 관측하고 로그/파서의 메모리 가드(예: payload size threshold)를 저비용으로 적용 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 332. ~~sort-aliases/preset 출력의 shape provenance에 `output_shape_tuple_bytes`를 추가해 human-readable shape tuple(`output_shape_tuple`)의 UTF-8 크기를 payload JSON 크기와 분리 관측하고, text-meta 파서 경로에서 문자열 폭주를 저비용으로 사전 감지 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+333. ~~planner preset discovery 정렬 모드에 비용 우선 초단축 alias(`cost`, `cost-desc`, `cost-prompt`, `cost-prompt-desc`)를 추가해 `cost-priority*` 장문 옵션 없이도 동일 triage 의미를 더 빠르게 호출 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

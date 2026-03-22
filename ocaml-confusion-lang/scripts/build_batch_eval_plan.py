@@ -88,6 +88,10 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
     "fair-total-cap-desc": "fair-allocation-total-cap-desc",
     "fair-cap": "fair-allocation-total-cap",
     "fair-cap-desc": "fair-allocation-total-cap-desc",
+    "cost": "cost-priority",
+    "cost-desc": "cost-priority-desc",
+    "cost-prompt": "cost-priority-prompt",
+    "cost-prompt-desc": "cost-priority-prompt-desc",
     "fair-allocation": "fair-model-allocation",
     "fair-allocation-desc": "fair-model-allocation-desc",
 }
@@ -1551,6 +1555,10 @@ def _sort_preset_names(
         "cost-priority-desc",
         "cost-priority-prompt",
         "cost-priority-prompt-desc",
+        "cost",
+        "cost-desc",
+        "cost-prompt",
+        "cost-prompt-desc",
         "fair-model-allocation",
         "fair-model-allocation-desc",
         "fair-allocation",
@@ -1825,7 +1833,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=fair_allocation_total_cap_desc_sort_key)
 
-        if sort_mode == "cost-priority":
+        if sort_mode in ("cost-priority", "cost"):
             def cost_priority_sort_key(name: str) -> tuple[int, int, int, int, str]:
                 cheap_first_rank = -resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1845,7 +1853,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cost_priority_sort_key)
 
-        if sort_mode == "cost-priority-desc":
+        if sort_mode in ("cost-priority-desc", "cost-desc"):
             def cost_priority_desc_sort_key(name: str) -> tuple[int, int, int, int, str]:
                 cheap_first_rank = resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1865,7 +1873,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cost_priority_desc_sort_key)
 
-        if sort_mode == "cost-priority-prompt":
+        if sort_mode in ("cost-priority-prompt", "cost-prompt"):
             def cost_priority_prompt_sort_key(name: str) -> tuple[int, int, int, int, int, str]:
                 cheap_first_rank = -resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1887,7 +1895,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cost_priority_prompt_sort_key)
 
-        if sort_mode == "cost-priority-prompt-desc":
+        if sort_mode in ("cost-priority-prompt-desc", "cost-prompt-desc"):
             def cost_priority_prompt_desc_sort_key(name: str) -> tuple[int, int, int, int, int, str]:
                 cheap_first_rank = resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -3083,9 +3091,13 @@ def parse_args() -> argparse.Namespace:
             "fair-total-cap-desc (alias of fair-allocation-total-cap-desc), "
             "fair-cap-desc (alias of fair-allocation-total-cap-desc), "
             "cost-priority (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_model asc with uncapped last), "
+            "cost (alias of cost-priority), "
             "cost-priority-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_model desc with uncapped first), "
+            "cost-desc (alias of cost-priority-desc), "
             "cost-priority-prompt (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_prompt_condition asc with uncapped last), "
+            "cost-prompt (alias of cost-priority-prompt), "
             "cost-priority-prompt-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_prompt_condition desc with uncapped first), "
+            "cost-prompt-desc (alias of cost-priority-prompt-desc), "
             "fair-model-allocation (presets with fair_model_allocation=true first), "
             "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
             "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "
