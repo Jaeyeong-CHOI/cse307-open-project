@@ -52,6 +52,7 @@ SORT_ALIASES_TSV_META_SCHEMA = "planner_sort_aliases_tsv_meta.v1"
 SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION = "v1"
 SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
 SORT_ALIASES_OUTPUT_SHAPE_SCHEMA = "planner_sort_alias_output_shape.v1"
+PRESET_OUTPUT_SHAPE_SCHEMA = "planner_preset_output_shape.v1"
 
 
 PRESET_SORT_ALIAS_MAP: dict[str, str] = {
@@ -2049,6 +2050,79 @@ def _resolve_preset_output_columns_sha256(output_format: str, with_schema_column
     return hashlib.sha256("\n".join(columns).encode("utf-8")).hexdigest()
 
 
+def _resolve_preset_output_shape_fields() -> list[str]:
+    return [
+        "output",
+        "output_transport",
+        "output_has_header",
+        "output_delimiter",
+        "output_field_count",
+        "output_column_count",
+        "output_columns",
+    ]
+
+
+def _resolve_preset_output_shape_payload(
+    output_format: str,
+    with_schema_column: bool,
+) -> dict[str, str | bool | int | list[str]]:
+    return {
+        "output": output_format,
+        "output_transport": _resolve_preset_output_transport(output_format),
+        "output_has_header": _resolve_preset_output_has_header(output_format),
+        "output_delimiter": _resolve_preset_output_delimiter(output_format),
+        "output_field_count": _resolve_preset_output_column_count(
+            output_format,
+            with_schema_column=with_schema_column,
+        ),
+        "output_column_count": _resolve_preset_output_column_count(
+            output_format,
+            with_schema_column=with_schema_column,
+        ),
+        "output_columns": _resolve_preset_output_columns(
+            output_format,
+            with_schema_column=with_schema_column,
+        ),
+    }
+
+
+def _resolve_preset_output_shape_payload_json(output_format: str, with_schema_column: bool) -> str:
+    return json.dumps(
+        _resolve_preset_output_shape_payload(
+            output_format,
+            with_schema_column=with_schema_column,
+        ),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+
+
+def _resolve_preset_output_shape_tuple(output_format: str, with_schema_column: bool) -> str:
+    output_columns = _resolve_preset_output_columns(
+        output_format,
+        with_schema_column=with_schema_column,
+    )
+    return (
+        f"output={output_format}|"
+        f"output_transport={_resolve_preset_output_transport(output_format)}|"
+        f"output_has_header={str(_resolve_preset_output_has_header(output_format)).lower()}|"
+        f"output_delimiter={_resolve_preset_output_delimiter(output_format)}|"
+        f"output_field_count={_resolve_preset_output_column_count(output_format, with_schema_column=with_schema_column)}|"
+        f"output_column_count={_resolve_preset_output_column_count(output_format, with_schema_column=with_schema_column)}|"
+        f"output_columns={','.join(output_columns) if output_columns else 'none'}"
+    )
+
+
+def _resolve_preset_output_shape_sha256(output_format: str, with_schema_column: bool) -> str:
+    return hashlib.sha256(
+        _resolve_preset_output_shape_payload_json(
+            output_format,
+            with_schema_column=with_schema_column,
+        ).encode("utf-8")
+    ).hexdigest()
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -3330,6 +3404,25 @@ def main() -> int:
                     args.show_preset_format,
                     with_schema_column=args.summary_tsv_with_schema_column,
                 ),
+                "output_shape_schema": PRESET_OUTPUT_SHAPE_SCHEMA,
+                "output_shape_fields": _resolve_preset_output_shape_fields(),
+                "output_shape_payload": _resolve_preset_output_shape_payload(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
+                "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
+                "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
+                "output_shape_sha256": _resolve_preset_output_shape_sha256(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
+                "output_shape_sha256_algo": "sha256",
                 "resolved": resolved,
             }
             show_meta_extra_fields: dict[str, Any] | None = None
@@ -3447,6 +3540,25 @@ def main() -> int:
                         args.show_preset_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
+                    "output_shape_schema": PRESET_OUTPUT_SHAPE_SCHEMA,
+                    "output_shape_fields": _resolve_preset_output_shape_fields(),
+                    "output_shape_payload": _resolve_preset_output_shape_payload(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256": _resolve_preset_output_shape_sha256(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256_algo": "sha256",
                     "preset_file": str(args.preset_file),
                 },
                 show_meta_extra_fields,
@@ -4313,6 +4425,25 @@ def main() -> int:
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
+                    "output_shape_schema": PRESET_OUTPUT_SHAPE_SCHEMA,
+                    "output_shape_fields": _resolve_preset_output_shape_fields(),
+                    "output_shape_payload": _resolve_preset_output_shape_payload(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256": _resolve_preset_output_shape_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256_algo": "sha256",
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
                     "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
@@ -4374,6 +4505,25 @@ def main() -> int:
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
+                    "output_shape_schema": PRESET_OUTPUT_SHAPE_SCHEMA,
+                    "output_shape_fields": _resolve_preset_output_shape_fields(),
+                    "output_shape_payload": _resolve_preset_output_shape_payload(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256": _resolve_preset_output_shape_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256_algo": "sha256",
                     "presets": limited_presets,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
@@ -4447,6 +4597,25 @@ def main() -> int:
                         args.list_presets_format,
                         with_schema_column=args.summary_tsv_with_schema_column,
                     ),
+                    "output_shape_schema": PRESET_OUTPUT_SHAPE_SCHEMA,
+                    "output_shape_fields": _resolve_preset_output_shape_fields(),
+                    "output_shape_payload": _resolve_preset_output_shape_payload(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_payload_json": _resolve_preset_output_shape_payload_json(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_tuple": _resolve_preset_output_shape_tuple(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256": _resolve_preset_output_shape_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_shape_sha256_algo": "sha256",
                     "preset_file": str(args.preset_file),
                     "presets": resolved_presets,
                     "filtered_count": len(filtered_presets),

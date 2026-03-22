@@ -2454,6 +2454,64 @@ def main() -> int:
             "expected resolved-json payload output_columns_sha256 to match empty columns payload, got: "
             f"{preset_list_resolved_json_limited_payload}"
         )
+    expected_preset_output_shape_payload = {
+        "output": "resolved-json",
+        "output_transport": "json",
+        "output_has_header": False,
+        "output_delimiter": "none",
+        "output_field_count": 0,
+        "output_column_count": 0,
+        "output_columns": [],
+    }
+    if preset_list_resolved_json_limited_payload.get("output_shape_schema") != "planner_preset_output_shape.v1":
+        raise AssertionError(
+            "expected resolved-json payload output_shape_schema=planner_preset_output_shape.v1, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("output_shape_fields") != [
+        "output",
+        "output_transport",
+        "output_has_header",
+        "output_delimiter",
+        "output_field_count",
+        "output_column_count",
+        "output_columns",
+    ]:
+        raise AssertionError(
+            "expected resolved-json payload output_shape_fields to expose output shape keys, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("output_shape_payload") != expected_preset_output_shape_payload:
+        raise AssertionError(
+            "expected resolved-json payload output_shape_payload to match output metadata, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("output_shape_tuple") != (
+        "output=resolved-json|output_transport=json|output_has_header=false|output_delimiter=none|"
+        "output_field_count=0|output_column_count=0|output_columns=none"
+    ):
+        raise AssertionError(
+            "expected resolved-json payload output_shape_tuple to expose human-readable output shape, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    expected_preset_output_shape_sha256 = hashlib.sha256(
+        json.dumps(
+            expected_preset_output_shape_payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if preset_list_resolved_json_limited_payload.get("output_shape_sha256") != expected_preset_output_shape_sha256:
+        raise AssertionError(
+            "expected resolved-json payload output_shape_sha256 to match canonical output_shape_payload_json, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("output_shape_sha256_algo") != "sha256":
+        raise AssertionError(
+            "expected resolved-json payload output_shape_sha256_algo=sha256, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
 
     preset_list_resolved_json_with_meta = subprocess.run(
         [
@@ -2534,6 +2592,21 @@ def main() -> int:
     if list_meta_payload.get("output_columns_sha256") != expected_preset_empty_columns_sha256:
         raise AssertionError(
             "expected resolved-json list meta output_columns_sha256 to match empty columns payload, got: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("output_shape_schema") != "planner_preset_output_shape.v1":
+        raise AssertionError(
+            "expected resolved-json list meta output_shape_schema=planner_preset_output_shape.v1, got: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("output_shape_payload") != expected_preset_output_shape_payload:
+        raise AssertionError(
+            "expected resolved-json list meta output_shape_payload to match output metadata, got: "
+            f"{list_meta_payload}"
+        )
+    if list_meta_payload.get("output_shape_sha256") != expected_preset_output_shape_sha256:
+        raise AssertionError(
+            "expected resolved-json list meta output_shape_sha256 to match canonical output_shape_payload_json, got: "
             f"{list_meta_payload}"
         )
     for required_key in (
@@ -3643,6 +3716,31 @@ def main() -> int:
     expected_preset_empty_columns_sha256 = hashlib.sha256(b"").hexdigest()
     if show_preset_payload.get("output_columns_sha256") != expected_preset_empty_columns_sha256:
         raise AssertionError(f"unexpected show-preset output_columns_sha256: {show_preset_payload}")
+    expected_show_output_shape_payload = {
+        "output": "json",
+        "output_transport": "json",
+        "output_has_header": False,
+        "output_delimiter": "none",
+        "output_field_count": 0,
+        "output_column_count": 0,
+        "output_columns": [],
+    }
+    expected_show_output_shape_sha256 = hashlib.sha256(
+        json.dumps(
+            expected_show_output_shape_payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if show_preset_payload.get("output_shape_schema") != "planner_preset_output_shape.v1":
+        raise AssertionError(f"unexpected show-preset output_shape_schema: {show_preset_payload}")
+    if show_preset_payload.get("output_shape_payload") != expected_show_output_shape_payload:
+        raise AssertionError(f"unexpected show-preset output_shape_payload: {show_preset_payload}")
+    if show_preset_payload.get("output_shape_sha256") != expected_show_output_shape_sha256:
+        raise AssertionError(f"unexpected show-preset output_shape_sha256: {show_preset_payload}")
+    if show_preset_payload.get("output_shape_sha256_algo") != "sha256":
+        raise AssertionError(f"unexpected show-preset output_shape_sha256_algo: {show_preset_payload}")
     resolved = show_preset_payload.get("resolved")
     if not isinstance(resolved, dict):
         raise AssertionError(f"missing resolved preset payload: {show_preset_payload}")
@@ -3688,6 +3786,12 @@ def main() -> int:
         or show_meta_payload.get("output_columns_sha256") != hashlib.sha256(b"").hexdigest()
     ):
         raise AssertionError(f"unexpected show-preset json meta identity fields: {show_meta_payload}")
+    if show_meta_payload.get("output_shape_schema") != "planner_preset_output_shape.v1":
+        raise AssertionError(f"unexpected show-preset json meta output_shape_schema: {show_meta_payload}")
+    if show_meta_payload.get("output_shape_payload") != expected_show_output_shape_payload:
+        raise AssertionError(f"unexpected show-preset json meta output_shape_payload: {show_meta_payload}")
+    if show_meta_payload.get("output_shape_sha256") != expected_show_output_shape_sha256:
+        raise AssertionError(f"unexpected show-preset json meta output_shape_sha256: {show_meta_payload}")
     if show_meta_payload.get("filtered_count") != 1 or show_meta_payload.get("emitted_count") != 1:
         raise AssertionError(f"unexpected show-preset json meta counters: {show_meta_payload}")
     if show_meta_payload.get("truncated") is not False:
