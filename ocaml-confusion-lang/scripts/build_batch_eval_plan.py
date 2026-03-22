@@ -231,6 +231,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "cj": "codes-json",
     "clj": "codes-list-json",
     "scl": "state-codes-lines",
+    "csl": "code-state-lines",
     "scj": "state-codes-json",
     "csj": "codes-state-json",
     "pj": "pairs-json",
@@ -2483,6 +2484,16 @@ def _render_state_code_rows_state_codes_lines(rows: list[dict[str, Any]]) -> str
     return "\n".join(rendered)
 
 
+def _render_state_code_rows_code_state_lines(rows: list[dict[str, Any]]) -> str:
+    rendered: list[str] = []
+    for row in rows:
+        state = row.get("state")
+        code = row.get("code")
+        if isinstance(state, str) and isinstance(code, int):
+            rendered.append(f"{code}\t{state}")
+    return "\n".join(rendered)
+
+
 def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any], output_format: str, kind: str) -> None:
     if output_format == "json":
         print(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -2519,6 +2530,9 @@ def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any]
         return
     if output_format == "state-codes-lines":
         print(_render_state_code_rows_state_codes_lines(rows))
+        return
+    if output_format == "code-state-lines":
+        print(_render_state_code_rows_code_state_lines(rows))
         return
     if output_format == "tsv":
         print(_render_state_code_rows_tsv(rows, kind=kind, include_header=True))
@@ -2959,12 +2973,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "rows-json", "codes-json", "codes-list-json", "state-codes-lines", "state-codes-json", "codes-state-json", "pairs-json", "code-state-pairs-json", "names", "names-json", "codes", "tsv", "tsv-rows", "j", "rj", "cj", "clj", "scl", "scj", "csj", "pj", "cpj", "n", "nj", "c", "t", "tr", "r", "rows"),
+        choices=("json", "rows-json", "codes-json", "codes-list-json", "state-codes-lines", "code-state-lines", "state-codes-json", "codes-state-json", "pairs-json", "code-state-pairs-json", "names", "names-json", "codes", "tsv", "tsv-rows", "j", "rj", "cj", "clj", "scl", "csl", "scj", "csj", "pj", "cpj", "n", "nj", "c", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
-            "json (default), rows-json (row list only), codes-json (code-keyed row map), codes-list-json (JSON numeric-code array), state-codes-lines (newline <state>\\t<code> pairs), state-codes-json (state->code map), codes-state-json (code->state map), pairs-json ([state, code] tuples), code-state-pairs-json ([code, state] tuples), names (newline state labels), names-json (JSON state-label array), codes (newline numeric codes), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, rj=rows-json, cj=codes-json, clj=codes-list-json, scl=state-codes-lines, scj=state-codes-json, csj=codes-state-json, pj=pairs-json, cpj=code-state-pairs-json, n=names, nj=names-json, c=codes, t=tsv, tr/r/rows=tsv-rows."
+            "json (default), rows-json (row list only), codes-json (code-keyed row map), codes-list-json (JSON numeric-code array), state-codes-lines (newline <state>\\t<code> pairs), code-state-lines (newline <code>\\t<state> pairs), state-codes-json (state->code map), codes-state-json (code->state map), pairs-json ([state, code] tuples), code-state-pairs-json ([code, state] tuples), names (newline state labels), names-json (JSON state-label array), codes (newline numeric codes), tsv (header), or tsv-rows (headerless rows). "
+            "Shorthand aliases: j=json, rj=rows-json, cj=codes-json, clj=codes-list-json, scl=state-codes-lines, csl=code-state-lines, scj=state-codes-json, csj=codes-state-json, pj=pairs-json, cpj=code-state-pairs-json, n=names, nj=names-json, c=codes, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(
