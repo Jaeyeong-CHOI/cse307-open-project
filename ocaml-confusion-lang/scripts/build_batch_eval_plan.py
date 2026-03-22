@@ -359,6 +359,15 @@ def _preset_description_preview(raw_description: str, max_len: int = 60) -> str:
     return f"{normalized[: max_len - 3].rstrip()}..."
 
 
+def _parse_tag_sort_mode(sort_mode: str) -> str | None:
+    if not sort_mode.startswith("tag:"):
+        return None
+    tag_name = sort_mode[len("tag:") :].strip().lower()
+    if not tag_name:
+        raise ValueError("--list-presets-sort tag mode must be tag:<name> with a non-empty tag")
+    return tag_name
+
+
 def _sort_preset_names(
     preset_names: list[str],
     presets: dict[str, dict[str, Any]],
@@ -366,6 +375,8 @@ def _sort_preset_names(
 ) -> list[str]:
     if sort_mode == "name":
         return sorted(preset_names)
+
+    custom_tag_sort = _parse_tag_sort_mode(sort_mode)
 
     if sort_mode in (
         "max-total-runs",
@@ -376,11 +387,12 @@ def _sort_preset_names(
         "model-count-desc",
         "cheap-first-tag",
         "cheap-first-tag-desc",
-    ):
+    ) or custom_tag_sort:
         resolved_caps: dict[str, int] = {}
         resolved_repeats: dict[str, int] = {}
         resolved_model_counts: dict[str, int] = {}
         resolved_cheap_first_tag_flags: dict[str, int] = {}
+        resolved_custom_tag_flags: dict[str, int] = {}
         for name in preset_names:
             preset = presets.get(name, {})
             resolved = resolve_preset_with_defaults(preset)
@@ -394,10 +406,11 @@ def _sort_preset_names(
             else:
                 resolved_model_counts[name] = 0
             tags = resolved.get("tags", [])
-            if isinstance(tags, list):
-                resolved_cheap_first_tag_flags[name] = 1 if "cheap-first" in tags else 0
-            else:
-                resolved_cheap_first_tag_flags[name] = 0
+            normalized_tags = (
+                {str(tag).strip().lower() for tag in tags if str(tag).strip()} if isinstance(tags, list) else set()
+            )
+            resolved_cheap_first_tag_flags[name] = 1 if "cheap-first" in normalized_tags else 0
+            resolved_custom_tag_flags[name] = 1 if custom_tag_sort and custom_tag_sort in normalized_tags else 0
 
         if sort_mode == "max-total-runs":
             def asc_sort_key(name: str) -> tuple[int, int, str]:
@@ -428,6 +441,9 @@ def _sort_preset_names(
 
         if sort_mode == "model-count-desc":
             return sorted(preset_names, key=lambda name: (-resolved_model_counts[name], name))
+
+        if custom_tag_sort:
+            return sorted(preset_names, key=lambda name: (-resolved_custom_tag_flags[name], name))
 
         if sort_mode == "cheap-first-tag":
             return sorted(preset_names, key=lambda name: (-resolved_cheap_first_tag_flags[name], name))
@@ -939,25 +955,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-sort",
-        choices=(
-            "name",
-            "max-total-runs",
-            "max-total-runs-desc",
-            "repeats",
-            "repeats-desc",
-            "model-count",
-            "model-count-desc",
-            "cheap-first-tag",
-            "cheap-first-tag-desc",
-        ),
         default="name",
         help=(
             "Sort mode for filtered preset emission: "
             "name (default), max-total-runs (ascending; capped presets first, 0/uncapped last), "
             "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
             "repeats-desc (descending), model-count (ascending), model-count-desc (descending), "
-            "cheap-first-tag (presets tagged cheap-first first), or cheap-first-tag-desc "
-            "(presets without cheap-first tag first)."
+            "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
+            "(presets without cheap-first tag first), or tag:<name> (presets containing that tag first)."
         ),
     )
     parser.add_argument(
