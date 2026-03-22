@@ -4741,6 +4741,11 @@ def main() -> int:
                     "output_has_multiple_records": len(limited_presets) > 1,
                     "output_has_truncated_records": max(len(filtered_presets) - len(limited_presets), 0) > 0,
                     "output_truncated_count": max(len(filtered_presets) - len(limited_presets), 0),
+                    "output_truncated_ratio": (
+                        max(len(filtered_presets) - len(limited_presets), 0) / len(filtered_presets)
+                        if len(filtered_presets) > 0
+                        else 0.0
+                    ),
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
@@ -4859,6 +4864,7 @@ def main() -> int:
                     "output_has_multiple_records": len(resolved_presets) > 1,
                     "output_has_truncated_records": False,
                     "output_truncated_count": 0,
+                    "output_truncated_ratio": 0.0,
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,

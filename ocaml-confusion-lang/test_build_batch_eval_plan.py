@@ -8637,6 +8637,14 @@ def main() -> int:
         raise AssertionError(
             "expected list-presets JSON payload to expose output_has_truncated_records=true when truncated"
         )
+    expected_truncated_ratio = (
+        list_presets_truncated_payload.get("output_truncated_count", 0)
+        / list_presets_truncated_payload.get("filtered_count", 1)
+    )
+    if list_presets_truncated_payload.get("output_truncated_ratio") != expected_truncated_ratio:
+        raise AssertionError(
+            "expected list-presets JSON payload to expose output_truncated_ratio=truncated_count/filtered_count when filtered_count>0"
+        )
 
     list_presets_not_truncated_run = subprocess.run(
         [
@@ -8655,6 +8663,10 @@ def main() -> int:
     if list_presets_not_truncated_payload.get("output_has_truncated_records") is not False:
         raise AssertionError(
             "expected list-presets resolved-json payload to expose output_has_truncated_records=false when not truncated"
+        )
+    if list_presets_not_truncated_payload.get("output_truncated_ratio") != 0.0:
+        raise AssertionError(
+            "expected list-presets resolved-json payload to expose output_truncated_ratio=0.0 when not truncated"
         )
 
     print("OK: build_batch_eval_plan regression passed")
