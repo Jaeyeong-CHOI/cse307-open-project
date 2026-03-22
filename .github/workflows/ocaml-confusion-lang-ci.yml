@@ -202,7 +202,7 @@ jobs:
             -o ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.md \
             --csv-output ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.csv \
             --json-output ../docs/research/results/roundtrip-batch-v1.fixture.summary.ci.json \
-            --task-set-json examples/task-set-v1.json \
+            --task-set-json examples/task-set-fixture-whitespace-linecount-v1.json \
             --include-diff-columns \
             --mismatch-sort severity \
             "${summary_args[@]}"
