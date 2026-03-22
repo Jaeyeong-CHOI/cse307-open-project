@@ -133,6 +133,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort tota
 # per-task-model-cap-desc  -> max-runs-per-task-model-desc
 # per-task-condition-cap   -> max-runs-per-task-prompt-condition
 # per-task-condition-cap-desc -> max-runs-per-task-prompt-condition-desc
+# fair-cap                 -> fair-allocation-total-cap
+# fair-cap-desc            -> fair-allocation-total-cap-desc
 # repeat 횟수 기준 오름차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort repeats
 # repeat 횟수 기준 내림차순 정렬(동률은 이름순)
@@ -239,10 +241,14 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-total-cap
 # fair allocation 복합 정렬 단축 alias(=fair-allocation-total-cap)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-total-cap
+# fair allocation 복합 정렬 초단축 alias(=fair-allocation-total-cap)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-cap
 # fair_model_allocation 역방향 + max_total_runs cap 내림차순(uncapped 먼저) 복합 정렬
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-total-cap-desc
 # fair allocation 역방향 복합 정렬 단축 alias(=fair-allocation-total-cap-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-total-cap-desc
+# fair allocation 역방향 복합 정렬 초단축 alias(=fair-allocation-total-cap-desc)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-cap-desc
 # 비용 우선 복합 정렬(cheap-first 태그 -> total cap -> per-model cap)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority
 # 비용 우선 복합 정렬 역방향(untagged/uncapped/high-cap 우선)
@@ -688,3 +694,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 240. ~~planner preset discovery 복합 정렬 키에 초단축 alias(`cheap-total-cap*`, `fair-total-cap*`)를 추가해 `cheap-first`/`fair-allocation` 장문 접두어 없이도 동일 triage 의미를 빠르게 호출 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 241. ~~planner preset discovery에 비용 우선 복합 정렬(`cost-priority`, `cost-priority-desc`)을 추가해 cheap-first 태그 + total cap + per-model cap을 단일 키로 우선순위화하고, 저비용 preset triage를 한 번에 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 242. ~~planner preset discovery에 condition cap 축을 반영한 비용 우선 복합 정렬(`cost-priority-prompt`, `cost-priority-prompt-desc`)을 추가해 cheap-first 태그 + total cap + per-condition cap 기준으로 triage 순서를 제어 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+243. ~~planner preset discovery 복합 정렬에 초단축 alias(`fair-cap`, `fair-cap-desc`)를 추가해 `fair-allocation-total-cap*`/`fair-total-cap*`보다 더 짧은 호출로 동일 triage 의미를 빠르게 선택 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

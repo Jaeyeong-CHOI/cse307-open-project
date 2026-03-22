@@ -1691,6 +1691,30 @@ def main() -> int:
             f"{preset_names_sorted_by_fair_total_cap_alias}"
         )
 
+    preset_list_sorted_by_fair_cap_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "fair-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_fair_cap_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_fair_cap_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_fair_cap_alias != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=fair-cap output: "
+            f"{preset_names_sorted_by_fair_cap_alias}"
+        )
+
     cost_priority_presets_file = OUT / "cost-priority-presets.json"
     cost_priority_presets_file.write_text(
         json.dumps(
@@ -1948,6 +1972,30 @@ def main() -> int:
         raise AssertionError(
             "unexpected --list-presets-sort=fair-total-cap-desc output: "
             f"{preset_names_sorted_by_fair_total_cap_desc_alias}"
+        )
+
+    preset_list_sorted_by_fair_cap_desc_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "fair-cap-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_fair_cap_desc_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_fair_cap_desc_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_fair_cap_desc_alias != ["quick-smoke", "full-analysis", "balanced-ci"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=fair-cap-desc output: "
+            f"{preset_names_sorted_by_fair_cap_desc_alias}"
         )
 
     preset_list_sorted_by_fair_model_allocation = subprocess.run(

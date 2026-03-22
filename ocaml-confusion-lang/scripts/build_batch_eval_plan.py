@@ -448,6 +448,8 @@ def _sort_preset_names(
         "fair-allocation-total-cap-desc",
         "fair-total-cap",
         "fair-total-cap-desc",
+        "fair-cap",
+        "fair-cap-desc",
         "cost-priority",
         "cost-priority-desc",
         "cost-priority-prompt",
@@ -706,7 +708,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cheap_first_total_cap_desc_sort_key)
 
-        if sort_mode in ("fair-allocation-total-cap", "fair-total-cap"):
+        if sort_mode in ("fair-allocation-total-cap", "fair-total-cap", "fair-cap"):
             def fair_allocation_total_cap_sort_key(name: str) -> tuple[int, int, int, str]:
                 fair_rank = -resolved_fair_model_allocation_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -716,7 +718,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=fair_allocation_total_cap_sort_key)
 
-        if sort_mode in ("fair-allocation-total-cap-desc", "fair-total-cap-desc"):
+        if sort_mode in ("fair-allocation-total-cap-desc", "fair-total-cap-desc", "fair-cap-desc"):
             def fair_allocation_total_cap_desc_sort_key(name: str) -> tuple[int, int, int, str]:
                 fair_rank = resolved_fair_model_allocation_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1375,8 +1377,10 @@ def parse_args() -> argparse.Namespace:
             "cheap-total-cap-desc (alias of cheap-first-total-cap-desc), "
             "fair-allocation-total-cap (fair_model_allocation=true presets first, then max_total_runs ascending with uncapped last), "
             "fair-total-cap (alias of fair-allocation-total-cap), "
+            "fair-cap (alias of fair-allocation-total-cap), "
             "fair-allocation-total-cap-desc (fair_model_allocation=false presets first, then max_total_runs descending with uncapped first), "
             "fair-total-cap-desc (alias of fair-allocation-total-cap-desc), "
+            "fair-cap-desc (alias of fair-allocation-total-cap-desc), "
             "cost-priority (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_model asc with uncapped last), "
             "cost-priority-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_model desc with uncapped first), "
             "cost-priority-prompt (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_prompt_condition asc with uncapped last), "
