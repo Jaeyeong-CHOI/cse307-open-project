@@ -5056,11 +5056,11 @@ def main() -> int:
         text=True,
     )
     aliases_tsv_lines = aliases_tsv_run.stdout.strip().splitlines()
-    if aliases_tsv_lines[0] != "alias\tcanonical":
+    if aliases_tsv_lines[0] != "alias\tcanonical\tcanonical_group_count":
         raise AssertionError(f"unexpected aliases-tsv header: {aliases_tsv_lines[0]}")
-    if "fair-allocation\tfair-model-allocation" not in aliases_tsv_lines[1:]:
+    if "fair-allocation\tfair-model-allocation\t1" not in aliases_tsv_lines[1:]:
         raise AssertionError(
-            "expected aliases-tsv output to include fair-allocation mapping, got: "
+            "expected aliases-tsv output to include fair-allocation mapping with canonical_group_count, got: "
             f"{aliases_tsv_lines}"
         )
 

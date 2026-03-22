@@ -102,9 +102,13 @@ def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[st
 
 
 def _format_sort_aliases_tsv(alias_map: dict[str, str]) -> str:
-    lines = ["alias\tcanonical"]
+    group_sizes: dict[str, int] = {}
+    for canonical in alias_map.values():
+        group_sizes[canonical] = group_sizes.get(canonical, 0) + 1
+
+    lines = ["alias\tcanonical\tcanonical_group_count"]
     for alias, canonical in alias_map.items():
-        lines.append(f"{alias}\t{canonical}")
+        lines.append(f"{alias}\t{canonical}\t{group_sizes[canonical]}")
     return "\n".join(lines)
 
 
