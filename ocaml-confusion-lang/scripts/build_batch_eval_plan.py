@@ -2009,6 +2009,7 @@ def _emit_list_presets_text_meta(
     emitted_count: int,
     truncated: bool,
     schema_id: str,
+    output_format: str,
     extra_fields: dict[str, Any] | None = None,
     meta_format: str = "text",
     json_schema_version: str = PRESET_TEXT_META_JSON_SCHEMA_VERSION,
@@ -2018,6 +2019,7 @@ def _emit_list_presets_text_meta(
         "filtered_count": str(filtered_count),
         "emitted_count": str(emitted_count),
         "truncated": str(truncated).lower(),
+        "output_format": output_format,
     }
     if extra_fields:
         fields.update(extra_fields)
@@ -2044,6 +2046,7 @@ def _emit_show_preset_text_meta(
         "truncated": "false",
         "preset": preset_name,
         "format": output_format,
+        "output_format": output_format,
         "preset_file": str(preset_file),
     }
     if extra_fields:
@@ -3264,6 +3267,7 @@ def main() -> int:
                 "schema_version": "v1",
                 "preset_file": str(args.preset_file),
                 "preset": args.show_preset,
+                "output_format": args.show_preset_format,
                 "resolved": resolved,
             }
             show_meta_extra_fields: dict[str, Any] | None = None
@@ -3363,6 +3367,7 @@ def main() -> int:
                     "truncated": False,
                     "preset": args.show_preset,
                     "format": args.show_preset_format,
+                    "output_format": args.show_preset_format,
                     "preset_file": str(args.preset_file),
                 },
                 show_meta_extra_fields,
@@ -4211,6 +4216,7 @@ def main() -> int:
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(preset_names),
                     "truncated": truncated,
+                    "output_format": args.list_presets_format,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
                     "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
@@ -4254,6 +4260,7 @@ def main() -> int:
                 limited_presets = {name: filtered_presets[name] for name in preset_names}
                 payload = {
                     "schema_version": "v1",
+                    "output_format": args.list_presets_format,
                     "presets": limited_presets,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
@@ -4307,6 +4314,7 @@ def main() -> int:
                     resolved_presets[name] = resolve_preset_with_defaults(preset)
                 payload = {
                     "schema_version": "v1",
+                    "output_format": args.list_presets_format,
                     "preset_file": str(args.preset_file),
                     "presets": resolved_presets,
                     "filtered_count": len(filtered_presets),
@@ -4365,6 +4373,7 @@ def main() -> int:
                         len(preset_names),
                         truncated,
                         schema_id=list_meta_schema_id,
+                        output_format=args.list_presets_format,
                         extra_fields=list_meta_extra_fields,
                         meta_format=args.list_presets_meta_format,
                         json_schema_version=list_meta_json_schema_version,
@@ -4398,6 +4407,7 @@ def main() -> int:
                         len(preset_names),
                         truncated,
                         schema_id=list_meta_schema_id,
+                        output_format=args.list_presets_format,
                         extra_fields=list_meta_extra_fields,
                         meta_format=args.list_presets_meta_format,
                         json_schema_version=list_meta_json_schema_version,
@@ -4411,6 +4421,7 @@ def main() -> int:
                     len(preset_names),
                     truncated,
                     schema_id=list_meta_schema_id,
+                    output_format=args.list_presets_format,
                     extra_fields=list_meta_extra_fields,
                     meta_format=args.list_presets_meta_format,
                     json_schema_version=list_meta_json_schema_version,
