@@ -4752,6 +4752,11 @@ def main() -> int:
             "expected filtered_count to match emitted aliases without limit, got: "
             f"{sort_aliases_payload.get('filtered_count')} vs {len(sort_aliases_payload.get('aliases', {}))}"
         )
+    if sort_aliases_payload.get("sort") != "alias":
+        raise AssertionError(
+            "expected default list-sort-aliases sort=alias, got: "
+            f"{sort_aliases_payload.get('sort')}"
+        )
     aliases = sort_aliases_payload.get("aliases", {})
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
@@ -4783,6 +4788,11 @@ def main() -> int:
         raise AssertionError(
             "unexpected grouped list-sort-aliases group_schema_version: "
             f"{grouped_sort_aliases_payload.get('group_schema_version')}"
+        )
+    if grouped_sort_aliases_payload.get("sort") != "alias":
+        raise AssertionError(
+            "expected grouped list-sort-aliases sort=alias by default, got: "
+            f"{grouped_sort_aliases_payload.get('sort')}"
         )
     groups = grouped_sort_aliases_payload.get("groups", {})
     total_cap_aliases = groups.get("max-total-runs", [])
@@ -4829,6 +4839,39 @@ def main() -> int:
     if filtered_sort_aliases_payload.get("truncated") is not True:
         raise AssertionError(
             "expected filtered alias payload to be truncated with limit=2"
+        )
+
+    canonical_sort_aliases_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-sort",
+            "canonical",
+            "--list-sort-aliases-limit",
+            "3",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    canonical_sort_aliases_payload = json.loads(canonical_sort_aliases_run.stdout)
+    if canonical_sort_aliases_payload.get("sort") != "canonical":
+        raise AssertionError(
+            "expected canonical list-sort-aliases sort mode in payload, got: "
+            f"{canonical_sort_aliases_payload.get('sort')}"
+        )
+    canonical_aliases = list(canonical_sort_aliases_payload.get("aliases", {}).items())
+    expected_prefix = [
+        ("cheap-first", "cheap-first-tag"),
+        ("cheap-first-desc", "cheap-first-tag-desc"),
+        ("cheap-total-cap", "cheap-first-total-cap"),
+    ]
+    if canonical_aliases != expected_prefix:
+        raise AssertionError(
+            "expected canonical sort prefix to follow canonical key ordering, got: "
+            f"{canonical_aliases}"
         )
 
     invalid_sort_alias_contains_run = subprocess.run(

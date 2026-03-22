@@ -98,7 +98,11 @@ def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[st
     return dict(sorted(groups.items(), key=lambda item: item[0]))
 
 
-def _filter_sort_alias_map(alias_name_contains: str | None, limit: int | None) -> tuple[dict[str, str], int, bool]:
+def _filter_sort_alias_map(
+    alias_name_contains: str | None,
+    limit: int | None,
+    sort_mode: str = "alias",
+) -> tuple[dict[str, str], int, bool]:
     normalized_filter = alias_name_contains.strip().lower() if alias_name_contains is not None else None
     if alias_name_contains is not None and not normalized_filter:
         raise ValueError("--list-sort-aliases-name-contains must include at least one non-empty character")
@@ -106,10 +110,21 @@ def _filter_sort_alias_map(alias_name_contains: str | None, limit: int | None) -
         raise ValueError("--list-sort-aliases-limit must be >= 1")
 
     filtered_items: list[tuple[str, str]] = []
-    for alias, canonical in sorted(PRESET_SORT_ALIAS_MAP.items(), key=lambda item: item[0]):
+    for alias, canonical in PRESET_SORT_ALIAS_MAP.items():
         if normalized_filter and normalized_filter not in alias.lower() and normalized_filter not in canonical.lower():
             continue
         filtered_items.append((alias, canonical))
+
+    if sort_mode == "alias":
+        filtered_items.sort(key=lambda item: item[0])
+    elif sort_mode == "alias-desc":
+        filtered_items.sort(key=lambda item: item[0], reverse=True)
+    elif sort_mode == "canonical":
+        filtered_items.sort(key=lambda item: (item[1], item[0]))
+    elif sort_mode == "canonical-desc":
+        filtered_items.sort(key=lambda item: (item[1], item[0]), reverse=True)
+    else:
+        raise ValueError(f"unsupported list-sort-aliases sort mode: {sort_mode}")
 
     filtered_count = len(filtered_items)
     truncated = False
@@ -1396,6 +1411,15 @@ def parse_args() -> argparse.Namespace:
         help="Optional max number of alias mappings to emit after filtering",
     )
     parser.add_argument(
+        "--list-sort-aliases-sort",
+        choices=("alias", "alias-desc", "canonical", "canonical-desc"),
+        default="alias",
+        help=(
+            "Sort mode for --list-sort-aliases output: alias/alias-desc (by alias key) or "
+            "canonical/canonical-desc (by canonical key, tie-breaking by alias)."
+        ),
+    )
+    parser.add_argument(
         "--list-presets-format",
         choices=("names", "json", "resolved-json", "summary", "summary-tsv"),
         default="names",
@@ -1979,6 +2003,7 @@ def main() -> int:
             alias_map, filtered_count, truncated = _filter_sort_alias_map(
                 args.list_sort_aliases_name_contains,
                 args.list_sort_aliases_limit,
+                args.list_sort_aliases_sort,
             )
             if args.list_sort_aliases_format == "grouped-json":
                 grouped = _build_sort_alias_groups(alias_map)
@@ -1992,6 +2017,7 @@ def main() -> int:
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "limit": args.list_sort_aliases_limit,
+                            "sort": args.list_sort_aliases_sort,
                             "groups": grouped,
                         },
                         ensure_ascii=False,
@@ -2008,6 +2034,7 @@ def main() -> int:
                         "truncated": truncated,
                         "name_contains": args.list_sort_aliases_name_contains,
                         "limit": args.list_sort_aliases_limit,
+                        "sort": args.list_sort_aliases_sort,
                         "aliases": alias_map,
                     },
                     ensure_ascii=False,
