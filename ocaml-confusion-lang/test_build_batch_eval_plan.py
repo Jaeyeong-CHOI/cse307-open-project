@@ -4742,10 +4742,15 @@ def main() -> int:
         text=True,
     )
     sort_aliases_payload = json.loads(list_sort_aliases_run.stdout)
-    if sort_aliases_payload.get("schema_version") != "v1":
+    if sort_aliases_payload.get("schema_version") != "v2":
         raise AssertionError(
             "unexpected list-sort-aliases schema_version: "
             f"{sort_aliases_payload.get('schema_version')}"
+        )
+    if sort_aliases_payload.get("filtered_count") != len(sort_aliases_payload.get("aliases", {})):
+        raise AssertionError(
+            "expected filtered_count to match emitted aliases without limit, got: "
+            f"{sort_aliases_payload.get('filtered_count')} vs {len(sort_aliases_payload.get('aliases', {}))}"
         )
     aliases = sort_aliases_payload.get("aliases", {})
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
@@ -4769,7 +4774,7 @@ def main() -> int:
         text=True,
     )
     grouped_sort_aliases_payload = json.loads(grouped_sort_aliases_run.stdout)
-    if grouped_sort_aliases_payload.get("schema_version") != "v1":
+    if grouped_sort_aliases_payload.get("schema_version") != "v2":
         raise AssertionError(
             "unexpected grouped list-sort-aliases schema_version: "
             f"{grouped_sort_aliases_payload.get('schema_version')}"
@@ -4788,6 +4793,65 @@ def main() -> int:
         raise AssertionError(
             "expected fair-cap alias in fair-allocation-total-cap group, "
             f"got: {fair_total_cap_aliases}"
+        )
+
+    filtered_sort_aliases_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-limit",
+            "2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    filtered_sort_aliases_payload = json.loads(filtered_sort_aliases_run.stdout)
+    if filtered_sort_aliases_payload.get("schema_version") != "v2":
+        raise AssertionError(
+            "unexpected filtered list-sort-aliases schema_version: "
+            f"{filtered_sort_aliases_payload.get('schema_version')}"
+        )
+    if filtered_sort_aliases_payload.get("name_contains") != "fair":
+        raise AssertionError(
+            "expected name_contains in filtered alias payload, got: "
+            f"{filtered_sort_aliases_payload.get('name_contains')}"
+        )
+    if filtered_sort_aliases_payload.get("emitted_count") != 2:
+        raise AssertionError(
+            "expected filtered alias emitted_count=2, got: "
+            f"{filtered_sort_aliases_payload.get('emitted_count')}"
+        )
+    if filtered_sort_aliases_payload.get("truncated") is not True:
+        raise AssertionError(
+            "expected filtered alias payload to be truncated with limit=2"
+        )
+
+    invalid_sort_alias_contains_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "   ",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_sort_alias_contains_run.returncode == 0:
+        raise AssertionError("expected empty --list-sort-aliases-name-contains to fail-fast")
+    if "--list-sort-aliases-name-contains must include at least one non-empty character" not in (
+        invalid_sort_alias_contains_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected list-sort-aliases-name-contains validation error, got: "
+            f"{invalid_sort_alias_contains_run.stderr}"
         )
 
     print("OK: build_batch_eval_plan regression passed")

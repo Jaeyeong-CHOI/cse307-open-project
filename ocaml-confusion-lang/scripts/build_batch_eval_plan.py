@@ -88,13 +88,35 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
 }
 
 
-def _build_sort_alias_groups() -> dict[str, list[str]]:
+def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[str, list[str]]:
     groups: dict[str, list[str]] = {}
-    for alias, canonical in PRESET_SORT_ALIAS_MAP.items():
+    source_map = PRESET_SORT_ALIAS_MAP if alias_map is None else alias_map
+    for alias, canonical in source_map.items():
         groups.setdefault(canonical, []).append(alias)
     for aliases in groups.values():
         aliases.sort()
     return dict(sorted(groups.items(), key=lambda item: item[0]))
+
+
+def _filter_sort_alias_map(alias_name_contains: str | None, limit: int | None) -> tuple[dict[str, str], int, bool]:
+    normalized_filter = alias_name_contains.strip().lower() if alias_name_contains is not None else None
+    if alias_name_contains is not None and not normalized_filter:
+        raise ValueError("--list-sort-aliases-name-contains must include at least one non-empty character")
+    if limit is not None and limit < 1:
+        raise ValueError("--list-sort-aliases-limit must be >= 1")
+
+    filtered_items: list[tuple[str, str]] = []
+    for alias, canonical in sorted(PRESET_SORT_ALIAS_MAP.items(), key=lambda item: item[0]):
+        if normalized_filter and normalized_filter not in alias.lower() and normalized_filter not in canonical.lower():
+            continue
+        filtered_items.append((alias, canonical))
+
+    filtered_count = len(filtered_items)
+    truncated = False
+    if limit is not None and filtered_count > limit:
+        filtered_items = filtered_items[:limit]
+        truncated = True
+    return dict(filtered_items), filtered_count, truncated
 
 
 def _utc_now_iso() -> str:
@@ -1360,6 +1382,20 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-name-contains",
+        default=None,
+        help=(
+            "Optional case-insensitive substring filter for --list-sort-aliases; "
+            "matches either alias name or canonical sort key."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-limit",
+        type=int,
+        default=None,
+        help="Optional max number of alias mappings to emit after filtering",
+    )
+    parser.add_argument(
         "--list-presets-format",
         choices=("names", "json", "resolved-json", "summary", "summary-tsv"),
         default="names",
@@ -1940,13 +1976,22 @@ def main() -> int:
             return 0
 
         if args.list_sort_aliases:
+            alias_map, filtered_count, truncated = _filter_sort_alias_map(
+                args.list_sort_aliases_name_contains,
+                args.list_sort_aliases_limit,
+            )
             if args.list_sort_aliases_format == "grouped-json":
-                grouped = _build_sort_alias_groups()
+                grouped = _build_sort_alias_groups(alias_map)
                 print(
                     json.dumps(
                         {
-                            "schema_version": "v1",
+                            "schema_version": "v2",
                             "group_schema_version": "v1",
+                            "filtered_count": filtered_count,
+                            "emitted_count": len(alias_map),
+                            "truncated": truncated,
+                            "name_contains": args.list_sort_aliases_name_contains,
+                            "limit": args.list_sort_aliases_limit,
                             "groups": grouped,
                         },
                         ensure_ascii=False,
@@ -1954,7 +1999,21 @@ def main() -> int:
                     )
                 )
                 return 0
-            print(json.dumps({"schema_version": "v1", "aliases": PRESET_SORT_ALIAS_MAP}, ensure_ascii=False, indent=2))
+            print(
+                json.dumps(
+                    {
+                        "schema_version": "v2",
+                        "filtered_count": filtered_count,
+                        "emitted_count": len(alias_map),
+                        "truncated": truncated,
+                        "name_contains": args.list_sort_aliases_name_contains,
+                        "limit": args.list_sort_aliases_limit,
+                        "aliases": alias_map,
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
             return 0
 
         if args.list_presets:
