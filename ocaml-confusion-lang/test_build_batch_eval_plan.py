@@ -698,6 +698,28 @@ def main() -> int:
     if preset_names_limited != ["balanced-ci", "full-analysis"]:
         raise AssertionError(f"unexpected limited preset list output: {preset_names_limited}")
 
+    preset_list_sorted_by_name_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "name-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_name_desc = [
+        line.strip() for line in preset_list_sorted_by_name_desc.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_name_desc != ["quick-smoke", "full-analysis", "balanced-ci"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=name-desc output: "
+            f"{preset_names_sorted_by_name_desc}"
+        )
+
     preset_list_sorted_by_max_total_runs = subprocess.run(
         [
             "python3",

@@ -382,6 +382,9 @@ def _sort_preset_names(
     if sort_mode == "name":
         return sorted(preset_names)
 
+    if sort_mode == "name-desc":
+        return sorted(preset_names, reverse=True)
+
     custom_tag_sort = _parse_tag_sort_mode(sort_mode)
     custom_tag_name = custom_tag_sort[0] if custom_tag_sort else None
     custom_tag_descending = custom_tag_sort[1] if custom_tag_sort else False
@@ -1007,7 +1010,7 @@ def parse_args() -> argparse.Namespace:
         default="name",
         help=(
             "Sort mode for filtered preset emission: "
-            "name (default), max-total-runs (ascending; capped presets first, 0/uncapped last), "
+            "name (default), name-desc (descending), max-total-runs (ascending; capped presets first, 0/uncapped last), "
             "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
             "repeats-desc (descending), model-count (ascending), model-count-desc (descending), "
             "prompt-condition-count (ascending), prompt-condition-count-desc (descending), "

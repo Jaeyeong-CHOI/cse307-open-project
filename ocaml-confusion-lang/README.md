@@ -109,6 +109,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains ci
 # preset 탐색 결과를 상위 N개로 제한(기본 정렬: preset 이름 오름차순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
+# preset 이름 기준 내림차순 정렬
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort name-desc
 # 비용 상한(max_total_runs) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # 비용 상한(max_total_runs) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -553,3 +555,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 221. ~~planner preset discovery 정렬 모드에 `description-length`/`description-length-desc`를 추가해 preset 설명 길이 기반으로 quick scan 순서를 제어하고 문서 중심 preset triage 속도를 높이기~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 222. ~~planner preset discovery 정렬 모드에 `tag-count`/`tag-count-desc`를 추가해 태그 밀도(분류 정보량) 기준으로 preset 우선순위를 빠르게 조정할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 223. ~~planner preset discovery 정렬 모드에 `prompt-condition-count`/`prompt-condition-count-desc`를 추가해 프롬프트 조건 축 복잡도(단일 조건 smoke ↔ 다조건 분석) 기준으로 preset 탐색 순서를 즉시 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+224. ~~planner preset discovery 정렬 모드에 `name-desc`를 추가해 preset 이름 역순(최근/우선순위 네이밍 관례 기반) 탐색을 빠르게 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
