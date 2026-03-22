@@ -1092,6 +1092,60 @@ def main() -> int:
             f"{preset_names_sorted_by_per_prompt_cap_desc}"
         )
 
+    preset_list_sorted_by_per_condition_cap = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "per-condition-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_per_condition_cap = [
+        line.strip() for line in preset_list_sorted_by_per_condition_cap.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_per_condition_cap != [
+        "balanced-ci",
+        "full-analysis",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=per-condition-cap output: "
+            f"{preset_names_sorted_by_per_condition_cap}"
+        )
+
+    preset_list_sorted_by_per_condition_cap_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "per-condition-cap-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_per_condition_cap_desc = [
+        line.strip()
+        for line in preset_list_sorted_by_per_condition_cap_desc.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_per_condition_cap_desc != [
+        "full-analysis",
+        "quick-smoke",
+        "balanced-ci",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=per-condition-cap-desc output: "
+            f"{preset_names_sorted_by_per_condition_cap_desc}"
+        )
+
     preset_list_sorted_by_description_length = subprocess.run(
         [
             "python3",

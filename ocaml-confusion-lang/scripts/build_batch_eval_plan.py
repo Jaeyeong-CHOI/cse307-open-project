@@ -406,6 +406,8 @@ def _sort_preset_names(
         "max-runs-per-prompt-condition-desc",
         "per-prompt-cap",
         "per-prompt-cap-desc",
+        "per-condition-cap",
+        "per-condition-cap-desc",
         "description-length",
         "description-length-desc",
         "tag-count",
@@ -512,7 +514,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_model_desc_sort_key)
 
-        if sort_mode in ("max-runs-per-prompt-condition", "per-prompt-cap"):
+        if sort_mode in ("max-runs-per-prompt-condition", "per-prompt-cap", "per-condition-cap"):
             def max_runs_per_prompt_condition_asc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
                 is_uncapped = 1 if max_runs_per_prompt_condition == 0 else 0
@@ -525,7 +527,11 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=max_runs_per_prompt_condition_asc_sort_key)
 
-        if sort_mode in ("max-runs-per-prompt-condition-desc", "per-prompt-cap-desc"):
+        if sort_mode in (
+            "max-runs-per-prompt-condition-desc",
+            "per-prompt-cap-desc",
+            "per-condition-cap-desc",
+        ):
             def max_runs_per_prompt_condition_desc_sort_key(name: str) -> tuple[int, int, str]:
                 max_runs_per_prompt_condition = resolved_max_runs_per_prompt_condition[name]
                 is_uncapped = 0 if max_runs_per_prompt_condition == 0 else 1
