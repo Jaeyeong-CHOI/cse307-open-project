@@ -7489,6 +7489,75 @@ def main() -> int:
             f"{canonical_names_meta_json.get('schema')}"
         )
 
+    names_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "names-json",
+            "--list-sort-aliases-name-contains",
+            "cap",
+            "--list-sort-aliases-sort",
+            "alias",
+            "--list-sort-aliases-limit",
+            "3",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_json = json.loads(names_json_run.stdout)
+    if not isinstance(names_json.get("names"), list) or not names_json.get("names"):
+        raise AssertionError(f"expected names-json output to include non-empty names list, got: {names_json}")
+    if names_json.get("emitted_count") != len(names_json["names"]):
+        raise AssertionError(
+            "expected names-json emitted_count to match names length, got: "
+            f"emitted_count={names_json.get('emitted_count')} len={len(names_json['names'])}"
+        )
+    if any("cap" not in name for name in names_json["names"]):
+        raise AssertionError(
+            "expected names-json names to honor --list-sort-aliases-name-contains=cap filter, got: "
+            f"{names_json['names']}"
+        )
+
+    canonical_names_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "canonical-names-json",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "canonical",
+            "--list-sort-aliases-limit",
+            "2",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    canonical_names_json = json.loads(canonical_names_json_run.stdout)
+    if not isinstance(canonical_names_json.get("canonical_names"), list) or not canonical_names_json.get("canonical_names"):
+        raise AssertionError(
+            "expected canonical-names-json output to include non-empty canonical_names list, got: "
+            f"{canonical_names_json}"
+        )
+    if canonical_names_json.get("emitted_count") != len(canonical_names_json["canonical_names"]):
+        raise AssertionError(
+            "expected canonical-names-json emitted_count to match canonical_names length, got: "
+            f"emitted_count={canonical_names_json.get('emitted_count')} len={len(canonical_names_json['canonical_names'])}"
+        )
+    if any("fair" not in name for name in canonical_names_json["canonical_names"]):
+        raise AssertionError(
+            "expected canonical-names-json canonical_names to honor --list-sort-aliases-name-contains=fair filter, got: "
+            f"{canonical_names_json['canonical_names']}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 
