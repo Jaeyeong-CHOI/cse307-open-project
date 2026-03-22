@@ -8704,6 +8704,10 @@ def main() -> int:
         raise AssertionError(
             "expected list-presets JSON payload to expose output_has_truncated_records=true when truncated"
         )
+    if list_presets_truncated_payload.get("output_is_fully_retained") is not False:
+        raise AssertionError(
+            "expected list-presets JSON payload to expose output_is_fully_retained=false when truncated"
+        )
     expected_truncated_ratio = (
         list_presets_truncated_payload.get("output_truncated_count", 0)
         / list_presets_truncated_payload.get("filtered_count", 1)
@@ -8746,6 +8750,10 @@ def main() -> int:
     if list_presets_not_truncated_payload.get("output_has_truncated_records") is not False:
         raise AssertionError(
             "expected list-presets resolved-json payload to expose output_has_truncated_records=false when not truncated"
+        )
+    if list_presets_not_truncated_payload.get("output_is_fully_retained") is not True:
+        raise AssertionError(
+            "expected list-presets resolved-json payload to expose output_is_fully_retained=true when not truncated"
         )
     if list_presets_not_truncated_payload.get("output_truncated_ratio") != 0.0:
         raise AssertionError(

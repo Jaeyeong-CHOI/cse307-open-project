@@ -570,6 +570,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_is_single_record": emitted_count == 1,
                 "output_has_multiple_records": emitted_count > 1,
                 "output_has_truncated_records": max(filtered_count - emitted_count, 0) > 0,
+                "output_is_fully_retained": max(filtered_count - emitted_count, 0) == 0,
                 "output_truncated_count": max(filtered_count - emitted_count, 0),
                 "output_truncated_ratio": (
                     max(filtered_count - emitted_count, 0) / filtered_count if filtered_count > 0 else 0.0
@@ -3929,6 +3930,7 @@ def main() -> int:
                             "output_is_single_record": len(alias_map) == 1,
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
+                            "output_is_fully_retained": max(filtered_count - len(alias_map), 0) == 0,
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4040,6 +4042,7 @@ def main() -> int:
                             "output_is_single_record": len(alias_map) == 1,
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
+                            "output_is_fully_retained": max(filtered_count - len(alias_map), 0) == 0,
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4136,6 +4139,7 @@ def main() -> int:
                             "output_is_single_record": len(grouped) == 1,
                             "output_has_multiple_records": len(grouped) > 1,
                             "output_has_truncated_records": max(filtered_count - len(grouped), 0) > 0,
+                            "output_is_fully_retained": max(filtered_count - len(grouped), 0) == 0,
                             "output_truncated_count": max(filtered_count - len(grouped), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(grouped), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4615,6 +4619,7 @@ def main() -> int:
                     "output_is_single_record": len(preset_names) == 1,
                     "output_has_multiple_records": len(preset_names) > 1,
                     "output_has_truncated_records": max(len(filtered_presets) - len(preset_names), 0) > 0,
+                    "output_is_fully_retained": max(len(filtered_presets) - len(preset_names), 0) == 0,
                     "output_truncated_count": max(len(filtered_presets) - len(preset_names), 0),
                     "truncated": truncated,
                     "output_format": args.list_presets_format,
@@ -4776,6 +4781,7 @@ def main() -> int:
                     "output_is_single_record": len(limited_presets) == 1,
                     "output_has_multiple_records": len(limited_presets) > 1,
                     "output_has_truncated_records": max(len(filtered_presets) - len(limited_presets), 0) > 0,
+                    "output_is_fully_retained": max(len(filtered_presets) - len(limited_presets), 0) == 0,
                     "output_truncated_count": max(len(filtered_presets) - len(limited_presets), 0),
                     "output_truncated_ratio": (
                         max(len(filtered_presets) - len(limited_presets), 0) / len(filtered_presets)
@@ -4910,6 +4916,7 @@ def main() -> int:
                     "output_is_single_record": len(resolved_presets) == 1,
                     "output_has_multiple_records": len(resolved_presets) > 1,
                     "output_has_truncated_records": False,
+                    "output_is_fully_retained": True,
                     "output_truncated_count": 0,
                     "output_truncated_ratio": 0.0,
                     "output_truncated_pct": 0.0,
