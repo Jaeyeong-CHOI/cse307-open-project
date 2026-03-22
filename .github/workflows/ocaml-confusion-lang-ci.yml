@@ -248,7 +248,7 @@ jobs:
             --label "Lightweight CI result snapshot" \
             --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" \
             --run-id "${{ github.run_id }}" \
-            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}" \
             --run-attempt "${{ github.run_attempt }}" \
             --event-name "${{ github.event_name }}" \
             --sha "${{ github.sha }}" \
@@ -393,7 +393,7 @@ jobs:
             --label "Full CI result snapshot" \
             --top-k-mismatches "${{ needs.detect-changes.outputs.snapshot_top_k_mismatches }}" \
             --run-id "${{ github.run_id }}" \
-            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}" \
             --run-attempt "${{ github.run_attempt }}" \
             --event-name "${{ github.event_name }}" \
             --sha "${{ github.sha }}" \
