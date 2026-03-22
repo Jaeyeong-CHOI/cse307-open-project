@@ -1875,6 +1875,32 @@ def main() -> int:
             f"{preset_names_sorted_by_cost_priority_prompt}"
         )
 
+    preset_list_sorted_by_cost_condition_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cost-condition",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cost_condition_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cost_condition_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cost_condition_alias != preset_names_sorted_by_cost_priority_prompt:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cost-condition alias output: "
+            f"{preset_names_sorted_by_cost_condition_alias}"
+        )
+
     preset_list_sorted_by_cost_priority_prompt_desc = subprocess.run(
         [
             "python3",
@@ -1903,6 +1929,32 @@ def main() -> int:
         raise AssertionError(
             "unexpected --list-presets-sort=cost-priority-prompt-desc output: "
             f"{preset_names_sorted_by_cost_priority_prompt_desc}"
+        )
+
+    preset_list_sorted_by_cost_condition_desc_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cost-condition-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cost_condition_desc_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cost_condition_desc_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cost_condition_desc_alias != preset_names_sorted_by_cost_priority_prompt_desc:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cost-condition-desc alias output: "
+            f"{preset_names_sorted_by_cost_condition_desc_alias}"
         )
 
     preset_list_sorted_by_cheap_first_total_cap_desc = subprocess.run(
