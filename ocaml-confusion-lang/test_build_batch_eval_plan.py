@@ -9024,6 +9024,39 @@ def main() -> int:
     retained_state_codes_codes_json_payload = json.loads(retained_state_codes_codes_json_run.stdout)
     if set(retained_state_codes_codes_json_payload.keys()) != {"0", "1"}:
         raise AssertionError("expected retained-records codes-json payload keys to be {'0','1'}")
+    retained_state_codes_state_codes_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "state-codes-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_state_codes_json_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "scj",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retained_state_codes_state_codes_json_alias_run.stdout != retained_state_codes_state_codes_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format scj alias to match canonical state-codes-json output")
+    retained_state_codes_state_codes_json_payload = json.loads(retained_state_codes_state_codes_json_run.stdout)
+    if retained_state_codes_state_codes_json_payload != {"no_retained_records": 0, "has_retained_records": 1}:
+        raise AssertionError(
+            f"unexpected retained-records state-codes-json payload: {retained_state_codes_state_codes_json_payload}"
+        )
     retained_state_codes_names_run = subprocess.run(
         [
             "python3",
@@ -9218,6 +9251,43 @@ def main() -> int:
     retention_state_codes_codes_json_payload = json.loads(retention_state_codes_codes_json_run.stdout)
     if set(retention_state_codes_codes_json_payload.keys()) != {"0", "1", "2"}:
         raise AssertionError("expected retention codes-json payload keys to be {'0','1','2'}")
+    retention_state_codes_state_codes_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "state-codes-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_state_codes_json_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "scj",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retention_state_codes_state_codes_json_alias_run.stdout != retention_state_codes_state_codes_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format scj alias to match canonical state-codes-json output")
+    retention_state_codes_state_codes_json_payload = json.loads(retention_state_codes_state_codes_json_run.stdout)
+    if retention_state_codes_state_codes_json_payload != {
+        "fully_retained": 0,
+        "partially_retained": 1,
+        "fully_truncated": 2,
+    }:
+        raise AssertionError(
+            f"unexpected retention state-codes-json payload: {retention_state_codes_state_codes_json_payload}"
+        )
     retention_state_codes_names_run = subprocess.run(
         [
             "python3",
