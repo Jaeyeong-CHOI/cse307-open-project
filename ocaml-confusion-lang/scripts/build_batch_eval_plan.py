@@ -308,6 +308,19 @@ def _resolve_sort_aliases_output_delimiter(output_format: str) -> str:
     return "none"
 
 
+def _resolve_sort_aliases_output_field_count(output_format: str) -> int:
+    transport = _resolve_sort_aliases_output_transport(output_format)
+    if transport == "json":
+        return 0
+
+    output_kind = _resolve_sort_aliases_output_kind(output_format)
+    if output_kind in {"aliases", "grouped"}:
+        return 6
+    if output_kind in {"names", "canonical-names"}:
+        return 1
+    return 0
+
+
 def _resolve_sort_aliases_output_kind(output_format: str) -> str:
     if output_format in {"aliases-json", "aliases-tsv", "aliases-tsv-rows"}:
         return "aliases"
@@ -379,6 +392,7 @@ def _format_sort_aliases_tsv_meta(
     output_is_rows = _resolve_sort_aliases_output_is_rows(output_format)
     output_has_header = _resolve_sort_aliases_output_has_header(output_format)
     output_delimiter = _resolve_sort_aliases_output_delimiter(output_format)
+    output_field_count = _resolve_sort_aliases_output_field_count(output_format)
 
     if meta_format == "json":
         return json.dumps(
@@ -391,6 +405,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_is_rows": output_is_rows,
                 "output_has_header": output_has_header,
                 "output_delimiter": output_delimiter,
+                "output_field_count": output_field_count,
                 "output_format": output_format,
                 "output_format_requested": output_format_requested,
                 "output_format_alias_resolved": output_format_alias_resolved,
@@ -451,6 +466,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_is_rows={str(output_is_rows).lower()}\t"
         f"output_has_header={str(output_has_header).lower()}\t"
         f"output_delimiter={output_delimiter}\t"
+        f"output_field_count={output_field_count}\t"
         f"output_format={output_format}\t"
         f"output_format_requested={output_format_requested}\t"
         f"output_format_alias_resolved={str(output_format_alias_resolved).lower()}\t"
@@ -3399,6 +3415,7 @@ def main() -> int:
                             "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
                             "output_has_header": _resolve_sort_aliases_output_has_header(resolved_list_sort_aliases_format),
                             "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
+                            "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                             "group_schema_version": "v2",
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
@@ -3482,6 +3499,7 @@ def main() -> int:
                             "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
                             "output_has_header": _resolve_sort_aliases_output_has_header(resolved_list_sort_aliases_format),
                             "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
+                            "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
@@ -3549,6 +3567,7 @@ def main() -> int:
                             "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
                             "output_has_header": _resolve_sort_aliases_output_has_header(resolved_list_sort_aliases_format),
                             "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
+                            "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
@@ -3659,8 +3678,9 @@ def main() -> int:
                         "output": "aliases",
                         "output_transport": _resolve_sort_aliases_output_transport(resolved_list_sort_aliases_format),
                         "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
-                            "output_has_header": _resolve_sort_aliases_output_has_header(resolved_list_sort_aliases_format),
-                            "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
+                        "output_has_header": _resolve_sort_aliases_output_has_header(resolved_list_sort_aliases_format),
+                        "output_delimiter": _resolve_sort_aliases_output_delimiter(resolved_list_sort_aliases_format),
+                        "output_field_count": _resolve_sort_aliases_output_field_count(resolved_list_sort_aliases_format),
                         "output_format": resolved_list_sort_aliases_format,
                         "output_format_requested": list_sort_aliases_format_requested,
                         "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,

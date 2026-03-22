@@ -5417,6 +5417,11 @@ def main() -> int:
             "expected default list-sort-aliases output_delimiter=none, got: "
             f"{sort_aliases_payload.get('output_delimiter')}"
         )
+    if sort_aliases_payload.get("output_field_count") != 0:
+        raise AssertionError(
+            "expected default list-sort-aliases output_field_count=0, got: "
+            f"{sort_aliases_payload.get('output_field_count')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -5688,6 +5693,11 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases output_has_header=false, got: "
             f"{grouped_sort_aliases_payload.get('output_has_header')}"
+        )
+    if grouped_sort_aliases_payload.get("output_field_count") != 0:
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_field_count=0, got: "
+            f"{grouped_sort_aliases_payload.get('output_field_count')}"
         )
     if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(
@@ -6519,6 +6529,11 @@ def main() -> int:
             "expected aliases-tsv meta footer to include output_delimiter=tab, got: "
             f"{aliases_tsv_with_meta_lines[-1]}"
         )
+    if "\toutput_field_count=6" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include output_field_count=6, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
     if "\tmin_group_size=1" not in aliases_tsv_with_meta_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv meta footer to include min_group_size context, got: "
@@ -6664,6 +6679,11 @@ def main() -> int:
     if aliases_tsv_meta_json_payload.get("output_delimiter") != "tab":
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_delimiter=tab, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("output_field_count") != 6:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_field_count=6, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
     if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
@@ -7555,6 +7575,10 @@ def main() -> int:
     if "output_delimiter=newline" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_delimiter=newline, got: {names_meta_lines[-1]}"
+        )
+    if "output_field_count=1" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_field_count=1, got: {names_meta_lines[-1]}"
         )
 
     canonical_names_sort_aliases_run = subprocess.run(
