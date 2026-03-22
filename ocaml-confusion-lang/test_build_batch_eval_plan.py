@@ -5287,6 +5287,81 @@ def main() -> int:
             f"{list(skew_size_pct_sort_payload.get('aliases', {}).items())}"
         )
 
+    skew_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "skew",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    skew_sort_payload = json.loads(skew_sort_run.stdout)
+    if skew_sort_payload.get("sort") != "group-share-delta-abs-desc":
+        raise AssertionError(
+            "expected skew to resolve to group-share-delta-abs-desc, got: "
+            f"{skew_sort_payload.get('sort')}"
+        )
+
+    skew_count_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "skew-count",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    skew_count_sort_payload = json.loads(skew_count_sort_run.stdout)
+    if skew_count_sort_payload.get("sort") != "group-size-delta-abs-desc":
+        raise AssertionError(
+            "expected skew-count to resolve to group-size-delta-abs-desc, got: "
+            f"{skew_count_sort_payload.get('sort')}"
+        )
+
+    skew_pct_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-name-not-contains",
+            "total",
+            "--list-sort-aliases-match-field",
+            "alias",
+            "--list-sort-aliases-sort",
+            "skew-pct",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    skew_pct_sort_payload = json.loads(skew_pct_sort_run.stdout)
+    if skew_pct_sort_payload.get("sort") != "group-size-delta-pct-abs-desc":
+        raise AssertionError(
+            "expected skew-pct to resolve to group-size-delta-pct-abs-desc, got: "
+            f"{skew_pct_sort_payload.get('sort')}"
+        )
+    if list(skew_pct_sort_payload.get("aliases", {}).items()) != expected_group_size_delta_pct_abs_aliases:
+        raise AssertionError(
+            "expected skew-pct alias ordering to match group-size-delta-pct-abs-desc, got: "
+            f"{list(skew_pct_sort_payload.get('aliases', {}).items())}"
+        )
+
     min_group_size_run = subprocess.run(
         [
             "python3",

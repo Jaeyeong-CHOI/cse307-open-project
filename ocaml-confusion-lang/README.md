@@ -156,6 +156,10 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort skew-share
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort skew-size
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort skew-size-pct
+# ultra-short skew alias family (share/count/pct)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort skew
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort skew-count
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort skew-pct
 # global canonical family 크기 기준 정렬(전체 alias universe 기준)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-sort group-size-global-desc
 # global canonical family 크기 하한/상한으로 전체 alias universe 기준 fan-out 규모를 필터링
@@ -790,4 +794,5 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 279. ~~`--list-sort-aliases`에 signed/absolute local-global canonical family 크기 차이 필터(`--list-sort-aliases-min/max-group-size-delta`, `--list-sort-aliases-min/max-group-size-delta-abs`)를 추가해, fan-out skew를 정렬 전에 임계값으로 fail-fast 선별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 280. ~~`--list-sort-aliases-sort`에 canonical family 크기 변화율(%) 정렬(`group-size-delta-pct*`)을 추가해 local-global 절대 count 차이뿐 아니라 상대 편향(전역 대비 축소/확장 비율) 기반 triage를 단일 키로 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 281. ~~`--list-sort-aliases`에 local-global canonical family 크기 변화율(%) 필터(`--list-sort-aliases-min/max-group-size-delta-pct`, `--list-sort-aliases-min/max-group-size-delta-abs-pct`)를 추가해 상대 fan-out skew를 정렬 전에 임계값 기반으로 fail-fast 선별 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
-282. `--list-sort-aliases-sort`에 skew triage shorthand alias(`skew-share`, `skew-size`, `skew-size-pct` + asc/desc 변형)를 추가해 긴 delta sort 키 입력 부담을 줄이고 편향 점검 루프를 빠르게 수행할 수 있게 개선 ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+282. ~~`--list-sort-aliases-sort`에 skew triage shorthand alias(`skew-share`, `skew-size`, `skew-size-pct` + asc/desc 변형)를 추가해 긴 delta sort 키 입력 부담을 줄이고 편향 점검 루프를 빠르게 수행할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+283. ~~`--list-sort-aliases-sort`에 ultra-short skew alias(`skew`, `skew-count`, `skew-pct` + asc/desc 변형)를 추가해 share/size/size%% triage 호출 길이를 더 줄이고 모바일/CI 로그 복붙 ergonomics를 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

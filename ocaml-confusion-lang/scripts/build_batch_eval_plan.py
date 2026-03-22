@@ -91,12 +91,21 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
 }
 
 LIST_SORT_ALIASES_SORT_ALIAS_MAP: dict[str, str] = {
+    "skew": "group-share-delta-abs-desc",
+    "skew-desc": "group-share-delta-abs-desc",
+    "skew-asc": "group-share-delta-abs",
     "skew-share": "group-share-delta-abs-desc",
     "skew-share-desc": "group-share-delta-abs-desc",
     "skew-share-asc": "group-share-delta-abs",
+    "skew-count": "group-size-delta-abs-desc",
+    "skew-count-desc": "group-size-delta-abs-desc",
+    "skew-count-asc": "group-size-delta-abs",
     "skew-size": "group-size-delta-abs-desc",
     "skew-size-desc": "group-size-delta-abs-desc",
     "skew-size-asc": "group-size-delta-abs",
+    "skew-pct": "group-size-delta-pct-abs-desc",
+    "skew-pct-desc": "group-size-delta-pct-abs-desc",
+    "skew-pct-asc": "group-size-delta-pct-abs",
     "skew-size-pct": "group-size-delta-pct-abs-desc",
     "skew-size-pct-desc": "group-size-delta-pct-abs-desc",
     "skew-size-pct-asc": "group-size-delta-pct-abs",
@@ -2250,12 +2259,21 @@ def parse_args() -> argparse.Namespace:
             "group-size-delta-pct-desc",
             "group-size-delta-pct-abs",
             "group-size-delta-pct-abs-desc",
+            "skew",
+            "skew-desc",
+            "skew-asc",
             "skew-share",
             "skew-share-desc",
             "skew-share-asc",
+            "skew-count",
+            "skew-count-desc",
+            "skew-count-asc",
             "skew-size",
             "skew-size-desc",
             "skew-size-asc",
+            "skew-pct",
+            "skew-pct-desc",
+            "skew-pct-asc",
             "skew-size-pct",
             "skew-size-pct-desc",
             "skew-size-pct-asc",
@@ -2274,7 +2292,8 @@ def parse_args() -> argparse.Namespace:
             "group-size-delta-abs/group-size-delta-abs-desc (by absolute local-global canonical family size delta), "
             "group-size-delta-pct/group-size-delta-pct-desc (by signed local-global canonical family size delta %% relative to global family size), or "
             "group-size-delta-pct-abs/group-size-delta-pct-abs-desc (by absolute local-global canonical family size delta %% relative to global family size). "
-            "Shorthand aliases: skew-share[/desc|/asc], skew-size[/desc|/asc], skew-size-pct[/desc|/asc]."
+            "Shorthand aliases: skew[/desc|/asc] (=skew-share), skew-count[/desc|/asc] (=skew-size), "
+            "skew-pct[/desc|/asc] (=skew-size-pct), plus skew-share/skew-size/skew-size-pct families."
         ),
     )
     parser.add_argument(
