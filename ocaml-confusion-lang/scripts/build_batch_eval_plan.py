@@ -211,6 +211,16 @@ def _filter_sort_alias_map(
         filtered_items.sort(key=lambda item: (item[1], item[0]))
     elif sort_mode == "canonical-desc":
         filtered_items.sort(key=lambda item: (item[1], item[0]), reverse=True)
+    elif sort_mode == "group-size":
+        group_sizes: dict[str, int] = {}
+        for _, canonical in filtered_items:
+            group_sizes[canonical] = group_sizes.get(canonical, 0) + 1
+        filtered_items.sort(key=lambda item: (group_sizes[item[1]], item[1], item[0]))
+    elif sort_mode == "group-size-desc":
+        group_sizes = {}
+        for _, canonical in filtered_items:
+            group_sizes[canonical] = group_sizes.get(canonical, 0) + 1
+        filtered_items.sort(key=lambda item: (-group_sizes[item[1]], item[1], item[0]))
     else:
         raise ValueError(f"unsupported list-sort-aliases sort mode: {sort_mode}")
 
@@ -1518,11 +1528,19 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-sort-aliases-sort",
-        choices=("alias", "alias-desc", "canonical", "canonical-desc"),
+        choices=(
+            "alias",
+            "alias-desc",
+            "canonical",
+            "canonical-desc",
+            "group-size",
+            "group-size-desc",
+        ),
         default="alias",
         help=(
-            "Sort mode for --list-sort-aliases output: alias/alias-desc (by alias key) or "
-            "canonical/canonical-desc (by canonical key, tie-breaking by alias)."
+            "Sort mode for --list-sort-aliases output: alias/alias-desc (by alias key), "
+            "canonical/canonical-desc (by canonical key, tie-breaking by alias), or "
+            "group-size/group-size-desc (by canonical family size, tie-breaking by canonical+alias)."
         ),
     )
     parser.add_argument(

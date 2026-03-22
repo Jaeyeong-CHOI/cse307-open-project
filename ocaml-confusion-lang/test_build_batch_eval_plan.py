@@ -4894,6 +4894,42 @@ def main() -> int:
             f"{canonical_aliases}"
         )
 
+    group_size_sort_aliases_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "group-size-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    group_size_sort_aliases_payload = json.loads(group_size_sort_aliases_run.stdout)
+    if group_size_sort_aliases_payload.get("sort") != "group-size-desc":
+        raise AssertionError(
+            "expected group-size-desc sort mode in payload, got: "
+            f"{group_size_sort_aliases_payload.get('sort')}"
+        )
+    group_size_aliases = list(group_size_sort_aliases_payload.get("aliases", {}).items())
+    expected_group_size_aliases = [
+        ("fair-cap", "fair-allocation-total-cap"),
+        ("fair-total-cap", "fair-allocation-total-cap"),
+        ("fair-cap-desc", "fair-allocation-total-cap-desc"),
+        ("fair-total-cap-desc", "fair-allocation-total-cap-desc"),
+        ("fair-allocation", "fair-model-allocation"),
+        ("fair-allocation-desc", "fair-model-allocation-desc"),
+    ]
+    if group_size_aliases != expected_group_size_aliases:
+        raise AssertionError(
+            "expected group-size-desc sort to prioritize larger canonical families first, got: "
+            f"{group_size_aliases}"
+        )
+
     aliases_tsv_run = subprocess.run(
         [
             "python3",
