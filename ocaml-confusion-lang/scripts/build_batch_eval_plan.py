@@ -574,6 +574,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_truncated_ratio": (
                     max(filtered_count - emitted_count, 0) / filtered_count if filtered_count > 0 else 0.0
                 ),
+                "output_retained_ratio": (emitted_count / filtered_count if filtered_count > 0 else 0.0),
                 "truncated": truncated,
                 "name_contains": name_contains,
                 "name_not_contains": name_not_contains,
@@ -654,6 +655,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_has_truncated_records={str(max(filtered_count - emitted_count, 0) > 0).lower()}\t"
         f"output_truncated_count={max(filtered_count - emitted_count, 0)}\t"
         f"output_truncated_ratio={(max(filtered_count - emitted_count, 0) / filtered_count) if filtered_count > 0 else 0.0:.6f}\t"
+        f"output_retained_ratio={(emitted_count / filtered_count) if filtered_count > 0 else 0.0:.6f}\t"
         f"truncated={str(truncated).lower()}\t"
         f"name_contains={name_contains or 'none'}\t"
         f"name_not_contains={name_not_contains or 'none'}\t"
@@ -3925,6 +3927,7 @@ def main() -> int:
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
                             ),
+                            "output_retained_ratio": (len(alias_map) / filtered_count if filtered_count > 0 else 0.0),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4031,6 +4034,7 @@ def main() -> int:
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
                             ),
+                            "output_retained_ratio": (len(alias_map) / filtered_count if filtered_count > 0 else 0.0),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4122,6 +4126,7 @@ def main() -> int:
                             "output_truncated_ratio": (
                                 max(filtered_count - len(grouped), 0) / filtered_count if filtered_count > 0 else 0.0
                             ),
+                            "output_retained_ratio": (len(grouped) / filtered_count if filtered_count > 0 else 0.0),
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4759,6 +4764,9 @@ def main() -> int:
                         if len(filtered_presets) > 0
                         else 0.0
                     ),
+                    "output_retained_ratio": (
+                        len(limited_presets) / len(filtered_presets) if len(filtered_presets) > 0 else 0.0
+                    ),
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
@@ -4878,6 +4886,9 @@ def main() -> int:
                     "output_has_truncated_records": False,
                     "output_truncated_count": 0,
                     "output_truncated_ratio": 0.0,
+                    "output_retained_ratio": (
+                        len(resolved_presets) / len(filtered_presets) if len(filtered_presets) > 0 else 0.0
+                    ),
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
