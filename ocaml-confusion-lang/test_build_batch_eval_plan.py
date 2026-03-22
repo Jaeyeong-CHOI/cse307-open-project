@@ -3197,8 +3197,12 @@ def main() -> int:
     expected_filter_meta_footer = (
         "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
         "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
-        "\ttag_match_alias_resolved=false\ttag_not_filter=none\ttag_not_match=any"
+        "\ttag_match_alias_resolved=false\ttag_filter_mode=exact"
+        "\ttag_filter_mode_requested=exact\ttag_filter_mode_alias_resolved=false"
+        "\ttag_not_filter=none\ttag_not_match=any"
         "\ttag_not_match_requested=any\ttag_not_match_alias_resolved=false"
+        "\ttag_not_filter_mode=exact\ttag_not_filter_mode_requested=exact"
+        "\ttag_not_filter_mode_alias_resolved=false"
         "\ttag_case_sensitive=false\tname_contains=quick\tname_filter_mode=contains"
         "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
         "\tname_not_contains=none\tname_not_filter_mode=contains"
@@ -4744,6 +4748,51 @@ def main() -> int:
             f"{tag_case_insensitive_filtered_run.stdout!r}"
         )
 
+    tag_prefix_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag",
+            "cheap",
+            "--list-presets-tag-filter-mode",
+            "p",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if tag_prefix_filtered_run.stdout.strip().splitlines() != [
+        "balanced-ci",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "expected tag prefix filter mode alias to match cheap-first presets, got: "
+            f"{tag_prefix_filtered_run.stdout!r}"
+        )
+
+    tag_contains_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag",
+            "cover",
+            "--list-presets-tag-filter-mode",
+            "contains",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if tag_contains_filtered_run.stdout.strip().splitlines() != ["full-analysis"]:
+        raise AssertionError(
+            "expected tag contains filter mode to match high-coverage preset, got: "
+            f"{tag_contains_filtered_run.stdout!r}"
+        )
+
     tag_case_sensitive_json_run = subprocess.run(
         [
             "python3",
@@ -4953,6 +5002,30 @@ def main() -> int:
             f"{tag_exclusion_all_mode_run.stdout!r}"
         )
 
+    tag_exclusion_prefix_mode_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag-not-contains",
+            "anal",
+            "--list-presets-tag-not-filter-mode",
+            "prefix",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if tag_exclusion_prefix_mode_run.stdout.strip().splitlines() != [
+        "balanced-ci",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "expected exclusion prefix filter mode to remove analysis-tagged preset, got: "
+            f"{tag_exclusion_prefix_mode_run.stdout!r}"
+        )
+
     tag_exclusion_json_alias_run = subprocess.run(
         [
             "python3",
@@ -4962,6 +5035,10 @@ def main() -> int:
             "cheap-first",
             "--list-presets-tag-not-match",
             "o",
+            "--list-presets-tag-filter-mode",
+            "c",
+            "--list-presets-tag-not-filter-mode",
+            "p",
             "--list-presets-format",
             "json",
         ],
@@ -4984,6 +5061,36 @@ def main() -> int:
     if tag_exclusion_json_alias_payload.get("tag_not_match_alias_resolved") is not True:
         raise AssertionError(
             "expected tag_not_match_alias_resolved=true for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_filter_mode") != "contains":
+        raise AssertionError(
+            "expected resolved tag_filter_mode=contains for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_filter_mode_requested") != "c":
+        raise AssertionError(
+            "expected tag_filter_mode_requested=c for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_filter_mode_alias_resolved") is not True:
+        raise AssertionError(
+            "expected tag_filter_mode_alias_resolved=true for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_not_filter_mode") != "prefix":
+        raise AssertionError(
+            "expected resolved tag_not_filter_mode=prefix for explicit mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_not_filter_mode_requested") != "p":
+        raise AssertionError(
+            "expected tag_not_filter_mode_requested=p for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_not_filter_mode_alias_resolved") is not True:
+        raise AssertionError(
+            "expected tag_not_filter_mode_alias_resolved=true for alias mode: "
             f"{tag_exclusion_json_alias_payload}"
         )
 

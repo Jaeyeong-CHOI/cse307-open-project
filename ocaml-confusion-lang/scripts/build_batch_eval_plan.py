@@ -1073,6 +1073,7 @@ def _matches_preset_tags(
     preset: dict[str, Any],
     required_tags: set[str],
     match_mode: str = "all",
+    filter_mode: str = "exact",
     case_sensitive: bool = False,
 ) -> bool:
     if not required_tags:
@@ -1080,13 +1081,24 @@ def _matches_preset_tags(
     raw_tags = preset.get("tags", [])
     if not isinstance(raw_tags, list):
         return False
+    mode = _resolve_filter_mode(filter_mode)
     if case_sensitive:
-        preset_tags = {str(tag).strip() for tag in raw_tags if str(tag).strip()}
+        preset_tags = [str(tag).strip() for tag in raw_tags if str(tag).strip()]
+        required = [tag for tag in required_tags if tag]
     else:
-        preset_tags = {str(tag).strip().lower() for tag in raw_tags if str(tag).strip()}
+        preset_tags = [str(tag).strip().lower() for tag in raw_tags if str(tag).strip()]
+        required = [tag.lower() for tag in required_tags if tag]
+
+    def _tag_match(required_tag: str) -> bool:
+        if mode == "prefix":
+            return any(tag.startswith(required_tag) for tag in preset_tags)
+        if mode == "contains":
+            return any(required_tag in tag for tag in preset_tags)
+        return required_tag in preset_tags
+
     if match_mode == "any":
-        return any(tag in preset_tags for tag in required_tags)
-    return required_tags.issubset(preset_tags)
+        return any(_tag_match(tag) for tag in required)
+    return all(_tag_match(tag) for tag in required)
 
 
 def _matches_preset_name(
@@ -2427,6 +2439,15 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-presets-tag-filter-mode",
+        choices=("contains", "prefix", "exact", "c", "p", "e"),
+        default="exact",
+        help=(
+            "Match mode for --list-presets-tag: exact (default), contains, prefix; "
+            "shorthand aliases: c=contains, p=prefix, e=exact"
+        ),
+    )
+    parser.add_argument(
         "--list-presets-tag-not-contains",
         default=None,
         help=(
@@ -2441,6 +2462,15 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Tag exclusion match mode for --list-presets-tag-not-contains: any (default) or all; "
             "shorthand aliases: a=all, o=any"
+        ),
+    )
+    parser.add_argument(
+        "--list-presets-tag-not-filter-mode",
+        choices=("contains", "prefix", "exact", "c", "p", "e"),
+        default="exact",
+        help=(
+            "Match mode for --list-presets-tag-not-contains: exact (default), contains, prefix; "
+            "shorthand aliases: c=contains, p=prefix, e=exact"
         ),
     )
     parser.add_argument(
@@ -2574,7 +2604,8 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help=(
             "Include active filter context in --list-presets text meta footer "
-            "(tag/tag_not/name_contains/name_not_contains/limit/tag_match/tag_not_match)."
+            "(tag/tag_not/name_contains/name_not_contains/limit/tag_match/tag_not_match/"
+            "tag_filter_mode/tag_not_filter_mode)."
         ),
     )
     parser.add_argument(
@@ -3340,10 +3371,23 @@ def main() -> int:
             list_presets_sort_requested = args.list_presets_sort
             resolved_list_presets_sort = _resolve_list_presets_sort_mode(args.list_presets_sort)
             list_presets_sort_alias_resolved = list_presets_sort_requested != resolved_list_presets_sort
+            list_presets_tag_filter_mode_requested = args.list_presets_tag_filter_mode
+            resolved_list_presets_tag_filter_mode = _resolve_filter_mode(args.list_presets_tag_filter_mode)
+            list_presets_tag_filter_mode_alias_resolved = (
+                list_presets_tag_filter_mode_requested != resolved_list_presets_tag_filter_mode
+            )
             list_presets_tag_not_match_requested = args.list_presets_tag_not_match
             resolved_list_presets_tag_not_match = _resolve_tag_match_mode(args.list_presets_tag_not_match)
             list_presets_tag_not_match_alias_resolved = (
                 list_presets_tag_not_match_requested != resolved_list_presets_tag_not_match
+            )
+            list_presets_tag_not_filter_mode_requested = args.list_presets_tag_not_filter_mode
+            resolved_list_presets_tag_not_filter_mode = _resolve_filter_mode(
+                args.list_presets_tag_not_filter_mode
+            )
+            list_presets_tag_not_filter_mode_alias_resolved = (
+                list_presets_tag_not_filter_mode_requested
+                != resolved_list_presets_tag_not_filter_mode
             )
             required_tags: set[str] = set()
             excluded_tags: set[str] = set()
@@ -3419,6 +3463,7 @@ def main() -> int:
                     preset,
                     required_tags,
                     match_mode=resolved_list_presets_tag_match,
+                    filter_mode=resolved_list_presets_tag_filter_mode,
                     case_sensitive=args.list_presets_tag_case_sensitive,
                 )
                 and (
@@ -3427,6 +3472,7 @@ def main() -> int:
                         preset,
                         excluded_tags,
                         match_mode=resolved_list_presets_tag_not_match,
+                        filter_mode=resolved_list_presets_tag_not_filter_mode,
                         case_sensitive=args.list_presets_tag_case_sensitive,
                     )
                 )
@@ -3463,10 +3509,16 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": str(list_presets_tag_match_alias_resolved).lower(),
+                    "tag_filter_mode": resolved_list_presets_tag_filter_mode,
+                    "tag_filter_mode_requested": list_presets_tag_filter_mode_requested,
+                    "tag_filter_mode_alias_resolved": str(list_presets_tag_filter_mode_alias_resolved).lower(),
                     "tag_not_filter": tag_not_filter or "none",
                     "tag_not_match": resolved_list_presets_tag_not_match,
                     "tag_not_match_requested": list_presets_tag_not_match_requested,
                     "tag_not_match_alias_resolved": str(list_presets_tag_not_match_alias_resolved).lower(),
+                    "tag_not_filter_mode": resolved_list_presets_tag_not_filter_mode,
+                    "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
+                    "tag_not_filter_mode_alias_resolved": str(list_presets_tag_not_filter_mode_alias_resolved).lower(),
                     "tag_case_sensitive": str(args.list_presets_tag_case_sensitive).lower(),
                     "name_contains": name_contains or "none",
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
@@ -3583,9 +3635,15 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "tag_filter_mode": resolved_list_presets_tag_filter_mode,
+                    "tag_filter_mode_requested": list_presets_tag_filter_mode_requested,
+                    "tag_filter_mode_alias_resolved": list_presets_tag_filter_mode_alias_resolved,
                     "tag_not_match": resolved_list_presets_tag_not_match,
                     "tag_not_match_requested": list_presets_tag_not_match_requested,
                     "tag_not_match_alias_resolved": list_presets_tag_not_match_alias_resolved,
+                    "tag_not_filter_mode": resolved_list_presets_tag_not_filter_mode,
+                    "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
+                    "tag_not_filter_mode_alias_resolved": list_presets_tag_not_filter_mode_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
@@ -3612,9 +3670,15 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "tag_filter_mode": resolved_list_presets_tag_filter_mode,
+                    "tag_filter_mode_requested": list_presets_tag_filter_mode_requested,
+                    "tag_filter_mode_alias_resolved": list_presets_tag_filter_mode_alias_resolved,
                     "tag_not_match": resolved_list_presets_tag_not_match,
                     "tag_not_match_requested": list_presets_tag_not_match_requested,
                     "tag_not_match_alias_resolved": list_presets_tag_not_match_alias_resolved,
+                    "tag_not_filter_mode": resolved_list_presets_tag_not_filter_mode,
+                    "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
+                    "tag_not_filter_mode_alias_resolved": list_presets_tag_not_filter_mode_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
@@ -3648,9 +3712,15 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "tag_filter_mode": resolved_list_presets_tag_filter_mode,
+                    "tag_filter_mode_requested": list_presets_tag_filter_mode_requested,
+                    "tag_filter_mode_alias_resolved": list_presets_tag_filter_mode_alias_resolved,
                     "tag_not_match": resolved_list_presets_tag_not_match,
                     "tag_not_match_requested": list_presets_tag_not_match_requested,
                     "tag_not_match_alias_resolved": list_presets_tag_not_match_alias_resolved,
+                    "tag_not_filter_mode": resolved_list_presets_tag_not_filter_mode,
+                    "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
+                    "tag_not_filter_mode_alias_resolved": list_presets_tag_not_filter_mode_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
