@@ -374,10 +374,13 @@ def _sort_preset_names(
         "repeats-desc",
         "model-count",
         "model-count-desc",
+        "cheap-first-tag",
+        "cheap-first-tag-desc",
     ):
         resolved_caps: dict[str, int] = {}
         resolved_repeats: dict[str, int] = {}
         resolved_model_counts: dict[str, int] = {}
+        resolved_cheap_first_tag_flags: dict[str, int] = {}
         for name in preset_names:
             preset = presets.get(name, {})
             resolved = resolve_preset_with_defaults(preset)
@@ -390,6 +393,11 @@ def _sort_preset_names(
                 resolved_model_counts[name] = len([token for token in models.split(",") if token.strip()])
             else:
                 resolved_model_counts[name] = 0
+            tags = resolved.get("tags", [])
+            if isinstance(tags, list):
+                resolved_cheap_first_tag_flags[name] = 1 if "cheap-first" in tags else 0
+            else:
+                resolved_cheap_first_tag_flags[name] = 0
 
         if sort_mode == "max-total-runs":
             def asc_sort_key(name: str) -> tuple[int, int, str]:
@@ -418,7 +426,13 @@ def _sort_preset_names(
         if sort_mode == "model-count":
             return sorted(preset_names, key=lambda name: (resolved_model_counts[name], name))
 
-        return sorted(preset_names, key=lambda name: (-resolved_model_counts[name], name))
+        if sort_mode == "model-count-desc":
+            return sorted(preset_names, key=lambda name: (-resolved_model_counts[name], name))
+
+        if sort_mode == "cheap-first-tag":
+            return sorted(preset_names, key=lambda name: (-resolved_cheap_first_tag_flags[name], name))
+
+        return sorted(preset_names, key=lambda name: (resolved_cheap_first_tag_flags[name], name))
 
     raise ValueError(f"unsupported --list-presets-sort mode: {sort_mode}")
 
@@ -933,13 +947,17 @@ def parse_args() -> argparse.Namespace:
             "repeats-desc",
             "model-count",
             "model-count-desc",
+            "cheap-first-tag",
+            "cheap-first-tag-desc",
         ),
         default="name",
         help=(
             "Sort mode for filtered preset emission: "
             "name (default), max-total-runs (ascending; capped presets first, 0/uncapped last), "
             "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
-            "repeats-desc (descending), model-count (ascending), or model-count-desc (descending)."
+            "repeats-desc (descending), model-count (ascending), model-count-desc (descending), "
+            "cheap-first-tag (presets tagged cheap-first first), or cheap-first-tag-desc "
+            "(presets without cheap-first tag first)."
         ),
     )
     parser.add_argument(

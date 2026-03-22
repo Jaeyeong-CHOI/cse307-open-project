@@ -121,6 +121,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort repe
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort model-count
 # 모델 수(model count) 기준 내림차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort model-count-desc
+# cheap-first 태그 포함 preset 우선 정렬(동률은 이름순)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-first-tag
+# cheap-first 태그 미포함 preset 우선 정렬(동률은 이름순)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-first-tag-desc
 # text 출력(names/summary/summary-tsv)에서도 필터/절단 메타데이터 footer를 함께 출력
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --list-presets-limit 2 --list-presets-with-meta
 # list-presets meta를 JSON 한 줄로 출력(텍스트 key=value split 없이 parser-friendly)
@@ -527,3 +531,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 215. ~~planner meta profile(non-minimal) 사용 시 기본 text meta schema id를 자동으로 v2로 승격해(`planner_preset_{list|show}_meta.v2`) parser가 키셋 추론 대신 schema id 기반 분기만으로 안정적으로 처리하도록 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 216. ~~planner preset discovery 정렬 모드에 `repeats`/`repeats-desc`를 추가해 실행 반복도 기준으로 quick smoke 우선/고반복 preset 우선 리뷰를 즉시 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 217. ~~planner preset discovery 정렬 모드에 `model-count`/`model-count-desc`를 추가해 모델 축 복잡도(단일 모델 smoke ↔ 다중 모델 분석) 기준으로 preset 탐색 순서를 즉시 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+218. ~~planner preset discovery 정렬 모드에 `cheap-first-tag`/`cheap-first-tag-desc`를 추가해 `cheap-first` 태그 포함 여부 기준으로 저비용 우선/역방향 탐색 순서를 즉시 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
