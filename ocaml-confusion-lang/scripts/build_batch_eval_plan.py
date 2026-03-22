@@ -124,6 +124,11 @@ MATCH_FIELD_ALIAS_MAP: dict[str, str] = {
     "c": "canonical",
 }
 
+TAG_MATCH_MODE_ALIAS_MAP: dict[str, str] = {
+    "a": "all",
+    "o": "any",
+}
+
 
 def _resolve_filter_mode(mode: str) -> str:
     return FILTER_MODE_ALIAS_MAP.get(mode, mode)
@@ -131,6 +136,10 @@ def _resolve_filter_mode(mode: str) -> str:
 
 def _resolve_match_field(match_field: str) -> str:
     return MATCH_FIELD_ALIAS_MAP.get(match_field, match_field)
+
+
+def _resolve_tag_match_mode(match_mode: str) -> str:
+    return TAG_MATCH_MODE_ALIAS_MAP.get(match_mode, match_mode)
 
 
 def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
@@ -2378,9 +2387,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-tag-match",
-        choices=("all", "any"),
+        choices=("all", "any", "a", "o"),
         default="all",
-        help="Tag match mode for --list-presets-tag: all (default, AND) or any (OR)",
+        help=(
+            "Tag match mode for --list-presets-tag: all (default, AND) or any (OR); "
+            "shorthand aliases: a=all, o=any"
+        ),
     )
     parser.add_argument(
         "--list-presets-name-contains",
@@ -3236,6 +3248,11 @@ def main() -> int:
 
         if args.list_presets:
             presets = load_preset_file(args.preset_file)
+            list_presets_tag_match_requested = args.list_presets_tag_match
+            resolved_list_presets_tag_match = _resolve_tag_match_mode(args.list_presets_tag_match)
+            list_presets_tag_match_alias_resolved = (
+                list_presets_tag_match_requested != resolved_list_presets_tag_match
+            )
             required_tags: set[str] = set()
             if args.list_presets_tag:
                 required_tags = {tag.strip().lower() for tag in args.list_presets_tag.split(",") if tag.strip()}
@@ -3254,7 +3271,7 @@ def main() -> int:
                 and _matches_preset_tags(
                     preset,
                     required_tags,
-                    match_mode=args.list_presets_tag_match,
+                    match_mode=resolved_list_presets_tag_match,
                 )
             }
             preset_names = _sort_preset_names(
@@ -3276,7 +3293,9 @@ def main() -> int:
                 )
                 list_meta_extra_fields = {
                     "tag_filter": tag_filter or "none",
-                    "tag_match": args.list_presets_tag_match,
+                    "tag_match": resolved_list_presets_tag_match,
+                    "tag_match_requested": list_presets_tag_match_requested,
+                    "tag_match_alias_resolved": str(list_presets_tag_match_alias_resolved).lower(),
                     "name_contains": name_contains or "none",
                     "limit": str(args.list_presets_limit)
                     if args.list_presets_limit is not None
@@ -3372,6 +3391,9 @@ def main() -> int:
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(preset_names),
                     "truncated": truncated,
+                    "tag_match": resolved_list_presets_tag_match,
+                    "tag_match_requested": list_presets_tag_match_requested,
+                    "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
                 },
                 list_meta_extra_fields,
             )
@@ -3384,6 +3406,9 @@ def main() -> int:
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
                     "truncated": truncated,
+                    "tag_match": resolved_list_presets_tag_match,
+                    "tag_match_requested": list_presets_tag_match_requested,
+                    "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
                 }
                 if args.list_presets_with_meta:
                     payload["meta"] = list_meta_payload
@@ -3403,6 +3428,9 @@ def main() -> int:
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(resolved_presets),
                     "truncated": truncated,
+                    "tag_match": resolved_list_presets_tag_match,
+                    "tag_match_requested": list_presets_tag_match_requested,
+                    "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
                 }
                 if args.list_presets_with_meta:
                     payload["meta"] = list_meta_payload

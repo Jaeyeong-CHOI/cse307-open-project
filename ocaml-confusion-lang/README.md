@@ -105,6 +105,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,smoke
 # preset 태그 필터 any=OR 모드(예: cheap-first 또는 analysis)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match any
+# tag-match shorthand alias: o=any, a=all
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match o
 # preset 이름 substring 필터(대소문자 무시)로 후보 빠르게 좁히기
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains ci
 # preset 탐색 결과를 상위 N개로 제한(기본 정렬: preset 이름 오름차순)
@@ -801,3 +803,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 284. ~~`--list-sort-aliases` 출력에 `sort_requested`/`sort_alias_resolved` provenance 필드를 추가해 sort alias(`skew-*`)가 canonical sort key로 해석된 경로를 JSON/TSV 메타데이터에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 285. ~~`--list-sort-aliases-filter-mode`/`--list-sort-aliases-name-not-filter-mode`에 shorthand alias(`c|p|e`)를 추가하고, 출력에 `*_requested`/`*_alias_resolved` provenance 필드를 확장해 filter alias 해석 경로를 JSON/TSV 메타데이터에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 286. ~~`--list-sort-aliases-match-field`에 shorthand alias(`b|a|c`)를 추가하고, 출력에 `match_field_requested`/`match_field_alias_resolved` provenance 필드를 확장해 match-field alias 해석 경로를 JSON/TSV 메타데이터에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+287. ~~`--list-presets-tag-match`에 shorthand alias(`a|o`)를 추가하고, list-presets 출력/메타데이터에 `tag_match_requested`/`tag_match_alias_resolved` provenance 필드를 확장해 tag-match alias 해석 경로를 JSON/텍스트 메타에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

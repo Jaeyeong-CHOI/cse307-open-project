@@ -2227,6 +2227,49 @@ def main() -> int:
             f"{preset_list_json_tag_filtered_any_payload}"
         )
 
+    preset_list_json_tag_filtered_alias_any = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+            "--list-presets-tag",
+            "cheap-first,analysis",
+            "--list-presets-tag-match",
+            "o",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_json_tag_filtered_alias_any_payload = json.loads(preset_list_json_tag_filtered_alias_any.stdout)
+    if sorted(preset_list_json_tag_filtered_alias_any_payload.get("presets", {}).keys()) != [
+        "balanced-ci",
+        "full-analysis",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "unexpected tag-filtered(alias any) preset json payload: "
+            f"{preset_list_json_tag_filtered_alias_any_payload}"
+        )
+    if preset_list_json_tag_filtered_alias_any_payload.get("tag_match") != "any":
+        raise AssertionError(
+            "expected resolved tag_match=any for alias mode: "
+            f"{preset_list_json_tag_filtered_alias_any_payload}"
+        )
+    if preset_list_json_tag_filtered_alias_any_payload.get("tag_match_requested") != "o":
+        raise AssertionError(
+            "expected tag_match_requested=o for alias mode: "
+            f"{preset_list_json_tag_filtered_alias_any_payload}"
+        )
+    if preset_list_json_tag_filtered_alias_any_payload.get("tag_match_alias_resolved") is not True:
+        raise AssertionError(
+            "expected tag_match_alias_resolved=true for alias mode: "
+            f"{preset_list_json_tag_filtered_alias_any_payload}"
+        )
+
     preset_list_resolved_json = subprocess.run(
         [
             "python3",
@@ -2348,6 +2391,8 @@ def main() -> int:
         )
     for required_key in (
         "tag_match",
+        "tag_match_requested",
+        "tag_match_alias_resolved",
         "python_version",
         "git_head",
         "git_branch",
@@ -3096,7 +3141,8 @@ def main() -> int:
     ]
     expected_filter_meta_footer = (
         "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
-        "\ttag_filter=cheap-first,smoke\ttag_match=all\tname_contains=quick\tlimit=1\tsort=name"
+        "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
+        "\ttag_match_alias_resolved=false\tname_contains=quick\tlimit=1\tsort=name"
     )
     if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
         raise AssertionError(
