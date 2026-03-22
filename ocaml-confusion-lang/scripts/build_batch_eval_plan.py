@@ -367,14 +367,29 @@ def _sort_preset_names(
     if sort_mode == "name":
         return sorted(preset_names)
 
-    if sort_mode in ("max-total-runs", "max-total-runs-desc", "repeats", "repeats-desc"):
+    if sort_mode in (
+        "max-total-runs",
+        "max-total-runs-desc",
+        "repeats",
+        "repeats-desc",
+        "model-count",
+        "model-count-desc",
+    ):
         resolved_caps: dict[str, int] = {}
         resolved_repeats: dict[str, int] = {}
+        resolved_model_counts: dict[str, int] = {}
         for name in preset_names:
             preset = presets.get(name, {})
             resolved = resolve_preset_with_defaults(preset)
             resolved_caps[name] = int(resolved.get("max_total_runs", 0))
             resolved_repeats[name] = int(resolved.get("repeats", 1))
+            models = resolved.get("models", [])
+            if isinstance(models, list):
+                resolved_model_counts[name] = len(models)
+            elif isinstance(models, str):
+                resolved_model_counts[name] = len([token for token in models.split(",") if token.strip()])
+            else:
+                resolved_model_counts[name] = 0
 
         if sort_mode == "max-total-runs":
             def asc_sort_key(name: str) -> tuple[int, int, str]:
@@ -397,7 +412,13 @@ def _sort_preset_names(
         if sort_mode == "repeats":
             return sorted(preset_names, key=lambda name: (resolved_repeats[name], name))
 
-        return sorted(preset_names, key=lambda name: (-resolved_repeats[name], name))
+        if sort_mode == "repeats-desc":
+            return sorted(preset_names, key=lambda name: (-resolved_repeats[name], name))
+
+        if sort_mode == "model-count":
+            return sorted(preset_names, key=lambda name: (resolved_model_counts[name], name))
+
+        return sorted(preset_names, key=lambda name: (-resolved_model_counts[name], name))
 
     raise ValueError(f"unsupported --list-presets-sort mode: {sort_mode}")
 
@@ -904,13 +925,21 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-sort",
-        choices=("name", "max-total-runs", "max-total-runs-desc", "repeats", "repeats-desc"),
+        choices=(
+            "name",
+            "max-total-runs",
+            "max-total-runs-desc",
+            "repeats",
+            "repeats-desc",
+            "model-count",
+            "model-count-desc",
+        ),
         default="name",
         help=(
             "Sort mode for filtered preset emission: "
             "name (default), max-total-runs (ascending; capped presets first, 0/uncapped last), "
-            "max-total-runs-desc (descending; 0/uncapped first), "
-            "repeats (ascending), or repeats-desc (descending)."
+            "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
+            "repeats-desc (descending), model-count (ascending), or model-count-desc (descending)."
         ),
     )
     parser.add_argument(

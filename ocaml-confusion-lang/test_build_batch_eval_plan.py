@@ -782,6 +782,50 @@ def main() -> int:
             f"{preset_names_sorted_by_repeats_desc}"
         )
 
+    preset_list_sorted_by_model_count = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "model-count",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_model_count = [
+        line.strip() for line in preset_list_sorted_by_model_count.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_model_count != ["quick-smoke", "balanced-ci", "full-analysis"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=model-count output: "
+            f"{preset_names_sorted_by_model_count}"
+        )
+
+    preset_list_sorted_by_model_count_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "model-count-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_model_count_desc = [
+        line.strip() for line in preset_list_sorted_by_model_count_desc.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_model_count_desc != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=model-count-desc output: "
+            f"{preset_names_sorted_by_model_count_desc}"
+        )
+
     preset_list_tag_filtered = subprocess.run(
         [
             "python3",
