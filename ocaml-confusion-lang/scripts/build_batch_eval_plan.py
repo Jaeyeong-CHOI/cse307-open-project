@@ -237,6 +237,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "scj": "state-codes-json",
     "csj": "codes-state-json",
     "pj": "pairs-json",
+    "pjl": "pairs-jsonl",
     "cpj": "code-state-pairs-json",
     "n": "names",
     "nj": "names-json",
@@ -2446,6 +2447,13 @@ def _render_state_code_rows_pairs_json(rows: list[dict[str, Any]]) -> list[list[
     return payload
 
 
+def _render_state_code_rows_pairs_jsonl(rows: list[dict[str, Any]]) -> str:
+    return "\n".join(
+        json.dumps(pair, ensure_ascii=False, separators=(",", ":"))
+        for pair in _render_state_code_rows_pairs_json(rows)
+    )
+
+
 def _render_state_code_rows_code_state_pairs_json(rows: list[dict[str, Any]]) -> list[list[Any]]:
     payload: list[list[Any]] = []
     for row in rows:
@@ -2539,6 +2547,9 @@ def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any]
         return
     if output_format == "pairs-json":
         print(json.dumps(_render_state_code_rows_pairs_json(rows), ensure_ascii=False, indent=2))
+        return
+    if output_format == "pairs-jsonl":
+        print(_render_state_code_rows_pairs_jsonl(rows))
         return
     if output_format == "code-state-pairs-json":
         print(json.dumps(_render_state_code_rows_code_state_pairs_json(rows), ensure_ascii=False, indent=2))
@@ -2997,12 +3008,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "bundle-json", "rows-json", "rows-jsonl", "codes-json", "codes-list-json", "state-codes-lines", "code-state-lines", "state-codes-json", "codes-state-json", "pairs-json", "code-state-pairs-json", "names", "names-json", "codes", "tsv", "tsv-rows", "j", "bj", "rj", "rjl", "cj", "clj", "scl", "csl", "scj", "csj", "pj", "cpj", "n", "nj", "c", "t", "tr", "r", "rows"),
+        choices=("json", "bundle-json", "rows-json", "rows-jsonl", "codes-json", "codes-list-json", "state-codes-lines", "code-state-lines", "state-codes-json", "codes-state-json", "pairs-json", "pairs-jsonl", "code-state-pairs-json", "names", "names-json", "codes", "tsv", "tsv-rows", "j", "bj", "rj", "rjl", "cj", "clj", "scl", "csl", "scj", "csj", "pj", "pjl", "cpj", "n", "nj", "c", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
-            "json (default), bundle-json (base schema + derived lookup views in one payload), rows-json (row list only), rows-jsonl (compact JSON line per row), codes-json (code-keyed row map), codes-list-json (JSON numeric-code array), state-codes-lines (newline <state>\\t<code> pairs), code-state-lines (newline <code>\\t<state> pairs), state-codes-json (state->code map), codes-state-json (code->state map), pairs-json ([state, code] tuples), code-state-pairs-json ([code, state] tuples), names (newline state labels), names-json (JSON state-label array), codes (newline numeric codes), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, bj=bundle-json, rj=rows-json, rjl=rows-jsonl, cj=codes-json, clj=codes-list-json, scl=state-codes-lines, csl=code-state-lines, scj=state-codes-json, csj=codes-state-json, pj=pairs-json, cpj=code-state-pairs-json, n=names, nj=names-json, c=codes, t=tsv, tr/r/rows=tsv-rows."
+            "json (default), bundle-json (base schema + derived lookup views in one payload), rows-json (row list only), rows-jsonl (compact JSON line per row), codes-json (code-keyed row map), codes-list-json (JSON numeric-code array), state-codes-lines (newline <state>\\t<code> pairs), code-state-lines (newline <code>\\t<state> pairs), state-codes-json (state->code map), codes-state-json (code->state map), pairs-json ([state, code] tuples), pairs-jsonl (compact JSON line per [state, code] tuple), code-state-pairs-json ([code, state] tuples), names (newline state labels), names-json (JSON state-label array), codes (newline numeric codes), tsv (header), or tsv-rows (headerless rows). "
+            "Shorthand aliases: j=json, bj=bundle-json, rj=rows-json, rjl=rows-jsonl, cj=codes-json, clj=codes-list-json, scl=state-codes-lines, csl=code-state-lines, scj=state-codes-json, csj=codes-state-json, pj=pairs-json, pjl=pairs-jsonl, cpj=code-state-pairs-json, n=names, nj=names-json, c=codes, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(
