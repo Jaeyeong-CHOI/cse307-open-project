@@ -568,6 +568,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_record_count": emitted_count,
                 "output_is_empty": emitted_count == 0,
                 "output_is_single_record": emitted_count == 1,
+                "output_has_multiple_records": emitted_count > 1,
                 "truncated": truncated,
                 "name_contains": name_contains,
                 "name_not_contains": name_not_contains,
@@ -644,6 +645,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_record_count={emitted_count}\t"
         f"output_is_empty={str(emitted_count == 0).lower()}\t"
         f"output_is_single_record={str(emitted_count == 1).lower()}\t"
+        f"output_has_multiple_records={str(emitted_count > 1).lower()}\t"
         f"truncated={str(truncated).lower()}\t"
         f"name_contains={name_contains or 'none'}\t"
         f"name_not_contains={name_not_contains or 'none'}\t"
@@ -2210,6 +2212,7 @@ def _emit_list_presets_text_meta(
         "output_record_count": str(emitted_count),
         "output_is_empty": str(emitted_count == 0).lower(),
         "output_is_single_record": str(emitted_count == 1).lower(),
+        "output_has_multiple_records": str(emitted_count > 1).lower(),
         "output_truncated_count": str(max(filtered_count - emitted_count, 0)),
         "truncated": str(truncated).lower(),
         "output_format": output_format,
@@ -2239,6 +2242,7 @@ def _emit_show_preset_text_meta(
         "output_record_count": "1",
         "output_is_empty": "false",
         "output_is_single_record": "true",
+        "output_has_multiple_records": "false",
         "output_truncated_count": "0",
         "truncated": "false",
         "preset": preset_name,
@@ -3631,6 +3635,7 @@ def main() -> int:
                     "output_record_count": 1,
                     "output_is_empty": False,
                     "output_is_single_record": True,
+                    "output_has_multiple_records": False,
                     "output_truncated_count": 0,
                     "truncated": False,
                     "preset": args.show_preset,
@@ -3906,6 +3911,7 @@ def main() -> int:
                             "output_record_count": len(alias_map),
                             "output_is_empty": len(alias_map) == 0,
                             "output_is_single_record": len(alias_map) == 1,
+                            "output_has_multiple_records": len(alias_map) > 1,
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4006,6 +4012,7 @@ def main() -> int:
                             "output_record_count": len(alias_map),
                             "output_is_empty": len(alias_map) == 0,
                             "output_is_single_record": len(alias_map) == 1,
+                            "output_has_multiple_records": len(alias_map) > 1,
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4091,6 +4098,7 @@ def main() -> int:
                             "output_record_count": len(grouped),
                             "output_is_empty": len(grouped) == 0,
                             "output_is_single_record": len(grouped) == 1,
+                            "output_has_multiple_records": len(grouped) > 1,
                             "truncated": truncated,
                             "name_contains": args.list_sort_aliases_name_contains,
                             "name_not_contains": args.list_sort_aliases_name_not_contains,
@@ -4559,6 +4567,7 @@ def main() -> int:
                     "output_record_count": len(preset_names),
                     "output_is_empty": len(preset_names) == 0,
                     "output_is_single_record": len(preset_names) == 1,
+                    "output_has_multiple_records": len(preset_names) > 1,
                     "output_truncated_count": max(len(filtered_presets) - len(preset_names), 0),
                     "truncated": truncated,
                     "output_format": args.list_presets_format,
@@ -4718,6 +4727,7 @@ def main() -> int:
                     "output_record_count": len(limited_presets),
                     "output_is_empty": len(limited_presets) == 0,
                     "output_is_single_record": len(limited_presets) == 1,
+                    "output_has_multiple_records": len(limited_presets) > 1,
                     "output_truncated_count": max(len(filtered_presets) - len(limited_presets), 0),
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
@@ -4834,6 +4844,7 @@ def main() -> int:
                     "output_record_count": len(resolved_presets),
                     "output_is_empty": len(resolved_presets) == 0,
                     "output_is_single_record": len(resolved_presets) == 1,
+                    "output_has_multiple_records": len(resolved_presets) > 1,
                     "output_truncated_count": 0,
                     "truncated": truncated,
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
