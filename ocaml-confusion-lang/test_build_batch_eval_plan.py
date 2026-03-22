@@ -5129,11 +5129,11 @@ def main() -> int:
         text=True,
     )
     grouped_tsv_lines = grouped_tsv_run.stdout.strip().splitlines()
-    if grouped_tsv_lines[0] != "canonical\talias_count\taliases":
+    if grouped_tsv_lines[0] != "canonical\talias_count\talias_share_pct\taliases":
         raise AssertionError(f"unexpected grouped-tsv header: {grouped_tsv_lines[0]}")
-    if grouped_tsv_lines[1:] != ["fair-allocation-total-cap\t1\tfair-cap"]:
+    if grouped_tsv_lines[1:] != ["fair-allocation-total-cap\t1\t100.00\tfair-cap"]:
         raise AssertionError(
-            "expected grouped-tsv exact filter output to collapse to a single canonical family, got: "
+            "expected grouped-tsv exact filter output to collapse to a single canonical family with 100% share, got: "
             f"{grouped_tsv_lines}"
         )
 
