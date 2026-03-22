@@ -4783,6 +4783,12 @@ def main() -> int:
             f"{sort_aliases_payload.get('max_group_size')}"
         )
     aliases = sort_aliases_payload.get("aliases", {})
+    alias_group_count = len({canonical for canonical in aliases.values()})
+    if sort_aliases_payload.get("group_count") != alias_group_count:
+        raise AssertionError(
+            "expected list-sort-aliases group_count to equal unique canonical count, got: "
+            f"{sort_aliases_payload.get('group_count')} vs {alias_group_count}"
+        )
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
     if aliases.get("total-cap-desc") != "max-total-runs-desc":
@@ -4835,6 +4841,11 @@ def main() -> int:
             f"{grouped_sort_aliases_payload.get('name_not_filter_mode')}"
         )
     groups = grouped_sort_aliases_payload.get("groups", {})
+    if grouped_sort_aliases_payload.get("group_count") != len(groups):
+        raise AssertionError(
+            "expected grouped list-sort-aliases group_count to match groups size, got: "
+            f"{grouped_sort_aliases_payload.get('group_count')} vs {len(groups)}"
+        )
     total_cap_aliases = groups.get("max-total-runs", [])
     if "total-cap" not in total_cap_aliases:
         raise AssertionError(f"expected total-cap alias in max-total-runs group, got: {total_cap_aliases}")
@@ -4879,6 +4890,13 @@ def main() -> int:
     if filtered_sort_aliases_payload.get("truncated") is not True:
         raise AssertionError(
             "expected filtered alias payload to be truncated with limit=2"
+        )
+    filtered_aliases = filtered_sort_aliases_payload.get("aliases", {})
+    filtered_group_count = len({canonical for canonical in filtered_aliases.values()})
+    if filtered_sort_aliases_payload.get("group_count") != filtered_group_count:
+        raise AssertionError(
+            "expected filtered alias payload group_count to equal unique canonical count, got: "
+            f"{filtered_sort_aliases_payload.get('group_count')} vs {filtered_group_count}"
         )
 
     canonical_sort_aliases_run = subprocess.run(
