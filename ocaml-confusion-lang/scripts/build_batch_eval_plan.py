@@ -227,6 +227,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "tr": "tsv-rows",
     "r": "tsv-rows",
     "rows": "tsv-rows",
+    "rj": "rows-json",
 }
 
 
@@ -2385,6 +2386,9 @@ def _emit_state_code_payload(rows: list[dict[str, Any]], payload: dict[str, Any]
     if output_format == "json":
         print(json.dumps(payload, ensure_ascii=False, indent=2))
         return
+    if output_format == "rows-json":
+        print(json.dumps(rows, ensure_ascii=False, indent=2))
+        return
     if output_format == "tsv":
         print(_render_state_code_rows_tsv(rows, kind=kind, include_header=True))
         return
@@ -2824,12 +2828,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "tsv", "tsv-rows", "j", "t", "tr", "r", "rows"),
+        choices=("json", "rows-json", "tsv", "tsv-rows", "j", "rj", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
-            "json (default), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, t=tsv, tr/r/rows=tsv-rows."
+            "json (default), rows-json (row list only), tsv (header), or tsv-rows (headerless rows). "
+            "Shorthand aliases: j=json, rj=rows-json, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(

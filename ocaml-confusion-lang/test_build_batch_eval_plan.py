@@ -8962,6 +8962,37 @@ def main() -> int:
         raise AssertionError(
             "expected retained-records state-code payload schema to be planner_retained_records_state_codes.v1"
         )
+    retained_state_codes_rows_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "rows-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_rows_json_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "rj",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retained_state_codes_rows_json_alias_run.stdout != retained_state_codes_rows_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format rj alias to match canonical rows-json output")
+    retained_state_codes_rows_json_payload = json.loads(retained_state_codes_rows_json_run.stdout)
+    if not isinstance(retained_state_codes_rows_json_payload, list) or len(retained_state_codes_rows_json_payload) != 2:
+        raise AssertionError("expected retained-records rows-json payload to emit exactly two state rows")
     rows = retained_state_codes_payload.get("states")
     if not isinstance(rows, list) or len(rows) != 2:
         raise AssertionError("expected retained-records state-code payload to emit exactly two states")
@@ -9062,6 +9093,22 @@ def main() -> int:
         raise AssertionError(
             "expected retention state-code payload schema to be planner_retention_state_codes.v1"
         )
+    retention_state_codes_rows_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "rows-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_rows_json_payload = json.loads(retention_state_codes_rows_json_run.stdout)
+    if not isinstance(retention_state_codes_rows_json_payload, list) or len(retention_state_codes_rows_json_payload) != 3:
+        raise AssertionError("expected retention rows-json payload to emit exactly three state rows")
     retention_rows = retention_state_codes_payload.get("states")
     if not isinstance(retention_rows, list) or len(retention_rows) != 3:
         raise AssertionError("expected retention state-code payload to emit exactly three states")
