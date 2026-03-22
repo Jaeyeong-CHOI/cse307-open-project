@@ -128,11 +128,22 @@ def _validate_summary_payload(payload: dict[str, Any], *, input_path: Path) -> N
     if not isinstance(overview, dict):
         errors.append("overview must be an object")
     else:
-        for key in ["total_cases", "ok_cases", "mismatch_cases", "mismatch_severity_total"]:
+        for key in ["total_cases", "ok_cases", "mismatch_cases"]:
             if not isinstance(overview.get(key), int):
                 errors.append(f"overview.{key} must be an integer")
+
+    quality = payload.get("quality_signals")
+    if isinstance(quality, dict):
+        if not isinstance(quality.get("mismatch_severity_total"), int):
+            errors.append("quality_signals.mismatch_severity_total must be an integer")
+        if not isinstance(quality.get("mismatch_severity_avg"), (int, float)):
+            errors.append("quality_signals.mismatch_severity_avg must be a number")
+    else:
+        # backward compatibility: older payloads kept severity fields in overview
+        if not isinstance(overview.get("mismatch_severity_total"), int):
+            errors.append("quality_signals.mismatch_severity_total (or overview.mismatch_severity_total) must be an integer")
         if not isinstance(overview.get("mismatch_severity_avg"), (int, float)):
-            errors.append("overview.mismatch_severity_avg must be a number")
+            errors.append("quality_signals.mismatch_severity_avg (or overview.mismatch_severity_avg) must be a number")
 
     gates = payload.get("gates")
     if not isinstance(gates, dict):
@@ -152,7 +163,7 @@ def _validate_summary_payload(payload: dict[str, Any], *, input_path: Path) -> N
             "CI snapshot emit input validation failed:\n" + "\n".join(f"- {err}" for err in errors),
             hints=[
                 f"input={input_path}",
-                "required=overview(total/ok/mismatch/severity), gates(any_tripped,tripped_list)",
+                "required=overview(total/ok/mismatch), quality_signals(severity), gates(any_tripped,tripped_list)",
             ],
         )
         raise SystemExit(1)
@@ -169,6 +180,7 @@ def build_snapshot_payload(
     run_context: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     overview = payload.get("overview", {}) if isinstance(payload.get("overview"), dict) else {}
+    quality = payload.get("quality_signals", {}) if isinstance(payload.get("quality_signals"), dict) else {}
     gates = payload.get("gates", {}) if isinstance(payload.get("gates"), dict) else {}
     top1 = _top1_fields(payload)
     resolved_top_k = _resolve_top_k(payload, top_k_mismatches)
@@ -182,8 +194,8 @@ def build_snapshot_payload(
             "mismatch": overview.get("mismatch_cases"),
         },
         "severity": {
-            "total": overview.get("mismatch_severity_total"),
-            "avg": overview.get("mismatch_severity_avg"),
+            "total": quality.get("mismatch_severity_total", overview.get("mismatch_severity_total")),
+            "avg": quality.get("mismatch_severity_avg", overview.get("mismatch_severity_avg")),
         },
         "any_tripped": gates.get("any_tripped"),
         "tripped_list": gates.get("tripped_list"),
