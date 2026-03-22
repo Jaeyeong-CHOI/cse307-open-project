@@ -579,6 +579,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_has_multiple_records": emitted_count > 1,
                 "output_has_retained_records": emitted_count > 0,
                 "output_has_no_retained_records": emitted_count == 0,
+                "output_retained_records_state_code": _resolve_output_retained_records_state_code(emitted_count),
                 "output_has_truncated_records": max(filtered_count - emitted_count, 0) > 0,
                 "output_is_fully_retained": max(filtered_count - emitted_count, 0) == 0,
                 "output_is_partially_retained": emitted_count > 0 and max(filtered_count - emitted_count, 0) > 0,
@@ -673,6 +674,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_has_multiple_records={str(emitted_count > 1).lower()}\t"
         f"output_has_retained_records={str(emitted_count > 0).lower()}\t"
         f"output_has_no_retained_records={str(emitted_count == 0).lower()}\t"
+        f"output_retained_records_state_code={_resolve_output_retained_records_state_code(emitted_count)}\t"
         f"output_has_truncated_records={str(max(filtered_count - emitted_count, 0) > 0).lower()}\t"
         f"output_is_partially_retained={str((emitted_count > 0) and (max(filtered_count - emitted_count, 0) > 0)).lower()}\t"
         f"output_is_fully_truncated={str((emitted_count == 0) and (max(filtered_count - emitted_count, 0) > 0)).lower()}\t"
@@ -2258,6 +2260,10 @@ def _resolve_output_retention_state_code(filtered_count: int, emitted_count: int
     return 2
 
 
+def _resolve_output_retained_records_state_code(emitted_count: int) -> int:
+    return 1 if emitted_count > 0 else 0
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -2278,6 +2284,7 @@ def _emit_list_presets_text_meta(
         "output_has_multiple_records": str(emitted_count > 1).lower(),
         "output_has_retained_records": str(emitted_count > 0).lower(),
         "output_has_no_retained_records": str(emitted_count == 0).lower(),
+        "output_retained_records_state_code": str(_resolve_output_retained_records_state_code(emitted_count)),
         "output_has_truncated_records": str(max(filtered_count - emitted_count, 0) > 0).lower(),
         "output_is_fully_retained": str(max(filtered_count - emitted_count, 0) == 0).lower(),
         "output_is_partially_retained": str((emitted_count > 0) and (max(filtered_count - emitted_count, 0) > 0)).lower(),
@@ -2316,6 +2323,7 @@ def _emit_show_preset_text_meta(
         "output_has_multiple_records": "false",
         "output_has_retained_records": "true",
         "output_has_no_retained_records": "false",
+        "output_retained_records_state_code": "1",
         "output_has_truncated_records": "false",
         "output_is_fully_retained": "true",
         "output_is_partially_retained": "false",
@@ -4001,6 +4009,7 @@ def main() -> int:
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_retained_records": len(alias_map) > 0,
                             "output_has_no_retained_records": len(alias_map) == 0,
+                            "output_retained_records_state_code": _resolve_output_retained_records_state_code(len(alias_map)),
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
                             "output_is_fully_retained": max(filtered_count - len(alias_map), 0) == 0,
                             "output_is_partially_retained": len(alias_map) > 0 and max(filtered_count - len(alias_map), 0) > 0,
@@ -4119,6 +4128,7 @@ def main() -> int:
                             "output_has_multiple_records": len(alias_map) > 1,
                             "output_has_retained_records": len(alias_map) > 0,
                             "output_has_no_retained_records": len(alias_map) == 0,
+                            "output_retained_records_state_code": _resolve_output_retained_records_state_code(len(alias_map)),
                             "output_has_truncated_records": max(filtered_count - len(alias_map), 0) > 0,
                             "output_is_fully_retained": max(filtered_count - len(alias_map), 0) == 0,
                             "output_is_partially_retained": len(alias_map) > 0 and max(filtered_count - len(alias_map), 0) > 0,
@@ -4222,6 +4232,7 @@ def main() -> int:
                             "output_has_multiple_records": len(grouped) > 1,
                             "output_has_retained_records": len(grouped) > 0,
                             "output_has_no_retained_records": len(grouped) == 0,
+                            "output_retained_records_state_code": _resolve_output_retained_records_state_code(len(grouped)),
                             "output_has_truncated_records": max(filtered_count - len(grouped), 0) > 0,
                             "output_is_fully_retained": max(filtered_count - len(grouped), 0) == 0,
                             "output_is_fully_truncated": len(grouped) == 0 and max(filtered_count - len(grouped), 0) > 0,
@@ -4707,6 +4718,7 @@ def main() -> int:
                     "output_has_multiple_records": len(preset_names) > 1,
                     "output_has_retained_records": len(preset_names) > 0,
                     "output_has_no_retained_records": len(preset_names) == 0,
+                    "output_retained_records_state_code": _resolve_output_retained_records_state_code(len(preset_names)),
                     "output_has_truncated_records": max(len(filtered_presets) - len(preset_names), 0) > 0,
                     "output_is_fully_retained": max(len(filtered_presets) - len(preset_names), 0) == 0,
                     "output_is_partially_retained": len(preset_names) > 0 and max(len(filtered_presets) - len(preset_names), 0) > 0,
@@ -4875,6 +4887,7 @@ def main() -> int:
                     "output_has_multiple_records": len(limited_presets) > 1,
                     "output_has_retained_records": len(limited_presets) > 0,
                     "output_has_no_retained_records": len(limited_presets) == 0,
+                    "output_retained_records_state_code": _resolve_output_retained_records_state_code(len(limited_presets)),
                     "output_has_truncated_records": max(len(filtered_presets) - len(limited_presets), 0) > 0,
                     "output_is_fully_retained": max(len(filtered_presets) - len(limited_presets), 0) == 0,
                     "output_is_partially_retained": len(limited_presets) > 0 and max(len(filtered_presets) - len(limited_presets), 0) > 0,
@@ -5016,6 +5029,7 @@ def main() -> int:
                     "output_has_multiple_records": len(resolved_presets) > 1,
                     "output_has_retained_records": len(resolved_presets) > 0,
                     "output_has_no_retained_records": len(resolved_presets) == 0,
+                    "output_retained_records_state_code": _resolve_output_retained_records_state_code(len(resolved_presets)),
                     "output_has_truncated_records": False,
                     "output_is_fully_retained": True,
                     "output_is_partially_retained": False,
