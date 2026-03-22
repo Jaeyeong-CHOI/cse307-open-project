@@ -5120,6 +5120,42 @@ def main() -> int:
             f"{max_group_size_aliases}"
         )
 
+    min_group_share_global_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-min-group-share-pct-global",
+            "4.0",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    min_group_share_global_payload = json.loads(min_group_share_global_run.stdout)
+    if min_group_share_global_payload.get("min_group_share_pct_global") != 4.0:
+        raise AssertionError(
+            "expected min_group_share_pct_global to be reflected in payload, got: "
+            f"{min_group_share_global_payload.get('min_group_share_pct_global')}"
+        )
+    min_group_share_global_aliases = min_group_share_global_payload.get("aliases", {})
+    expected_min_group_share_global_aliases = {
+        "fair-cap": "fair-allocation-total-cap",
+        "fair-total-cap": "fair-allocation-total-cap",
+        "fair-cap-desc": "fair-allocation-total-cap-desc",
+        "fair-total-cap-desc": "fair-allocation-total-cap-desc",
+    }
+    if min_group_share_global_aliases != expected_min_group_share_global_aliases:
+        raise AssertionError(
+            "expected min_group_share_pct_global filter to keep only globally larger canonical families, got: "
+            f"{min_group_share_global_aliases}"
+        )
+
     aliases_tsv_run = subprocess.run(
         [
             "python3",
@@ -5194,6 +5230,11 @@ def main() -> int:
     if "\tmin_group_size=1" not in aliases_tsv_with_meta_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv meta footer to include min_group_size context, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
+    if "\tmin_group_share_pct_global=0.00" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include min_group_share_pct_global context, got: "
             f"{aliases_tsv_with_meta_lines[-1]}"
         )
 
