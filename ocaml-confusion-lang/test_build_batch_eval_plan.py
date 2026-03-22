@@ -5489,6 +5489,11 @@ def main() -> int:
             "expected default list-sort-aliases output_shape_sha256 to match output shape payload, got: "
             f"{sort_aliases_payload.get('output_shape_sha256')}"
         )
+    if sort_aliases_payload.get("output_shape_sha256_algo") != "sha256":
+        raise AssertionError(
+            "expected default list-sort-aliases output_shape_sha256_algo=sha256, got: "
+            f"{sort_aliases_payload.get('output_shape_sha256_algo')}"
+        )
     if sort_aliases_payload.get("output_shape_payload") != {
         "output": sort_aliases_payload.get("output"),
         "output_transport": sort_aliases_payload.get("output_transport"),
@@ -5831,6 +5836,11 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases output_shape_sha256 to match output shape payload, got: "
             f"{grouped_sort_aliases_payload.get('output_shape_sha256')}"
+        )
+    if grouped_sort_aliases_payload.get("output_shape_sha256_algo") != "sha256":
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_shape_sha256_algo=sha256, got: "
+            f"{grouped_sort_aliases_payload.get('output_shape_sha256_algo')}"
         )
     if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(
@@ -6910,6 +6920,11 @@ def main() -> int:
             "expected aliases-tsv JSON meta footer output_shape_sha256 to match output shape payload, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
+    if aliases_tsv_meta_json_payload.get("output_shape_sha256_algo") != "sha256":
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_shape_sha256_algo=sha256, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
     if aliases_tsv_meta_json_payload.get("output_shape_payload") != {
         "output": aliases_tsv_meta_json_payload.get("output"),
         "output_transport": aliases_tsv_meta_json_payload.get("output_transport"),
@@ -7845,6 +7860,10 @@ def main() -> int:
     if "output_shape_sha256=" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_shape_sha256, got: {names_meta_lines[-1]}"
+        )
+    if "output_shape_sha256_algo=sha256" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_shape_sha256_algo=sha256, got: {names_meta_lines[-1]}"
         )
 
     canonical_names_sort_aliases_run = subprocess.run(
