@@ -4730,6 +4730,31 @@ def main() -> int:
             f"{invalid_preset_tags_run.stderr}"
         )
 
+    list_sort_aliases_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    sort_aliases_payload = json.loads(list_sort_aliases_run.stdout)
+    if sort_aliases_payload.get("schema_version") != "v1":
+        raise AssertionError(
+            "unexpected list-sort-aliases schema_version: "
+            f"{sort_aliases_payload.get('schema_version')}"
+        )
+    aliases = sort_aliases_payload.get("aliases", {})
+    if aliases.get("fair-cap") != "fair-allocation-total-cap":
+        raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
+    if aliases.get("total-cap-desc") != "max-total-runs-desc":
+        raise AssertionError(
+            f"unexpected alias mapping for total-cap-desc: {aliases.get('total-cap-desc')}"
+        )
+
     print("OK: build_batch_eval_plan regression passed")
     return 0
 

@@ -111,6 +111,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-cont
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 # preset 이름 기준 내림차순 정렬
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort name-desc
+# sort alias canonical 매핑(JSON) 조회
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases
 # 비용 상한(max_total_runs) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # 비용 상한(max_total_runs) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -695,3 +697,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 241. ~~planner preset discovery에 비용 우선 복합 정렬(`cost-priority`, `cost-priority-desc`)을 추가해 cheap-first 태그 + total cap + per-model cap을 단일 키로 우선순위화하고, 저비용 preset triage를 한 번에 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 242. ~~planner preset discovery에 condition cap 축을 반영한 비용 우선 복합 정렬(`cost-priority-prompt`, `cost-priority-prompt-desc`)을 추가해 cheap-first 태그 + total cap + per-condition cap 기준으로 triage 순서를 제어 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 243. ~~planner preset discovery 복합 정렬에 초단축 alias(`fair-cap`, `fair-cap-desc`)를 추가해 `fair-allocation-total-cap*`/`fair-total-cap*`보다 더 짧은 호출로 동일 triage 의미를 빠르게 선택 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+244. ~~planner에 sort alias canonical 매핑 조회 옵션(`--list-sort-aliases`)을 추가해 문서/CLI help를 재파싱하지 않고도 alias family를 machine-readable JSON으로 즉시 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

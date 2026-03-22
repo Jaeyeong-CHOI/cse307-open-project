@@ -50,6 +50,43 @@ PRESET_TEXT_META_JSON_SCHEMA_VERSION = "v1"
 PRESET_TEXT_META_JSON_SCHEMA_VERSION_PATTERN = re.compile(r"^v[1-9][0-9]*$")
 
 
+PRESET_SORT_ALIAS_MAP: dict[str, str] = {
+    "total-cap": "max-total-runs",
+    "total-cap-desc": "max-total-runs-desc",
+    "per-model-cap": "max-runs-per-model",
+    "per-model-cap-desc": "max-runs-per-model-desc",
+    "per-prompt-cap": "max-runs-per-prompt-condition",
+    "per-prompt-cap-desc": "max-runs-per-prompt-condition-desc",
+    "per-condition-cap": "max-runs-per-prompt-condition",
+    "per-condition-cap-desc": "max-runs-per-prompt-condition-desc",
+    "per-task-cap": "max-runs-per-task",
+    "per-task-cap-desc": "max-runs-per-task-desc",
+    "task-cap": "max-runs-per-task",
+    "task-cap-desc": "max-runs-per-task-desc",
+    "per-task-model-cap": "max-runs-per-task-model",
+    "per-task-model-cap-desc": "max-runs-per-task-model-desc",
+    "task-model-cap": "max-runs-per-task-model",
+    "task-model-cap-desc": "max-runs-per-task-model-desc",
+    "per-task-prompt-cap": "max-runs-per-task-prompt-condition",
+    "per-task-prompt-cap-desc": "max-runs-per-task-prompt-condition-desc",
+    "per-task-condition-cap": "max-runs-per-task-prompt-condition",
+    "per-task-condition-cap-desc": "max-runs-per-task-prompt-condition-desc",
+    "task-prompt-cap": "max-runs-per-task-prompt-condition",
+    "task-prompt-cap-desc": "max-runs-per-task-prompt-condition-desc",
+    "task-condition-cap": "max-runs-per-task-prompt-condition",
+    "task-condition-cap-desc": "max-runs-per-task-prompt-condition-desc",
+    "cheap-first": "cheap-first-tag",
+    "cheap-first-desc": "cheap-first-tag-desc",
+    "cheap-total-cap": "cheap-first-total-cap",
+    "cheap-total-cap-desc": "cheap-first-total-cap-desc",
+    "fair-total-cap": "fair-allocation-total-cap",
+    "fair-total-cap-desc": "fair-allocation-total-cap-desc",
+    "fair-cap": "fair-allocation-total-cap",
+    "fair-cap-desc": "fair-allocation-total-cap-desc",
+    "fair-allocation": "fair-model-allocation",
+    "fair-allocation-desc": "fair-model-allocation-desc",
+}
+
 def _utc_now_iso() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -1299,6 +1336,11 @@ def parse_args() -> argparse.Namespace:
         help="List available presets from --preset-file and exit",
     )
     parser.add_argument(
+        "--list-sort-aliases",
+        action="store_true",
+        help="List canonical/alias mappings for --list-presets-sort and exit",
+    )
+    parser.add_argument(
         "--list-presets-format",
         choices=("names", "json", "resolved-json", "summary", "summary-tsv"),
         default="names",
@@ -1876,6 +1918,10 @@ def main() -> int:
             if args.show_preset_with_meta:
                 payload["meta"] = show_meta_payload
             print(json.dumps(payload, ensure_ascii=False, indent=2))
+            return 0
+
+        if args.list_sort_aliases:
+            print(json.dumps({"schema_version": "v1", "aliases": PRESET_SORT_ALIAS_MAP}, ensure_ascii=False, indent=2))
             return 0
 
         if args.list_presets:
