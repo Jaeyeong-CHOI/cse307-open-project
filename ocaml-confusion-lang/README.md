@@ -218,9 +218,12 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 -
 # show/list meta footer에 argv token 개수(argv_count)도 함께 기록(토큰 배열/원문 없이 호출 규모만 추적)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-argv-count
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-include-argv-count
-# meta footer 옵션들을 profile로 묶어 짧게 호출(minimal|ci-safe|safe-debug|debug)
+# meta footer 옵션들을 profile로 묶어 짧게 호출(minimal|privacy-safe|ci-safe|safe-debug|debug)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile debug
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile debug
+# privacy-safe: 경로/원문 argv 없이 hash-first provenance 중심 필드만 포함
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile privacy-safe
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile privacy-safe
 # ci-safe: CI/재현성 중심 안정 필드(cwd/git/argv hash/count)만 포함, host/time 변동 필드는 제외
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile ci-safe
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile ci-safe
@@ -500,3 +503,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 208. ~~planner list/show meta footer에 optional `git_toplevel` 주입 옵션(`--list-presets-meta-include-git-toplevel`, `--show-preset-meta-include-git-toplevel`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 worktree-root provenance를 경량 재현성 로그에서 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 209. ~~planner list/show meta footer에 optional `git_repo_name` 주입 옵션(`--list-presets-meta-include-git-repo-name`, `--show-preset-meta-include-git-repo-name`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 멀티-worktree/경로 변동 환경에서도 repo 식별자를 안정적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 210. ~~planner list/show meta footer에 optional `git_worktree_name` 주입 옵션(`--list-presets-meta-include-git-worktree-name`, `--show-preset-meta-include-git-worktree-name`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 동일 repo의 다중 worktree 실행 로그를 경로 basename 기준으로 빠르게 구분 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+211. ~~planner meta profile에 `privacy-safe`를 추가해(`--list-presets-meta-profile/--show-preset-meta-profile`) `cwd`/raw argv 같은 민감 가능 필드를 기본 제외하면서도 `argv_sha256`/git provenance 기반 재현성 추적은 유지할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

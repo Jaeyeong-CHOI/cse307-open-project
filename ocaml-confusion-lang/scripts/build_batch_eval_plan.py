@@ -509,9 +509,8 @@ def _emit_show_preset_text_meta(
 def _apply_show_meta_profile(args: argparse.Namespace) -> None:
     if args.show_preset_meta_profile in (None, "minimal"):
         return
-    if args.show_preset_meta_profile in ("debug", "safe-debug", "ci-safe"):
+    if args.show_preset_meta_profile in ("debug", "safe-debug", "ci-safe", "privacy-safe"):
         args.show_preset_meta_include_overrides = True
-        args.show_preset_meta_include_cwd = True
         args.show_preset_meta_include_python_version = True
         args.show_preset_meta_include_git_head = True
         args.show_preset_meta_include_git_branch = True
@@ -522,6 +521,8 @@ def _apply_show_meta_profile(args: argparse.Namespace) -> None:
         args.show_preset_meta_include_argv_sha256 = True
         args.show_preset_meta_include_argv_count = True
         args.show_preset_meta_include_preset_file_sha256 = True
+    if args.show_preset_meta_profile in ("debug", "safe-debug", "ci-safe"):
+        args.show_preset_meta_include_cwd = True
     if args.show_preset_meta_profile in ("debug", "safe-debug"):
         args.show_preset_meta_include_generated_at = True
         args.show_preset_meta_include_pid = True
@@ -537,9 +538,8 @@ def _apply_show_meta_profile(args: argparse.Namespace) -> None:
 def _apply_list_meta_profile(args: argparse.Namespace) -> None:
     if args.list_presets_meta_profile in (None, "minimal"):
         return
-    if args.list_presets_meta_profile in ("debug", "safe-debug", "ci-safe"):
+    if args.list_presets_meta_profile in ("debug", "safe-debug", "ci-safe", "privacy-safe"):
         args.list_presets_meta_include_filters = True
-        args.list_presets_meta_include_cwd = True
         args.list_presets_meta_include_python_version = True
         args.list_presets_meta_include_git_head = True
         args.list_presets_meta_include_git_branch = True
@@ -550,6 +550,8 @@ def _apply_list_meta_profile(args: argparse.Namespace) -> None:
         args.list_presets_meta_include_argv_sha256 = True
         args.list_presets_meta_include_argv_count = True
         args.list_presets_meta_include_preset_file_sha256 = True
+    if args.list_presets_meta_profile in ("debug", "safe-debug", "ci-safe"):
+        args.list_presets_meta_include_cwd = True
     if args.list_presets_meta_profile in ("debug", "safe-debug"):
         args.list_presets_meta_include_generated_at = True
         args.list_presets_meta_include_pid = True
@@ -689,11 +691,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--show-preset-meta-profile",
-        choices=("minimal", "ci-safe", "safe-debug", "debug"),
+        choices=("minimal", "privacy-safe", "ci-safe", "safe-debug", "debug"),
         default=None,
         help=(
             "Optional profile for --show-preset meta footer fields: "
-            "minimal (default behavior), ci-safe (stable CI/repro fields without volatile host/time metadata), "
+            "minimal (default behavior), privacy-safe (hash-first provenance without cwd/raw argv), "
+            "ci-safe (stable CI/repro fields without volatile host/time metadata), "
             "safe-debug (debug fields without raw argv/tokens), or debug (full debug fields including raw argv/tokens)."
         ),
     )
@@ -864,11 +867,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-meta-profile",
-        choices=("minimal", "ci-safe", "safe-debug", "debug"),
+        choices=("minimal", "privacy-safe", "ci-safe", "safe-debug", "debug"),
         default=None,
         help=(
             "Optional profile for --list-presets meta footer fields: "
-            "minimal (default behavior), ci-safe (stable CI/repro fields without volatile host/time metadata), "
+            "minimal (default behavior), privacy-safe (hash-first provenance without cwd/raw argv), "
+            "ci-safe (stable CI/repro fields without volatile host/time metadata), "
             "safe-debug (debug fields without raw argv/tokens), or debug (full debug fields including raw argv/tokens)."
         ),
     )
