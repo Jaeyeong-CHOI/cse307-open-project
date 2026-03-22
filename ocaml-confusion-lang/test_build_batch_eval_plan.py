@@ -3203,7 +3203,8 @@ def main() -> int:
         "\ttag_not_match_requested=any\ttag_not_match_alias_resolved=false"
         "\ttag_not_filter_mode=exact\ttag_not_filter_mode_requested=exact"
         "\ttag_not_filter_mode_alias_resolved=false"
-        "\ttag_case_sensitive=false\tname_contains=quick\tname_filter_mode=contains"
+        "\ttag_case_sensitive=false\ttag_values=cheap-first,smoke\ttag_not_values=none"
+        "\tname_contains=quick\tname_filter_mode=contains"
         "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
         "\tname_not_contains=none\tname_not_filter_mode=contains"
         "\tname_not_filter_mode_requested=contains\tname_not_filter_mode_alias_resolved=false"
@@ -4813,6 +4814,16 @@ def main() -> int:
     if tag_case_sensitive_json_payload.get("tag_case_sensitive") is not True:
         raise AssertionError(
             "expected tag_case_sensitive=true in list-presets json payload: "
+            f"{tag_case_sensitive_json_payload}"
+        )
+    if tag_case_sensitive_json_payload.get("tag_values") != ["cheap-first"]:
+        raise AssertionError(
+            "expected tag_values to contain normalized include tags: "
+            f"{tag_case_sensitive_json_payload}"
+        )
+    if tag_case_sensitive_json_payload.get("tag_not_values") != []:
+        raise AssertionError(
+            "expected empty tag_not_values when no exclusion filter is set: "
             f"{tag_case_sensitive_json_payload}"
         )
 

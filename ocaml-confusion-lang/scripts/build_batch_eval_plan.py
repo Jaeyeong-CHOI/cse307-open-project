@@ -3413,6 +3413,8 @@ def main() -> int:
                     raise ValueError(
                         "--list-presets-tag-not-contains must include at least one non-empty tag"
                     )
+            required_tags_sorted = sorted(required_tags)
+            excluded_tags_sorted = sorted(excluded_tags)
             list_presets_name_filter_mode_requested = args.list_presets_name_filter_mode
             resolved_list_presets_name_filter_mode = _resolve_filter_mode(args.list_presets_name_filter_mode)
             list_presets_name_filter_mode_alias_resolved = (
@@ -3520,6 +3522,8 @@ def main() -> int:
                     "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
                     "tag_not_filter_mode_alias_resolved": str(list_presets_tag_not_filter_mode_alias_resolved).lower(),
                     "tag_case_sensitive": str(args.list_presets_tag_case_sensitive).lower(),
+                    "tag_values": ",".join(required_tags_sorted) if required_tags_sorted else "none",
+                    "tag_not_values": ",".join(excluded_tags_sorted) if excluded_tags_sorted else "none",
                     "name_contains": name_contains or "none",
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
@@ -3645,6 +3649,8 @@ def main() -> int:
                     "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
                     "tag_not_filter_mode_alias_resolved": list_presets_tag_not_filter_mode_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
+                    "tag_values": required_tags_sorted,
+                    "tag_not_values": excluded_tags_sorted,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
                     "sort_alias_resolved": list_presets_sort_alias_resolved,
@@ -3680,6 +3686,8 @@ def main() -> int:
                     "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
                     "tag_not_filter_mode_alias_resolved": list_presets_tag_not_filter_mode_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
+                    "tag_values": required_tags_sorted,
+                    "tag_not_values": excluded_tags_sorted,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
                     "sort_alias_resolved": list_presets_sort_alias_resolved,
@@ -3722,6 +3730,8 @@ def main() -> int:
                     "tag_not_filter_mode_requested": list_presets_tag_not_filter_mode_requested,
                     "tag_not_filter_mode_alias_resolved": list_presets_tag_not_filter_mode_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
+                    "tag_values": required_tags_sorted,
+                    "tag_not_values": excluded_tags_sorted,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
                     "sort_alias_resolved": list_presets_sort_alias_resolved,
