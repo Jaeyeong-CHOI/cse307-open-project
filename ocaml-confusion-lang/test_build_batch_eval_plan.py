@@ -2324,6 +2324,26 @@ def main() -> int:
             "expected sort_alias_resolved=true for t: alias mode: "
             f"{preset_list_json_sort_tag_alias_payload}"
         )
+    if preset_list_json_sort_tag_alias_payload.get("sort_family") != "tag":
+        raise AssertionError(
+            "expected sort_family=tag for tag sort mode: "
+            f"{preset_list_json_sort_tag_alias_payload}"
+        )
+    if preset_list_json_sort_tag_alias_payload.get("sort_tag") != "cheap-first":
+        raise AssertionError(
+            "expected sort_tag=cheap-first for tag sort mode: "
+            f"{preset_list_json_sort_tag_alias_payload}"
+        )
+    if preset_list_json_sort_tag_alias_payload.get("sort_direction") != "asc":
+        raise AssertionError(
+            "expected sort_direction=asc for non-desc sort mode: "
+            f"{preset_list_json_sort_tag_alias_payload}"
+        )
+    if preset_list_json_sort_tag_alias_payload.get("sort_is_desc") is not False:
+        raise AssertionError(
+            "expected sort_is_desc=false for non-desc sort mode: "
+            f"{preset_list_json_sort_tag_alias_payload}"
+        )
 
     preset_list_resolved_json = subprocess.run(
         [
@@ -3209,6 +3229,7 @@ def main() -> int:
         "\tname_not_contains=none\tname_not_values=none\tname_not_filter_mode=contains"
         "\tname_not_filter_mode_requested=contains\tname_not_filter_mode_alias_resolved=false"
         "\tname_case_sensitive=false\tlimit=1\tsort=name\tsort_requested=name\tsort_alias_resolved=false"
+        "\tsort_family=builtin\tsort_tag=none\tsort_direction=asc\tsort_is_desc=false"
     )
     if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
         raise AssertionError(

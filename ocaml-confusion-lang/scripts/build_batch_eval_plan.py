@@ -152,6 +152,26 @@ def _resolve_list_presets_sort_mode(sort_mode: str) -> str:
     return sort_mode
 
 
+def _describe_list_presets_sort_mode(sort_mode: str) -> dict[str, Any]:
+    descending = sort_mode.endswith("-desc")
+    if sort_mode.startswith("tag:"):
+        tag = sort_mode[len("tag:") :]
+        if descending:
+            tag = tag[: -len("-desc")]
+        return {
+            "sort_family": "tag",
+            "sort_tag": tag,
+            "sort_direction": "desc" if descending else "asc",
+            "sort_is_desc": descending,
+        }
+    return {
+        "sort_family": "builtin",
+        "sort_tag": None,
+        "sort_direction": "desc" if descending else "asc",
+        "sort_is_desc": descending,
+    }
+
+
 def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[str, list[str]]:
     groups: dict[str, list[str]] = {}
     source_map = PRESET_SORT_ALIAS_MAP if alias_map is None else alias_map
@@ -3371,6 +3391,7 @@ def main() -> int:
             list_presets_sort_requested = args.list_presets_sort
             resolved_list_presets_sort = _resolve_list_presets_sort_mode(args.list_presets_sort)
             list_presets_sort_alias_resolved = list_presets_sort_requested != resolved_list_presets_sort
+            list_presets_sort_info = _describe_list_presets_sort_mode(resolved_list_presets_sort)
             list_presets_tag_filter_mode_requested = args.list_presets_tag_filter_mode
             resolved_list_presets_tag_filter_mode = _resolve_filter_mode(args.list_presets_tag_filter_mode)
             list_presets_tag_filter_mode_alias_resolved = (
@@ -3543,6 +3564,10 @@ def main() -> int:
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
                     "sort_alias_resolved": str(list_presets_sort_alias_resolved).lower(),
+                    "sort_family": list_presets_sort_info["sort_family"],
+                    "sort_tag": list_presets_sort_info["sort_tag"] or "none",
+                    "sort_direction": list_presets_sort_info["sort_direction"],
+                    "sort_is_desc": str(list_presets_sort_info["sort_is_desc"]).lower(),
                 }
             if args.list_presets_meta_include_generated_at:
                 if list_meta_extra_fields is None:
@@ -3664,6 +3689,10 @@ def main() -> int:
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
                     "sort_alias_resolved": list_presets_sort_alias_resolved,
+                    "sort_family": list_presets_sort_info["sort_family"],
+                    "sort_tag": list_presets_sort_info["sort_tag"],
+                    "sort_direction": list_presets_sort_info["sort_direction"],
+                    "sort_is_desc": list_presets_sort_info["sort_is_desc"],
                 },
                 list_meta_extra_fields,
             )
@@ -3707,6 +3736,10 @@ def main() -> int:
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
                     "sort_alias_resolved": list_presets_sort_alias_resolved,
+                    "sort_family": list_presets_sort_info["sort_family"],
+                    "sort_tag": list_presets_sort_info["sort_tag"],
+                    "sort_direction": list_presets_sort_info["sort_direction"],
+                    "sort_is_desc": list_presets_sort_info["sort_is_desc"],
                 }
                 if args.list_presets_with_meta:
                     payload["meta"] = list_meta_payload
@@ -3757,6 +3790,10 @@ def main() -> int:
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
                     "sort_alias_resolved": list_presets_sort_alias_resolved,
+                    "sort_family": list_presets_sort_info["sort_family"],
+                    "sort_tag": list_presets_sort_info["sort_tag"],
+                    "sort_direction": list_presets_sort_info["sort_direction"],
+                    "sort_is_desc": list_presets_sort_info["sort_is_desc"],
                 }
                 if args.list_presets_with_meta:
                     payload["meta"] = list_meta_payload
