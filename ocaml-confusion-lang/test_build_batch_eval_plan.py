@@ -5423,6 +5423,11 @@ def main() -> int:
             "expected default list-sort-aliases output_field_count=0, got: "
             f"{sort_aliases_payload.get('output_field_count')}"
         )
+    if sort_aliases_payload.get("output_column_count") != 6:
+        raise AssertionError(
+            "expected default list-sort-aliases output_column_count=6, got: "
+            f"{sort_aliases_payload.get('output_column_count')}"
+        )
     if sort_aliases_payload.get("output_columns") != [
         "alias",
         "canonical",
@@ -5719,6 +5724,11 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases output_field_count=0, got: "
             f"{grouped_sort_aliases_payload.get('output_field_count')}"
+        )
+    if grouped_sort_aliases_payload.get("output_column_count") != 6:
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_column_count=6, got: "
+            f"{grouped_sort_aliases_payload.get('output_column_count')}"
         )
     if grouped_sort_aliases_payload.get("output_columns") != [
         "canonical",
@@ -6575,6 +6585,11 @@ def main() -> int:
             "expected aliases-tsv meta footer to include output_field_count=6, got: "
             f"{aliases_tsv_with_meta_lines[-1]}"
         )
+    if "\toutput_column_count=6" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include output_column_count=6, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
     if "\toutput_columns=alias,canonical,canonical_group_count,canonical_group_count_global,canonical_group_share_pct,canonical_group_share_pct_global" not in aliases_tsv_with_meta_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv meta footer to include aliases output_columns, got: "
@@ -6735,6 +6750,11 @@ def main() -> int:
     if aliases_tsv_meta_json_payload.get("output_field_count") != 6:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer output_field_count=6, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("output_column_count") != 6:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_column_count=6, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
     if aliases_tsv_meta_json_payload.get("output_columns") != [
@@ -7650,6 +7670,10 @@ def main() -> int:
     if "output_field_count=1" not in names_meta_lines[-1]:
         raise AssertionError(
             f"expected names-with-meta footer to include output_field_count=1, got: {names_meta_lines[-1]}"
+        )
+    if "output_column_count=1" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_column_count=1, got: {names_meta_lines[-1]}"
         )
     if "output_columns=name" not in names_meta_lines[-1]:
         raise AssertionError(
