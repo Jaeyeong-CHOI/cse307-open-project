@@ -1619,6 +1619,30 @@ def main() -> int:
             f"{preset_names_sorted_by_cheap_first_total_cap}"
         )
 
+    preset_list_sorted_by_cheap_total_cap_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "cheap-total-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cheap_total_cap_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cheap_total_cap_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cheap_total_cap_alias != ["quick-smoke", "balanced-ci", "full-analysis"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cheap-total-cap output: "
+            f"{preset_names_sorted_by_cheap_total_cap_alias}"
+        )
+
     preset_list_sorted_by_fair_allocation_total_cap = subprocess.run(
         [
             "python3",
@@ -1641,6 +1665,30 @@ def main() -> int:
         raise AssertionError(
             "unexpected --list-presets-sort=fair-allocation-total-cap output: "
             f"{preset_names_sorted_by_fair_allocation_total_cap}"
+        )
+
+    preset_list_sorted_by_fair_total_cap_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "fair-total-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_fair_total_cap_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_fair_total_cap_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_fair_total_cap_alias != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=fair-total-cap output: "
+            f"{preset_names_sorted_by_fair_total_cap_alias}"
         )
 
     preset_list_sorted_by_cheap_first_total_cap_desc = subprocess.run(
@@ -1667,6 +1715,30 @@ def main() -> int:
             f"{preset_names_sorted_by_cheap_first_total_cap_desc}"
         )
 
+    preset_list_sorted_by_cheap_total_cap_desc_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "cheap-total-cap-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cheap_total_cap_desc_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_cheap_total_cap_desc_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cheap_total_cap_desc_alias != ["full-analysis", "balanced-ci", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cheap-total-cap-desc output: "
+            f"{preset_names_sorted_by_cheap_total_cap_desc_alias}"
+        )
+
     preset_list_sorted_by_fair_allocation_total_cap_desc = subprocess.run(
         [
             "python3",
@@ -1689,6 +1761,30 @@ def main() -> int:
         raise AssertionError(
             "unexpected --list-presets-sort=fair-allocation-total-cap-desc output: "
             f"{preset_names_sorted_by_fair_allocation_total_cap_desc}"
+        )
+
+    preset_list_sorted_by_fair_total_cap_desc_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "fair-total-cap-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_fair_total_cap_desc_alias = [
+        line.strip()
+        for line in preset_list_sorted_by_fair_total_cap_desc_alias.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_fair_total_cap_desc_alias != ["quick-smoke", "full-analysis", "balanced-ci"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=fair-total-cap-desc output: "
+            f"{preset_names_sorted_by_fair_total_cap_desc_alias}"
         )
 
     preset_list_sorted_by_fair_model_allocation = subprocess.run(
