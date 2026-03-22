@@ -1037,6 +1037,30 @@ def main() -> int:
     if not isinstance(list_argv_sha256, str) or len(list_argv_sha256) != 64:
         raise AssertionError(f"invalid argv_sha256 in list-presets json meta payload: {names_meta_payload_with_argv_sha256}")
 
+    preset_list_names_with_meta_json_argv_count = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-format",
+            "json",
+            "--list-presets-meta-include-argv-count",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_meta_payload_with_argv_count = json.loads(
+        [line.strip() for line in preset_list_names_with_meta_json_argv_count.stdout.splitlines() if line.strip()][-1]
+    )
+    list_argv_count = names_meta_payload_with_argv_count.get("argv_count")
+    if not isinstance(list_argv_count, int) or list_argv_count < 1:
+        raise AssertionError(f"invalid argv_count in list-presets json meta payload: {names_meta_payload_with_argv_count}")
+
     preset_list_names_with_meta_json_schema_v2 = subprocess.run(
         [
             "python3",
@@ -1915,6 +1939,31 @@ def main() -> int:
     show_argv_sha256 = show_meta_payload_with_argv_sha256.get("argv_sha256")
     if not isinstance(show_argv_sha256, str) or len(show_argv_sha256) != 64:
         raise AssertionError(f"invalid argv_sha256 in show-preset json meta payload: {show_meta_payload_with_argv_sha256}")
+
+    show_preset_summary_with_meta_json_argv_count = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-format",
+            "json",
+            "--show-preset-meta-include-argv-count",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_meta_payload_with_argv_count = json.loads(
+        [line.rstrip("\n") for line in show_preset_summary_with_meta_json_argv_count.stdout.splitlines() if line.strip()][-1]
+    )
+    show_argv_count = show_meta_payload_with_argv_count.get("argv_count")
+    if not isinstance(show_argv_count, int) or show_argv_count < 1:
+        raise AssertionError(f"invalid argv_count in show-preset json meta payload: {show_meta_payload_with_argv_count}")
 
     show_preset_summary_with_meta_json_schema_v2 = subprocess.run(
         [

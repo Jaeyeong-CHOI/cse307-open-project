@@ -203,6 +203,9 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 # show/list meta footer에 argv token hash(argv_sha256)도 함께 기록(민감 토큰 자체를 저장하지 않고 호출 동일성 추적)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-argv-sha256
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-include-argv-sha256
+# show/list meta footer에 argv token 개수(argv_count)도 함께 기록(토큰 배열/원문 없이 호출 규모만 추적)
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-argv-count
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-include-argv-count
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 # optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
@@ -466,3 +469,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 198. ~~planner list/show text/json meta footer에 optional `argv`(CLI invocation) 주입 옵션(`--list-presets-meta-include-argv`, `--show-preset-meta-include-argv`)을 추가해 실행 로그 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 199. ~~planner list/show text/json meta footer에 optional `argv_tokens`(CLI token array) 주입 옵션(`--list-presets-meta-include-argv-tokens`, `--show-preset-meta-include-argv-tokens`)을 추가해 공백/인용부호가 포함된 호출에서도 파서가 손실 없이 재구성 가능하도록 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 200. ~~planner list/show text/json meta footer에 optional `argv_sha256` 주입 옵션(`--list-presets-meta-include-argv-sha256`, `--show-preset-meta-include-argv-sha256`)을 추가해 민감한 전체 argv를 직접 저장하지 않고도 실행 호출 동일성/상관관계를 저비용으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+201. ~~planner list/show text/json meta footer에 optional `argv_count` 주입 옵션(`--list-presets-meta-include-argv-count`, `--show-preset-meta-include-argv-count`)을 추가해 argv 원문/토큰을 노출하지 않고도 호출 규모(토큰 수)를 경량 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
