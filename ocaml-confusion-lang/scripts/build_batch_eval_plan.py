@@ -616,6 +616,11 @@ def parse_args() -> argparse.Namespace:
         help="Include git_dirty (clean|dirty|unknown) in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-argv",
+        action="store_true",
+        help="Include argv (CLI invocation) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--list-presets",
         action="store_true",
         help="List available presets from --preset-file and exit",
@@ -729,6 +734,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-git-dirty",
         action="store_true",
         help="Include git_dirty (clean|dirty|unknown) in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-argv",
+        action="store_true",
+        help="Include argv (CLI invocation) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--summary-tsv-with-schema-header",
@@ -954,6 +964,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["git_dirty"] = _git_dirty_state(cwd=os.getcwd())
+            if args.show_preset_meta_include_argv:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["argv"] = " ".join(sys.argv)
 
             if args.show_preset_format == "summary":
                 print(_format_preset_summary_line(args.show_preset, resolved))
@@ -1079,6 +1093,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["git_dirty"] = _git_dirty_state(cwd=os.getcwd())
+            if args.list_presets_meta_include_argv:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["argv"] = " ".join(sys.argv)
 
             if args.list_presets_format == "json":
                 limited_presets = {name: filtered_presets[name] for name in preset_names}

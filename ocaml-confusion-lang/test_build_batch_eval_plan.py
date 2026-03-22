@@ -1239,6 +1239,31 @@ def main() -> int:
             f"{names_with_meta_git_dirty_lines}"
         )
 
+    preset_list_names_with_meta_argv = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-argv",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_argv_lines = [
+        line.strip() for line in preset_list_names_with_meta_argv.stdout.splitlines() if line.strip()
+    ]
+    argv_value = names_with_meta_argv_lines[-1].rsplit("argv=", 1)[-1]
+    if "--list-presets-meta-include-argv" not in argv_value:
+        raise AssertionError(
+            "missing argv in list-presets meta footer: "
+            f"{names_with_meta_argv_lines}"
+        )
+
     preset_list_names_with_filter_meta = subprocess.run(
         [
             "python3",
@@ -2016,6 +2041,34 @@ def main() -> int:
         raise AssertionError(
             "unexpected git_dirty value in show-preset meta footer: "
             f"{show_preset_with_meta_git_dirty_lines}"
+        )
+
+    show_preset_summary_with_meta_argv = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-argv",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_argv_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_argv.stdout.splitlines()
+        if line.strip()
+    ]
+    show_argv_value = show_preset_with_meta_argv_lines[-1].rsplit("argv=", 1)[-1]
+    if "--show-preset-meta-include-argv" not in show_argv_value:
+        raise AssertionError(
+            "missing argv in show-preset meta footer: "
+            f"{show_preset_with_meta_argv_lines}"
         )
 
     invalid_show_preset_meta_schema = subprocess.run(
