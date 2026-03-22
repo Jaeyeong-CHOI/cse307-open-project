@@ -146,6 +146,12 @@ def _resolve_list_sort_aliases_sort(sort_mode: str) -> str:
     return LIST_SORT_ALIASES_SORT_ALIAS_MAP.get(sort_mode, sort_mode)
 
 
+def _resolve_list_presets_sort_mode(sort_mode: str) -> str:
+    if sort_mode.startswith("t:"):
+        return f"tag:{sort_mode[len('t:') :]}"
+    return sort_mode
+
+
 def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[str, list[str]]:
     groups: dict[str, list[str]] = {}
     source_map = PRESET_SORT_ALIAS_MAP if alias_map is None else alias_map
@@ -1109,7 +1115,7 @@ def _parse_tag_sort_mode(sort_mode: str) -> tuple[str, bool] | None:
         tag_expr = tag_expr[: -len("-desc")].strip()
     if not tag_expr:
         raise ValueError(
-            "--list-presets-sort tag mode must be tag:<name> or tag:<name>-desc with a non-empty tag"
+            "--list-presets-sort tag mode must be tag:<name>/t:<name> or tag:<name>-desc/t:<name>-desc with a non-empty tag"
         )
     return (tag_expr, descending)
 
@@ -2467,7 +2473,8 @@ def parse_args() -> argparse.Namespace:
             "fair-model-allocation (presets with fair_model_allocation=true first), "
             "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
             "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "
-            "tag:<name> (presets containing that tag first), or tag:<name>-desc (presets without that tag first)."
+            "tag:<name> (presets containing that tag first), tag:<name>-desc (presets without that tag first), "
+            "or shorthand t:<name>/t:<name>-desc."
         ),
     )
     parser.add_argument(
@@ -3253,6 +3260,9 @@ def main() -> int:
             list_presets_tag_match_alias_resolved = (
                 list_presets_tag_match_requested != resolved_list_presets_tag_match
             )
+            list_presets_sort_requested = args.list_presets_sort
+            resolved_list_presets_sort = _resolve_list_presets_sort_mode(args.list_presets_sort)
+            list_presets_sort_alias_resolved = list_presets_sort_requested != resolved_list_presets_sort
             required_tags: set[str] = set()
             if args.list_presets_tag:
                 required_tags = {tag.strip().lower() for tag in args.list_presets_tag.split(",") if tag.strip()}
@@ -3277,7 +3287,7 @@ def main() -> int:
             preset_names = _sort_preset_names(
                 list(filtered_presets.keys()),
                 filtered_presets,
-                sort_mode=args.list_presets_sort,
+                sort_mode=resolved_list_presets_sort,
             )
             truncated = False
             if args.list_presets_limit is not None and len(preset_names) > args.list_presets_limit:
@@ -3300,7 +3310,9 @@ def main() -> int:
                     "limit": str(args.list_presets_limit)
                     if args.list_presets_limit is not None
                     else "none",
-                    "sort": args.list_presets_sort,
+                    "sort": resolved_list_presets_sort,
+                    "sort_requested": list_presets_sort_requested,
+                    "sort_alias_resolved": str(list_presets_sort_alias_resolved).lower(),
                 }
             if args.list_presets_meta_include_generated_at:
                 if list_meta_extra_fields is None:
@@ -3394,6 +3406,9 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "sort": resolved_list_presets_sort,
+                    "sort_requested": list_presets_sort_requested,
+                    "sort_alias_resolved": list_presets_sort_alias_resolved,
                 },
                 list_meta_extra_fields,
             )
@@ -3409,6 +3424,9 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "sort": resolved_list_presets_sort,
+                    "sort_requested": list_presets_sort_requested,
+                    "sort_alias_resolved": list_presets_sort_alias_resolved,
                 }
                 if args.list_presets_with_meta:
                     payload["meta"] = list_meta_payload
@@ -3431,6 +3449,9 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "sort": resolved_list_presets_sort,
+                    "sort_requested": list_presets_sort_requested,
+                    "sort_alias_resolved": list_presets_sort_alias_resolved,
                 }
                 if args.list_presets_with_meta:
                     payload["meta"] = list_meta_payload

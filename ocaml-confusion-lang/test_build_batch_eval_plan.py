@@ -2270,6 +2270,61 @@ def main() -> int:
             f"{preset_list_json_tag_filtered_alias_any_payload}"
         )
 
+    preset_list_json_sort_tag_canonical = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+            "--list-presets-sort",
+            "tag:cheap-first",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_json_sort_tag_alias = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-format",
+            "json",
+            "--list-presets-sort",
+            "t:cheap-first",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_list_json_sort_tag_canonical_payload = json.loads(preset_list_json_sort_tag_canonical.stdout)
+    preset_list_json_sort_tag_alias_payload = json.loads(preset_list_json_sort_tag_alias.stdout)
+    if list(preset_list_json_sort_tag_canonical_payload.get("presets", {}).keys()) != list(
+        preset_list_json_sort_tag_alias_payload.get("presets", {}).keys()
+    ):
+        raise AssertionError(
+            "expected --list-presets-sort=t:<tag> to match canonical tag:<tag> ordering, got: "
+            f"canonical={preset_list_json_sort_tag_canonical_payload} alias={preset_list_json_sort_tag_alias_payload}"
+        )
+    if preset_list_json_sort_tag_alias_payload.get("sort") != "tag:cheap-first":
+        raise AssertionError(
+            "expected sort to resolve to canonical tag:cheap-first for t: alias mode: "
+            f"{preset_list_json_sort_tag_alias_payload}"
+        )
+    if preset_list_json_sort_tag_alias_payload.get("sort_requested") != "t:cheap-first":
+        raise AssertionError(
+            "expected sort_requested=t:cheap-first for alias mode: "
+            f"{preset_list_json_sort_tag_alias_payload}"
+        )
+    if preset_list_json_sort_tag_alias_payload.get("sort_alias_resolved") is not True:
+        raise AssertionError(
+            "expected sort_alias_resolved=true for t: alias mode: "
+            f"{preset_list_json_sort_tag_alias_payload}"
+        )
+
     preset_list_resolved_json = subprocess.run(
         [
             "python3",
@@ -3143,6 +3198,7 @@ def main() -> int:
         "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
         "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
         "\ttag_match_alias_resolved=false\tname_contains=quick\tlimit=1\tsort=name"
+        "\tsort_requested=name\tsort_alias_resolved=false"
     )
     if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
         raise AssertionError(
