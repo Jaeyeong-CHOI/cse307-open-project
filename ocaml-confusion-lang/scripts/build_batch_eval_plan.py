@@ -359,6 +359,28 @@ def _preset_description_preview(raw_description: str, max_len: int = 60) -> str:
     return f"{normalized[: max_len - 3].rstrip()}..."
 
 
+def _sort_preset_names(
+    preset_names: list[str],
+    presets: dict[str, dict[str, Any]],
+    sort_mode: str,
+) -> list[str]:
+    if sort_mode == "name":
+        return sorted(preset_names)
+
+    if sort_mode == "max-total-runs":
+        def sort_key(name: str) -> tuple[int, int, str]:
+            preset = presets.get(name, {})
+            resolved = resolve_preset_with_defaults(preset)
+            max_total_runs = int(resolved.get("max_total_runs", 0))
+            is_uncapped = 1 if max_total_runs == 0 else 0
+            normalized_cap = max_total_runs if max_total_runs > 0 else sys.maxsize
+            return (is_uncapped, normalized_cap, name)
+
+        return sorted(preset_names, key=sort_key)
+
+    raise ValueError(f"unsupported --list-presets-sort mode: {sort_mode}")
+
+
 def _format_preset_summary_line(name: str, resolved: dict[str, Any]) -> str:
     tags = resolved.get("tags", [])
     tag_value = ",".join(tags) if isinstance(tags, list) and tags else "-"
@@ -834,7 +856,16 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-limit",
         type=int,
         default=None,
-        help="Optional max number of presets to emit after filtering (sorted by name)",
+        help="Optional max number of presets to emit after filtering",
+    )
+    parser.add_argument(
+        "--list-presets-sort",
+        choices=("name", "max-total-runs"),
+        default="name",
+        help=(
+            "Sort mode for filtered preset emission: "
+            "name (default) or max-total-runs (ascending; capped presets first, 0/uncapped last)"
+        ),
     )
     parser.add_argument(
         "--list-presets-with-meta",
@@ -1321,7 +1352,11 @@ def main() -> int:
                     match_mode=args.list_presets_tag_match,
                 )
             }
-            preset_names = sorted(filtered_presets.keys())
+            preset_names = _sort_preset_names(
+                list(filtered_presets.keys()),
+                filtered_presets,
+                sort_mode=args.list_presets_sort,
+            )
             truncated = False
             if args.list_presets_limit is not None and len(preset_names) > args.list_presets_limit:
                 preset_names = preset_names[: args.list_presets_limit]
@@ -1341,6 +1376,7 @@ def main() -> int:
                     "limit": str(args.list_presets_limit)
                     if args.list_presets_limit is not None
                     else "none",
+                    "sort": args.list_presets_sort,
                 }
             if args.list_presets_meta_include_generated_at:
                 if list_meta_extra_fields is None:

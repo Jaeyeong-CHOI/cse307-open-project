@@ -107,8 +107,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match any
 # preset 이름 substring 필터(대소문자 무시)로 후보 빠르게 좁히기
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains ci
-# preset 탐색 결과를 상위 N개로 제한(정렬 기준: preset 이름 오름차순)
+# preset 탐색 결과를 상위 N개로 제한(기본 정렬: preset 이름 오름차순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
+# 비용 상한(max_total_runs) 기준 오름차순 정렬(0=uncapped는 마지막)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # text 출력(names/summary/summary-tsv)에서도 필터/절단 메타데이터 footer를 함께 출력
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-format summary-tsv --list-presets-limit 2 --list-presets-with-meta
 # list-presets meta를 JSON 한 줄로 출력(텍스트 key=value split 없이 parser-friendly)
@@ -504,3 +506,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 209. ~~planner list/show meta footer에 optional `git_repo_name` 주입 옵션(`--list-presets-meta-include-git-repo-name`, `--show-preset-meta-include-git-repo-name`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 멀티-worktree/경로 변동 환경에서도 repo 식별자를 안정적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 210. ~~planner list/show meta footer에 optional `git_worktree_name` 주입 옵션(`--list-presets-meta-include-git-worktree-name`, `--show-preset-meta-include-git-worktree-name`)을 추가하고 `ci-safe/safe-debug/debug` profile 기본 필드에 포함해 동일 repo의 다중 worktree 실행 로그를 경로 basename 기준으로 빠르게 구분 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 211. ~~planner meta profile에 `privacy-safe`를 추가해(`--list-presets-meta-profile/--show-preset-meta-profile`) `cwd`/raw argv 같은 민감 가능 필드를 기본 제외하면서도 `argv_sha256`/git provenance 기반 재현성 추적은 유지할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+212. ~~planner preset discovery에 정렬 모드(`--list-presets-sort name|max-total-runs`)를 추가해 운영자가 비용 상한 기준으로 cheap-first preset 후보를 빠르게 나열할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

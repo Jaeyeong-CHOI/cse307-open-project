@@ -698,6 +698,25 @@ def main() -> int:
     if preset_names_limited != ["balanced-ci", "full-analysis"]:
         raise AssertionError(f"unexpected limited preset list output: {preset_names_limited}")
 
+    preset_list_sorted_by_max_total_runs = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "max-total-runs",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cap = [line.strip() for line in preset_list_sorted_by_max_total_runs.stdout.splitlines() if line.strip()]
+    if preset_names_sorted_by_cap != ["quick-smoke", "balanced-ci", "full-analysis"]:
+        raise AssertionError(
+            f"unexpected --list-presets-sort=max-total-runs output: {preset_names_sorted_by_cap}"
+        )
+
     preset_list_tag_filtered = subprocess.run(
         [
             "python3",
@@ -1641,7 +1660,7 @@ def main() -> int:
     ]
     expected_filter_meta_footer = (
         "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
-        "\ttag_filter=cheap-first,smoke\ttag_match=all\tname_contains=quick\tlimit=1"
+        "\ttag_filter=cheap-first,smoke\ttag_match=all\tname_contains=quick\tlimit=1\tsort=name"
     )
     if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
         raise AssertionError(
