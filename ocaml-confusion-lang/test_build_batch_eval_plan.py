@@ -3204,9 +3204,9 @@ def main() -> int:
         "\ttag_not_filter_mode=exact\ttag_not_filter_mode_requested=exact"
         "\ttag_not_filter_mode_alias_resolved=false"
         "\ttag_case_sensitive=false\ttag_values=cheap-first,smoke\ttag_not_values=none"
-        "\tname_contains=quick\tname_filter_mode=contains"
+        "\tname_contains=quick\tname_values=quick\tname_filter_mode=contains"
         "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
-        "\tname_not_contains=none\tname_not_filter_mode=contains"
+        "\tname_not_contains=none\tname_not_values=none\tname_not_filter_mode=contains"
         "\tname_not_filter_mode_requested=contains\tname_not_filter_mode_alias_resolved=false"
         "\tname_case_sensitive=false\tlimit=1\tsort=name\tsort_requested=name\tsort_alias_resolved=false"
     )
@@ -4825,6 +4825,58 @@ def main() -> int:
         raise AssertionError(
             "expected empty tag_not_values when no exclusion filter is set: "
             f"{tag_case_sensitive_json_payload}"
+        )
+
+    name_filter_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "Quick",
+            "--list-presets-name-not-contains",
+            "FULL",
+            "--list-presets-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    name_filter_json_payload = json.loads(name_filter_json_run.stdout)
+    if name_filter_json_payload.get("name_values") != ["quick"]:
+        raise AssertionError(
+            "expected normalized lower-cased name_values in list-presets json payload: "
+            f"{name_filter_json_payload}"
+        )
+    if name_filter_json_payload.get("name_not_values") != ["full"]:
+        raise AssertionError(
+            "expected normalized lower-cased name_not_values in list-presets json payload: "
+            f"{name_filter_json_payload}"
+        )
+
+    name_filter_case_sensitive_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "Quick",
+            "--list-presets-name-case-sensitive",
+            "--list-presets-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    name_filter_case_sensitive_json_payload = json.loads(name_filter_case_sensitive_json_run.stdout)
+    if name_filter_case_sensitive_json_payload.get("name_values") != ["Quick"]:
+        raise AssertionError(
+            "expected case-preserved name_values when --list-presets-name-case-sensitive is set: "
+            f"{name_filter_case_sensitive_json_payload}"
         )
 
     name_prefix_filtered_run = subprocess.run(

@@ -3440,6 +3440,16 @@ def main() -> int:
                 raise ValueError(
                     "--list-presets-name-not-contains must include at least one non-empty character"
                 )
+            name_values = (
+                [name_filter if args.list_presets_name_case_sensitive else name_filter.lower()]
+                if name_filter
+                else []
+            )
+            name_not_values = (
+                [name_not_filter if args.list_presets_name_case_sensitive else name_not_filter.lower()]
+                if name_not_filter
+                else []
+            )
             if args.list_presets_limit is not None and args.list_presets_limit < 1:
                 raise ValueError("--list-presets-limit must be >= 1")
             filtered_presets = {
@@ -3525,10 +3535,12 @@ def main() -> int:
                     "tag_values": ",".join(required_tags_sorted) if required_tags_sorted else "none",
                     "tag_not_values": ",".join(excluded_tags_sorted) if excluded_tags_sorted else "none",
                     "name_contains": name_contains or "none",
+                    "name_values": ",".join(name_values) if name_values else "none",
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
                     "name_filter_mode_alias_resolved": str(list_presets_name_filter_mode_alias_resolved).lower(),
                     "name_not_contains": name_not_contains or "none",
+                    "name_not_values": ",".join(name_not_values) if name_not_values else "none",
                     "name_not_filter_mode": resolved_list_presets_name_not_filter_mode,
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": str(list_presets_name_not_filter_mode_alias_resolved).lower(),
@@ -3636,6 +3648,8 @@ def main() -> int:
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": list_presets_name_not_filter_mode_alias_resolved,
                     "name_case_sensitive": args.list_presets_name_case_sensitive,
+                    "name_values": name_values,
+                    "name_not_values": name_not_values,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
@@ -3673,6 +3687,8 @@ def main() -> int:
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": list_presets_name_not_filter_mode_alias_resolved,
                     "name_case_sensitive": args.list_presets_name_case_sensitive,
+                    "name_values": name_values,
+                    "name_not_values": name_not_values,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
@@ -3717,6 +3733,8 @@ def main() -> int:
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": list_presets_name_not_filter_mode_alias_resolved,
                     "name_case_sensitive": args.list_presets_name_case_sensitive,
+                    "name_values": name_values,
+                    "name_not_values": name_not_values,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
