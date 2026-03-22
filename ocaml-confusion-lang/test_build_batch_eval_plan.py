@@ -3197,7 +3197,7 @@ def main() -> int:
     expected_filter_meta_footer = (
         "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
         "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
-        "\ttag_match_alias_resolved=false\tname_contains=quick\tname_filter_mode=contains"
+        "\ttag_match_alias_resolved=false\ttag_case_sensitive=false\tname_contains=quick\tname_filter_mode=contains"
         "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
         "\tname_not_contains=none\tname_not_filter_mode=contains"
         "\tname_not_filter_mode_requested=contains\tname_not_filter_mode_alias_resolved=false"
@@ -4698,6 +4698,71 @@ def main() -> int:
         raise AssertionError(
             "expected case-sensitive name filter to reject uppercase mismatch, got: "
             f"{name_case_sensitive_filtered_run.stdout!r}"
+        )
+
+    tag_case_sensitive_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag",
+            "CHEAP-FIRST",
+            "--list-presets-tag-case-sensitive",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if tag_case_sensitive_filtered_run.stdout.strip().splitlines() != []:
+        raise AssertionError(
+            "expected case-sensitive tag filter to reject uppercase mismatch, got: "
+            f"{tag_case_sensitive_filtered_run.stdout!r}"
+        )
+
+    tag_case_insensitive_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag",
+            "CHEAP-FIRST",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if tag_case_insensitive_filtered_run.stdout.strip().splitlines() != [
+        "balanced-ci",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "expected default case-insensitive tag filter to match lowercase tags, got: "
+            f"{tag_case_insensitive_filtered_run.stdout!r}"
+        )
+
+    tag_case_sensitive_json_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag",
+            "cheap-first",
+            "--list-presets-tag-case-sensitive",
+            "--list-presets-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    tag_case_sensitive_json_payload = json.loads(tag_case_sensitive_json_run.stdout)
+    if tag_case_sensitive_json_payload.get("tag_case_sensitive") is not True:
+        raise AssertionError(
+            "expected tag_case_sensitive=true in list-presets json payload: "
+            f"{tag_case_sensitive_json_payload}"
         )
 
     name_prefix_filtered_run = subprocess.run(
