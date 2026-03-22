@@ -850,3 +850,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 309. ~~`--list-sort-aliases-format`에 shorthand alias(`aj|gj|at|gt|atr|gtr|n|cn|nj|cnj`)를 추가하고 JSON/meta 출력에 `output_format_requested`/`output_format_alias_resolved` provenance를 확장해 format alias 해석 경로를 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 
 310. ~~`--list-sort-aliases` JSON/TSV meta 출력에 `output_transport`(json|tsv|text)와 `output_is_rows`(bool) provenance 필드를 추가해 format alias/rows 모드 해석을 parser가 문자열 접미사 재파싱 없이 즉시 분기 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+311. ~~`--list-sort-aliases` JSON/TSV meta 출력에 `output_has_header`(bool) provenance 필드를 추가해 TSV header 포함 여부(regular vs `*-rows`)를 parser가 접미사/라인수 추론 없이 즉시 분기 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

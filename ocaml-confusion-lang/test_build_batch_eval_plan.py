@@ -5407,6 +5407,11 @@ def main() -> int:
             "expected default list-sort-aliases output_is_rows=false, got: "
             f"{sort_aliases_payload.get('output_is_rows')}"
         )
+    if sort_aliases_payload.get("output_has_header") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases output_has_header=false, got: "
+            f"{sort_aliases_payload.get('output_has_header')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -5673,6 +5678,11 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases output_is_rows=false, got: "
             f"{grouped_sort_aliases_payload.get('output_is_rows')}"
+        )
+    if grouped_sort_aliases_payload.get("output_has_header") is not False:
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_has_header=false, got: "
+            f"{grouped_sort_aliases_payload.get('output_has_header')}"
         )
     if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(
@@ -6494,6 +6504,11 @@ def main() -> int:
             "expected aliases-tsv meta footer to include filtered/emitted counters, got: "
             f"{aliases_tsv_with_meta_lines[-1]}"
         )
+    if "\toutput_has_header=true" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include output_has_header=true, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
     if "\tmin_group_size=1" not in aliases_tsv_with_meta_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv meta footer to include min_group_size context, got: "
@@ -6629,6 +6644,11 @@ def main() -> int:
     if aliases_tsv_meta_json_payload.get("sort_is_desc") is not False:
         raise AssertionError(
             "expected aliases-tsv JSON meta footer sort_is_desc=false, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
+    if aliases_tsv_meta_json_payload.get("output_has_header") is not True:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer output_has_header=true, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
     if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
@@ -7513,6 +7533,10 @@ def main() -> int:
         raise AssertionError(f"expected names-with-meta footer to include output=names, got: {names_meta_lines[-1]}")
     if "output_format=names" not in names_meta_lines[-1]:
         raise AssertionError(f"expected names-with-meta footer to include output_format=names, got: {names_meta_lines[-1]}")
+    if "output_has_header=false" not in names_meta_lines[-1]:
+        raise AssertionError(
+            f"expected names-with-meta footer to include output_has_header=false, got: {names_meta_lines[-1]}"
+        )
 
     canonical_names_sort_aliases_run = subprocess.run(
         [
@@ -7603,6 +7627,11 @@ def main() -> int:
             "expected canonical-names-with-meta JSON footer output_format=canonical-names, got: "
             f"{canonical_names_meta_json.get('output_format')}"
         )
+    if canonical_names_meta_json.get("output_has_header") is not False:
+        raise AssertionError(
+            "expected canonical-names-with-meta JSON footer output_has_header=false, got: "
+            f"{canonical_names_meta_json.get('output_has_header')}"
+        )
 
     names_json_run = subprocess.run(
         [
@@ -7633,6 +7662,11 @@ def main() -> int:
         raise AssertionError(
             "expected names-json output_format=names-json, got: "
             f"{names_json.get('output_format')}"
+        )
+    if names_json.get("output_has_header") is not False:
+        raise AssertionError(
+            "expected names-json output_has_header=false, got: "
+            f"{names_json.get('output_has_header')}"
         )
     if not isinstance(names_json.get("names"), list) or not names_json.get("names"):
         raise AssertionError(f"expected names-json output to include non-empty names list, got: {names_json}")
@@ -7684,6 +7718,11 @@ def main() -> int:
         raise AssertionError(
             "expected canonical-names-json output_format=canonical-names-json, got: "
             f"{canonical_names_json.get('output_format')}"
+        )
+    if canonical_names_json.get("output_has_header") is not False:
+        raise AssertionError(
+            "expected canonical-names-json output_has_header=false, got: "
+            f"{canonical_names_json.get('output_has_header')}"
         )
     if not isinstance(canonical_names_json.get("canonical_names"), list) or not canonical_names_json.get("canonical_names"):
         raise AssertionError(
@@ -7739,6 +7778,11 @@ def main() -> int:
             "expected aliases-tsv-rows meta footer to expose output_format=aliases-tsv-rows, got: "
             f"{aliases_rows_lines[-1]}"
         )
+    if "output_has_header=false" not in aliases_rows_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv-rows meta footer to expose output_has_header=false, got: "
+            f"{aliases_rows_lines[-1]}"
+        )
 
     grouped_rows_run = subprocess.run(
         [
@@ -7771,6 +7815,11 @@ def main() -> int:
     if "output_format=grouped-tsv-rows" not in grouped_rows_lines[-1]:
         raise AssertionError(
             "expected grouped-tsv-rows meta footer to expose output_format=grouped-tsv-rows, got: "
+            f"{grouped_rows_lines[-1]}"
+        )
+    if "output_has_header=false" not in grouped_rows_lines[-1]:
+        raise AssertionError(
+            "expected grouped-tsv-rows meta footer to expose output_has_header=false, got: "
             f"{grouped_rows_lines[-1]}"
         )
 
