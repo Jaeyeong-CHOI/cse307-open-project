@@ -206,9 +206,12 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 -
 # show/list meta footer에 argv token 개수(argv_count)도 함께 기록(토큰 배열/원문 없이 호출 규모만 추적)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-argv-count
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-include-argv-count
-# meta footer 옵션들을 profile로 묶어 짧게 호출(minimal|debug)
+# meta footer 옵션들을 profile로 묶어 짧게 호출(minimal|safe-debug|debug)
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile debug
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile debug
+# safe-debug: raw argv/argv_tokens 없이 hash/count 중심 디버그 메타만 포함
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-format json --show-preset-meta-profile safe-debug
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 3 --list-presets-with-meta --list-presets-meta-format json --list-presets-meta-profile safe-debug
 # preset 파일 스키마/키 검증(fail-fast): unknown key/type이면 즉시 에러
 # optional metadata 키: description(string), tags(string array)
 python3 scripts/build_batch_eval_plan.py --list-presets --preset-file examples/batch-plan-presets.v1.json
@@ -474,3 +477,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 200. ~~planner list/show text/json meta footer에 optional `argv_sha256` 주입 옵션(`--list-presets-meta-include-argv-sha256`, `--show-preset-meta-include-argv-sha256`)을 추가해 민감한 전체 argv를 직접 저장하지 않고도 실행 호출 동일성/상관관계를 저비용으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 201. ~~planner list/show text/json meta footer에 optional `argv_count` 주입 옵션(`--list-presets-meta-include-argv-count`, `--show-preset-meta-include-argv-count`)을 추가해 argv 원문/토큰을 노출하지 않고도 호출 규모(토큰 수)를 경량 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 202. ~~planner list/show meta footer optional 필드를 profile(`minimal|debug`)로 묶는 옵션(`--list-presets-meta-profile`, `--show-preset-meta-profile`)을 추가해 반복 실행에서 CLI 길이를 줄이고 debug 관측 세트를 일관화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+203. ~~planner meta profile에 `safe-debug`를 추가해(`--list-presets-meta-profile/--show-preset-meta-profile`) raw argv/argv_tokens 노출 없이도 재현성 해시(`argv_sha256`)·규모(`argv_count`) 중심 디버깅을 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

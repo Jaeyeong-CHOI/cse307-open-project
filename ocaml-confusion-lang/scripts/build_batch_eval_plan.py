@@ -441,7 +441,7 @@ def _emit_show_preset_text_meta(
 def _apply_show_meta_profile(args: argparse.Namespace) -> None:
     if args.show_preset_meta_profile in (None, "minimal"):
         return
-    if args.show_preset_meta_profile == "debug":
+    if args.show_preset_meta_profile in ("debug", "safe-debug"):
         args.show_preset_meta_include_overrides = True
         args.show_preset_meta_include_generated_at = True
         args.show_preset_meta_include_cwd = True
@@ -452,16 +452,17 @@ def _apply_show_meta_profile(args: argparse.Namespace) -> None:
         args.show_preset_meta_include_git_branch = True
         args.show_preset_meta_include_git_remote = True
         args.show_preset_meta_include_git_dirty = True
-        args.show_preset_meta_include_argv = True
-        args.show_preset_meta_include_argv_tokens = True
         args.show_preset_meta_include_argv_sha256 = True
         args.show_preset_meta_include_argv_count = True
+    if args.show_preset_meta_profile == "debug":
+        args.show_preset_meta_include_argv = True
+        args.show_preset_meta_include_argv_tokens = True
 
 
 def _apply_list_meta_profile(args: argparse.Namespace) -> None:
     if args.list_presets_meta_profile in (None, "minimal"):
         return
-    if args.list_presets_meta_profile == "debug":
+    if args.list_presets_meta_profile in ("debug", "safe-debug"):
         args.list_presets_meta_include_filters = True
         args.list_presets_meta_include_generated_at = True
         args.list_presets_meta_include_cwd = True
@@ -472,10 +473,11 @@ def _apply_list_meta_profile(args: argparse.Namespace) -> None:
         args.list_presets_meta_include_git_branch = True
         args.list_presets_meta_include_git_remote = True
         args.list_presets_meta_include_git_dirty = True
-        args.list_presets_meta_include_argv = True
-        args.list_presets_meta_include_argv_tokens = True
         args.list_presets_meta_include_argv_sha256 = True
         args.list_presets_meta_include_argv_count = True
+    if args.list_presets_meta_profile == "debug":
+        args.list_presets_meta_include_argv = True
+        args.list_presets_meta_include_argv_tokens = True
 
 
 def _dedupe_keep_order(values: list[str]) -> list[str]:
@@ -605,11 +607,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--show-preset-meta-profile",
-        choices=("minimal", "debug"),
+        choices=("minimal", "safe-debug", "debug"),
         default=None,
         help=(
             "Optional profile for --show-preset meta footer fields: "
-            "minimal (default behavior) or debug (enable common debug fields)."
+            "minimal (default behavior), safe-debug (debug fields without raw argv/tokens), "
+            "or debug (full debug fields including raw argv/tokens)."
         ),
     )
     parser.add_argument(
@@ -749,11 +752,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-meta-profile",
-        choices=("minimal", "debug"),
+        choices=("minimal", "safe-debug", "debug"),
         default=None,
         help=(
             "Optional profile for --list-presets meta footer fields: "
-            "minimal (default behavior) or debug (enable common debug fields)."
+            "minimal (default behavior), safe-debug (debug fields without raw argv/tokens), "
+            "or debug (full debug fields including raw argv/tokens)."
         ),
     )
     parser.add_argument(
