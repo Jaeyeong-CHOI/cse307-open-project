@@ -367,16 +367,29 @@ def _sort_preset_names(
     if sort_mode == "name":
         return sorted(preset_names)
 
-    if sort_mode == "max-total-runs":
-        def sort_key(name: str) -> tuple[int, int, str]:
+    if sort_mode in ("max-total-runs", "max-total-runs-desc"):
+        resolved_caps: dict[str, int] = {}
+        for name in preset_names:
             preset = presets.get(name, {})
             resolved = resolve_preset_with_defaults(preset)
-            max_total_runs = int(resolved.get("max_total_runs", 0))
-            is_uncapped = 1 if max_total_runs == 0 else 0
-            normalized_cap = max_total_runs if max_total_runs > 0 else sys.maxsize
+            resolved_caps[name] = int(resolved.get("max_total_runs", 0))
+
+        if sort_mode == "max-total-runs":
+            def asc_sort_key(name: str) -> tuple[int, int, str]:
+                max_total_runs = resolved_caps[name]
+                is_uncapped = 1 if max_total_runs == 0 else 0
+                normalized_cap = max_total_runs if max_total_runs > 0 else sys.maxsize
+                return (is_uncapped, normalized_cap, name)
+
+            return sorted(preset_names, key=asc_sort_key)
+
+        def desc_sort_key(name: str) -> tuple[int, int, str]:
+            max_total_runs = resolved_caps[name]
+            is_uncapped = 0 if max_total_runs == 0 else 1
+            normalized_cap = -max_total_runs if max_total_runs > 0 else 0
             return (is_uncapped, normalized_cap, name)
 
-        return sorted(preset_names, key=sort_key)
+        return sorted(preset_names, key=desc_sort_key)
 
     raise ValueError(f"unsupported --list-presets-sort mode: {sort_mode}")
 
@@ -860,11 +873,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-presets-sort",
-        choices=("name", "max-total-runs"),
+        choices=("name", "max-total-runs", "max-total-runs-desc"),
         default="name",
         help=(
             "Sort mode for filtered preset emission: "
-            "name (default) or max-total-runs (ascending; capped presets first, 0/uncapped last)"
+            "name (default), max-total-runs (ascending; capped presets first, 0/uncapped last), "
+            "or max-total-runs-desc (descending; 0/uncapped first)"
         ),
     )
     parser.add_argument(

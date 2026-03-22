@@ -717,6 +717,28 @@ def main() -> int:
             f"unexpected --list-presets-sort=max-total-runs output: {preset_names_sorted_by_cap}"
         )
 
+    preset_list_sorted_by_max_total_runs_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "max-total-runs-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cap_desc = [
+        line.strip() for line in preset_list_sorted_by_max_total_runs_desc.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_cap_desc != ["full-analysis", "balanced-ci", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=max-total-runs-desc output: "
+            f"{preset_names_sorted_by_cap_desc}"
+        )
+
     preset_list_tag_filtered = subprocess.run(
         [
             "python3",
