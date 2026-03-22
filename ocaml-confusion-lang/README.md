@@ -214,6 +214,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort tota
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format names --list-sort-aliases-name-contains cap --list-sort-aliases-limit 5
 # canonical sort key 이름만 newline으로 경량 조회(그룹 단위 triage)
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format canonical-names --list-sort-aliases-name-contains fair --list-sort-aliases-limit 5
+# names/canonical-names 출력에도 meta footer를 붙여(filtered/emitted/sort/group_count) parser-friendly provenance 확보
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format names --list-sort-aliases-name-contains cap --list-sort-aliases-limit 3 --list-sort-aliases-names-with-meta
+# names/canonical-names meta footer를 JSON line으로 출력(기존 --list-sort-aliases-tsv-meta-format 재사용)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-format canonical-names --list-sort-aliases-name-contains fair --list-sort-aliases-limit 2 --list-sort-aliases-names-with-meta --list-sort-aliases-tsv-meta-format json
 # repeat 횟수 기준 오름차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort repeats
 # repeat 횟수 기준 내림차순 정렬(동률은 이름순)
@@ -830,3 +834,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 297. ~~`--list-presets` JSON/메타데이터에 sort decomposition 필드(`sort_family`, `sort_tag`, `sort_direction`, `sort_is_desc`)를 추가해 `tag:` custom sort 및 desc 여부를 문자열 재파싱 없이 downstream에서 즉시 해석 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 298. ~~`--list-sort-aliases-format names` 출력 모드를 추가해 alias 이름만 newline으로 경량 조회할 수 있게 하고(파이프/grep 친화), 회귀 테스트로 limit/필터 적용을 검증~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 299. ~~`--list-sort-aliases-format canonical-names` 출력 모드를 추가해 canonical sort key 이름만 newline으로 경량 조회할 수 있게 하고(그룹 단위 triage), 회귀 테스트로 limit/필터 적용을 검증~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+300. ~~`--list-sort-aliases-names-with-meta` 옵션을 추가해 names/canonical-names 출력에도 `filtered/emitted/truncated/sort/group_count` meta footer를 붙일 수 있게 확장하고, `--list-sort-aliases-tsv-meta-format json`과 조합해 JSON line provenance를 동일 경로로 재사용 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

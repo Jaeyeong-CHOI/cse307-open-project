@@ -7381,6 +7381,34 @@ def main() -> int:
             f"{names_lines}"
         )
 
+    names_sort_aliases_with_meta_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "names",
+            "--list-sort-aliases-name-contains",
+            "cap",
+            "--list-sort-aliases-sort",
+            "alias",
+            "--list-sort-aliases-limit",
+            "2",
+            "--list-sort-aliases-names-with-meta",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_meta_lines = [line for line in (names_sort_aliases_with_meta_run.stdout or "").splitlines() if line.strip()]
+    if len(names_meta_lines) < 2:
+        raise AssertionError("expected names-with-meta output to include data rows plus one meta footer line")
+    if not names_meta_lines[-1].startswith("# meta\t"):
+        raise AssertionError(f"expected names-with-meta text footer line, got: {names_meta_lines[-1]}")
+    if "sort=" not in names_meta_lines[-1] or "group_count=" not in names_meta_lines[-1]:
+        raise AssertionError(f"expected names-with-meta footer to include sort/group counters, got: {names_meta_lines[-1]}")
+
     canonical_names_sort_aliases_run = subprocess.run(
         [
             "python3",
@@ -7418,6 +7446,47 @@ def main() -> int:
         raise AssertionError(
             "expected --list-sort-aliases-name-contains=fair to constrain canonical-names output, got: "
             f"{canonical_names_lines}"
+        )
+
+    canonical_names_sort_aliases_with_json_meta_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-format",
+            "canonical-names",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "canonical",
+            "--list-sort-aliases-limit",
+            "2",
+            "--list-sort-aliases-names-with-meta",
+            "--list-sort-aliases-tsv-meta-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    canonical_names_meta_lines = [
+        line for line in (canonical_names_sort_aliases_with_json_meta_run.stdout or "").splitlines() if line.strip()
+    ]
+    if len(canonical_names_meta_lines) < 2:
+        raise AssertionError("expected canonical-names-with-meta output to include data rows plus one JSON meta line")
+    try:
+        canonical_names_meta_json = json.loads(canonical_names_meta_lines[-1])
+    except json.JSONDecodeError as exc:
+        raise AssertionError(
+            f"expected canonical-names-with-meta footer to be JSON when --list-sort-aliases-tsv-meta-format=json, got: {canonical_names_meta_lines[-1]}"
+        ) from exc
+    if canonical_names_meta_json.get("meta") is not True:
+        raise AssertionError(f"expected JSON meta footer with meta=true, got: {canonical_names_meta_json}")
+    if canonical_names_meta_json.get("schema") != "planner_sort_aliases_tsv_meta.v1":
+        raise AssertionError(
+            "expected canonical-names-with-meta JSON footer schema planner_sort_aliases_tsv_meta.v1, got: "
+            f"{canonical_names_meta_json.get('schema')}"
         )
 
     print("OK: build_batch_eval_plan regression passed")

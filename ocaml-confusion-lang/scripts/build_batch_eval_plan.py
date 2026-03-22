@@ -2441,6 +2441,14 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-names-with-meta",
+        action="store_true",
+        help=(
+            "Append the same meta footer to names/canonical-names output for parser-friendly "
+            "count/filter/sort provenance tracking."
+        ),
+    )
+    parser.add_argument(
         "--list-sort-aliases-tsv-meta-format",
         choices=("text", "json"),
         default="text",
@@ -3181,6 +3189,57 @@ def main() -> int:
             global_group_sizes, global_alias_count, global_group_share_pct = _compute_group_sizes_and_share_pct(
                 PRESET_SORT_ALIAS_MAP
             )
+
+            def build_sort_aliases_meta_footer() -> str:
+                return _format_sort_aliases_tsv_meta(
+                    filtered_count=filtered_count,
+                    emitted_count=len(alias_map),
+                    truncated=truncated,
+                    name_contains=args.list_sort_aliases_name_contains,
+                    name_not_contains=args.list_sort_aliases_name_not_contains,
+                    filter_mode=resolved_list_sort_aliases_filter_mode,
+                    filter_mode_requested=list_sort_aliases_filter_mode_requested,
+                    filter_mode_alias_resolved=list_sort_aliases_filter_mode_alias_resolved,
+                    name_not_filter_mode=resolved_list_sort_aliases_name_not_filter_mode,
+                    name_not_filter_mode_requested=list_sort_aliases_name_not_filter_mode_requested,
+                    name_not_filter_mode_alias_resolved=list_sort_aliases_name_not_filter_mode_alias_resolved,
+                    match_field=resolved_list_sort_aliases_match_field,
+                    match_field_requested=list_sort_aliases_match_field_requested,
+                    match_field_alias_resolved=list_sort_aliases_match_field_alias_resolved,
+                    case_sensitive=args.list_sort_aliases_case_sensitive,
+                    limit=args.list_sort_aliases_limit,
+                    sort_mode=resolved_list_sort_aliases_sort,
+                    sort_requested=list_sort_aliases_sort_requested,
+                    sort_alias_resolved=list_sort_aliases_sort_alias_resolved,
+                    sort_family=list_sort_aliases_sort_info["sort_family"],
+                    sort_key=list_sort_aliases_sort_info["sort_key"],
+                    sort_direction=list_sort_aliases_sort_info["sort_direction"],
+                    sort_is_desc=list_sort_aliases_sort_info["sort_is_desc"],
+                    group_count=len(grouped),
+                    min_group_size=args.list_sort_aliases_min_group_size,
+                    max_group_size=args.list_sort_aliases_max_group_size,
+                    min_group_size_global=args.list_sort_aliases_min_group_size_global,
+                    max_group_size_global=args.list_sort_aliases_max_group_size_global,
+                    min_group_share_pct_global=args.list_sort_aliases_min_group_share_pct_global,
+                    max_group_share_pct_global=args.list_sort_aliases_max_group_share_pct_global,
+                    min_group_share_pct=args.list_sort_aliases_min_group_share_pct,
+                    max_group_share_pct=args.list_sort_aliases_max_group_share_pct,
+                    min_group_share_delta_pct=args.list_sort_aliases_min_group_share_delta_pct,
+                    max_group_share_delta_pct=args.list_sort_aliases_max_group_share_delta_pct,
+                    min_group_share_delta_abs_pct=args.list_sort_aliases_min_group_share_delta_abs_pct,
+                    max_group_share_delta_abs_pct=args.list_sort_aliases_max_group_share_delta_abs_pct,
+                    min_group_size_delta=args.list_sort_aliases_min_group_size_delta,
+                    max_group_size_delta=args.list_sort_aliases_max_group_size_delta,
+                    min_group_size_delta_abs=args.list_sort_aliases_min_group_size_delta_abs,
+                    max_group_size_delta_abs=args.list_sort_aliases_max_group_size_delta_abs,
+                    min_group_size_delta_pct=args.list_sort_aliases_min_group_size_delta_pct,
+                    max_group_size_delta_pct=args.list_sort_aliases_max_group_size_delta_pct,
+                    min_group_size_delta_abs_pct=args.list_sort_aliases_min_group_size_delta_abs_pct,
+                    max_group_size_delta_abs_pct=args.list_sort_aliases_max_group_size_delta_abs_pct,
+                    meta_format=args.list_sort_aliases_tsv_meta_format,
+                    json_schema_version=sort_aliases_meta_json_schema_version,
+                )
+
             if args.list_sort_aliases_format == "grouped-json":
                 print(
                     json.dumps(
@@ -3245,9 +3304,13 @@ def main() -> int:
                 return 0
             if args.list_sort_aliases_format == "names":
                 print("\n".join(alias_map.keys()))
+                if args.list_sort_aliases_names_with_meta:
+                    print(build_sort_aliases_meta_footer())
                 return 0
             if args.list_sort_aliases_format == "canonical-names":
                 print("\n".join(grouped.keys()))
+                if args.list_sort_aliases_names_with_meta:
+                    print(build_sort_aliases_meta_footer())
                 return 0
             if args.list_sort_aliases_format == "aliases-tsv":
                 print(
@@ -3258,56 +3321,7 @@ def main() -> int:
                     )
                 )
                 if args.list_sort_aliases_tsv_with_meta:
-                    print(
-                        _format_sort_aliases_tsv_meta(
-                            filtered_count=filtered_count,
-                            emitted_count=len(alias_map),
-                            truncated=truncated,
-                            name_contains=args.list_sort_aliases_name_contains,
-                            name_not_contains=args.list_sort_aliases_name_not_contains,
-                            filter_mode=resolved_list_sort_aliases_filter_mode,
-                            filter_mode_requested=list_sort_aliases_filter_mode_requested,
-                            filter_mode_alias_resolved=list_sort_aliases_filter_mode_alias_resolved,
-                            name_not_filter_mode=resolved_list_sort_aliases_name_not_filter_mode,
-                            name_not_filter_mode_requested=list_sort_aliases_name_not_filter_mode_requested,
-                            name_not_filter_mode_alias_resolved=list_sort_aliases_name_not_filter_mode_alias_resolved,
-                            match_field=resolved_list_sort_aliases_match_field,
-                            match_field_requested=list_sort_aliases_match_field_requested,
-                            match_field_alias_resolved=list_sort_aliases_match_field_alias_resolved,
-                            case_sensitive=args.list_sort_aliases_case_sensitive,
-                            limit=args.list_sort_aliases_limit,
-                            sort_mode=resolved_list_sort_aliases_sort,
-                            sort_requested=list_sort_aliases_sort_requested,
-                            sort_alias_resolved=list_sort_aliases_sort_alias_resolved,
-                            sort_family=list_sort_aliases_sort_info["sort_family"],
-                            sort_key=list_sort_aliases_sort_info["sort_key"],
-                            sort_direction=list_sort_aliases_sort_info["sort_direction"],
-                            sort_is_desc=list_sort_aliases_sort_info["sort_is_desc"],
-                            group_count=len(grouped),
-                            min_group_size=args.list_sort_aliases_min_group_size,
-                            max_group_size=args.list_sort_aliases_max_group_size,
-                            min_group_size_global=args.list_sort_aliases_min_group_size_global,
-                            max_group_size_global=args.list_sort_aliases_max_group_size_global,
-                            min_group_share_pct_global=args.list_sort_aliases_min_group_share_pct_global,
-                            max_group_share_pct_global=args.list_sort_aliases_max_group_share_pct_global,
-                            min_group_share_pct=args.list_sort_aliases_min_group_share_pct,
-                            max_group_share_pct=args.list_sort_aliases_max_group_share_pct,
-                            min_group_share_delta_pct=args.list_sort_aliases_min_group_share_delta_pct,
-                            max_group_share_delta_pct=args.list_sort_aliases_max_group_share_delta_pct,
-                            min_group_share_delta_abs_pct=args.list_sort_aliases_min_group_share_delta_abs_pct,
-                            max_group_share_delta_abs_pct=args.list_sort_aliases_max_group_share_delta_abs_pct,
-                            min_group_size_delta=args.list_sort_aliases_min_group_size_delta,
-                            max_group_size_delta=args.list_sort_aliases_max_group_size_delta,
-                            min_group_size_delta_abs=args.list_sort_aliases_min_group_size_delta_abs,
-                            max_group_size_delta_abs=args.list_sort_aliases_max_group_size_delta_abs,
-                            min_group_size_delta_pct=args.list_sort_aliases_min_group_size_delta_pct,
-                            max_group_size_delta_pct=args.list_sort_aliases_max_group_size_delta_pct,
-                            min_group_size_delta_abs_pct=args.list_sort_aliases_min_group_size_delta_abs_pct,
-                            max_group_size_delta_abs_pct=args.list_sort_aliases_max_group_size_delta_abs_pct,
-                            meta_format=args.list_sort_aliases_tsv_meta_format,
-                            json_schema_version=sort_aliases_meta_json_schema_version,
-                        )
-                    )
+                    print(build_sort_aliases_meta_footer())
                 return 0
             if args.list_sort_aliases_format == "grouped-tsv":
                 print(
@@ -3318,56 +3332,7 @@ def main() -> int:
                     )
                 )
                 if args.list_sort_aliases_tsv_with_meta:
-                    print(
-                        _format_sort_aliases_tsv_meta(
-                            filtered_count=filtered_count,
-                            emitted_count=len(alias_map),
-                            truncated=truncated,
-                            name_contains=args.list_sort_aliases_name_contains,
-                            name_not_contains=args.list_sort_aliases_name_not_contains,
-                            filter_mode=resolved_list_sort_aliases_filter_mode,
-                            filter_mode_requested=list_sort_aliases_filter_mode_requested,
-                            filter_mode_alias_resolved=list_sort_aliases_filter_mode_alias_resolved,
-                            name_not_filter_mode=resolved_list_sort_aliases_name_not_filter_mode,
-                            name_not_filter_mode_requested=list_sort_aliases_name_not_filter_mode_requested,
-                            name_not_filter_mode_alias_resolved=list_sort_aliases_name_not_filter_mode_alias_resolved,
-                            match_field=resolved_list_sort_aliases_match_field,
-                            match_field_requested=list_sort_aliases_match_field_requested,
-                            match_field_alias_resolved=list_sort_aliases_match_field_alias_resolved,
-                            case_sensitive=args.list_sort_aliases_case_sensitive,
-                            limit=args.list_sort_aliases_limit,
-                            sort_mode=resolved_list_sort_aliases_sort,
-                            sort_requested=list_sort_aliases_sort_requested,
-                            sort_alias_resolved=list_sort_aliases_sort_alias_resolved,
-                            sort_family=list_sort_aliases_sort_info["sort_family"],
-                            sort_key=list_sort_aliases_sort_info["sort_key"],
-                            sort_direction=list_sort_aliases_sort_info["sort_direction"],
-                            sort_is_desc=list_sort_aliases_sort_info["sort_is_desc"],
-                            group_count=len(grouped),
-                            min_group_size=args.list_sort_aliases_min_group_size,
-                            max_group_size=args.list_sort_aliases_max_group_size,
-                            min_group_size_global=args.list_sort_aliases_min_group_size_global,
-                            max_group_size_global=args.list_sort_aliases_max_group_size_global,
-                            min_group_share_pct_global=args.list_sort_aliases_min_group_share_pct_global,
-                            max_group_share_pct_global=args.list_sort_aliases_max_group_share_pct_global,
-                            min_group_share_pct=args.list_sort_aliases_min_group_share_pct,
-                            max_group_share_pct=args.list_sort_aliases_max_group_share_pct,
-                            min_group_share_delta_pct=args.list_sort_aliases_min_group_share_delta_pct,
-                            max_group_share_delta_pct=args.list_sort_aliases_max_group_share_delta_pct,
-                            min_group_share_delta_abs_pct=args.list_sort_aliases_min_group_share_delta_abs_pct,
-                            max_group_share_delta_abs_pct=args.list_sort_aliases_max_group_share_delta_abs_pct,
-                            min_group_size_delta=args.list_sort_aliases_min_group_size_delta,
-                            max_group_size_delta=args.list_sort_aliases_max_group_size_delta,
-                            min_group_size_delta_abs=args.list_sort_aliases_min_group_size_delta_abs,
-                            max_group_size_delta_abs=args.list_sort_aliases_max_group_size_delta_abs,
-                            min_group_size_delta_pct=args.list_sort_aliases_min_group_size_delta_pct,
-                            max_group_size_delta_pct=args.list_sort_aliases_max_group_size_delta_pct,
-                            min_group_size_delta_abs_pct=args.list_sort_aliases_min_group_size_delta_abs_pct,
-                            max_group_size_delta_abs_pct=args.list_sort_aliases_max_group_size_delta_abs_pct,
-                            meta_format=args.list_sort_aliases_tsv_meta_format,
-                            json_schema_version=sort_aliases_meta_json_schema_version,
-                        )
-                    )
+                    print(build_sort_aliases_meta_footer())
                 return 0
             print(
                 json.dumps(
