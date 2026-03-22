@@ -143,6 +143,21 @@ def _git_head_subject(cwd: str | None = None) -> str:
         return "unknown"
 
 
+def _git_toplevel(cwd: str | None = None) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=cwd,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        value = completed.stdout.strip()
+        return value or "unknown"
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+
+
 def _file_sha256(path: Path) -> str:
     try:
         return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -485,6 +500,7 @@ def _apply_show_meta_profile(args: argparse.Namespace) -> None:
         args.show_preset_meta_include_git_head = True
         args.show_preset_meta_include_git_branch = True
         args.show_preset_meta_include_git_dirty = True
+        args.show_preset_meta_include_git_toplevel = True
         args.show_preset_meta_include_argv_sha256 = True
         args.show_preset_meta_include_argv_count = True
         args.show_preset_meta_include_preset_file_sha256 = True
@@ -510,6 +526,7 @@ def _apply_list_meta_profile(args: argparse.Namespace) -> None:
         args.list_presets_meta_include_git_head = True
         args.list_presets_meta_include_git_branch = True
         args.list_presets_meta_include_git_dirty = True
+        args.list_presets_meta_include_git_toplevel = True
         args.list_presets_meta_include_argv_sha256 = True
         args.list_presets_meta_include_argv_count = True
         args.list_presets_meta_include_preset_file_sha256 = True
@@ -724,6 +741,11 @@ def parse_args() -> argparse.Namespace:
         help="Include git_dirty (clean|dirty|unknown) in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-git-toplevel",
+        action="store_true",
+        help="Include git_toplevel (git --show-toplevel path) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--show-preset-meta-include-argv",
         action="store_true",
         help="Include argv (CLI invocation) in --show-preset text/json meta footer.",
@@ -882,6 +904,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-git-dirty",
         action="store_true",
         help="Include git_dirty (clean|dirty|unknown) in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-git-toplevel",
+        action="store_true",
+        help="Include git_toplevel (git --show-toplevel path) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--list-presets-meta-include-argv",
@@ -1143,6 +1170,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["git_dirty"] = _git_dirty_state(cwd=os.getcwd())
+            if args.show_preset_meta_include_git_toplevel:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["git_toplevel"] = _git_toplevel(cwd=os.getcwd())
             if args.show_preset_meta_include_argv:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
@@ -1303,6 +1334,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["git_dirty"] = _git_dirty_state(cwd=os.getcwd())
+            if args.list_presets_meta_include_git_toplevel:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["git_toplevel"] = _git_toplevel(cwd=os.getcwd())
             if args.list_presets_meta_include_argv:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
