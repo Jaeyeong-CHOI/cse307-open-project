@@ -4789,6 +4789,14 @@ def main() -> int:
             "expected list-sort-aliases group_count to equal unique canonical count, got: "
             f"{sort_aliases_payload.get('group_count')} vs {alias_group_count}"
         )
+    alias_group_sizes: dict[str, int] = {}
+    for canonical_name in aliases.values():
+        alias_group_sizes[canonical_name] = alias_group_sizes.get(canonical_name, 0) + 1
+    if sort_aliases_payload.get("group_sizes") != alias_group_sizes:
+        raise AssertionError(
+            "expected list-sort-aliases group_sizes to equal canonical alias fan-out map, got: "
+            f"{sort_aliases_payload.get('group_sizes')} vs {alias_group_sizes}"
+        )
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
     if aliases.get("total-cap-desc") != "max-total-runs-desc":

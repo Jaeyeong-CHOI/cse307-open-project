@@ -2381,6 +2381,7 @@ def main() -> int:
                         "limit": args.list_sort_aliases_limit,
                         "sort": args.list_sort_aliases_sort,
                         "group_count": len(grouped),
+                        "group_sizes": group_sizes,
                         "aliases": alias_map,
                     },
                     ensure_ascii=False,
