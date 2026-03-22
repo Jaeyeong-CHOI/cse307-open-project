@@ -90,6 +90,8 @@ PRESET_SORT_ALIAS_MAP: dict[str, str] = {
     "fair-cap-desc": "fair-allocation-total-cap-desc",
     "cost": "cost-priority",
     "cost-desc": "cost-priority-desc",
+    "cp": "cost-priority",
+    "cpd": "cost-priority-desc",
     "cost-prompt": "cost-priority-prompt",
     "cost-prompt-desc": "cost-priority-prompt-desc",
     "cost-condition": "cost-priority-prompt",
@@ -1874,7 +1876,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=fair_allocation_total_cap_desc_sort_key)
 
-        if sort_mode in ("cost-priority", "cost"):
+        if sort_mode in ("cost-priority", "cost", "cp"):
             def cost_priority_sort_key(name: str) -> tuple[int, int, int, int, str]:
                 cheap_first_rank = -resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -1894,7 +1896,7 @@ def _sort_preset_names(
 
             return sorted(preset_names, key=cost_priority_sort_key)
 
-        if sort_mode in ("cost-priority-desc", "cost-desc"):
+        if sort_mode in ("cost-priority-desc", "cost-desc", "cpd"):
             def cost_priority_desc_sort_key(name: str) -> tuple[int, int, int, int, str]:
                 cheap_first_rank = resolved_cheap_first_tag_flags[name]
                 max_total_runs = resolved_caps[name]
@@ -3169,8 +3171,10 @@ def parse_args() -> argparse.Namespace:
             "fair-cap-desc (alias of fair-allocation-total-cap-desc), "
             "cost-priority (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_model asc with uncapped last), "
             "cost (alias of cost-priority), "
+            "cp (alias of cost-priority), "
             "cost-priority-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_model desc with uncapped first), "
             "cost-desc (alias of cost-priority-desc), "
+            "cpd (alias of cost-priority-desc), "
             "cost-priority-prompt (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_prompt_condition asc with uncapped last), "
             "cost-prompt (alias of cost-priority-prompt), "
             "cost-condition (alias of cost-priority-prompt), "
