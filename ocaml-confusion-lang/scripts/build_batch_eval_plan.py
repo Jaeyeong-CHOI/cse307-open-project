@@ -126,6 +126,7 @@ def _format_sort_aliases_tsv_meta(
     limit: int | None,
     sort_mode: str,
     group_count: int,
+    min_group_size: int,
     meta_format: str = "text",
     json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
@@ -144,6 +145,7 @@ def _format_sort_aliases_tsv_meta(
                 "limit": limit,
                 "sort": sort_mode,
                 "group_count": group_count,
+                "min_group_size": min_group_size,
             },
             ensure_ascii=False,
         )
@@ -157,8 +159,9 @@ def _format_sort_aliases_tsv_meta(
         f"filter_mode={filter_mode}\t"
         f"match_field={match_field}\t"
         f"limit={limit if limit is not None else 'none'}\t"
-        f"sort={sort_mode}	"
-        f"group_count={group_count}"
+        f"sort={sort_mode}\t"
+        f"group_count={group_count}\t"
+        f"min_group_size={min_group_size}"
     )
 
 
@@ -168,6 +171,7 @@ def _filter_sort_alias_map(
     sort_mode: str = "alias",
     filter_mode: str = "contains",
     match_field: str = "both",
+    min_group_size: int = 1,
 ) -> tuple[dict[str, str], int, bool]:
     normalized_filter = alias_name_contains.strip().lower() if alias_name_contains is not None else None
     if alias_name_contains is not None and not normalized_filter:
@@ -178,6 +182,8 @@ def _filter_sort_alias_map(
         raise ValueError(f"unsupported list-sort-aliases filter mode: {filter_mode}")
     if match_field not in {"both", "alias", "canonical"}:
         raise ValueError(f"unsupported list-sort-aliases match field: {match_field}")
+    if min_group_size < 1:
+        raise ValueError("--list-sort-aliases-min-group-size must be >= 1")
 
     def _match_value(candidate: str) -> bool:
         if filter_mode == "contains":
@@ -202,6 +208,16 @@ def _filter_sort_alias_map(
         if not _matches_filter(alias, canonical):
             continue
         filtered_items.append((alias, canonical))
+
+    if min_group_size > 1:
+        group_sizes_before_sort: dict[str, int] = {}
+        for _, canonical in filtered_items:
+            group_sizes_before_sort[canonical] = group_sizes_before_sort.get(canonical, 0) + 1
+        filtered_items = [
+            (alias, canonical)
+            for alias, canonical in filtered_items
+            if group_sizes_before_sort[canonical] >= min_group_size
+        ]
 
     if sort_mode == "alias":
         filtered_items.sort(key=lambda item: item[0])
@@ -1527,6 +1543,15 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-min-group-size",
+        type=int,
+        default=1,
+        help=(
+            "Optional canonical family-size floor applied after text filtering; "
+            "keeps only aliases whose canonical group has at least N aliases (default: 1)."
+        ),
+    )
+    parser.add_argument(
         "--list-sort-aliases-sort",
         choices=(
             "alias",
@@ -2154,6 +2179,7 @@ def main() -> int:
                 args.list_sort_aliases_sort,
                 args.list_sort_aliases_filter_mode,
                 args.list_sort_aliases_match_field,
+                args.list_sort_aliases_min_group_size,
             )
             grouped = _build_sort_alias_groups(alias_map)
             if args.list_sort_aliases_format == "grouped-json":
@@ -2168,6 +2194,7 @@ def main() -> int:
                             "name_contains": args.list_sort_aliases_name_contains,
                             "filter_mode": args.list_sort_aliases_filter_mode,
                             "match_field": args.list_sort_aliases_match_field,
+                            "min_group_size": args.list_sort_aliases_min_group_size,
                             "limit": args.list_sort_aliases_limit,
                             "sort": args.list_sort_aliases_sort,
                             "groups": grouped,
@@ -2191,6 +2218,7 @@ def main() -> int:
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
                             group_count=len(grouped),
+                            min_group_size=args.list_sort_aliases_min_group_size,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2210,6 +2238,7 @@ def main() -> int:
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
                             group_count=len(grouped),
+                            min_group_size=args.list_sort_aliases_min_group_size,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2225,6 +2254,7 @@ def main() -> int:
                         "name_contains": args.list_sort_aliases_name_contains,
                         "filter_mode": args.list_sort_aliases_filter_mode,
                         "match_field": args.list_sort_aliases_match_field,
+                        "min_group_size": args.list_sort_aliases_min_group_size,
                         "limit": args.list_sort_aliases_limit,
                         "sort": args.list_sort_aliases_sort,
                         "aliases": alias_map,

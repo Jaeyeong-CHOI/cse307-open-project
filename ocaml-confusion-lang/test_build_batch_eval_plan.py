@@ -4767,6 +4767,11 @@ def main() -> int:
             "expected default list-sort-aliases match_field=both, got: "
             f"{sort_aliases_payload.get('match_field')}"
         )
+    if sort_aliases_payload.get("min_group_size") != 1:
+        raise AssertionError(
+            "expected default list-sort-aliases min_group_size=1, got: "
+            f"{sort_aliases_payload.get('min_group_size')}"
+        )
     aliases = sort_aliases_payload.get("aliases", {})
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
@@ -4930,6 +4935,42 @@ def main() -> int:
             f"{group_size_aliases}"
         )
 
+    min_group_size_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-min-group-size",
+            "2",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    min_group_size_payload = json.loads(min_group_size_run.stdout)
+    if min_group_size_payload.get("min_group_size") != 2:
+        raise AssertionError(
+            "expected min_group_size to be reflected in payload, got: "
+            f"{min_group_size_payload.get('min_group_size')}"
+        )
+    min_group_size_aliases = min_group_size_payload.get("aliases", {})
+    expected_min_group_size_aliases = {
+        "fair-cap": "fair-allocation-total-cap",
+        "fair-total-cap": "fair-allocation-total-cap",
+        "fair-cap-desc": "fair-allocation-total-cap-desc",
+        "fair-total-cap-desc": "fair-allocation-total-cap-desc",
+    }
+    if min_group_size_aliases != expected_min_group_size_aliases:
+        raise AssertionError(
+            "expected min_group_size filter to keep only canonical families with >=2 aliases, got: "
+            f"{min_group_size_aliases}"
+        )
+
     aliases_tsv_run = subprocess.run(
         [
             "python3",
@@ -4983,6 +5024,11 @@ def main() -> int:
     if "\tfiltered_count=" not in aliases_tsv_with_meta_lines[-1] or "\temitted_count=" not in aliases_tsv_with_meta_lines[-1]:
         raise AssertionError(
             "expected aliases-tsv meta footer to include filtered/emitted counters, got: "
+            f"{aliases_tsv_with_meta_lines[-1]}"
+        )
+    if "\tmin_group_size=1" not in aliases_tsv_with_meta_lines[-1]:
+        raise AssertionError(
+            "expected aliases-tsv meta footer to include min_group_size context, got: "
             f"{aliases_tsv_with_meta_lines[-1]}"
         )
 
@@ -5218,6 +5264,27 @@ def main() -> int:
         raise AssertionError(
             "expected alias-only match_field to exclude canonical-only matches, got: "
             f"{alias_only_no_hit_payload.get('aliases')}"
+        )
+
+    invalid_min_group_size_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-size",
+            "0",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_min_group_size_run.returncode == 0:
+        raise AssertionError("expected non-positive --list-sort-aliases-min-group-size to fail-fast")
+    if "--list-sort-aliases-min-group-size must be >= 1" not in (invalid_min_group_size_run.stderr or ""):
+        raise AssertionError(
+            "expected list-sort-aliases-min-group-size validation error, got: "
+            f"{invalid_min_group_size_run.stderr}"
         )
 
     invalid_sort_alias_contains_run = subprocess.run(
