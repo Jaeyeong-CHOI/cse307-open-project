@@ -2040,6 +2040,15 @@ def _resolve_preset_output_columns(output_format: str, with_schema_column: bool)
     return ["line"]
 
 
+def _resolve_preset_output_column_count(output_format: str, with_schema_column: bool) -> int:
+    return len(_resolve_preset_output_columns(output_format, with_schema_column=with_schema_column))
+
+
+def _resolve_preset_output_columns_sha256(output_format: str, with_schema_column: bool) -> str:
+    columns = _resolve_preset_output_columns(output_format, with_schema_column=with_schema_column)
+    return hashlib.sha256("\n".join(columns).encode("utf-8")).hexdigest()
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -3312,7 +3321,15 @@ def main() -> int:
                 "output_has_header": _resolve_preset_output_has_header(args.show_preset_format),
                 "output_delimiter": _resolve_preset_output_delimiter(args.show_preset_format),
                 "output_field_count": len(show_output_columns),
+                "output_column_count": _resolve_preset_output_column_count(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
                 "output_columns": show_output_columns,
+                "output_columns_sha256": _resolve_preset_output_columns_sha256(
+                    args.show_preset_format,
+                    with_schema_column=args.summary_tsv_with_schema_column,
+                ),
                 "resolved": resolved,
             }
             show_meta_extra_fields: dict[str, Any] | None = None
@@ -3421,7 +3438,15 @@ def main() -> int:
                     "output_has_header": _resolve_preset_output_has_header(args.show_preset_format),
                     "output_delimiter": _resolve_preset_output_delimiter(args.show_preset_format),
                     "output_field_count": len(show_output_columns),
+                    "output_column_count": _resolve_preset_output_column_count(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "output_columns": show_output_columns,
+                    "output_columns_sha256": _resolve_preset_output_columns_sha256(
+                        args.show_preset_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "preset_file": str(args.preset_file),
                 },
                 show_meta_extra_fields,
@@ -4279,7 +4304,15 @@ def main() -> int:
                     "output_has_header": _resolve_preset_output_has_header(args.list_presets_format),
                     "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
                     "output_field_count": len(list_output_columns),
+                    "output_column_count": _resolve_preset_output_column_count(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "output_columns": list_output_columns,
+                    "output_columns_sha256": _resolve_preset_output_columns_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
                     "name_filter_mode_requested": list_presets_name_filter_mode_requested,
                     "name_filter_mode_alias_resolved": list_presets_name_filter_mode_alias_resolved,
@@ -4332,7 +4365,15 @@ def main() -> int:
                     "output_has_header": _resolve_preset_output_has_header(args.list_presets_format),
                     "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
                     "output_field_count": len(list_output_columns),
+                    "output_column_count": _resolve_preset_output_column_count(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "output_columns": list_output_columns,
+                    "output_columns_sha256": _resolve_preset_output_columns_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "presets": limited_presets,
                     "filtered_count": len(filtered_presets),
                     "emitted_count": len(limited_presets),
@@ -4387,7 +4428,25 @@ def main() -> int:
                 payload = {
                     "schema_version": "v1",
                     "output_format": args.list_presets_format,
+                    "output_transport": _resolve_preset_output_transport(args.list_presets_format),
+                    "output_has_header": _resolve_preset_output_has_header(args.list_presets_format),
                     "output_delimiter": _resolve_preset_output_delimiter(args.list_presets_format),
+                    "output_field_count": _resolve_preset_output_column_count(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_column_count": _resolve_preset_output_column_count(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_columns": _resolve_preset_output_columns(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
+                    "output_columns_sha256": _resolve_preset_output_columns_sha256(
+                        args.list_presets_format,
+                        with_schema_column=args.summary_tsv_with_schema_column,
+                    ),
                     "preset_file": str(args.preset_file),
                     "presets": resolved_presets,
                     "filtered_count": len(filtered_presets),

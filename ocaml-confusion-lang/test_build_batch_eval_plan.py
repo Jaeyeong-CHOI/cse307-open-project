@@ -2434,6 +2434,26 @@ def main() -> int:
             "expected resolved-json payload output_delimiter=none, got: "
             f"{preset_list_resolved_json_limited_payload}"
         )
+    if preset_list_resolved_json_limited_payload.get("output_field_count") != 0:
+        raise AssertionError(
+            "expected resolved-json payload output_field_count=0, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("output_column_count") != 0:
+        raise AssertionError(
+            "expected resolved-json payload output_column_count=0, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("output_columns") != []:
+        raise AssertionError(
+            "expected resolved-json payload output_columns=[], got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
+    if preset_list_resolved_json_limited_payload.get("output_columns_sha256") != hashlib.sha256(b"").hexdigest():
+        raise AssertionError(
+            "expected resolved-json payload output_columns_sha256 to match empty columns payload, got: "
+            f"{preset_list_resolved_json_limited_payload}"
+        )
 
     preset_list_resolved_json_with_meta = subprocess.run(
         [
@@ -2500,9 +2520,20 @@ def main() -> int:
             "expected resolved-json list meta output_field_count=0, got: "
             f"{list_meta_payload}"
         )
+    if list_meta_payload.get("output_column_count") != 0:
+        raise AssertionError(
+            "expected resolved-json list meta output_column_count=0, got: "
+            f"{list_meta_payload}"
+        )
     if list_meta_payload.get("output_columns") != []:
         raise AssertionError(
             "expected resolved-json list meta output_columns=[], got: "
+            f"{list_meta_payload}"
+        )
+    expected_preset_empty_columns_sha256 = hashlib.sha256(b"").hexdigest()
+    if list_meta_payload.get("output_columns_sha256") != expected_preset_empty_columns_sha256:
+        raise AssertionError(
+            "expected resolved-json list meta output_columns_sha256 to match empty columns payload, got: "
             f"{list_meta_payload}"
         )
     for required_key in (
@@ -3605,8 +3636,13 @@ def main() -> int:
         raise AssertionError(f"unexpected show-preset output_delimiter: {show_preset_payload}")
     if show_preset_payload.get("output_field_count") != 0:
         raise AssertionError(f"unexpected show-preset output_field_count: {show_preset_payload}")
+    if show_preset_payload.get("output_column_count") != 0:
+        raise AssertionError(f"unexpected show-preset output_column_count: {show_preset_payload}")
     if show_preset_payload.get("output_columns") != []:
         raise AssertionError(f"unexpected show-preset output_columns: {show_preset_payload}")
+    expected_preset_empty_columns_sha256 = hashlib.sha256(b"").hexdigest()
+    if show_preset_payload.get("output_columns_sha256") != expected_preset_empty_columns_sha256:
+        raise AssertionError(f"unexpected show-preset output_columns_sha256: {show_preset_payload}")
     resolved = show_preset_payload.get("resolved")
     if not isinstance(resolved, dict):
         raise AssertionError(f"missing resolved preset payload: {show_preset_payload}")
@@ -3647,7 +3683,9 @@ def main() -> int:
         or show_meta_payload.get("output_has_header") is not False
         or show_meta_payload.get("output_delimiter") != "none"
         or show_meta_payload.get("output_field_count") != 0
+        or show_meta_payload.get("output_column_count") != 0
         or show_meta_payload.get("output_columns") != []
+        or show_meta_payload.get("output_columns_sha256") != hashlib.sha256(b"").hexdigest()
     ):
         raise AssertionError(f"unexpected show-preset json meta identity fields: {show_meta_payload}")
     if show_meta_payload.get("filtered_count") != 1 or show_meta_payload.get("emitted_count") != 1:
