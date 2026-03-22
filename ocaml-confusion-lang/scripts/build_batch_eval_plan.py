@@ -179,6 +179,8 @@ def _format_sort_aliases_tsv_meta(
     max_group_share_pct: float,
     min_group_share_delta_pct: float,
     max_group_share_delta_pct: float,
+    min_group_share_delta_abs_pct: float,
+    max_group_share_delta_abs_pct: float,
     meta_format: str = "text",
     json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
@@ -210,6 +212,8 @@ def _format_sort_aliases_tsv_meta(
                 "max_group_share_pct": max_group_share_pct,
                 "min_group_share_delta_pct": min_group_share_delta_pct,
                 "max_group_share_delta_pct": max_group_share_delta_pct,
+                "min_group_share_delta_abs_pct": min_group_share_delta_abs_pct,
+                "max_group_share_delta_abs_pct": max_group_share_delta_abs_pct,
             },
             ensure_ascii=False,
         )
@@ -237,7 +241,9 @@ def _format_sort_aliases_tsv_meta(
         f"min_group_share_pct={min_group_share_pct:.2f}\t"
         f"max_group_share_pct={max_group_share_pct:.2f}\t"
         f"min_group_share_delta_pct={min_group_share_delta_pct:.2f}\t"
-        f"max_group_share_delta_pct={max_group_share_delta_pct:.2f}"
+        f"max_group_share_delta_pct={max_group_share_delta_pct:.2f}\t"
+        f"min_group_share_delta_abs_pct={min_group_share_delta_abs_pct:.2f}\t"
+        f"max_group_share_delta_abs_pct={max_group_share_delta_abs_pct:.2f}"
     )
 
 
@@ -259,6 +265,8 @@ def _filter_sort_alias_map(
     max_group_share_pct: float = 100.0,
     min_group_share_delta_pct: float = -100.0,
     max_group_share_delta_pct: float = 100.0,
+    min_group_share_delta_abs_pct: float = 0.0,
+    max_group_share_delta_abs_pct: float = 100.0,
     case_sensitive: bool = False,
 ) -> tuple[dict[str, str], int, bool]:
     normalized_filter = alias_name_contains.strip() if alias_name_contains is not None else None
@@ -315,6 +323,14 @@ def _filter_sort_alias_map(
     if max_group_share_delta_pct < min_group_share_delta_pct:
         raise ValueError(
             "--list-sort-aliases-max-group-share-delta-pct must be >= --list-sort-aliases-min-group-share-delta-pct"
+        )
+    if not 0.0 <= min_group_share_delta_abs_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-min-group-share-delta-abs-pct must be between 0 and 100")
+    if not 0.0 <= max_group_share_delta_abs_pct <= 100.0:
+        raise ValueError("--list-sort-aliases-max-group-share-delta-abs-pct must be between 0 and 100")
+    if max_group_share_delta_abs_pct < min_group_share_delta_abs_pct:
+        raise ValueError(
+            "--list-sort-aliases-max-group-share-delta-abs-pct must be >= --list-sort-aliases-min-group-share-delta-abs-pct"
         )
 
     def _match_value(candidate: str) -> bool:
@@ -420,7 +436,12 @@ def _filter_sort_alias_map(
             if min_group_share_pct <= _local_share_pct(canonical) <= max_group_share_pct
         ]
 
-    if min_group_share_delta_pct > -100.0 or max_group_share_delta_pct < 100.0:
+    if (
+        min_group_share_delta_pct > -100.0
+        or max_group_share_delta_pct < 100.0
+        or min_group_share_delta_abs_pct > 0.0
+        or max_group_share_delta_abs_pct < 100.0
+    ):
         local_group_sizes: dict[str, int] = {}
         for _, canonical in filtered_items:
             local_group_sizes[canonical] = local_group_sizes.get(canonical, 0) + 1
@@ -440,10 +461,14 @@ def _filter_sort_alias_map(
         def _share_delta_pct(canonical: str) -> float:
             return round(_local_share_pct(canonical) - _global_share_pct(canonical), 2)
 
+        def _share_delta_abs_pct(canonical: str) -> float:
+            return round(abs(_share_delta_pct(canonical)), 2)
+
         filtered_items = [
             (alias, canonical)
             for alias, canonical in filtered_items
             if min_group_share_delta_pct <= _share_delta_pct(canonical) <= max_group_share_delta_pct
+            and min_group_share_delta_abs_pct <= _share_delta_abs_pct(canonical) <= max_group_share_delta_abs_pct
         ]
 
     if sort_mode == "alias":
@@ -1972,6 +1997,24 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-sort-aliases-min-group-share-delta-abs-pct",
+        type=float,
+        default=0.0,
+        help=(
+            "Optional absolute local-global canonical family share delta floor (0~100). "
+            "Applied after signed delta filtering using abs(local_share_pct - global_share_pct)."
+        ),
+    )
+    parser.add_argument(
+        "--list-sort-aliases-max-group-share-delta-abs-pct",
+        type=float,
+        default=100.0,
+        help=(
+            "Optional absolute local-global canonical family share delta ceiling (0~100). "
+            "Applied after signed delta filtering using abs(local_share_pct - global_share_pct)."
+        ),
+    )
+    parser.add_argument(
         "--list-sort-aliases-sort",
         choices=(
             "alias",
@@ -2632,6 +2675,8 @@ def main() -> int:
                 args.list_sort_aliases_max_group_share_pct,
                 args.list_sort_aliases_min_group_share_delta_pct,
                 args.list_sort_aliases_max_group_share_delta_pct,
+                args.list_sort_aliases_min_group_share_delta_abs_pct,
+                args.list_sort_aliases_max_group_share_delta_abs_pct,
                 args.list_sort_aliases_case_sensitive,
             )
             grouped = _build_sort_alias_groups(alias_map)
@@ -2664,6 +2709,8 @@ def main() -> int:
                             "max_group_share_pct": args.list_sort_aliases_max_group_share_pct,
                             "min_group_share_delta_pct": args.list_sort_aliases_min_group_share_delta_pct,
                             "max_group_share_delta_pct": args.list_sort_aliases_max_group_share_delta_pct,
+                            "min_group_share_delta_abs_pct": args.list_sort_aliases_min_group_share_delta_abs_pct,
+                            "max_group_share_delta_abs_pct": args.list_sort_aliases_max_group_share_delta_abs_pct,
                             "limit": args.list_sort_aliases_limit,
                             "sort": args.list_sort_aliases_sort,
                             "group_count": len(grouped),
@@ -2712,6 +2759,8 @@ def main() -> int:
                             max_group_share_pct=args.list_sort_aliases_max_group_share_pct,
                             min_group_share_delta_pct=args.list_sort_aliases_min_group_share_delta_pct,
                             max_group_share_delta_pct=args.list_sort_aliases_max_group_share_delta_pct,
+                            min_group_share_delta_abs_pct=args.list_sort_aliases_min_group_share_delta_abs_pct,
+                            max_group_share_delta_abs_pct=args.list_sort_aliases_max_group_share_delta_abs_pct,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2750,6 +2799,8 @@ def main() -> int:
                             max_group_share_pct=args.list_sort_aliases_max_group_share_pct,
                             min_group_share_delta_pct=args.list_sort_aliases_min_group_share_delta_pct,
                             max_group_share_delta_pct=args.list_sort_aliases_max_group_share_delta_pct,
+                            min_group_share_delta_abs_pct=args.list_sort_aliases_min_group_share_delta_abs_pct,
+                            max_group_share_delta_abs_pct=args.list_sort_aliases_max_group_share_delta_abs_pct,
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2778,6 +2829,8 @@ def main() -> int:
                         "max_group_share_pct": args.list_sort_aliases_max_group_share_pct,
                         "min_group_share_delta_pct": args.list_sort_aliases_min_group_share_delta_pct,
                         "max_group_share_delta_pct": args.list_sort_aliases_max_group_share_delta_pct,
+                        "min_group_share_delta_abs_pct": args.list_sort_aliases_min_group_share_delta_abs_pct,
+                        "max_group_share_delta_abs_pct": args.list_sort_aliases_max_group_share_delta_abs_pct,
                         "limit": args.list_sort_aliases_limit,
                         "sort": args.list_sort_aliases_sort,
                         "group_count": len(grouped),

@@ -6075,6 +6075,63 @@ def main() -> int:
             f"{share_delta_aliases}"
         )
 
+    share_delta_abs_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-min-group-share-delta-abs-pct",
+            "1",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    share_delta_abs_filter_payload = json.loads(share_delta_abs_filter_run.stdout)
+    if share_delta_abs_filter_payload.get("min_group_share_delta_abs_pct") != 1.0:
+        raise AssertionError(
+            "expected min_group_share_delta_abs_pct=1.0 in payload, got: "
+            f"{share_delta_abs_filter_payload.get('min_group_share_delta_abs_pct')}"
+        )
+    if share_delta_abs_filter_payload.get("max_group_share_delta_abs_pct") != 100.0:
+        raise AssertionError(
+            "expected default max_group_share_delta_abs_pct=100.0 in payload, got: "
+            f"{share_delta_abs_filter_payload.get('max_group_share_delta_abs_pct')}"
+        )
+    share_delta_abs_aliases = share_delta_abs_filter_payload.get("aliases", {})
+    if not share_delta_abs_aliases:
+        raise AssertionError("expected abs-share-delta filter to keep non-zero skew canonical families")
+
+    invalid_share_delta_abs_range_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-share-delta-abs-pct",
+            "60",
+            "--list-sort-aliases-max-group-share-delta-abs-pct",
+            "10",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_share_delta_abs_range_run.returncode == 0:
+        raise AssertionError("expected max<min absolute local-global group share delta bounds to fail-fast")
+    if "--list-sort-aliases-max-group-share-delta-abs-pct must be >= --list-sort-aliases-min-group-share-delta-abs-pct" not in (
+        invalid_share_delta_abs_range_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected absolute local-global group-share delta bounds validation error, got: "
+            f"{invalid_share_delta_abs_range_run.stderr}"
+        )
+
     invalid_share_delta_range_run = subprocess.run(
         [
             "python3",
