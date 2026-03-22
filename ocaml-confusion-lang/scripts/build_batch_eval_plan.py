@@ -128,6 +128,21 @@ def _git_head_commit_date_utc(cwd: str | None = None) -> str:
         return "unknown"
 
 
+def _git_head_subject(cwd: str | None = None) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "show", "-s", "--format=%s", "HEAD"],
+            cwd=cwd,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        value = completed.stdout.strip().replace("\t", " ")
+        return value or "unknown"
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         payload = json.load(f)
@@ -465,6 +480,7 @@ def _apply_show_meta_profile(args: argparse.Namespace) -> None:
         args.show_preset_meta_include_hostname = True
         args.show_preset_meta_include_git_head = True
         args.show_preset_meta_include_git_head_date_utc = True
+        args.show_preset_meta_include_git_head_subject = True
         args.show_preset_meta_include_git_branch = True
         args.show_preset_meta_include_git_remote = True
         args.show_preset_meta_include_git_dirty = True
@@ -487,6 +503,7 @@ def _apply_list_meta_profile(args: argparse.Namespace) -> None:
         args.list_presets_meta_include_hostname = True
         args.list_presets_meta_include_git_head = True
         args.list_presets_meta_include_git_head_date_utc = True
+        args.list_presets_meta_include_git_head_subject = True
         args.list_presets_meta_include_git_branch = True
         args.list_presets_meta_include_git_remote = True
         args.list_presets_meta_include_git_dirty = True
@@ -676,6 +693,11 @@ def parse_args() -> argparse.Namespace:
         help="Include git_head_date_utc (HEAD commit date, ISO-8601 UTC offset) in --show-preset text/json meta footer.",
     )
     parser.add_argument(
+        "--show-preset-meta-include-git-head-subject",
+        action="store_true",
+        help="Include git_head_subject (HEAD commit subject line) in --show-preset text/json meta footer.",
+    )
+    parser.add_argument(
         "--show-preset-meta-include-git-branch",
         action="store_true",
         help="Include git_branch (current branch name) in --show-preset text/json meta footer.",
@@ -824,6 +846,11 @@ def parse_args() -> argparse.Namespace:
         "--list-presets-meta-include-git-head-date-utc",
         action="store_true",
         help="Include git_head_date_utc (HEAD commit date, ISO-8601 UTC offset) in --list-presets text/json meta footer.",
+    )
+    parser.add_argument(
+        "--list-presets-meta-include-git-head-subject",
+        action="store_true",
+        help="Include git_head_subject (HEAD commit subject line) in --list-presets text/json meta footer.",
     )
     parser.add_argument(
         "--list-presets-meta-include-git-branch",
@@ -1079,6 +1106,10 @@ def main() -> int:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
                 show_meta_extra_fields["git_head_date_utc"] = _git_head_commit_date_utc(cwd=os.getcwd())
+            if args.show_preset_meta_include_git_head_subject:
+                if show_meta_extra_fields is None:
+                    show_meta_extra_fields = {}
+                show_meta_extra_fields["git_head_subject"] = _git_head_subject(cwd=os.getcwd())
             if args.show_preset_meta_include_git_branch:
                 if show_meta_extra_fields is None:
                     show_meta_extra_fields = {}
@@ -1231,6 +1262,10 @@ def main() -> int:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}
                 list_meta_extra_fields["git_head_date_utc"] = _git_head_commit_date_utc(cwd=os.getcwd())
+            if args.list_presets_meta_include_git_head_subject:
+                if list_meta_extra_fields is None:
+                    list_meta_extra_fields = {}
+                list_meta_extra_fields["git_head_subject"] = _git_head_subject(cwd=os.getcwd())
             if args.list_presets_meta_include_git_branch:
                 if list_meta_extra_fields is None:
                     list_meta_extra_fields = {}

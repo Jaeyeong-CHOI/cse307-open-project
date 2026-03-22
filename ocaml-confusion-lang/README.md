@@ -194,6 +194,10 @@ python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-hostname
 # show-preset meta footer에 현재 Git HEAD short SHA(git_head)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-head
+# show-preset meta footer에 현재 Git HEAD commit 시각(git_head_date_utc)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-head-date-utc
+# show-preset meta footer에 현재 Git HEAD commit 제목(git_head_subject)도 함께 기록
+python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-head-subject
 # show-preset meta footer에 현재 Git branch 이름(git_branch)도 함께 기록
 python3 scripts/build_batch_eval_plan.py --show-preset quick-smoke --show-preset-format summary --show-preset-with-meta --show-preset-meta-include-git-branch
 # show-preset meta footer에 origin remote URL(git_remote)도 함께 기록
@@ -479,3 +483,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 202. ~~planner list/show meta footer optional 필드를 profile(`minimal|debug`)로 묶는 옵션(`--list-presets-meta-profile`, `--show-preset-meta-profile`)을 추가해 반복 실행에서 CLI 길이를 줄이고 debug 관측 세트를 일관화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 203. ~~planner meta profile에 `safe-debug`를 추가해(`--list-presets-meta-profile/--show-preset-meta-profile`) raw argv/argv_tokens 노출 없이도 재현성 해시(`argv_sha256`)·규모(`argv_count`) 중심 디버깅을 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 204. ~~planner list/show meta footer에 optional `git_head_date_utc` 주입 옵션(`--list-presets-meta-include-git-head-date-utc`, `--show-preset-meta-include-git-head-date-utc`)을 추가해 리비전 식별(`git_head`)뿐 아니라 해당 커밋 시각까지 로그에서 즉시 상관 분석 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+205. ~~planner list/show meta footer에 optional `git_head_subject` 주입 옵션(`--list-presets-meta-include-git-head-subject`, `--show-preset-meta-include-git-head-subject`)을 추가해 로그를 커밋 제목 단위로 빠르게 식별/상관 분석 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

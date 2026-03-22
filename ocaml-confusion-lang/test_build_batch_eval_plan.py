@@ -1115,6 +1115,7 @@ def main() -> int:
         "hostname",
         "git_head",
         "git_head_date_utc",
+        "git_head_subject",
         "git_branch",
         "git_remote",
         "git_dirty",
@@ -1156,6 +1157,7 @@ def main() -> int:
         "hostname",
         "git_head",
         "git_head_date_utc",
+        "git_head_subject",
         "git_branch",
         "git_remote",
         "git_dirty",
@@ -1318,6 +1320,31 @@ def main() -> int:
         raise AssertionError(
             "unexpected git_head format in list-presets meta footer: "
             f"{names_with_meta_git_head_lines}"
+        )
+
+    preset_list_names_with_meta_git_head_subject = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-limit",
+            "2",
+            "--list-presets-with-meta",
+            "--list-presets-meta-include-git-head-subject",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    names_with_meta_git_head_subject_lines = [
+        line.strip() for line in preset_list_names_with_meta_git_head_subject.stdout.splitlines() if line.strip()
+    ]
+    git_head_subject_value = names_with_meta_git_head_subject_lines[-1].rsplit("git_head_subject=", 1)[-1]
+    if not git_head_subject_value:
+        raise AssertionError(
+            "missing git_head_subject in list-presets meta footer: "
+            f"{names_with_meta_git_head_subject_lines}"
         )
 
     preset_list_names_with_meta_git_branch = subprocess.run(
@@ -2104,6 +2131,7 @@ def main() -> int:
         "hostname",
         "git_head",
         "git_head_date_utc",
+        "git_head_subject",
         "git_branch",
         "git_remote",
         "git_dirty",
@@ -2146,6 +2174,7 @@ def main() -> int:
         "hostname",
         "git_head",
         "git_head_date_utc",
+        "git_head_subject",
         "git_branch",
         "git_remote",
         "git_dirty",
@@ -2325,6 +2354,34 @@ def main() -> int:
         raise AssertionError(
             "unexpected git_head format in show-preset meta footer: "
             f"{show_preset_with_meta_git_head_lines}"
+        )
+
+    show_preset_summary_with_meta_git_head_subject = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--show-preset",
+            "quick-smoke",
+            "--show-preset-format",
+            "summary",
+            "--show-preset-with-meta",
+            "--show-preset-meta-include-git-head-subject",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    show_preset_with_meta_git_head_subject_lines = [
+        line.rstrip("\n")
+        for line in show_preset_summary_with_meta_git_head_subject.stdout.splitlines()
+        if line.strip()
+    ]
+    show_git_head_subject_value = show_preset_with_meta_git_head_subject_lines[-1].rsplit("git_head_subject=", 1)[-1]
+    if not show_git_head_subject_value:
+        raise AssertionError(
+            "missing git_head_subject in show-preset meta footer: "
+            f"{show_preset_with_meta_git_head_subject_lines}"
         )
 
     show_preset_summary_with_meta_git_branch = subprocess.run(
