@@ -119,6 +119,20 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort total-cap
 # 비용 상한 정렬 단축 alias 내림차순(=max-total-runs-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort total-cap-desc
+
+# sort alias quick reference (cap 계열)
+# total-cap                -> max-total-runs
+# total-cap-desc           -> max-total-runs-desc
+# per-model-cap            -> max-runs-per-model
+# per-model-cap-desc       -> max-runs-per-model-desc
+# per-condition-cap        -> max-runs-per-prompt-condition
+# per-condition-cap-desc   -> max-runs-per-prompt-condition-desc
+# per-task-cap             -> max-runs-per-task
+# per-task-cap-desc        -> max-runs-per-task-desc
+# per-task-model-cap       -> max-runs-per-task-model
+# per-task-model-cap-desc  -> max-runs-per-task-model-desc
+# per-task-condition-cap   -> max-runs-per-task-prompt-condition
+# per-task-condition-cap-desc -> max-runs-per-task-prompt-condition-desc
 # repeat 횟수 기준 오름차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort repeats
 # repeat 횟수 기준 내림차순 정렬(동률은 이름순)
