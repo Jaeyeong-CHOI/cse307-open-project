@@ -359,13 +359,19 @@ def _preset_description_preview(raw_description: str, max_len: int = 60) -> str:
     return f"{normalized[: max_len - 3].rstrip()}..."
 
 
-def _parse_tag_sort_mode(sort_mode: str) -> str | None:
+def _parse_tag_sort_mode(sort_mode: str) -> tuple[str, bool] | None:
     if not sort_mode.startswith("tag:"):
         return None
-    tag_name = sort_mode[len("tag:") :].strip().lower()
-    if not tag_name:
-        raise ValueError("--list-presets-sort tag mode must be tag:<name> with a non-empty tag")
-    return tag_name
+    tag_expr = sort_mode[len("tag:") :].strip().lower()
+    descending = False
+    if tag_expr.endswith("-desc"):
+        descending = True
+        tag_expr = tag_expr[: -len("-desc")].strip()
+    if not tag_expr:
+        raise ValueError(
+            "--list-presets-sort tag mode must be tag:<name> or tag:<name>-desc with a non-empty tag"
+        )
+    return (tag_expr, descending)
 
 
 def _sort_preset_names(
@@ -377,6 +383,8 @@ def _sort_preset_names(
         return sorted(preset_names)
 
     custom_tag_sort = _parse_tag_sort_mode(sort_mode)
+    custom_tag_name = custom_tag_sort[0] if custom_tag_sort else None
+    custom_tag_descending = custom_tag_sort[1] if custom_tag_sort else False
 
     if sort_mode in (
         "max-total-runs",
@@ -410,7 +418,7 @@ def _sort_preset_names(
                 {str(tag).strip().lower() for tag in tags if str(tag).strip()} if isinstance(tags, list) else set()
             )
             resolved_cheap_first_tag_flags[name] = 1 if "cheap-first" in normalized_tags else 0
-            resolved_custom_tag_flags[name] = 1 if custom_tag_sort and custom_tag_sort in normalized_tags else 0
+            resolved_custom_tag_flags[name] = 1 if custom_tag_name and custom_tag_name in normalized_tags else 0
 
         if sort_mode == "max-total-runs":
             def asc_sort_key(name: str) -> tuple[int, int, str]:
@@ -443,6 +451,8 @@ def _sort_preset_names(
             return sorted(preset_names, key=lambda name: (-resolved_model_counts[name], name))
 
         if custom_tag_sort:
+            if custom_tag_descending:
+                return sorted(preset_names, key=lambda name: (resolved_custom_tag_flags[name], name))
             return sorted(preset_names, key=lambda name: (-resolved_custom_tag_flags[name], name))
 
         if sort_mode == "cheap-first-tag":
@@ -962,7 +972,8 @@ def parse_args() -> argparse.Namespace:
             "max-total-runs-desc (descending; 0/uncapped first), repeats (ascending), "
             "repeats-desc (descending), model-count (ascending), model-count-desc (descending), "
             "cheap-first-tag (presets tagged cheap-first first), cheap-first-tag-desc "
-            "(presets without cheap-first tag first), or tag:<name> (presets containing that tag first)."
+            "(presets without cheap-first tag first), tag:<name> (presets containing that tag first), "
+            "or tag:<name>-desc (presets without that tag first)."
         ),
     )
     parser.add_argument(
