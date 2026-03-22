@@ -3326,6 +3326,8 @@ def main() -> int:
                     json.dumps(
                         {
                             "schema_version": "v1",
+                            "schema": "planner_sort_alias_names.v1",
+                            "output": "names",
                             "filtered_count": filtered_count,
                             "emitted_count": len(alias_map),
                             "truncated": truncated,
@@ -3382,6 +3384,8 @@ def main() -> int:
                     json.dumps(
                         {
                             "schema_version": "v1",
+                            "schema": "planner_sort_alias_names.v1",
+                            "output": "canonical-names",
                             "filtered_count": filtered_count,
                             "emitted_count": len(grouped),
                             "truncated": truncated,

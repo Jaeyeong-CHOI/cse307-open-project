@@ -7509,6 +7509,11 @@ def main() -> int:
         text=True,
     )
     names_json = json.loads(names_json_run.stdout)
+    if names_json.get("schema") != "planner_sort_alias_names.v1" or names_json.get("output") != "names":
+        raise AssertionError(
+            "expected names-json schema/output metadata, got: "
+            f"schema={names_json.get('schema')} output={names_json.get('output')}"
+        )
     if not isinstance(names_json.get("names"), list) or not names_json.get("names"):
         raise AssertionError(f"expected names-json output to include non-empty names list, got: {names_json}")
     if names_json.get("emitted_count") != len(names_json["names"]):
@@ -7542,6 +7547,14 @@ def main() -> int:
         text=True,
     )
     canonical_names_json = json.loads(canonical_names_json_run.stdout)
+    if (
+        canonical_names_json.get("schema") != "planner_sort_alias_names.v1"
+        or canonical_names_json.get("output") != "canonical-names"
+    ):
+        raise AssertionError(
+            "expected canonical-names-json schema/output metadata, got: "
+            f"schema={canonical_names_json.get('schema')} output={canonical_names_json.get('output')}"
+        )
     if not isinstance(canonical_names_json.get("canonical_names"), list) or not canonical_names_json.get("canonical_names"):
         raise AssertionError(
             "expected canonical-names-json output to include non-empty canonical_names list, got: "
