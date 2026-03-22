@@ -132,6 +132,8 @@ python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair-allocation --list-sort-aliases-match-field canonical
 # canonical family 크기 하한으로 단일 alias family(크기 1)를 제외
 python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-min-group-size 2 --list-sort-aliases-sort canonical
+# canonical family 크기 상한으로 fan-out 큰 alias family를 제외(예: 1이면 singleton만 유지)
+python3 scripts/build_batch_eval_plan.py --list-sort-aliases --list-sort-aliases-name-contains fair --list-sort-aliases-max-group-size 1 --list-sort-aliases-sort canonical
 # 비용 상한(max_total_runs) 기준 오름차순 정렬(0=uncapped는 마지막)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort max-total-runs
 # 비용 상한(max_total_runs) 기준 내림차순 정렬(0=uncapped는 처음)
@@ -727,3 +729,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 252. ~~`--list-sort-aliases-tsv-with-meta` footer에 canonical family 개수(`group_count`)를 추가해 aliases-tsv/grouped-tsv 모두에서 alias row 수(`emitted_count`)와 canonical group 수를 동시에 추적하고, downstream 파서가 fan-out 규모를 추가 호출 없이 즉시 파악 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 253. ~~`--list-sort-aliases-sort`에 canonical family 크기 기반 정렬(`group-size`, `group-size-desc`)을 추가해 alias 탐색 시 fan-out이 큰 family를 우선 triage하고 비용/정렬 의도를 JSON 메타(`sort`)로 일관 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 254. ~~`--list-sort-aliases-min-group-size`를 추가해 canonical family 크기 하한(예: 2+)으로 singleton alias family를 탐색 단계에서 제외하고, JSON/TSV meta에 `min_group_size` 컨텍스트를 함께 기록해 downstream 파서의 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+255. ~~`--list-sort-aliases-max-group-size`를 추가해 canonical family 크기 상한(예: 1)으로 fan-out 큰 alias family를 탐색 단계에서 제외하고, JSON/TSV meta에 `max_group_size` 컨텍스트를 함께 기록해 downstream 파서의 필터 재현성을 강화~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

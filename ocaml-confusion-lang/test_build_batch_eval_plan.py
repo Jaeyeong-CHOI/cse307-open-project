@@ -4772,6 +4772,11 @@ def main() -> int:
             "expected default list-sort-aliases min_group_size=1, got: "
             f"{sort_aliases_payload.get('min_group_size')}"
         )
+    if sort_aliases_payload.get("max_group_size") is not None:
+        raise AssertionError(
+            "expected default list-sort-aliases max_group_size=None, got: "
+            f"{sort_aliases_payload.get('max_group_size')}"
+        )
     aliases = sort_aliases_payload.get("aliases", {})
     if aliases.get("fair-cap") != "fair-allocation-total-cap":
         raise AssertionError(f"unexpected alias mapping for fair-cap: {aliases.get('fair-cap')}")
@@ -4971,6 +4976,40 @@ def main() -> int:
             f"{min_group_size_aliases}"
         )
 
+    max_group_size_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-max-group-size",
+            "1",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    max_group_size_payload = json.loads(max_group_size_run.stdout)
+    if max_group_size_payload.get("max_group_size") != 1:
+        raise AssertionError(
+            "expected max_group_size to be reflected in payload, got: "
+            f"{max_group_size_payload.get('max_group_size')}"
+        )
+    max_group_size_aliases = max_group_size_payload.get("aliases", {})
+    expected_max_group_size_aliases = {
+        "fair-allocation": "fair-model-allocation",
+        "fair-allocation-desc": "fair-model-allocation-desc",
+    }
+    if max_group_size_aliases != expected_max_group_size_aliases:
+        raise AssertionError(
+            "expected max_group_size filter to keep only canonical families with <=1 alias, got: "
+            f"{max_group_size_aliases}"
+        )
+
     aliases_tsv_run = subprocess.run(
         [
             "python3",
@@ -5132,6 +5171,11 @@ def main() -> int:
             "expected aliases-tsv JSON meta footer to include integer group_count, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
+    if aliases_tsv_meta_json_payload.get("max_group_size") is not None:
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer max_group_size=None by default, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
 
     invalid_aliases_meta_schema_version_run = subprocess.run(
         [
@@ -5264,6 +5308,50 @@ def main() -> int:
         raise AssertionError(
             "expected alias-only match_field to exclude canonical-only matches, got: "
             f"{alias_only_no_hit_payload.get('aliases')}"
+        )
+
+    invalid_max_group_size_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-max-group-size",
+            "0",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_max_group_size_run.returncode == 0:
+        raise AssertionError("expected non-positive --list-sort-aliases-max-group-size to fail-fast")
+    if "--list-sort-aliases-max-group-size must be >= 1" not in (invalid_max_group_size_run.stderr or ""):
+        raise AssertionError(
+            "expected list-sort-aliases-max-group-size validation error, got: "
+            f"{invalid_max_group_size_run.stderr}"
+        )
+
+    invalid_group_size_range_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-size",
+            "2",
+            "--list-sort-aliases-max-group-size",
+            "1",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_group_size_range_run.returncode == 0:
+        raise AssertionError("expected max<min list-sort-aliases group-size bounds to fail-fast")
+    if "--list-sort-aliases-max-group-size must be >= --list-sort-aliases-min-group-size" not in (invalid_group_size_range_run.stderr or ""):
+        raise AssertionError(
+            "expected list-sort-aliases group-size bounds validation error, got: "
+            f"{invalid_group_size_range_run.stderr}"
         )
 
     invalid_min_group_size_run = subprocess.run(
