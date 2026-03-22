@@ -426,6 +426,8 @@ def _sort_preset_names(
         "max-runs-per-task-prompt-condition-desc",
         "per-task-prompt-cap",
         "per-task-prompt-cap-desc",
+        "per-task-condition-cap",
+        "per-task-condition-cap-desc",
         "task-prompt-cap",
         "task-prompt-cap-desc",
         "task-condition-cap",
@@ -609,6 +611,7 @@ def _sort_preset_names(
         if sort_mode in (
             "max-runs-per-task-prompt-condition",
             "per-task-prompt-cap",
+            "per-task-condition-cap",
             "task-prompt-cap",
             "task-condition-cap",
         ):
@@ -627,6 +630,7 @@ def _sort_preset_names(
         if sort_mode in (
             "max-runs-per-task-prompt-condition-desc",
             "per-task-prompt-cap-desc",
+            "per-task-condition-cap-desc",
             "task-prompt-cap-desc",
             "task-condition-cap-desc",
         ):
@@ -1201,6 +1205,8 @@ def parse_args() -> argparse.Namespace:
             "max-runs-per-task-prompt-condition-desc (descending; 0/uncapped first), "
             "per-task-prompt-cap (alias of max-runs-per-task-prompt-condition), "
             "per-task-prompt-cap-desc (alias of max-runs-per-task-prompt-condition-desc), "
+            "per-task-condition-cap (alias of max-runs-per-task-prompt-condition), "
+            "per-task-condition-cap-desc (alias of max-runs-per-task-prompt-condition-desc), "
             "task-prompt-cap (alias of max-runs-per-task-prompt-condition), "
             "task-prompt-cap-desc (alias of max-runs-per-task-prompt-condition-desc), "
             "task-condition-cap (alias of max-runs-per-task-prompt-condition), "

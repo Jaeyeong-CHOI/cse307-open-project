@@ -1357,6 +1357,36 @@ def main() -> int:
             f"{preset_names_sorted_by_task_prompt_cap}"
         )
 
+    preset_list_sorted_by_per_task_condition_cap = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(task_cap_presets_file),
+            "--list-presets-sort",
+            "per-task-condition-cap",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_per_task_condition_cap = [
+        line.strip()
+        for line in preset_list_sorted_by_per_task_condition_cap.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_per_task_condition_cap != [
+        "task-cap-small",
+        "task-cap-large",
+        "task-cap-uncapped",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=per-task-condition-cap output: "
+            f"{preset_names_sorted_by_per_task_condition_cap}"
+        )
+
     preset_list_sorted_by_task_condition_cap_desc = subprocess.run(
         [
             "python3",
