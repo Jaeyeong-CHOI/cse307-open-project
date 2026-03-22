@@ -113,6 +113,8 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-cont
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains balanced --list-presets-name-filter-mode prefix
 # 매칭 모드 shorthand alias: c=contains, p=prefix, e=exact
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains balanced-ci --list-presets-name-filter-mode e
+# preset 이름 필터를 대소문자 구분으로 강제(기본은 case-insensitive)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains CI --list-presets-name-case-sensitive
 # preset 탐색 결과를 상위 N개로 제한(기본 정렬: preset 이름 오름차순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-limit 2
 # preset 이름 기준 내림차순 정렬
@@ -811,3 +813,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 288. ~~`--list-presets-sort` custom tag 모드에 shorthand alias(`t:<name>`, `t:<name>-desc`)를 추가하고 list-presets JSON/메타데이터에 `sort_requested`/`sort_alias_resolved` provenance 필드를 확장해 sort alias 해석 경로를 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 289. ~~`--list-presets-name-filter-mode`(`contains|prefix|exact` + shorthand `c|p|e`)를 추가해 preset 이름 필터의 매칭 정밀도를 런타임에서 제어하고, list-presets JSON/메타데이터에 `name_filter_mode_requested`/`name_filter_mode_alias_resolved` provenance를 노출해 필터 해석 경로를 즉시 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 290. ~~`--list-presets-name-not-contains`/`--list-presets-name-not-filter-mode`(contains|prefix|exact + `c|p|e`)를 추가해 preset 이름 exclusion 필터를 지원하고, list-presets JSON/메타데이터에 `name_not_filter_mode_requested`/`name_not_filter_mode_alias_resolved` provenance를 노출해 포함/제외 필터 해석 경로를 대칭적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+291. ~~`--list-presets-name-case-sensitive` 옵션을 추가해 preset 이름 include/exclude 필터의 기본 case-insensitive 동작을 선택적으로 case-sensitive로 전환하고, list-presets JSON/메타데이터에 `name_case_sensitive` provenance를 노출해 필터 해석 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)

@@ -1083,17 +1083,22 @@ def _matches_preset_tags(
     return required_tags.issubset(preset_tags)
 
 
-def _matches_preset_name(name: str, name_filter: str | None, filter_mode: str = "contains") -> bool:
+def _matches_preset_name(
+    name: str,
+    name_filter: str | None,
+    filter_mode: str = "contains",
+    case_sensitive: bool = False,
+) -> bool:
     if not name_filter:
         return True
     mode = _resolve_filter_mode(filter_mode)
-    normalized_name = name.lower()
-    normalized_filter = name_filter.lower()
+    target_name = name if case_sensitive else name.lower()
+    target_filter = name_filter if case_sensitive else name_filter.lower()
     if mode == "prefix":
-        return normalized_name.startswith(normalized_filter)
+        return target_name.startswith(target_filter)
     if mode == "exact":
-        return normalized_name == normalized_filter
-    return normalized_filter in normalized_name
+        return target_name == target_filter
+    return target_filter in target_name
 
 
 def _preset_description_text(raw_description: str) -> str:
@@ -2439,6 +2444,14 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-presets-name-case-sensitive",
+        action="store_true",
+        help=(
+            "Enable case-sensitive matching for --list-presets-name-contains and "
+            "--list-presets-name-not-contains (default: case-insensitive)."
+        ),
+    )
+    parser.add_argument(
         "--list-presets-limit",
         type=int,
         default=None,
@@ -3336,6 +3349,7 @@ def main() -> int:
                     name,
                     name_filter,
                     filter_mode=resolved_list_presets_name_filter_mode,
+                    case_sensitive=args.list_presets_name_case_sensitive,
                 )
                 and (
                     not name_not_filter
@@ -3343,6 +3357,7 @@ def main() -> int:
                         name,
                         name_not_filter,
                         filter_mode=resolved_list_presets_name_not_filter_mode,
+                        case_sensitive=args.list_presets_name_case_sensitive,
                     )
                 )
                 and _matches_preset_tags(
@@ -3386,6 +3401,7 @@ def main() -> int:
                     "name_not_filter_mode": resolved_list_presets_name_not_filter_mode,
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": str(list_presets_name_not_filter_mode_alias_resolved).lower(),
+                    "name_case_sensitive": str(args.list_presets_name_case_sensitive).lower(),
                     "limit": str(args.list_presets_limit)
                     if args.list_presets_limit is not None
                     else "none",
@@ -3488,6 +3504,7 @@ def main() -> int:
                     "name_not_filter_mode": resolved_list_presets_name_not_filter_mode,
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": list_presets_name_not_filter_mode_alias_resolved,
+                    "name_case_sensitive": args.list_presets_name_case_sensitive,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
@@ -3512,6 +3529,7 @@ def main() -> int:
                     "name_not_filter_mode": resolved_list_presets_name_not_filter_mode,
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": list_presets_name_not_filter_mode_alias_resolved,
+                    "name_case_sensitive": args.list_presets_name_case_sensitive,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
@@ -3543,6 +3561,7 @@ def main() -> int:
                     "name_not_filter_mode": resolved_list_presets_name_not_filter_mode,
                     "name_not_filter_mode_requested": list_presets_name_not_filter_mode_requested,
                     "name_not_filter_mode_alias_resolved": list_presets_name_not_filter_mode_alias_resolved,
+                    "name_case_sensitive": args.list_presets_name_case_sensitive,
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,

@@ -3201,7 +3201,7 @@ def main() -> int:
         "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
         "\tname_not_contains=none\tname_not_filter_mode=contains"
         "\tname_not_filter_mode_requested=contains\tname_not_filter_mode_alias_resolved=false"
-        "\tlimit=1\tsort=name\tsort_requested=name\tsort_alias_resolved=false"
+        "\tname_case_sensitive=false\tlimit=1\tsort=name\tsort_requested=name\tsort_alias_resolved=false"
     )
     if names_with_filter_meta_lines[-1] != expected_filter_meta_footer:
         raise AssertionError(
@@ -4680,6 +4680,26 @@ def main() -> int:
             f"unexpected preset name substring filter output: {name_filtered_run.stdout!r}"
         )
 
+    name_case_sensitive_filtered_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-contains",
+            "CI",
+            "--list-presets-name-case-sensitive",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if name_case_sensitive_filtered_run.stdout.strip().splitlines() != []:
+        raise AssertionError(
+            "expected case-sensitive name filter to reject uppercase mismatch, got: "
+            f"{name_case_sensitive_filtered_run.stdout!r}"
+        )
+
     name_prefix_filtered_run = subprocess.run(
         [
             "python3",
@@ -4781,6 +4801,32 @@ def main() -> int:
         raise AssertionError(
             "unexpected preset exclusion prefix filter output: "
             f"{name_exclusion_mode_filtered_run.stdout!r}"
+        )
+
+    name_exclusion_case_sensitive_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-name-not-contains",
+            "BALANCED",
+            "--list-presets-name-not-filter-mode",
+            "p",
+            "--list-presets-name-case-sensitive",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if name_exclusion_case_sensitive_run.stdout.strip().splitlines() != [
+        "balanced-ci",
+        "full-analysis",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "expected case-sensitive exclusion filter to keep lowercase preset names, got: "
+            f"{name_exclusion_case_sensitive_run.stdout!r}"
         )
     name_and_tag_filtered_lines = name_and_tag_filtered_run.stdout.strip().splitlines()
     if len(name_and_tag_filtered_lines) != 2:
