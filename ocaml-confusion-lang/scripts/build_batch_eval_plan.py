@@ -101,7 +101,7 @@ def _build_sort_alias_groups(alias_map: dict[str, str] | None = None) -> dict[st
     return dict(sorted(groups.items(), key=lambda item: item[0]))
 
 
-def _format_sort_aliases_tsv(alias_map: dict[str, str]) -> str:
+def _compute_group_sizes_and_share_pct(alias_map: dict[str, str]) -> tuple[dict[str, int], int, dict[str, float]]:
     group_sizes: dict[str, int] = {}
     for canonical in alias_map.values():
         group_sizes[canonical] = group_sizes.get(canonical, 0) + 1
@@ -111,22 +111,39 @@ def _format_sort_aliases_tsv(alias_map: dict[str, str]) -> str:
         canonical: (0.0 if total_aliases == 0 else round((count / total_aliases) * 100.0, 2))
         for canonical, count in group_sizes.items()
     }
+    return group_sizes, total_aliases, group_share_pct
 
-    lines = ["alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct"]
+
+def _format_sort_aliases_tsv(
+    alias_map: dict[str, str],
+    *,
+    global_group_share_pct: dict[str, float] | None = None,
+) -> str:
+    group_sizes, _, group_share_pct = _compute_group_sizes_and_share_pct(alias_map)
+
+    lines = [
+        "alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct\tcanonical_group_share_pct_global"
+    ]
     for alias, canonical in alias_map.items():
+        global_share = 0.0 if global_group_share_pct is None else global_group_share_pct.get(canonical, 0.0)
         lines.append(
-            f"{alias}\t{canonical}\t{group_sizes[canonical]}\t{group_share_pct[canonical]:.2f}"
+            f"{alias}\t{canonical}\t{group_sizes[canonical]}\t{group_share_pct[canonical]:.2f}\t{global_share:.2f}"
         )
     return "\n".join(lines)
 
 
-def _format_sort_alias_groups_tsv(groups: dict[str, list[str]]) -> str:
+def _format_sort_alias_groups_tsv(
+    groups: dict[str, list[str]],
+    *,
+    global_group_share_pct: dict[str, float] | None = None,
+) -> str:
     total_aliases = sum(len(aliases) for aliases in groups.values())
-    lines = ["canonical\talias_count\talias_share_pct\taliases"]
+    lines = ["canonical\talias_count\talias_share_pct\talias_share_pct_global\taliases"]
     for canonical, aliases in groups.items():
         alias_count = len(aliases)
         alias_share_pct = 0.0 if total_aliases == 0 else round((alias_count / total_aliases) * 100.0, 2)
-        lines.append(f"{canonical}\t{alias_count}\t{alias_share_pct:.2f}\t{','.join(aliases)}")
+        global_share = 0.0 if global_group_share_pct is None else global_group_share_pct.get(canonical, 0.0)
+        lines.append(f"{canonical}\t{alias_count}\t{alias_share_pct:.2f}\t{global_share:.2f}\t{','.join(aliases)}")
     return "\n".join(lines)
 
 
@@ -2294,16 +2311,10 @@ def main() -> int:
                 args.list_sort_aliases_case_sensitive,
             )
             grouped = _build_sort_alias_groups(alias_map)
-            group_sizes = {canonical: len(aliases) for canonical, aliases in grouped.items()}
-            total_alias_count = sum(group_sizes.values())
-            group_share_pct = {
-                canonical: (
-                    0.0
-                    if total_alias_count == 0
-                    else round((group_sizes[canonical] / total_alias_count) * 100.0, 2)
-                )
-                for canonical in grouped
-            }
+            group_sizes, total_alias_count, group_share_pct = _compute_group_sizes_and_share_pct(alias_map)
+            global_group_sizes, global_alias_count, global_group_share_pct = _compute_group_sizes_and_share_pct(
+                PRESET_SORT_ALIAS_MAP
+            )
             if args.list_sort_aliases_format == "grouped-json":
                 print(
                     json.dumps(
@@ -2326,6 +2337,9 @@ def main() -> int:
                             "group_count": len(grouped),
                             "group_sizes": group_sizes,
                             "group_share_pct": group_share_pct,
+                            "global_alias_count": global_alias_count,
+                            "group_sizes_global": global_group_sizes,
+                            "group_share_pct_global": global_group_share_pct,
                             "groups": grouped,
                         },
                         ensure_ascii=False,
@@ -2334,7 +2348,7 @@ def main() -> int:
                 )
                 return 0
             if args.list_sort_aliases_format == "aliases-tsv":
-                print(_format_sort_aliases_tsv(alias_map))
+                print(_format_sort_aliases_tsv(alias_map, global_group_share_pct=global_group_share_pct))
                 if args.list_sort_aliases_tsv_with_meta:
                     print(
                         _format_sort_aliases_tsv_meta(
@@ -2358,7 +2372,7 @@ def main() -> int:
                     )
                 return 0
             if args.list_sort_aliases_format == "grouped-tsv":
-                print(_format_sort_alias_groups_tsv(grouped))
+                print(_format_sort_alias_groups_tsv(grouped, global_group_share_pct=global_group_share_pct))
                 if args.list_sort_aliases_tsv_with_meta:
                     print(
                         _format_sort_aliases_tsv_meta(
@@ -2401,6 +2415,9 @@ def main() -> int:
                         "group_count": len(grouped),
                         "group_sizes": group_sizes,
                         "group_share_pct": group_share_pct,
+                        "global_alias_count": global_alias_count,
+                        "group_sizes_global": global_group_sizes,
+                        "group_share_pct_global": global_group_share_pct,
                         "aliases": alias_map,
                     },
                     ensure_ascii=False,

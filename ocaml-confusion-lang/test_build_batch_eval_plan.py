@@ -4803,6 +4803,13 @@ def main() -> int:
             "expected list-sort-aliases group_share_pct keys to match group_sizes keys, got: "
             f"{sorted(alias_group_share_pct.keys())} vs {sorted(alias_group_sizes.keys())}"
         )
+    group_sizes_global = sort_aliases_payload.get("group_sizes_global", {})
+    expected_global_alias_count = sum(int(value) for value in group_sizes_global.values())
+    if sort_aliases_payload.get("global_alias_count") != expected_global_alias_count:
+        raise AssertionError(
+            "expected list-sort-aliases global_alias_count to match summed group_sizes_global, got: "
+            f"{sort_aliases_payload.get('global_alias_count')} vs {expected_global_alias_count}"
+        )
     for canonical, alias_count in alias_group_sizes.items():
         expected_share = round((alias_count / len(aliases)) * 100.0, 2)
         if alias_group_share_pct.get(canonical) != expected_share:
@@ -4810,6 +4817,12 @@ def main() -> int:
                 "expected list-sort-aliases group_share_pct to equal canonical alias ratio, got: "
                 f"{canonical} -> {alias_group_share_pct.get(canonical)} vs {expected_share}"
             )
+    group_share_pct_global = sort_aliases_payload.get("group_share_pct_global", {})
+    if set(group_share_pct_global.keys()) != set(group_sizes_global.keys()):
+        raise AssertionError(
+            "expected list-sort-aliases group_share_pct_global keys to match group_sizes_global keys, got: "
+            f"{sorted(group_share_pct_global.keys())} vs {sorted(group_sizes_global.keys())}"
+        )
     total_alias_share = round(sum(float(value) for value in alias_group_share_pct.values()), 2)
     if abs(total_alias_share - 100.0) > 0.2:
         raise AssertionError(
@@ -4884,6 +4897,18 @@ def main() -> int:
         raise AssertionError(
             "expected grouped list-sort-aliases group_share_pct keys to match groups keys, got: "
             f"{sorted(group_share_pct.keys())} vs {sorted(groups.keys())}"
+        )
+    group_share_pct_global = grouped_sort_aliases_payload.get("group_share_pct_global", {})
+    group_sizes_global = grouped_sort_aliases_payload.get("group_sizes_global", {})
+    if grouped_sort_aliases_payload.get("global_alias_count") != sum(int(v) for v in group_sizes_global.values()):
+        raise AssertionError(
+            "expected grouped list-sort-aliases global_alias_count to match summed group_sizes_global, got: "
+            f"{grouped_sort_aliases_payload.get('global_alias_count')} vs {sum(int(v) for v in group_sizes_global.values())}"
+        )
+    if set(group_share_pct_global.keys()) != set(group_sizes_global.keys()):
+        raise AssertionError(
+            "expected grouped list-sort-aliases group_share_pct_global keys to match group_sizes_global keys, got: "
+            f"{sorted(group_share_pct_global.keys())} vs {sorted(group_sizes_global.keys())}"
         )
     for canonical, aliases_in_group in groups.items():
         if group_sizes.get(canonical) != len(aliases_in_group):
@@ -5113,7 +5138,10 @@ def main() -> int:
         text=True,
     )
     aliases_tsv_lines = aliases_tsv_run.stdout.strip().splitlines()
-    if aliases_tsv_lines[0] != "alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct":
+    if (
+        aliases_tsv_lines[0]
+        != "alias\tcanonical\tcanonical_group_count\tcanonical_group_share_pct\tcanonical_group_share_pct_global"
+    ):
         raise AssertionError(f"unexpected aliases-tsv header: {aliases_tsv_lines[0]}")
     fair_allocation_row = next(
         (line for line in aliases_tsv_lines[1:] if line.startswith("fair-allocation\tfair-model-allocation\t1\t")),
@@ -5187,11 +5215,12 @@ def main() -> int:
         text=True,
     )
     grouped_tsv_lines = grouped_tsv_run.stdout.strip().splitlines()
-    if grouped_tsv_lines[0] != "canonical\talias_count\talias_share_pct\taliases":
+    if grouped_tsv_lines[0] != "canonical\talias_count\talias_share_pct\talias_share_pct_global\taliases":
         raise AssertionError(f"unexpected grouped-tsv header: {grouped_tsv_lines[0]}")
-    if grouped_tsv_lines[1:] != ["fair-allocation-total-cap\t1\t100.00\tfair-cap"]:
+    expected_grouped_prefix = "fair-allocation-total-cap\t1\t100.00\t"
+    if len(grouped_tsv_lines) != 2 or not grouped_tsv_lines[1].startswith(expected_grouped_prefix) or not grouped_tsv_lines[1].endswith("\tfair-cap"):
         raise AssertionError(
-            "expected grouped-tsv exact filter output to collapse to a single canonical family with 100% share, got: "
+            "expected grouped-tsv exact filter output to collapse to a single canonical family with 100% filtered share and global share column, got: "
             f"{grouped_tsv_lines}"
         )
 
