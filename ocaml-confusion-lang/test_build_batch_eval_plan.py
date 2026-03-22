@@ -5078,6 +5078,34 @@ def main() -> int:
             f"{group_share_local_aliases}"
         )
 
+    group_size_global_sort_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair",
+            "--list-sort-aliases-sort",
+            "group-size-global-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    group_size_global_sort_payload = json.loads(group_size_global_sort_run.stdout)
+    if group_size_global_sort_payload.get("sort") != "group-size-global-desc":
+        raise AssertionError(
+            "expected group-size-global-desc sort mode in payload, got: "
+            f"{group_size_global_sort_payload.get('sort')}"
+        )
+    group_size_global_aliases = list(group_size_global_sort_payload.get("aliases", {}).items())
+    if group_size_global_aliases != expected_group_size_aliases:
+        raise AssertionError(
+            "expected group-size-global-desc to prioritize globally larger families first, got: "
+            f"{group_size_global_aliases}"
+        )
+
     group_share_global_sort_run = subprocess.run(
         [
             "python3",

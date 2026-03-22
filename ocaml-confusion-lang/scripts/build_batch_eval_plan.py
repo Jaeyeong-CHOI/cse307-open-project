@@ -437,6 +437,12 @@ def _filter_sort_alias_map(
             filtered_items.sort(key=lambda item: (_local_share(item[1]), item[1], item[0]))
         else:
             filtered_items.sort(key=lambda item: (-_local_share(item[1]), item[1], item[0]))
+    elif sort_mode in ("group-size-global", "group-size-global-desc"):
+        global_group_sizes, _, _ = _compute_group_sizes_and_share_pct(PRESET_SORT_ALIAS_MAP)
+        if sort_mode == "group-size-global":
+            filtered_items.sort(key=lambda item: (global_group_sizes.get(item[1], 0), item[1], item[0]))
+        else:
+            filtered_items.sort(key=lambda item: (-global_group_sizes.get(item[1], 0), item[1], item[0]))
     elif sort_mode in ("group-share-pct-global", "group-share-pct-global-desc"):
         global_group_sizes, global_alias_count, _ = _compute_group_sizes_and_share_pct(PRESET_SORT_ALIAS_MAP)
 
@@ -1862,6 +1868,8 @@ def parse_args() -> argparse.Namespace:
             "group-size-desc",
             "group-share-pct",
             "group-share-pct-desc",
+            "group-size-global",
+            "group-size-global-desc",
             "group-share-pct-global",
             "group-share-pct-global-desc",
         ),
@@ -1870,7 +1878,8 @@ def parse_args() -> argparse.Namespace:
             "Sort mode for --list-sort-aliases output: alias/alias-desc (by alias key), "
             "canonical/canonical-desc (by canonical key, tie-breaking by alias), "
             "group-size/group-size-desc (by local canonical family size), "
-            "group-share-pct/group-share-pct-desc (by local canonical family share %% values), or "
+            "group-share-pct/group-share-pct-desc (by local canonical family share %% values), "
+            "group-size-global/group-size-global-desc (by global canonical family size), or "
             "group-share-pct-global/group-share-pct-global-desc (by global canonical family share %% values)."
         ),
     )
