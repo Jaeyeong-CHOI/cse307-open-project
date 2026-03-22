@@ -1691,6 +1691,107 @@ def main() -> int:
             f"{preset_names_sorted_by_fair_total_cap_alias}"
         )
 
+    cost_priority_presets_file = OUT / "cost-priority-presets.json"
+    cost_priority_presets_file.write_text(
+        json.dumps(
+            {
+                "schema_version": "v1",
+                "presets": {
+                    "cheap-model-tight": {
+                        "models": "gpt-5-mini",
+                        "prompt_conditions": "base",
+                        "repeats": 1,
+                        "cheap_first": True,
+                        "max_total_runs": 20,
+                        "max_runs_per_model": 4,
+                        "tags": ["cheap-first", "ci"],
+                    },
+                    "cheap-model-loose": {
+                        "models": "gpt-5-mini",
+                        "prompt_conditions": "base",
+                        "repeats": 1,
+                        "cheap_first": True,
+                        "max_total_runs": 20,
+                        "max_runs_per_model": 12,
+                        "tags": ["cheap-first", "ci"],
+                    },
+                    "expensive-analysis": {
+                        "models": "gpt-5-pro,gpt-5.3-codex",
+                        "prompt_conditions": "base,strict",
+                        "repeats": 2,
+                        "cheap_first": False,
+                        "max_total_runs": 40,
+                        "max_runs_per_model": 0,
+                        "tags": ["analysis"],
+                    },
+                }
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    preset_list_sorted_by_cost_priority = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cost-priority",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cost_priority = [
+        line.strip()
+        for line in preset_list_sorted_by_cost_priority.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cost_priority != [
+        "cheap-model-tight",
+        "cheap-model-loose",
+        "expensive-analysis",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cost-priority output: "
+            f"{preset_names_sorted_by_cost_priority}"
+        )
+
+    preset_list_sorted_by_cost_priority_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--preset-file",
+            str(cost_priority_presets_file),
+            "--list-presets-sort",
+            "cost-priority-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_cost_priority_desc = [
+        line.strip()
+        for line in preset_list_sorted_by_cost_priority_desc.stdout.splitlines()
+        if line.strip()
+    ]
+    if preset_names_sorted_by_cost_priority_desc != [
+        "expensive-analysis",
+        "cheap-model-loose",
+        "cheap-model-tight",
+    ]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=cost-priority-desc output: "
+            f"{preset_names_sorted_by_cost_priority_desc}"
+        )
+
     preset_list_sorted_by_cheap_first_total_cap_desc = subprocess.run(
         [
             "python3",

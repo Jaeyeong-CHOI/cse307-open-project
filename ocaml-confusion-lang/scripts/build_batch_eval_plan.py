@@ -448,6 +448,8 @@ def _sort_preset_names(
         "fair-allocation-total-cap-desc",
         "fair-total-cap",
         "fair-total-cap-desc",
+        "cost-priority",
+        "cost-priority-desc",
         "fair-model-allocation",
         "fair-model-allocation-desc",
         "fair-allocation",
@@ -721,6 +723,46 @@ def _sort_preset_names(
                 return (fair_rank, is_uncapped, normalized_cap, name)
 
             return sorted(preset_names, key=fair_allocation_total_cap_desc_sort_key)
+
+        if sort_mode == "cost-priority":
+            def cost_priority_sort_key(name: str) -> tuple[int, int, int, int, str]:
+                cheap_first_rank = -resolved_cheap_first_tag_flags[name]
+                max_total_runs = resolved_caps[name]
+                total_is_uncapped = 1 if max_total_runs == 0 else 0
+                normalized_total_cap = max_total_runs if max_total_runs > 0 else sys.maxsize
+                max_runs_per_model = resolved_max_runs_per_model[name]
+                model_is_uncapped = 1 if max_runs_per_model == 0 else 0
+                normalized_model_cap = max_runs_per_model if max_runs_per_model > 0 else sys.maxsize
+                return (
+                    cheap_first_rank,
+                    total_is_uncapped,
+                    normalized_total_cap,
+                    model_is_uncapped,
+                    normalized_model_cap,
+                    name,
+                )
+
+            return sorted(preset_names, key=cost_priority_sort_key)
+
+        if sort_mode == "cost-priority-desc":
+            def cost_priority_desc_sort_key(name: str) -> tuple[int, int, int, int, str]:
+                cheap_first_rank = resolved_cheap_first_tag_flags[name]
+                max_total_runs = resolved_caps[name]
+                total_is_uncapped = 0 if max_total_runs == 0 else 1
+                normalized_total_cap = -max_total_runs if max_total_runs > 0 else 0
+                max_runs_per_model = resolved_max_runs_per_model[name]
+                model_is_uncapped = 0 if max_runs_per_model == 0 else 1
+                normalized_model_cap = -max_runs_per_model if max_runs_per_model > 0 else 0
+                return (
+                    cheap_first_rank,
+                    total_is_uncapped,
+                    normalized_total_cap,
+                    model_is_uncapped,
+                    normalized_model_cap,
+                    name,
+                )
+
+            return sorted(preset_names, key=cost_priority_desc_sort_key)
 
         if sort_mode in ("cheap-first-tag-desc", "cheap-first-desc"):
             return sorted(preset_names, key=lambda name: (resolved_cheap_first_tag_flags[name], name))
@@ -1289,6 +1331,8 @@ def parse_args() -> argparse.Namespace:
             "fair-total-cap (alias of fair-allocation-total-cap), "
             "fair-allocation-total-cap-desc (fair_model_allocation=false presets first, then max_total_runs descending with uncapped first), "
             "fair-total-cap-desc (alias of fair-allocation-total-cap-desc), "
+            "cost-priority (cheap-first tag first, then max_total_runs asc with uncapped last, then max_runs_per_model asc with uncapped last), "
+            "cost-priority-desc (cheap-first-untagged first, then max_total_runs desc with uncapped first, then max_runs_per_model desc with uncapped first), "
             "fair-model-allocation (presets with fair_model_allocation=true first), "
             "fair-model-allocation-desc (presets with fair_model_allocation=false first), "
             "fair-allocation (alias of fair-model-allocation), fair-allocation-desc (alias of fair-model-allocation-desc), "

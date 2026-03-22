@@ -243,6 +243,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-total-cap-desc
 # fair allocation 역방향 복합 정렬 단축 alias(=fair-allocation-total-cap-desc)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-total-cap-desc
+# 비용 우선 복합 정렬(cheap-first 태그 -> total cap -> per-model cap)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority
+# 비용 우선 복합 정렬 역방향(untagged/uncapped/high-cap 우선)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cost-priority-desc
 # fair-model-allocation 정렬 단축 alias 내림차순(=false 우선)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort fair-allocation-desc
 # 임의 태그 기준 정렬(tag:<name>): 해당 태그 포함 preset 우선(동률은 이름순)
@@ -678,3 +682,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 238. ~~planner preset discovery 정렬 모드에 `fair-allocation-total-cap`을 추가해 fair model allocation 우선순위와 `max_total_runs` cap 강도를 동시에 반영한 균형형 triage를 단일 키로 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 239. ~~planner preset discovery 정렬 모드에 `cheap-first-total-cap-desc`와 `fair-allocation-total-cap-desc`를 추가해 복합 정렬(태그/공정성 + total cap)의 역방향 triage(미포함 우선 + uncapped 우선)를 단일 키로 지원~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 240. ~~planner preset discovery 복합 정렬 키에 초단축 alias(`cheap-total-cap*`, `fair-total-cap*`)를 추가해 `cheap-first`/`fair-allocation` 장문 접두어 없이도 동일 triage 의미를 빠르게 호출 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+241. ~~planner preset discovery에 비용 우선 복합 정렬(`cost-priority`, `cost-priority-desc`)을 추가해 cheap-first 태그 + total cap + per-model cap을 단일 키로 우선순위화하고, 저비용 preset triage를 한 번에 수행 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
