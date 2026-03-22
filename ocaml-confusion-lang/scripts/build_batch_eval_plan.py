@@ -574,6 +574,7 @@ def _format_sort_aliases_tsv_meta(
                 "output_is_partially_retained": emitted_count > 0 and max(filtered_count - emitted_count, 0) > 0,
                 "output_is_fully_truncated": emitted_count == 0 and max(filtered_count - emitted_count, 0) > 0,
                 "output_retention_state": _resolve_output_retention_state(filtered_count, emitted_count),
+                "output_retention_state_code": _resolve_output_retention_state_code(filtered_count, emitted_count),
                 "output_truncated_count": max(filtered_count - emitted_count, 0),
                 "output_truncated_ratio": (
                     max(filtered_count - emitted_count, 0) / filtered_count if filtered_count > 0 else 0.0
@@ -664,6 +665,7 @@ def _format_sort_aliases_tsv_meta(
         f"output_is_partially_retained={str((emitted_count > 0) and (max(filtered_count - emitted_count, 0) > 0)).lower()}\t"
         f"output_is_fully_truncated={str((emitted_count == 0) and (max(filtered_count - emitted_count, 0) > 0)).lower()}\t"
         f"output_retention_state={_resolve_output_retention_state(filtered_count, emitted_count)}\t"
+        f"output_retention_state_code={_resolve_output_retention_state_code(filtered_count, emitted_count)}\t"
         f"output_truncated_count={max(filtered_count - emitted_count, 0)}\t"
         f"output_truncated_ratio={(max(filtered_count - emitted_count, 0) / filtered_count) if filtered_count > 0 else 0.0:.6f}\t"
         f"output_truncated_pct={((max(filtered_count - emitted_count, 0) / filtered_count) * 100.0) if filtered_count > 0 else 0.0:.6f}\t"
@@ -2228,6 +2230,16 @@ def _resolve_output_retention_state(filtered_count: int, emitted_count: int) -> 
         return "fully_truncated"
     return "partially_retained"
 
+
+def _resolve_output_retention_state_code(filtered_count: int, emitted_count: int) -> int:
+    state = _resolve_output_retention_state(filtered_count, emitted_count)
+    if state == "fully_retained":
+        return 0
+    if state == "partially_retained":
+        return 1
+    return 2
+
+
 def _emit_list_presets_text_meta(
     filtered_count: int,
     emitted_count: int,
@@ -2248,6 +2260,7 @@ def _emit_list_presets_text_meta(
         "output_has_multiple_records": str(emitted_count > 1).lower(),
         "output_is_fully_truncated": str((emitted_count == 0) and (max(filtered_count - emitted_count, 0) > 0)).lower(),
         "output_retention_state": _resolve_output_retention_state(filtered_count, emitted_count),
+        "output_retention_state_code": str(_resolve_output_retention_state_code(filtered_count, emitted_count)),
         "output_truncated_count": str(max(filtered_count - emitted_count, 0)),
         "truncated": str(truncated).lower(),
         "output_format": output_format,
@@ -2280,6 +2293,7 @@ def _emit_show_preset_text_meta(
         "output_has_multiple_records": "false",
         "output_is_fully_truncated": "false",
         "output_retention_state": "fully_retained",
+        "output_retention_state_code": "0",
         "output_truncated_count": "0",
         "truncated": "false",
         "preset": preset_name,
@@ -3954,6 +3968,7 @@ def main() -> int:
                             "output_is_partially_retained": len(alias_map) > 0 and max(filtered_count - len(alias_map), 0) > 0,
                             "output_is_fully_truncated": len(alias_map) == 0 and max(filtered_count - len(alias_map), 0) > 0,
                             "output_retention_state": _resolve_output_retention_state(filtered_count, len(alias_map)),
+                            "output_retention_state_code": _resolve_output_retention_state_code(filtered_count, len(alias_map)),
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4069,6 +4084,7 @@ def main() -> int:
                             "output_is_partially_retained": len(alias_map) > 0 and max(filtered_count - len(alias_map), 0) > 0,
                             "output_is_fully_truncated": len(alias_map) == 0 and max(filtered_count - len(alias_map), 0) > 0,
                             "output_retention_state": _resolve_output_retention_state(filtered_count, len(alias_map)),
+                            "output_retention_state_code": _resolve_output_retention_state_code(filtered_count, len(alias_map)),
                             "output_truncated_count": max(filtered_count - len(alias_map), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(alias_map), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4168,6 +4184,7 @@ def main() -> int:
                             "output_is_fully_retained": max(filtered_count - len(grouped), 0) == 0,
                             "output_is_fully_truncated": len(grouped) == 0 and max(filtered_count - len(grouped), 0) > 0,
                             "output_retention_state": _resolve_output_retention_state(filtered_count, len(grouped)),
+                            "output_retention_state_code": _resolve_output_retention_state_code(filtered_count, len(grouped)),
                             "output_truncated_count": max(filtered_count - len(grouped), 0),
                             "output_truncated_ratio": (
                                 max(filtered_count - len(grouped), 0) / filtered_count if filtered_count > 0 else 0.0
@@ -4651,6 +4668,7 @@ def main() -> int:
                     "output_is_partially_retained": len(preset_names) > 0 and max(len(filtered_presets) - len(preset_names), 0) > 0,
                     "output_is_fully_truncated": len(preset_names) == 0 and max(len(filtered_presets) - len(preset_names), 0) > 0,
                     "output_retention_state": _resolve_output_retention_state(len(filtered_presets), len(preset_names)),
+                    "output_retention_state_code": _resolve_output_retention_state_code(len(filtered_presets), len(preset_names)),
                     "output_truncated_count": max(len(filtered_presets) - len(preset_names), 0),
                     "truncated": truncated,
                     "output_format": args.list_presets_format,
@@ -4816,6 +4834,7 @@ def main() -> int:
                     "output_is_partially_retained": len(limited_presets) > 0 and max(len(filtered_presets) - len(limited_presets), 0) > 0,
                     "output_is_fully_truncated": len(limited_presets) == 0 and max(len(filtered_presets) - len(limited_presets), 0) > 0,
                     "output_retention_state": _resolve_output_retention_state(len(filtered_presets), len(limited_presets)),
+                    "output_retention_state_code": _resolve_output_retention_state_code(len(filtered_presets), len(limited_presets)),
                     "output_truncated_count": max(len(filtered_presets) - len(limited_presets), 0),
                     "output_truncated_ratio": (
                         max(len(filtered_presets) - len(limited_presets), 0) / len(filtered_presets)
@@ -4954,6 +4973,7 @@ def main() -> int:
                     "output_is_partially_retained": False,
                     "output_is_fully_truncated": False,
                     "output_retention_state": "fully_retained",
+                    "output_retention_state_code": 0,
                     "output_truncated_count": 0,
                     "output_truncated_ratio": 0.0,
                     "output_truncated_pct": 0.0,

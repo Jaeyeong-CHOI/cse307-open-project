@@ -2813,7 +2813,7 @@ def main() -> int:
         text=True,
     )
     names_with_meta_lines = [line.strip() for line in preset_list_names_with_meta.stdout.splitlines() if line.strip()]
-    if names_with_meta_lines[-1] != "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained\toutput_truncated_count=1\ttruncated=true\toutput_format=names":
+    if names_with_meta_lines[-1] != "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained\toutput_retention_state_code=1\toutput_truncated_count=1\ttruncated=true\toutput_format=names":
         raise AssertionError(f"unexpected names-with-meta footer: {names_with_meta_lines}")
 
     preset_list_names_with_meta_custom_schema = subprocess.run(
@@ -2836,7 +2836,7 @@ def main() -> int:
         line.strip() for line in preset_list_names_with_meta_custom_schema.stdout.splitlines() if line.strip()
     ]
     if names_with_meta_custom_schema_lines[-1] != (
-        "# meta\tschema=planner_preset_list_meta.v2\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained\toutput_truncated_count=1\ttruncated=true\toutput_format=names"
+        "# meta\tschema=planner_preset_list_meta.v2\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained	output_retention_state_code=1	output_truncated_count=1\ttruncated=true\toutput_format=names"
     ):
         raise AssertionError(
             f"unexpected names-with-meta custom schema footer: {names_with_meta_custom_schema_lines}"
@@ -2874,6 +2874,7 @@ def main() -> int:
         "output_has_multiple_records": "true",
         "output_is_fully_truncated": "false",
         "output_retention_state": "partially_retained",
+        "output_retention_state_code": "1",
         "output_truncated_count": "1",
         "truncated": "true",
         "output_format": "names",
@@ -3199,7 +3200,7 @@ def main() -> int:
     ]
     names_with_meta_generated_at_footer = names_with_meta_generated_at_lines[-1]
     if not names_with_meta_generated_at_footer.startswith(
-        "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained\toutput_truncated_count=1\ttruncated=true\toutput_format=names\tgenerated_at_utc="
+        "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained	output_retention_state_code=1	output_truncated_count=1\ttruncated=true\toutput_format=names\tgenerated_at_utc="
     ):
         raise AssertionError(
             f"unexpected names-with-meta generated_at footer: {names_with_meta_generated_at_lines}"
@@ -3532,7 +3533,7 @@ def main() -> int:
         line.strip() for line in preset_list_names_with_filter_meta.stdout.splitlines() if line.strip()
     ]
     expected_filter_meta_footer = (
-        "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained\toutput_truncated_count=0\ttruncated=false\toutput_format=names"
+        "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained	output_retention_state_code=0	output_truncated_count=0\ttruncated=false\toutput_format=names"
         "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
         "\ttag_match_alias_resolved=false\ttag_filter_mode=exact"
         "\ttag_filter_mode_requested=exact\ttag_filter_mode_alias_resolved=false"
@@ -3650,7 +3651,7 @@ def main() -> int:
         text=True,
     )
     summary_tsv_meta_lines = [line.rstrip("\n") for line in preset_list_summary_tsv_with_meta.stdout.splitlines() if line.strip()]
-    if summary_tsv_meta_lines[-1] != "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained\toutput_truncated_count=1\ttruncated=true\toutput_format=summary-tsv":
+    if summary_tsv_meta_lines[-1] != "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=3\temitted_count=2\toutput_record_count=2\toutput_is_empty=false\toutput_is_single_record=false\toutput_has_multiple_records=true\toutput_is_fully_truncated=false\toutput_retention_state=partially_retained	output_retention_state_code=1	output_truncated_count=1\ttruncated=true\toutput_format=summary-tsv":
         raise AssertionError(f"unexpected summary-tsv meta footer: {summary_tsv_meta_lines}")
 
     preset_list_summary_tsv_with_schema = subprocess.run(
@@ -4054,7 +4055,7 @@ def main() -> int:
             f"unexpected show-preset summary with meta output: {show_preset_summary_with_meta_lines}"
         )
     if not show_preset_summary_with_meta_lines[1].startswith(
-        "# meta\tschema=planner_preset_show_meta.v1\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained\toutput_truncated_count=0\ttruncated=false\tpreset=quick-smoke\tformat=summary\toutput_format=summary\tpreset_file="
+        "# meta\tschema=planner_preset_show_meta.v1\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained	output_retention_state_code=0	output_truncated_count=0\ttruncated=false\tpreset=quick-smoke\tformat=summary\toutput_format=summary\tpreset_file="
     ):
         raise AssertionError(
             f"unexpected show-preset summary meta footer: {show_preset_summary_with_meta_lines}"
@@ -4110,7 +4111,7 @@ def main() -> int:
         line.rstrip("\n") for line in show_preset_summary_with_meta_custom_schema.stdout.splitlines() if line.strip()
     ]
     if not show_preset_summary_with_meta_custom_schema_lines[-1].startswith(
-        "# meta\tschema=planner_preset_show_meta.v2\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained\toutput_truncated_count=0\ttruncated=false\tpreset=quick-smoke\tformat=summary\toutput_format=summary\tpreset_file="
+        "# meta\tschema=planner_preset_show_meta.v2\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained	output_retention_state_code=0	output_truncated_count=0\ttruncated=false\tpreset=quick-smoke\tformat=summary\toutput_format=summary\tpreset_file="
     ):
         raise AssertionError(
             "unexpected show-preset summary custom schema meta footer: "
@@ -4892,7 +4893,7 @@ def main() -> int:
             f"unexpected show-preset summary-tsv with meta output: {show_summary_tsv_with_meta_lines}"
         )
     if not show_summary_tsv_with_meta_lines[2].startswith(
-        "# meta\tschema=planner_preset_show_meta.v1\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained\toutput_truncated_count=0\ttruncated=false\tpreset=quick-smoke\tformat=summary-tsv\toutput_format=summary-tsv\tpreset_file="
+        "# meta\tschema=planner_preset_show_meta.v1\tfiltered_count=1\temitted_count=1\toutput_record_count=1\toutput_is_empty=false\toutput_is_single_record=true\toutput_has_multiple_records=false\toutput_is_fully_truncated=false\toutput_retention_state=fully_retained	output_retention_state_code=0	output_truncated_count=0\ttruncated=false\tpreset=quick-smoke\tformat=summary-tsv\toutput_format=summary-tsv\tpreset_file="
     ):
         raise AssertionError(
             f"unexpected show-preset summary-tsv meta footer: {show_summary_tsv_with_meta_lines}"
