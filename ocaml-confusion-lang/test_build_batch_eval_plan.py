@@ -5397,6 +5397,16 @@ def main() -> int:
             "unexpected list-sort-aliases output kind: "
             f"{sort_aliases_payload.get('output')}"
         )
+    if sort_aliases_payload.get("output_transport") != "json":
+        raise AssertionError(
+            "expected default list-sort-aliases output_transport=json, got: "
+            f"{sort_aliases_payload.get('output_transport')}"
+        )
+    if sort_aliases_payload.get("output_is_rows") is not False:
+        raise AssertionError(
+            "expected default list-sort-aliases output_is_rows=false, got: "
+            f"{sort_aliases_payload.get('output_is_rows')}"
+        )
     if sort_aliases_payload.get("output_format") != "aliases-json":
         raise AssertionError(
             "expected default list-sort-aliases output_format=aliases-json, got: "
@@ -5653,6 +5663,16 @@ def main() -> int:
         raise AssertionError(
             "unexpected grouped list-sort-aliases output kind: "
             f"{grouped_sort_aliases_payload.get('output')}"
+        )
+    if grouped_sort_aliases_payload.get("output_transport") != "json":
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_transport=json, got: "
+            f"{grouped_sort_aliases_payload.get('output_transport')}"
+        )
+    if grouped_sort_aliases_payload.get("output_is_rows") is not False:
+        raise AssertionError(
+            "expected grouped list-sort-aliases output_is_rows=false, got: "
+            f"{grouped_sort_aliases_payload.get('output_is_rows')}"
         )
     if grouped_sort_aliases_payload.get("group_schema_version") != "v2":
         raise AssertionError(

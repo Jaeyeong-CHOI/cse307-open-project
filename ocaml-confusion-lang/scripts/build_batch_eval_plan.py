@@ -279,6 +279,18 @@ def _format_sort_alias_groups_tsv(
     return "\n".join(lines)
 
 
+
+
+def _resolve_sort_aliases_output_transport(output_format: str) -> str:
+    if output_format.endswith("-json"):
+        return "json"
+    if output_format.endswith("-tsv") or output_format.endswith("-tsv-rows"):
+        return "tsv"
+    return "text"
+
+
+def _resolve_sort_aliases_output_is_rows(output_format: str) -> bool:
+    return output_format.endswith("-rows")
 def _resolve_sort_aliases_output_kind(output_format: str) -> str:
     if output_format in {"aliases-json", "aliases-tsv", "aliases-tsv-rows"}:
         return "aliases"
@@ -346,6 +358,8 @@ def _format_sort_aliases_tsv_meta(
     json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
     output = _resolve_sort_aliases_output_kind(output_format)
+    output_transport = _resolve_sort_aliases_output_transport(output_format)
+    output_is_rows = _resolve_sort_aliases_output_is_rows(output_format)
 
     if meta_format == "json":
         return json.dumps(
@@ -354,6 +368,8 @@ def _format_sort_aliases_tsv_meta(
                 "schema_version": json_schema_version,
                 "schema": SORT_ALIASES_TSV_META_SCHEMA,
                 "output": output,
+                "output_transport": output_transport,
+                "output_is_rows": output_is_rows,
                 "output_format": output_format,
                 "output_format_requested": output_format_requested,
                 "output_format_alias_resolved": output_format_alias_resolved,
@@ -3354,6 +3370,8 @@ def main() -> int:
                             "schema_version": "v2",
                             "schema": "planner_sort_aliases.v2",
                             "output": "grouped",
+                            "output_transport": _resolve_sort_aliases_output_transport(resolved_list_sort_aliases_format),
+                            "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
                             "group_schema_version": "v2",
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
@@ -3433,6 +3451,8 @@ def main() -> int:
                             "schema_version": "v1",
                             "schema": "planner_sort_alias_names.v1",
                             "output": "names",
+                            "output_transport": _resolve_sort_aliases_output_transport(resolved_list_sort_aliases_format),
+                            "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
@@ -3496,6 +3516,8 @@ def main() -> int:
                             "schema_version": "v1",
                             "schema": "planner_sort_alias_names.v1",
                             "output": "canonical-names",
+                            "output_transport": _resolve_sort_aliases_output_transport(resolved_list_sort_aliases_format),
+                            "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
                             "output_format": resolved_list_sort_aliases_format,
                             "output_format_requested": list_sort_aliases_format_requested,
                             "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
@@ -3604,6 +3626,8 @@ def main() -> int:
                         "schema_version": "v2",
                         "schema": "planner_sort_aliases.v2",
                         "output": "aliases",
+                        "output_transport": _resolve_sort_aliases_output_transport(resolved_list_sort_aliases_format),
+                        "output_is_rows": _resolve_sort_aliases_output_is_rows(resolved_list_sort_aliases_format),
                         "output_format": resolved_list_sort_aliases_format,
                         "output_format_requested": list_sort_aliases_format_requested,
                         "output_format_alias_resolved": list_sort_aliases_format_alias_resolved,
