@@ -6107,6 +6107,75 @@ def main() -> int:
     if not share_delta_abs_aliases:
         raise AssertionError("expected abs-share-delta filter to keep non-zero skew canonical families")
 
+    size_delta_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair-cap",
+            "--list-sort-aliases-filter-mode",
+            "exact",
+            "--list-sort-aliases-min-group-size-delta",
+            "-1",
+            "--list-sort-aliases-max-group-size-delta",
+            "-1",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    size_delta_filter_payload = json.loads(size_delta_filter_run.stdout)
+    if size_delta_filter_payload.get("min_group_size_delta") != -1:
+        raise AssertionError(
+            "expected min_group_size_delta=-1 in payload, got: "
+            f"{size_delta_filter_payload.get('min_group_size_delta')}"
+        )
+    if size_delta_filter_payload.get("max_group_size_delta") != -1:
+        raise AssertionError(
+            "expected max_group_size_delta=-1 in payload, got: "
+            f"{size_delta_filter_payload.get('max_group_size_delta')}"
+        )
+    expected_size_delta_canonicals = {
+        "fair-allocation-total-cap",
+    }
+    if set(size_delta_filter_payload.get("aliases", {}).values()) != expected_size_delta_canonicals:
+        raise AssertionError(
+            "expected signed size-delta filter(-1 only) to keep fair-allocation canonical group, got: "
+            f"{size_delta_filter_payload.get('aliases', {})}"
+        )
+
+    size_delta_abs_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-name-contains",
+            "fair-cap",
+            "--list-sort-aliases-filter-mode",
+            "exact",
+            "--list-sort-aliases-min-group-size-delta-abs",
+            "1",
+            "--list-sort-aliases-sort",
+            "canonical",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    size_delta_abs_filter_payload = json.loads(size_delta_abs_filter_run.stdout)
+    if size_delta_abs_filter_payload.get("min_group_size_delta_abs") != 1:
+        raise AssertionError(
+            "expected min_group_size_delta_abs=1 in payload, got: "
+            f"{size_delta_abs_filter_payload.get('min_group_size_delta_abs')}"
+        )
+    if not size_delta_abs_filter_payload.get("aliases", {}):
+        raise AssertionError("expected abs-size-delta filter to keep non-zero skew canonical families")
+
     invalid_share_delta_abs_range_run = subprocess.run(
         [
             "python3",
@@ -6155,6 +6224,56 @@ def main() -> int:
         raise AssertionError(
             "expected local-global group-share delta bounds validation error, got: "
             f"{invalid_share_delta_range_run.stderr}"
+        )
+
+    invalid_size_delta_abs_range_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-size-delta-abs",
+            "3",
+            "--list-sort-aliases-max-group-size-delta-abs",
+            "1",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_size_delta_abs_range_run.returncode == 0:
+        raise AssertionError("expected max<min absolute local-global group size delta bounds to fail-fast")
+    if "--list-sort-aliases-max-group-size-delta-abs must be >= --list-sort-aliases-min-group-size-delta-abs" not in (
+        invalid_size_delta_abs_range_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected absolute local-global group-size delta bounds validation error, got: "
+            f"{invalid_size_delta_abs_range_run.stderr}"
+        )
+
+    invalid_size_delta_range_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-sort-aliases",
+            "--list-sort-aliases-min-group-size-delta",
+            "2",
+            "--list-sort-aliases-max-group-size-delta",
+            "-1",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_size_delta_range_run.returncode == 0:
+        raise AssertionError("expected max<min local-global group size delta bounds to fail-fast")
+    if "--list-sort-aliases-max-group-size-delta must be >= --list-sort-aliases-min-group-size-delta" not in (
+        invalid_size_delta_range_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected local-global group-size delta bounds validation error, got: "
+            f"{invalid_size_delta_range_run.stderr}"
         )
 
     print("OK: build_batch_eval_plan regression passed")
