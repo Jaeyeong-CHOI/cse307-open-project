@@ -5045,6 +5045,11 @@ def main() -> int:
             "unexpected aliases-tsv JSON meta schema_version, got: "
             f"{aliases_tsv_meta_json_payload}"
         )
+    if not isinstance(aliases_tsv_meta_json_payload.get("group_count"), int):
+        raise AssertionError(
+            "expected aliases-tsv JSON meta footer to include integer group_count, got: "
+            f"{aliases_tsv_meta_json_payload}"
+        )
 
     invalid_aliases_meta_schema_version_run = subprocess.run(
         [

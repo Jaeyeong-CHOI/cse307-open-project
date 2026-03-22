@@ -125,6 +125,7 @@ def _format_sort_aliases_tsv_meta(
     match_field: str,
     limit: int | None,
     sort_mode: str,
+    group_count: int,
     meta_format: str = "text",
     json_schema_version: str = SORT_ALIASES_TSV_META_JSON_SCHEMA_VERSION,
 ) -> str:
@@ -142,6 +143,7 @@ def _format_sort_aliases_tsv_meta(
                 "match_field": match_field,
                 "limit": limit,
                 "sort": sort_mode,
+                "group_count": group_count,
             },
             ensure_ascii=False,
         )
@@ -155,7 +157,8 @@ def _format_sort_aliases_tsv_meta(
         f"filter_mode={filter_mode}\t"
         f"match_field={match_field}\t"
         f"limit={limit if limit is not None else 'none'}\t"
-        f"sort={sort_mode}"
+        f"sort={sort_mode}	"
+        f"group_count={group_count}"
     )
 
 
@@ -2169,6 +2172,7 @@ def main() -> int:
                             match_field=args.list_sort_aliases_match_field,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
+                            group_count=len(grouped),
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
@@ -2187,6 +2191,7 @@ def main() -> int:
                             match_field=args.list_sort_aliases_match_field,
                             limit=args.list_sort_aliases_limit,
                             sort_mode=args.list_sort_aliases_sort,
+                            group_count=len(grouped),
                             meta_format=args.list_sort_aliases_tsv_meta_format,
                             json_schema_version=sort_aliases_meta_json_schema_version,
                         )
