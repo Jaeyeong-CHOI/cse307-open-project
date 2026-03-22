@@ -2412,7 +2412,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--list-presets-tag-case-sensitive",
         action="store_true",
-        help="Enable case-sensitive matching for --list-presets-tag (default: case-insensitive).",
+        help=(
+            "Enable case-sensitive matching for --list-presets-tag and "
+            "--list-presets-tag-not-contains (default: case-insensitive)."
+        ),
     )
     parser.add_argument(
         "--list-presets-tag-match",
@@ -2420,6 +2423,23 @@ def parse_args() -> argparse.Namespace:
         default="all",
         help=(
             "Tag match mode for --list-presets-tag: all (default, AND) or any (OR); "
+            "shorthand aliases: a=all, o=any"
+        ),
+    )
+    parser.add_argument(
+        "--list-presets-tag-not-contains",
+        default=None,
+        help=(
+            "Optional exclusion tag filter for --list-presets (comma-separated, case-insensitive by default; "
+            "combine with --list-presets-tag-not-match)."
+        ),
+    )
+    parser.add_argument(
+        "--list-presets-tag-not-match",
+        choices=("all", "any", "a", "o"),
+        default="any",
+        help=(
+            "Tag exclusion match mode for --list-presets-tag-not-contains: any (default) or all; "
             "shorthand aliases: a=all, o=any"
         ),
     )
@@ -2554,7 +2574,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help=(
             "Include active filter context in --list-presets text meta footer "
-            "(tag/name_contains/name_not_contains/limit/tag_match)."
+            "(tag/tag_not/name_contains/name_not_contains/limit/tag_match/tag_not_match)."
         ),
     )
     parser.add_argument(
@@ -3320,7 +3340,13 @@ def main() -> int:
             list_presets_sort_requested = args.list_presets_sort
             resolved_list_presets_sort = _resolve_list_presets_sort_mode(args.list_presets_sort)
             list_presets_sort_alias_resolved = list_presets_sort_requested != resolved_list_presets_sort
+            list_presets_tag_not_match_requested = args.list_presets_tag_not_match
+            resolved_list_presets_tag_not_match = _resolve_tag_match_mode(args.list_presets_tag_not_match)
+            list_presets_tag_not_match_alias_resolved = (
+                list_presets_tag_not_match_requested != resolved_list_presets_tag_not_match
+            )
             required_tags: set[str] = set()
+            excluded_tags: set[str] = set()
             if args.list_presets_tag:
                 if args.list_presets_tag_case_sensitive:
                     required_tags = {tag.strip() for tag in args.list_presets_tag.split(",") if tag.strip()}
@@ -3328,6 +3354,21 @@ def main() -> int:
                     required_tags = {tag.strip().lower() for tag in args.list_presets_tag.split(",") if tag.strip()}
                 if not required_tags:
                     raise ValueError("--list-presets-tag must include at least one non-empty tag")
+            if args.list_presets_tag_not_contains:
+                if args.list_presets_tag_case_sensitive:
+                    excluded_tags = {
+                        tag.strip() for tag in args.list_presets_tag_not_contains.split(",") if tag.strip()
+                    }
+                else:
+                    excluded_tags = {
+                        tag.strip().lower()
+                        for tag in args.list_presets_tag_not_contains.split(",")
+                        if tag.strip()
+                    }
+                if not excluded_tags:
+                    raise ValueError(
+                        "--list-presets-tag-not-contains must include at least one non-empty tag"
+                    )
             list_presets_name_filter_mode_requested = args.list_presets_name_filter_mode
             resolved_list_presets_name_filter_mode = _resolve_filter_mode(args.list_presets_name_filter_mode)
             list_presets_name_filter_mode_alias_resolved = (
@@ -3380,6 +3421,15 @@ def main() -> int:
                     match_mode=resolved_list_presets_tag_match,
                     case_sensitive=args.list_presets_tag_case_sensitive,
                 )
+                and (
+                    not excluded_tags
+                    or not _matches_preset_tags(
+                        preset,
+                        excluded_tags,
+                        match_mode=resolved_list_presets_tag_not_match,
+                        case_sensitive=args.list_presets_tag_case_sensitive,
+                    )
+                )
             }
             preset_names = _sort_preset_names(
                 list(filtered_presets.keys()),
@@ -3403,11 +3453,20 @@ def main() -> int:
                     if isinstance(args.list_presets_name_not_contains, str)
                     else ""
                 )
+                tag_not_filter = (
+                    args.list_presets_tag_not_contains.strip()
+                    if isinstance(args.list_presets_tag_not_contains, str)
+                    else ""
+                )
                 list_meta_extra_fields = {
                     "tag_filter": tag_filter or "none",
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": str(list_presets_tag_match_alias_resolved).lower(),
+                    "tag_not_filter": tag_not_filter or "none",
+                    "tag_not_match": resolved_list_presets_tag_not_match,
+                    "tag_not_match_requested": list_presets_tag_not_match_requested,
+                    "tag_not_match_alias_resolved": str(list_presets_tag_not_match_alias_resolved).lower(),
                     "tag_case_sensitive": str(args.list_presets_tag_case_sensitive).lower(),
                     "name_contains": name_contains or "none",
                     "name_filter_mode": resolved_list_presets_name_filter_mode,
@@ -3524,6 +3583,9 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "tag_not_match": resolved_list_presets_tag_not_match,
+                    "tag_not_match_requested": list_presets_tag_not_match_requested,
+                    "tag_not_match_alias_resolved": list_presets_tag_not_match_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
@@ -3550,6 +3612,9 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "tag_not_match": resolved_list_presets_tag_not_match,
+                    "tag_not_match_requested": list_presets_tag_not_match_requested,
+                    "tag_not_match_alias_resolved": list_presets_tag_not_match_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,
@@ -3583,6 +3648,9 @@ def main() -> int:
                     "tag_match": resolved_list_presets_tag_match,
                     "tag_match_requested": list_presets_tag_match_requested,
                     "tag_match_alias_resolved": list_presets_tag_match_alias_resolved,
+                    "tag_not_match": resolved_list_presets_tag_not_match,
+                    "tag_not_match_requested": list_presets_tag_not_match_requested,
+                    "tag_not_match_alias_resolved": list_presets_tag_not_match_alias_resolved,
                     "tag_case_sensitive": args.list_presets_tag_case_sensitive,
                     "sort": resolved_list_presets_sort,
                     "sort_requested": list_presets_sort_requested,

@@ -3197,7 +3197,9 @@ def main() -> int:
     expected_filter_meta_footer = (
         "# meta\tschema=planner_preset_list_meta.v1\tfiltered_count=1\temitted_count=1\ttruncated=false"
         "\ttag_filter=cheap-first,smoke\ttag_match=all\ttag_match_requested=all"
-        "\ttag_match_alias_resolved=false\ttag_case_sensitive=false\tname_contains=quick\tname_filter_mode=contains"
+        "\ttag_match_alias_resolved=false\ttag_not_filter=none\ttag_not_match=any"
+        "\ttag_not_match_requested=any\ttag_not_match_alias_resolved=false"
+        "\ttag_case_sensitive=false\tname_contains=quick\tname_filter_mode=contains"
         "\tname_filter_mode_requested=contains\tname_filter_mode_alias_resolved=false"
         "\tname_not_contains=none\tname_not_filter_mode=contains"
         "\tname_not_filter_mode_requested=contains\tname_not_filter_mode_alias_resolved=false"
@@ -4903,6 +4905,109 @@ def main() -> int:
         raise AssertionError(
             "unexpected combined name/tag filtered summary-tsv row: "
             f"{name_and_tag_filtered_lines}"
+        )
+
+    tag_exclusion_any_default_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag-not-contains",
+            "analysis",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if tag_exclusion_any_default_run.stdout.strip().splitlines() != [
+        "balanced-ci",
+        "quick-smoke",
+    ]:
+        raise AssertionError(
+            "expected tag exclusion(any default) to remove analysis-tagged presets, got: "
+            f"{tag_exclusion_any_default_run.stdout!r}"
+        )
+
+    tag_exclusion_all_mode_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag-not-contains",
+            "cheap-first,smoke",
+            "--list-presets-tag-not-match",
+            "a",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if tag_exclusion_all_mode_run.stdout.strip().splitlines() != [
+        "balanced-ci",
+        "full-analysis",
+    ]:
+        raise AssertionError(
+            "expected tag exclusion(all alias mode) to remove only quick-smoke, got: "
+            f"{tag_exclusion_all_mode_run.stdout!r}"
+        )
+
+    tag_exclusion_json_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag-not-contains",
+            "cheap-first",
+            "--list-presets-tag-not-match",
+            "o",
+            "--list-presets-format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    tag_exclusion_json_alias_payload = json.loads(tag_exclusion_json_alias_run.stdout)
+    if tag_exclusion_json_alias_payload.get("tag_not_match") != "any":
+        raise AssertionError(
+            "expected resolved tag_not_match=any for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_not_match_requested") != "o":
+        raise AssertionError(
+            "expected tag_not_match_requested=o for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+    if tag_exclusion_json_alias_payload.get("tag_not_match_alias_resolved") is not True:
+        raise AssertionError(
+            "expected tag_not_match_alias_resolved=true for alias mode: "
+            f"{tag_exclusion_json_alias_payload}"
+        )
+
+    invalid_empty_tag_not_filter_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-tag-not-contains",
+            "   ",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if invalid_empty_tag_not_filter_run.returncode == 0:
+        raise AssertionError("expected empty --list-presets-tag-not-contains to fail-fast")
+    if "--list-presets-tag-not-contains must include at least one non-empty tag" not in (
+        invalid_empty_tag_not_filter_run.stderr or ""
+    ):
+        raise AssertionError(
+            "expected empty tag-not filter validation error, got: "
+            f"{invalid_empty_tag_not_filter_run.stderr}"
         )
 
     invalid_empty_name_filter_run = subprocess.run(

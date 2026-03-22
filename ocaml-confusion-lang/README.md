@@ -107,6 +107,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match any
 # tag-match shorthand alias: o=any, a=all
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag cheap-first,analysis --list-presets-tag-match o
+# exclusion 태그 필터(기본 any=OR, 해당 태그가 하나라도 있으면 제외)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag-not-contains analysis
+# exclusion 태그 매칭 모드(all=AND) + shorthand alias
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-tag-not-contains cheap-first,smoke --list-presets-tag-not-match a
 # preset 이름 substring 필터(대소문자 무시)로 후보 빠르게 좁히기
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-name-contains ci
 # preset 이름 필터 매칭 모드(prefix/exact) 전환
@@ -815,3 +819,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 290. ~~`--list-presets-name-not-contains`/`--list-presets-name-not-filter-mode`(contains|prefix|exact + `c|p|e`)를 추가해 preset 이름 exclusion 필터를 지원하고, list-presets JSON/메타데이터에 `name_not_filter_mode_requested`/`name_not_filter_mode_alias_resolved` provenance를 노출해 포함/제외 필터 해석 경로를 대칭적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 291. ~~`--list-presets-name-case-sensitive` 옵션을 추가해 preset 이름 include/exclude 필터의 기본 case-insensitive 동작을 선택적으로 case-sensitive로 전환하고, list-presets JSON/메타데이터에 `name_case_sensitive` provenance를 노출해 필터 해석 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 292. ~~`--list-presets-tag-case-sensitive` 옵션을 추가해 tag include 필터의 기본 case-insensitive 동작을 선택적으로 case-sensitive로 전환하고, list-presets JSON/메타데이터에 `tag_case_sensitive` provenance를 노출해 태그 필터 해석 컨텍스트를 명시적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+293. ~~`--list-presets-tag-not-contains`/`--list-presets-tag-not-match`(all|any + `a|o`)를 추가해 preset 태그 exclusion 필터를 지원하고, list-presets JSON/메타데이터에 `tag_not_match_requested`/`tag_not_match_alias_resolved` provenance를 노출해 포함/제외 태그 해석 경로를 대칭적으로 추적 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
