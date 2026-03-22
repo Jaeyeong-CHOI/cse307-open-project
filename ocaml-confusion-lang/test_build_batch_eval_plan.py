@@ -826,6 +826,50 @@ def main() -> int:
             f"{preset_names_sorted_by_model_count_desc}"
         )
 
+    preset_list_sorted_by_description_length = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "description-length",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_description_length = [
+        line.strip() for line in preset_list_sorted_by_description_length.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_description_length != ["quick-smoke", "balanced-ci", "full-analysis"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=description-length output: "
+            f"{preset_names_sorted_by_description_length}"
+        )
+
+    preset_list_sorted_by_description_length_desc = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-presets",
+            "--list-presets-sort",
+            "description-length-desc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    preset_names_sorted_by_description_length_desc = [
+        line.strip() for line in preset_list_sorted_by_description_length_desc.stdout.splitlines() if line.strip()
+    ]
+    if preset_names_sorted_by_description_length_desc != ["balanced-ci", "full-analysis", "quick-smoke"]:
+        raise AssertionError(
+            "unexpected --list-presets-sort=description-length-desc output: "
+            f"{preset_names_sorted_by_description_length_desc}"
+        )
+
     preset_list_sorted_by_cheap_first_tag = subprocess.run(
         [
             "python3",

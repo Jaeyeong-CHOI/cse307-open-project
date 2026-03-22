@@ -121,6 +121,10 @@ python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort repe
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort model-count
 # 모델 수(model count) 기준 내림차순 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort model-count-desc
+# 설명 길이(description length) 기준 오름차순 정렬(동률은 이름순)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort description-length
+# 설명 길이(description length) 기준 내림차순 정렬(동률은 이름순)
+python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort description-length-desc
 # cheap-first 태그 포함 preset 우선 정렬(동률은 이름순)
 python3 scripts/build_batch_eval_plan.py --list-presets --list-presets-sort cheap-first-tag
 # cheap-first 태그 미포함 preset 우선 정렬(동률은 이름순)
@@ -538,3 +542,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 218. ~~planner preset discovery 정렬 모드에 `cheap-first-tag`/`cheap-first-tag-desc`를 추가해 `cheap-first` 태그 포함 여부 기준으로 저비용 우선/역방향 탐색 순서를 즉시 전환할 수 있게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 219. ~~planner preset discovery 정렬 모드를 일반화해 `--list-presets-sort tag:<name>` 패턴으로 임의 태그 우선 정렬을 지원, cheap-first 외 운영 태그(예: analysis/ci)도 동일 UX로 즉시 탐색 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 220. ~~planner preset discovery 정렬 모드에 `tag:<name>-desc`를 추가해 임의 태그 미포함 preset 우선 정렬을 일반화하고 `cheap-first-tag-desc` 특수 모드 의존을 줄이기~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+221. ~~planner preset discovery 정렬 모드에 `description-length`/`description-length-desc`를 추가해 preset 설명 길이 기반으로 quick scan 순서를 제어하고 문서 중심 preset triage 속도를 높이기~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
