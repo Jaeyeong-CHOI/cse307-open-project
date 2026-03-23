@@ -9120,8 +9120,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_rows_jsonl_alias_rl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "rl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_rows_jsonl_alias_run.stdout != retained_state_codes_rows_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format rjl alias to match canonical rows-jsonl output")
+    if retained_state_codes_rows_jsonl_alias_rl_run.stdout != retained_state_codes_rows_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format rl alias to match canonical rows-jsonl output")
     retained_state_codes_rows_jsonl_payload = [
         json.loads(line)
         for line in retained_state_codes_rows_jsonl_run.stdout.splitlines()
@@ -10021,8 +10036,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_rows_jsonl_alias_rl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "rl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_rows_jsonl_alias_run.stdout != retention_state_codes_rows_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format rjl alias to match canonical rows-jsonl output")
+    if retention_state_codes_rows_jsonl_alias_rl_run.stdout != retention_state_codes_rows_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format rl alias to match canonical rows-jsonl output")
     retention_state_codes_rows_jsonl_payload = [
         json.loads(line)
         for line in retention_state_codes_rows_jsonl_run.stdout.splitlines()

@@ -950,3 +950,4 @@ python3 scripts/batch_report_summary.py ../docs/research/results/roundtrip-batch
 386. ~~planner state-code listing에 `bundle-jsonl` 출력 포맷과 shorthand alias(`bjl`)를 추가해 `bundle-json` payload를 단일 compact JSON line으로 바로 소비 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 387. ~~planner state-code listing `bundle-jsonl`에 ultra-short alias(`bl`)를 추가해 `bjl`보다 더 짧은 호출로 compact bundle line 출력을 빠르게 선택 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
 388. ~~planner state-code listing `bundle-json`에 ultra-short alias(`b`)를 추가해 `bj`보다 더 짧은 호출로 base bundle payload 조회를 빠르게 선택 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
+389. ~~planner state-code listing `rows-jsonl`에 ultra-short alias(`rl`)를 추가해 `rjl`보다 더 짧은 호출로 compact row JSONL 출력을 빠르게 선택 가능하게 개선~~ ✅ (`scripts/build_batch_eval_plan.py`, `test_build_batch_eval_plan.py`, `README.md`)
