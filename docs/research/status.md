@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 19:16 KST
+마지막 업데이트: 2026-03-23 19:20 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -9,7 +9,7 @@
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
-- 결과 파일 누적: 🟢 (prompt-batch 실측 JSON 누적 135건 확보)
+- 결과 파일 누적: 🟢 (prompt-batch v1~v120 실측 JSON 120건 단일 배치 확정)
 - 지표 산출(ACR/PRR/ESR): 🟡 (실측 호출은 복구, task pass는 여전히 0으로 난도 높음)
 - 문서화 품질: 🟢 (status/log/results 업데이트)
 
@@ -43,15 +43,16 @@
 - [x] 일일 누적 통합 재생성
   - `docs/research/results/prompt-batch-aggregated-2026-03-23.json`
   - 누적 합계 갱신: `total=135, passed=0, failed=135`
-- [x] 배치 실험 결과(JSON) 대규모 누적 확대 1차 달성
-  - 누적 합계: `total=135, passed=0, failed=135`
-  - HTTP 401 인증 실패는 v1~v120 실측 배치에서 해소(호출 정상)
+- [x] 배치 실험 결과(JSON) 대규모 누적 확대 2차 달성
+  - 단일 배치 확정: `prompt-batch-v1-120.gpt4o-mini.2026-03-23.json` (`total=120, passed=0, failed=120`)
+  - HTTP 실패: `0` (401 재발 없음, judge violation 중심 실패)
+  - 요약/검증 산출: `.summary.csv`, `.summary.md`, `prompt-batch-aggregated-2026-03-23.json`
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions
 1. 실행 환경 정비: `dune` 설치 또는 대체 런처 확보 후 실제 roundtrip batch 재실행
 2. `run_gpt54_eval.py` 배치의 judge taxonomy(상위 violation) 요약 자동화 및 프롬프트 수정 루프 연결
-3. 성공 호출이 확보되면 `docs/research/results/`에 task-set별 누적 지표(JSON) 정기 저장
+3. 확보된 v1~v120 실측 JSON을 기준으로 task-set별 누적 지표(JSON) 정기 저장/자동화
 4. `papers/v2.md`에 누적 지표(ACR/PRR/ESR + mismatch taxonomy) 반영
 
 ## Links

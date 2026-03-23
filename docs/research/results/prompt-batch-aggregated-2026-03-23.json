@@ -1,45 +1,22 @@
 {
   "date": "2026-03-23",
   "model": "gpt-4o-mini",
-  "sources": [
+  "batches": [
     {
-      "file": "prompt-batch-quick3.gpt4o-mini.2026-03-23.json",
-      "total": 3,
+      "file": "prompt-batch-v1-120.gpt4o-mini.2026-03-23.json",
+      "total": 120,
       "passed": 0,
-      "failed": 3
-    },
-    {
-      "file": "prompt-batch-top12.gpt4o-mini.2026-03-23.json",
-      "total": 12,
-      "passed": 0,
-      "failed": 12
-    },
-    {
-      "file": "prompt-batch-v1-69.gpt4o-mini.2026-03-23.json",
-      "total": 69,
-      "passed": 0,
-      "failed": 69
-    },
-    {
-      "file": "prompt-batch-v110-120.gpt4o-mini.2026-03-23.json",
-      "total": 11,
-      "passed": 0,
-      "failed": 11
-    },
-    {
-      "file": "prompt-batch-v70-89.gpt4o-mini.2026-03-23.json",
-      "total": 20,
-      "passed": 0,
-      "failed": 20
-    },
-    {
-      "file": "prompt-batch-v90-109.gpt4o-mini.2026-03-23.json",
-      "total": 20,
-      "passed": 0,
-      "failed": 20
+      "failed": 120,
+      "http_failures": 0
     }
   ],
-  "total": 135,
-  "passed": 0,
-  "failed": 135
+  "totals": {
+    "total": 120,
+    "passed": 0,
+    "failed": 120,
+    "http_failures": 0
+  },
+  "notes": [
+    "single full-range rerun for v1~v120; supersedes fragmented partial batches for real-data accumulation"
+  ]
 }
