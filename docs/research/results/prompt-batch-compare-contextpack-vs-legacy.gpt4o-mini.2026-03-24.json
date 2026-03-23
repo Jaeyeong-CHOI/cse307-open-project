@@ -1,0 +1,107 @@
+{
+  "base": {
+    "path": "docs/research/results/prompt-batch-v1-120-legacy.gpt4o-mini.2026-03-24.json",
+    "n": 120,
+    "passed": 0,
+    "failed": 120,
+    "avg_score": 3.75,
+    "nonzero_score": 7,
+    "top_violations": [
+      [
+        "original keyword used: in",
+        71
+      ],
+      [
+        "original keyword used: for",
+        61
+      ],
+      [
+        "original keyword used: if",
+        47
+      ],
+      [
+        "original keyword used: return",
+        47
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 1)",
+        37
+      ],
+      [
+        "original keyword used: def",
+        26
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 2)",
+        23
+      ],
+      [
+        "missing alias for in: use this token exactly for keyword mapping",
+        11
+      ],
+      [
+        "missing alias for in: convert this phrase back to python reserved token",
+        11
+      ],
+      [
+        "missing alias for in: follow renamed symbol exactly and continue",
+        10
+      ]
+    ]
+  },
+  "candidate": {
+    "path": "docs/research/results/prompt-batch-v1-120.gpt4o-mini.2026-03-23.json",
+    "n": 120,
+    "passed": 0,
+    "failed": 120,
+    "avg_score": 4.833333333333333,
+    "nonzero_score": 10,
+    "top_violations": [
+      [
+        "original keyword used: in",
+        72
+      ],
+      [
+        "original keyword used: for",
+        56
+      ],
+      [
+        "original keyword used: return",
+        49
+      ],
+      [
+        "original keyword used: if",
+        48
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 1)",
+        38
+      ],
+      [
+        "original keyword used: def",
+        24
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 2)",
+        24
+      ],
+      [
+        "missing alias for in: use this token exactly for keyword mapping",
+        10
+      ],
+      [
+        "missing alias for in: convert this phrase back to python reserved token",
+        10
+      ],
+      [
+        "missing alias for in: no, use exact python original grammer",
+        9
+      ]
+    ]
+  },
+  "diff": {
+    "delta_avg_score": 1.083333333333333,
+    "delta_nonzero_score": 3,
+    "delta_passed": 0
+  }
+}

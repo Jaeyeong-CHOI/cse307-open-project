@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 23:34 KST
+마지막 업데이트: 2026-03-24 00:45 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -73,6 +73,10 @@
   - 신규 배치: `prompt-batch-v1-120-legacy.gpt4o.2026-03-23.json` (`total=120`, `passed=1`, `failed=119`)
   - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt4o.2026-03-23.{json,md}`
   - 비교 결과: contextpack ON이 legacy 대비 `delta_passed=+1`, `delta_avg_score=+0.583`
+- [x] 조건 비교 실측 추가: `gpt-4o-mini` legacy(no contextpack) full-range v1~v120
+  - 신규 배치: `prompt-batch-v1-120-legacy.gpt4o-mini.2026-03-24.json` (`total=120`, `passed=0`, `failed=120`, `http_failures=0`)
+  - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt4o-mini.2026-03-24.{json,md}`
+  - 비교 결과: contextpack ON이 legacy 대비 `delta_avg_score=+1.083`, `delta_nonzero_score=+3` 개선(`delta_passed=0`)
 - [x] 모델 가용성 probe: `gpt-5.3-codex` 1건 실행(HTTP 404)으로 unsupported 확인
   - 산출: `prompt-batch-v1-120.gpt53-codex.2026-03-23.json` (`total=1`, `http_failures=1`)
 - [ ] `docs/research/context-compression.md` 운영 적용
