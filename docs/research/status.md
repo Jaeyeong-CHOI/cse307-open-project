@@ -1,15 +1,15 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-24 03:57 KST
+마지막 업데이트: 2026-03-24 08:04 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
 - 현재 단계: **Phase 4~5 (안정화 완료권 + 결과 누적/분석 강화 단계)**
-- 핵심 병목: **실험 runner 인프라(LLM API + dune 실행 환경) 가용성**
+- 핵심 병목: **프롬프트 준수 실패 구조 자체(특히 alias 규칙 위반/구문 회귀)의 고착**(LLM API 가용성은 확인됨)
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
-- 결과 파일 누적: 🟢 (full-range 실측 8개 배치 + 변형조건(contextpack/legacy/probe) 포함 총 11개 JSON, 누적 1320건)
+- 결과 파일 누적: 🟢 (full-range 실측 8개 배치 + 변형조건(contextpack/legacy/probe) + 부분 재실행(v1-20) 포함 총 11개 JSON + 신규 비교 JSON/CSV/MD)
 - 지표 산출(ACR/PRR/ESR): 🟡 (모델별 편차 존재: gpt-4o는 contextpack 우세 추세, 2026-03-24 재실행에서 pass 3건으로 일시 향상 확인(+1), gpt-5.4-mini는 contextpack 갱신으로 조건 비교 우세(delta_avg_score=+12.583, nonzero=+13, passed=+3))
 - 문서화 품질: 🟢 (status/log/results 업데이트)
 
@@ -93,6 +93,11 @@
   - 신규 배치: `prompt-batch-v1-120-contextpack.gpt54-mini.2026-03-24.json` (`total=120`, `passed=3`, `failed=117`, `http_failures=0`)
   - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt54-mini.2026-03-24.{json,md}`
   - 비교 결과: contextpack이 legacy 대비 `delta_avg_score=+12.583`, `delta_nonzero_score=+13`, `delta_passed=+3`
+- [x] 배치 재실행: `gpt-4o-mini` contextpack 부분 재현성 확인(v1-20)
+  - 산출물: `docs/research/results/prompt-batch-v1-20-contextpack.gpt4o-mini.2026-03-24.json`
+  - 실측 결과: `total=20`, `passed=0`, `failed=20`, `http_failures=0`
+  - 비교 리포트: `docs/research/results/prompt-batch-compare-contextpack-gpt4o-mini-2026-03-23-vs-2026-03-24.v1-20.{json,md}`
+  - 비교 결과: `delta_avg_score=0.000`, `delta_passed=0`, `delta_nonzero=0`
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions

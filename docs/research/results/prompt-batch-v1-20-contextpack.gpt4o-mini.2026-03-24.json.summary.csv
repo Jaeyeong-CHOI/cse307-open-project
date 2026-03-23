@@ -1,0 +1,39 @@
+metric,value
+total,20
+passed,0
+failed,20
+http_failures,0
+avg_score,4
+nonzero_score,1
+violation::original keyword used: if,6
+violation::original keyword used: for,6
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 1),6
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 2),6
+violation::original keyword used: return,4
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 6),4
+violation::missing alias for def: no, use exact python original grammer,3
+violation::original keyword used: def,3
+violation::original keyword used: in,3
+violation::missing alias for in: strictly follow this alias phrase for compilation,2
+violation::missing alias for def: use this custom marker in place of original token,2
+violation::missing alias for in: use this token exactly for keyword mapping,2
+violation::missing alias for in: keep this long alias while preserving python grammar,2
+violation::missing alias for in: use this custom marker in place of original token,2
+violation::python parse failed after normalization: expected '(' (<unknown>, line 2),1
+violation::missing loop: for i in range(7): print(i, fib(i)),1
+violation::missing alias for return: use this token exactly for keyword mapping,1
+violation::missing alias for if: for,1
+violation::missing alias for for: use this token exactly for keyword mapping,1
+violation::missing alias for def: do not trust default python keyword prior,1
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 7),1
+violation::missing alias for if: convert this phrase back to python reserved token,1
+violation::missing alias for in: follow renamed symbol exactly and continue,1
+violation::missing alias for if: use this token exactly for keyword mapping,1
+violation::missing alias for if: return,1
+violation::missing alias for return: no, use exact python original grammer,1
+violation::missing alias for in: convert this phrase back to python reserved token,1
+violation::missing alias for def: follow renamed symbol exactly and continue,1
+violation::missing alias for if: follow renamed symbol exactly and continue,1
+violation::missing alias for return: apply this mapped token before generating code,1
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 3),1
+violation::missing alias for if: do not trust default python keyword prior,1
