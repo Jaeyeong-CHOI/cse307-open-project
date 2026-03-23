@@ -9529,8 +9529,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_code_state_pairs_jsonl_ultra_short_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "cpl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_code_state_pairs_jsonl_alias_run.stdout != retained_state_codes_code_state_pairs_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format cpjl alias to match canonical code-state-pairs-jsonl output")
+    if retained_state_codes_code_state_pairs_jsonl_ultra_short_alias_run.stdout != retained_state_codes_code_state_pairs_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cpl alias to match canonical code-state-pairs-jsonl output")
     retained_state_codes_code_state_pairs_jsonl_payload = [
         json.loads(line)
         for line in retained_state_codes_code_state_pairs_jsonl_run.stdout.splitlines()
@@ -10514,8 +10529,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_code_state_pairs_jsonl_ultra_short_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "cpl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_code_state_pairs_jsonl_alias_run.stdout != retention_state_codes_code_state_pairs_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format cpjl alias to match canonical code-state-pairs-jsonl output")
+    if retention_state_codes_code_state_pairs_jsonl_ultra_short_alias_run.stdout != retention_state_codes_code_state_pairs_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cpl alias to match canonical code-state-pairs-jsonl output")
     retention_state_codes_code_state_pairs_jsonl_payload = [
         json.loads(line)
         for line in retention_state_codes_code_state_pairs_jsonl_run.stdout.splitlines()
