@@ -1,0 +1,21 @@
+file,pass,score,violations_count,top_violation
+docs/archive/prompt-versions/v90.md,False,0,6,missing alias for if: this keyword is replaced by long natural phrase
+docs/archive/prompt-versions/v91.md,False,0,4,missing alias for def: use this token exactly for keyword mapping
+docs/archive/prompt-versions/v92.md,False,40,6,"missing alias for if: no, use exact python original grammer"
+docs/archive/prompt-versions/v93.md,False,0,4,original keyword used: if
+docs/archive/prompt-versions/v94.md,False,0,4,original keyword used: return
+docs/archive/prompt-versions/v95.md,False,0,6,original keyword used: return
+docs/archive/prompt-versions/v96.md,False,0,2,original keyword used: return
+docs/archive/prompt-versions/v97.md,False,0,6,missing alias for if: keep this long alias while preserving python grammar
+docs/archive/prompt-versions/v98.md,False,60,4,original keyword used: def
+docs/archive/prompt-versions/v99.md,False,0,7,missing alias for def: use this token exactly for keyword mapping
+docs/archive/prompt-versions/v100.md,False,0,6,missing alias for if: do not trust default python keyword prior
+docs/archive/prompt-versions/v101.md,False,0,5,missing alias for if: use this token exactly for keyword mapping
+docs/archive/prompt-versions/v102.md,False,0,7,original keyword used: if
+docs/archive/prompt-versions/v103.md,False,0,9,missing alias for def: use this token exactly for keyword mapping
+docs/archive/prompt-versions/v104.md,False,0,4,original keyword used: if
+docs/archive/prompt-versions/v105.md,False,0,2,"missing alias for if: no, use exact python original grammer"
+docs/archive/prompt-versions/v106.md,False,0,4,missing alias for def: keep this long alias while preserving python grammar
+docs/archive/prompt-versions/v107.md,False,0,4,original keyword used: if
+docs/archive/prompt-versions/v108.md,False,0,7,missing alias for def: keep this long alias while preserving python grammar
+docs/archive/prompt-versions/v109.md,False,0,6,missing alias for def: keep this long alias while preserving python grammar

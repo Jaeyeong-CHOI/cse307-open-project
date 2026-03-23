@@ -15,6 +15,12 @@
       "failed": 12
     },
     {
+      "file": "prompt-batch-v1-69.gpt4o-mini.2026-03-23.json",
+      "total": 69,
+      "passed": 0,
+      "failed": 69
+    },
+    {
       "file": "prompt-batch-v110-120.gpt4o-mini.2026-03-23.json",
       "total": 11,
       "passed": 0,
@@ -25,9 +31,15 @@
       "total": 20,
       "passed": 0,
       "failed": 20
+    },
+    {
+      "file": "prompt-batch-v90-109.gpt4o-mini.2026-03-23.json",
+      "total": 20,
+      "passed": 0,
+      "failed": 20
     }
   ],
-  "total": 46,
+  "total": 135,
   "passed": 0,
-  "failed": 46
+  "failed": 135
 }

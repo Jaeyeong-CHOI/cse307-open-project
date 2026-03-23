@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 19:08 KST
+마지막 업데이트: 2026-03-23 19:16 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -9,8 +9,8 @@
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
-- 결과 파일 누적: 🟡 (fixture 기반 누적 1개 추가, 실제 대규모 배치 미확대)
-- 지표 산출(ACR/PRR/ESR): 🟠 (배치 파이프라인은 생성되었으나 401 인증 실패로 실측 지표 미축적)
+- 결과 파일 누적: 🟢 (prompt-batch 실측 JSON 누적 135건 확보)
+- 지표 산출(ACR/PRR/ESR): 🟡 (실측 호출은 복구, task pass는 여전히 0으로 난도 높음)
 - 문서화 품질: 🟢 (status/log/results 업데이트)
 
 ## This Week Progress
@@ -37,13 +37,20 @@
 - [x] 추가 배치(v70~v89) 20건 연속 누적 시도
   - 산출물: `docs/research/results/prompt-batch-v70-89.gpt4o-mini.2026-03-23.*`
   - 실측 결과: `passed=0`, `failed=20` (401 인증 실패 동일)
-- [ ] 배치 실험 결과(JSON) 대규모 누적 확대(LLM 모델/alias 조합)
-  - [진행 막힘] 유효 API 키/엔드포인트 확보 필요
+- [x] 추가 배치(v90~v109) 20건 실측 누적 (실호출)
+  - 산출물: `docs/research/results/prompt-batch-v90-109.gpt4o-mini.2026-03-23.*`
+  - 실측 결과: `passed=0`, `failed=20` (HTTP 401 없음, judge violation 중심 실패)
+- [x] 일일 누적 통합 재생성
+  - `docs/research/results/prompt-batch-aggregated-2026-03-23.json`
+  - 누적 합계 갱신: `total=135, passed=0, failed=135`
+- [x] 배치 실험 결과(JSON) 대규모 누적 확대 1차 달성
+  - 누적 합계: `total=135, passed=0, failed=135`
+  - HTTP 401 인증 실패는 v1~v120 실측 배치에서 해소(호출 정상)
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions
 1. 실행 환경 정비: `dune` 설치 또는 대체 런처 확보 후 실제 roundtrip batch 재실행
-2. 유효한 LLM API 키/엔드포인트 확보 후 `run_gpt54_eval.py` 배치 실행 (`prompt-versions` 전체로 확장)
+2. `run_gpt54_eval.py` 배치의 judge taxonomy(상위 violation) 요약 자동화 및 프롬프트 수정 루프 연결
 3. 성공 호출이 확보되면 `docs/research/results/`에 task-set별 누적 지표(JSON) 정기 저장
 4. `papers/v2.md`에 누적 지표(ACR/PRR/ESR + mismatch taxonomy) 반영
 

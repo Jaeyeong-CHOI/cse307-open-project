@@ -13,7 +13,8 @@ p = pathlib.Path('$AVRTG_ENV')
 text = p.read_text()
 m = re.search(r'^OPENAI_API_KEY\s*=\s*(.+)$', text, flags=re.M)
 print(m.group(1).strip() if m else '')
-PY)"
+PY
+)"
 
 if [ -z "$KEY" ]; then
   echo "OPENAI_API_KEY not found in $AVRTG_ENV" >&2
