@@ -1,22 +1,23 @@
 \section{Method}
-\subsection{Language setup}
-We use a Python-like confusion language where selected Python tokens are replaced by aliases. We enforce:
-\begin{itemize}
-  \item one-to-one mapping between original token and alias,
-  \item no alias sharing across control keywords (e.g., if/elif),
-  \item token-boundary replacement and protection of comments/strings.
-\end{itemize}
+\subsection{Language Setup}
+We define a Python-like confusion language by replacing selected Python tokens with aliases. The transformation enforces:\begin{enumerate}
+  \item one-to-one mapping between each source token and its alias;
+  \item no alias sharing among control keywords (e.g., \texttt{if} and \texttt{elif});
+  \item token-boundary replacement while preserving comments and string/regex literals.
+\end{enumerate}
 
-\subsection{Pipeline}
-The implementation consists of an OCaml toolchain and Python utility scripts:
+\subsection{System Pipeline}
+The implementation combines OCaml transformations with Python evaluators:
 \begin{itemize}
-  \item Validation and transformation in \texttt{ocaml-confusion-lang},
-  \item summary/mapping scripts in \texttt{ocaml-confusion-lang/scripts},
-  \item metric aggregation and schema checks via \texttt{batch\_report\_summary.py}, \texttt{generate\_metric\_snapshot.py}, \texttt{validate\_summary\_payload.py}, \texttt{validate\_metric\_schema.py}.
+  \item alias/lineage validation and roundtrip conversion in \texttt{ocaml-confusion-lang};
+  \item generation summary and mapping scripts in \texttt{ocaml-confusion-lang/scripts};
+  \item metric aggregation and schema validation via
+  \texttt{batch\_report\_summary.py}, \texttt{generate\_metric\_snapshot.py},
+  \texttt{validate\_summary\_payload.py}, and \texttt{validate\_metric\_schema.py}.
 \end{itemize}
 
 \subsection{Metrics}
-We report:
+We define:
 \begin{itemize}
   \item ACR (Alias Compliance Rate)
   \item PRR (Python Reversion Rate)
@@ -25,8 +26,6 @@ We report:
   \item LGP (Learning Gain Proxy)
 \end{itemize}
 
-\subsection{Experiment design}
-Inputs are referenced by task-set IDs and alias IDs. The main fixture path is \texttt{fixture-task-set-v1} with \texttt{fixture-alias-v1}. Prompt condition uses \texttt{strict}. Real model calls are attempted through the batch script path, while fixture replays are used when API access is not available.
-
-\subsection{Code-level reliability controls}
-Recent commits added extensive output provenance states (retention flags/codes, truncation flags, one-to-one alias metadata) and multiple compact formats (JSON/JSONL/TSV/markdown), enabling robust machine parsing and reducing interpretation drift.
+\subsection{Experiment Configuration}
+Primary runs are controlled by fixture task/task-alias pairs (e.g., \texttt{fixture-task-set-v1}, \texttt{fixture-alias-v1}) and prompt conditions (\texttt{strict} baseline).
+Live API calls are executed through the batch path when credentials are available; otherwise, fixture replay is used for reproducibility checks.

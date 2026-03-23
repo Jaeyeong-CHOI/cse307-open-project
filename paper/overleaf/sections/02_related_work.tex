@@ -1,18 +1,24 @@
 \section{Related Work}
-\subsection{Code Generation Foundations}
-Early code-generation benchmarks and model families (e.g., HumanEval and MBPP) frame our problem context.\cite{chen2021codex,austin2021program}
+\subsection{Code-generation benchmarks and robustness}
+Code-generation benchmarks and model baselines (e.g., HumanEval and MBPP) motivate short-horizon program synthesis evaluation.
+\cite{chen2021codex,austin2021program}
 
-\subsection{Model Robustness under Constrained Syntax}
-Recent LLM code models (e.g., pretraining methods such as \textit{CodeBERT}, \textit{CodeT5}, \textit{UniXcoder}) have improved language-to-code transfer, but the gap between learned natural-language priors and constrained syntax remains underexplored.\cite{feng2020codebert,wang2021codet5,guo2022unixcoder}
+\subsection{Code representation models under perturbation}
+Pretraining work such as \textit{CodeBERT}, \textit{CodeT5}, and \textit{UniXcoder} improves code representation transfer, while preserving language semantics under transformed-token constraints remains underexplored in these settings.
+\cite{feng2020codebert,wang2021codet5,guo2022unixcoder}
 
-\subsection{Instruction Following and Alignment}
-Instruction-tuning and human-feedback approaches increased compliance for broad tasks, yet their effect on syntax-preserving transforms has not been systematically validated under alias perturbation settings.\cite{ouyang2022instruct,brown2020fewshot}
+\subsection{Instruction and alignment effects}
+Instruction-following tuning improves broad task compliance, yet its effect on non-standard syntax transformations has not been studied sufficiently.
+\cite{ouyang2022instruct,brown2020fewshot}
 
-\subsection{Repair and Edit-style Generation}
-Studies on infilling/editing architectures (e.g., InCoder) suggest that bidirectional context can help fix local code regions, which is relevant to our roundtrip-based mismatch diagnosis pipeline.\cite{fried2022incoder}
+\subsection{Repair-oriented generation}
+Editing and infilling methods (e.g., InCoder) indicate that bidirectional context can support local correction, relevant to our roundtrip diagnosis design.
+\cite{fried2022incoder}
 
-\subsection{Task Realism and Software Engineering Benchmarks}
-Beyond short-function benchmarks, SWE-bench shows that real-world patching tasks remain far more difficult and expose hidden fragility in supposedly strong models, motivating strict schema and lineage controls for our pipeline.\cite{jimenez2024swebench}
+\subsection{Software-engineering realism}
+SWE-bench demonstrates the gap between benchmark-scale success and real-world patching complexity, reinforcing our emphasis on strict artifact and lineage control.
+\cite{jimenez2024swebench}
 
-\subsection{Constraint-aware Generation}
-Emerging work on type-constrained decoding indicates a promising direction for enforcing semantic validity during generation, complementing our syntax-focused alias-control strategy.\cite{muendler2025type}
+\subsection{Constraint-aware decoding}
+Recent progress in constrained decoding suggests adding semantic constraints can complement syntax-layer methods, an important extension direction for confusion-language pipelines.
+\cite{muendler2025type}

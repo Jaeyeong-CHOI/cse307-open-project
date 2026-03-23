@@ -3,32 +3,30 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{geometry}
-\geometry{margin=0.9in}
-\usepackage{setspace}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{url}
-\usepackage{enumitem}
 
 \title{Failure-by-Language: Reproducible Evaluation of Python-like Confusion Language in LLM Code Generation}
-\author{Jaeyeong CHOI\\
-DGIST EECS\\
-\texttt{jaeyeong2022@dgist.ac.kr}}
-\date{\today}
+
+\author{
+\IEEEauthorblockN{Jaeyeong CHOI}
+\IEEEauthorblockA{DGIST EECS \\\\ \texttt{jaeyeong2022@dgist.ac.kr}}
+}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Recent studies on AI-assisted coding suggest a gap between short-term productivity and durable comprehension.
-This paper proposes a reproducible benchmark for syntax-constrained code generation: LLMs are asked to write Python-like code under transformed-token rules.
-
-We present an OCaml/CLI pipeline with lineage-aware schemas, run summary validation, and metric snapshot automation.
-Our current empirical status is constrained by live API authentication issues, but fixture-based replay and failure-taxonomy analysis provide a controlled baseline for further model comparisons.
+Recent studies on AI-assisted coding suggest a persistent gap between short-term productivity gains and durable programming comprehension. This paper proposes a reproducible benchmark for syntax-constrained code generation: language models are instructed to write Python-like programs under transformed-token rules.
+\
+We present an OCaml/CLI pipeline with lineage-aware task metadata, schema validation, and metric snapshot automation. Current empirical results are limited by temporary LLM API authentication failures; however, fixture replay experiments still provide a controlled baseline for measuring alias compliance, Python reversion, and execution success behavior.
 \end{abstract}
+
+\begin{IEEEkeywords}
+confusion language, LLM code generation, syntax perturbation, benchmark, reproducibility, program synthesis
+\end{IEEEkeywords}
 
 \input{sections/01_introduction}
 \input{sections/02_related_work}

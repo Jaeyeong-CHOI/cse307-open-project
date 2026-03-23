@@ -1,15 +1,14 @@
 \section{Discussion}
-The strongest contribution of this stage is not yet final model performance claims, but an operationally robust benchmark scaffold.
+The current stage contributes a robust benchmark scaffold rather than definitive model-ranking results.
 
-\subsection{What we validated}
-We successfully validated replay-side reproducibility: fixture summaries and metric snapshots are generated, versioned, and schema-checked. Planner CLI coverage for state-code formats expanded significantly, which reduced parser ambiguity and enabled compact, automation-friendly consumption.
+\subsection{Validated contributions}
+We confirmed replay-side reproducibility: fixture summaries and metric snapshots are generated, versioned, and schema-checked. CLI expansion for planner/state outputs reduced parser ambiguity and enabled compact machine-parsable artifacts.
 
-\subsection{What is currently limited}
+\subsection{Remaining limits}
 \begin{itemize}
-  \item All live model runs are currently blocked by API authentication issues (401).
-  \item Some experiments are constrained by missing local build tooling at points of testing.
-  \item Therefore, generalization across model families is not yet established.
+  \item Live model comparisons are blocked by API authentication issues (401), so cross-model conclusions are preliminary.
+  \item Real-world task breadth is still limited due to restricted batch expansion.
 \end{itemize}
 
-\subsection{Practical implication}
-For researchers building language-perturbation benchmarks, provenance and schema discipline are essential. Without this layer, observed failures can be misattributed to models while actually coming from transform, formatting, or execution drift.
+\subsection{Methodological implication}
+For constrained-language evaluation, provenance and schema control are first-order requirements. Without them, failure diagnosis is easily confounded by tooling drift or lineage mismatch, not model behavior.

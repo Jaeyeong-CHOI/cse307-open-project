@@ -1,22 +1,22 @@
 \section{Experiments}
 \subsection{Run protocol}
-Each experiment run follows three steps:
+Each run follows these steps:
 \begin{enumerate}
-  \item Prepare task-set and prompt condition metadata.
-  \item Run model batch or fixture replay path.
-  \item Validate summary and metric artifacts; archive results under \texttt{docs/research/results/}.
+  \item Prepare task-set metadata and prompt condition.
+  \item Execute model batch or fixture replay.
+  \item Validate summary payloads and metric snapshots, then archive in \texttt{docs/research/results/}.
 \end{enumerate}
 
-\subsection{Implemented execution coverage}
-Our current execution coverage includes:
+\subsection{Execution coverage}
+Current coverage includes:
 \begin{itemize}
-  \item fixture summary replay (full artifact generation and schema validation),
-  \item CLI regression coverage expansion on planner output formats and alias aliases,
-  \item structured batch result logging (including \texttt{.json}, \texttt{.csv}, and \texttt{.md}).
+  \item fixture summary replay with full artifact generation (JSON/CSV/Markdown) and schema validation;
+  \item planner/state-code regression expansion;
+  \item robust parsing output via compact JSON/JSONL/TSV/markdown formats.
 \end{itemize}
 
-\subsection{Observed blocking conditions}
-Batch calls using live LLM endpoints are blocked by authentication failures (HTTP 401), while local OCaml-based roundtrip execution was also blocked when environment dependencies (e.g., dune) were missing at test time.
+\subsection{Failure conditions observed}
+Live LLM batch calls are blocked by authentication failures (HTTP 401) in the current environment. Earlier local execution failures were additionally caused by missing environment dependencies (e.g., \texttt{dune}) and were resolved before this phase.
 
 \subsection{Reproducibility protocol}
-We track run state with committed artifacts and update policy-driven logs. For every change, related tests and schema checks are executed where relevant.
+Every run is committed with provenance fields and lineage IDs (task-set, alias-set, prompt config, and run metadata) so that mismatches are auditable and not silently conflated with tool drift.

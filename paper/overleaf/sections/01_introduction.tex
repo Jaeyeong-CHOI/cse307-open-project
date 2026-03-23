@@ -1,13 +1,13 @@
 \section{Introduction}
-Recent studies on AI-assisted coding consistently show a tension between short-term coding speed and durable understanding, especially for novices.\footnote{See structured review notes in \texttt{docs/research/literature/v1-curated.md}.}
+Recent studies on AI-assisted coding indicate a persistent tradeoff: immediate coding productivity may rise while durable comprehension and independent debugging skills lag, especially for beginners. This motivates evaluation under constrained syntax settings rather than only canonical benchmarks.
 
-This work studies a simple but strict question: when a model is instructed to write code in a Python-like language with transformed syntax, does it follow the new language rules, or revert to canonical Python conventions?
+This study asks a strict question: when a model is instructed to produce code in a Python-like language with transformed syntax, does it follow the transformed language rules, or revert to canonical Python conventions?
 
-We define a reproducible pipeline in three layers:
+We define a three-layer benchmark stack:
 \begin{enumerate}
   \item \textbf{Specification layer}: one-to-one token aliases and collision constraints.
-  \item \textbf{Execution layer}: OCaml-based transform/validate/roundtrip tooling.
-  \item \textbf{Measurement layer}: summary validation, metric generation, and schema checks.
+  \item \textbf{Execution layer}: OCaml-based transform, validate, and roundtrip tooling.
+  \item \textbf{Measurement layer}: summary validation, schema checks, and metric snapshots.
 \end{enumerate}
 
-Our objective is not model ranking. It is to isolate where and how models fail under constrained language perturbation.
+Our goal is not absolute model ranking. We isolate where constrained-language compliance fails and how failures relate to execution outcomes.
