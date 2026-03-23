@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 18:05 KST
+마지막 업데이트: 2026-03-23 18:10 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -24,6 +24,9 @@
 - [x] 배치 샘플 12건 LLM 평가 실행 파이프라인(프롬프트→JSON/CSV/MD) 누적 시도
   - 산출물: `docs/research/results/prompt-batch-top12.gpt4o-mini.2026-03-23.*`
   - 실측 결과: `passed=0`, `failed=12` (401 인증 실패 동일)
+- [x] 추가 배치(v110~v120) 11건 연속 누적 시도
+  - 산출물: `docs/research/results/prompt-batch-v110-120.gpt4o-mini.2026-03-23.*`
+  - 실측 결과: `passed=0`, `failed=11` (401 인증 실패 동일)
 - [ ] 배치 실험 결과(JSON) 대규모 누적 확대(LLM 모델/alias 조합)
   - [진행 막힘] 유효 API 키/엔드포인트 확보 필요
 - [ ] `docs/research/context-compression.md` 운영 적용
