@@ -50,30 +50,32 @@ For each sample, the judge applies:
 Pass is defined as zero violations.
 
 \subsection{Exact run settings reported in this paper}
-Representative full-range runs:
+To prevent overflow in two-column layout, we use run IDs:
 \begin{itemize}
-  \item \texttt{prompt-batch-v1-120.gpt4o-mini.2026-03-23.json}
-  \item \texttt{prompt-batch-v1-120.gpt41-mini.2026-03-23.json}
-  \item \texttt{prompt-batch-v1-120.gpt41-nano.2026-03-23.json}
-  \item \texttt{prompt-batch-v1-120.gpt54-mini.2026-03-23.json}
-\end{itemize}
-Context-pack ablation:
-\begin{itemize}
-  \item baseline: \texttt{prompt-batch-v1-120.gpt4o-mini.2026-03-23.json}
-  \item context-pack: \texttt{prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json}
-  \item diff report: \texttt{prompt-batch-compare-contextpack-vs-base.gpt4o-mini.2026-03-23.*}
+  \item Run-A: full-range \texttt{gpt-4o-mini}
+  \item Run-B: full-range \texttt{gpt-4.1-mini}
+  \item Run-C: full-range \texttt{gpt-4.1-nano}
+  \item Run-D: full-range \texttt{gpt-5.4-mini}
 \end{itemize}
 
-\subsection{Execution settings (compact)}
-To avoid line-break issues, we report settings in compact form:
+Context-pack ablation IDs:
 \begin{itemize}
-  \item model: \texttt{gpt-4o-mini}
+  \item Ablation-Base: baseline strict prompt contract
+  \item Ablation-CP: context-pack enabled
+  \item Ablation-Diff: base-vs-context comparison report
+\end{itemize}
+
+Artifact mapping for each run ID is listed in repository result manifests under
+\texttt{docs/research/results/} and the research status snapshot.
+
+\subsection{Execution settings (compact)}
+\begin{itemize}
+  \item model family: \texttt{gpt-4o-mini / gpt-4.1-mini / gpt-4.1-nano / gpt-5.4-mini}
   \item prompt range: \texttt{v1--v120}
   \item context-pack: \texttt{on/off} ablation
   \item failure cap: \texttt{999}
   \item outputs: run JSON + comparison JSON/MD
 \end{itemize}
-Full runnable commands are provided in repository docs/research artifacts.
 
 \subsection{What can be reproduced from this paper alone}
 A reader can reproduce:
