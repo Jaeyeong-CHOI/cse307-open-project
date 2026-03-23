@@ -9170,8 +9170,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_codes_json_alias_m_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "m",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_codes_json_alias_run.stdout != retained_state_codes_codes_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format cj alias to match canonical codes-json output")
+    if retained_state_codes_codes_json_alias_m_run.stdout != retained_state_codes_codes_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format m alias to match canonical codes-json output")
     retained_state_codes_codes_json_payload = json.loads(retained_state_codes_codes_json_run.stdout)
     if set(retained_state_codes_codes_json_payload.keys()) != {"0", "1"}:
         raise AssertionError("expected retained-records codes-json payload keys to be {'0','1'}")
@@ -9201,8 +9216,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_codes_jsonl_alias_ml_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "ml",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_codes_jsonl_alias_run.stdout != retained_state_codes_codes_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format cjl alias to match canonical codes-jsonl output")
+    if retained_state_codes_codes_jsonl_alias_ml_run.stdout != retained_state_codes_codes_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format ml alias to match canonical codes-jsonl output")
     retained_state_codes_codes_jsonl_payload = [
         json.loads(line)
         for line in retained_state_codes_codes_jsonl_run.stdout.splitlines()
