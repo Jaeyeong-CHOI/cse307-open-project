@@ -1,0 +1,107 @@
+{
+  "base": {
+    "path": "docs/research/results/prompt-batch-v1-120-legacy.gpt4o.2026-03-23.json",
+    "n": 120,
+    "passed": 1,
+    "failed": 119,
+    "avg_score": 17.583333333333332,
+    "nonzero_score": 30,
+    "top_violations": [
+      [
+        "original keyword used: for",
+        74
+      ],
+      [
+        "original keyword used: return",
+        39
+      ],
+      [
+        "original keyword used: if",
+        37
+      ],
+      [
+        "original keyword used: in",
+        34
+      ],
+      [
+        "original keyword used: def",
+        29
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 1)",
+        19
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 2)",
+        14
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 6)",
+        9
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 3)",
+        9
+      ],
+      [
+        "missing alias for in: no, use exact python original grammer",
+        9
+      ]
+    ]
+  },
+  "candidate": {
+    "path": "docs/research/results/prompt-batch-v1-120.gpt4o.2026-03-23.json",
+    "n": 120,
+    "passed": 2,
+    "failed": 118,
+    "avg_score": 18.166666666666668,
+    "nonzero_score": 30,
+    "top_violations": [
+      [
+        "original keyword used: for",
+        73
+      ],
+      [
+        "original keyword used: return",
+        39
+      ],
+      [
+        "original keyword used: if",
+        37
+      ],
+      [
+        "original keyword used: in",
+        34
+      ],
+      [
+        "original keyword used: def",
+        31
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 1)",
+        19
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 2)",
+        15
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 3)",
+        9
+      ],
+      [
+        "missing alias for in: no, use exact python original grammer",
+        9
+      ],
+      [
+        "python parse failed after normalization: expected '(' (<unknown>, line 2)",
+        9
+      ]
+    ]
+  },
+  "diff": {
+    "delta_avg_score": 0.5833333333333357,
+    "delta_nonzero_score": 0,
+    "delta_passed": 1
+  }
+}

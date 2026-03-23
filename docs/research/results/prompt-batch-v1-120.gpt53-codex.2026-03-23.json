@@ -1,0 +1,17 @@
+{
+  "model": "gpt-5.3-codex",
+  "results": [
+    {
+      "file": "docs/archive/prompt-versions/v1.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 404",
+          "{\n  \"error\": {\n    \"message\": \"This is not a chat model and thus not supported in the v1/chat/completions endpoint. Did you mean to use v1/completions?\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"model\",\n    \"code\": null\n  }\n}"
+        ]
+      }
+    }
+  ]
+}

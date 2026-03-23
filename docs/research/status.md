@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 22:21 KST
+마지막 업데이트: 2026-03-23 23:34 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -9,8 +9,8 @@
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
-- 결과 파일 누적: 🟢 (prompt-batch v1~v120 실측 JSON 5개 모델×120건 = 600건 누적 확정)
-- 지표 산출(ACR/PRR/ESR): 🟡 (실측 호출은 복구, full-range 기준 최초 pass 2건 확인되었으나 전반 실패율은 여전히 높음)
+- 결과 파일 누적: 🟢 (full-range 실측 6개 배치 + 변형조건(contextpack/legacy/probe) 포함 총 8개 JSON, 841건 누적)
+- 지표 산출(ACR/PRR/ESR): 🟡 (gpt-4o 기준 contextpack ON이 legacy 대비 pass +1, avg score +0.583 개선)
 - 문서화 품질: 🟢 (status/log/results 업데이트)
 
 ## This Week Progress
@@ -69,6 +69,12 @@
   - 누적 합계(당일 확정 배치): `total=600`, `passed=2`, `failed=598`
   - 관측 포인트: full-range batch 최초 pass 발생(2건)
   - 요약/집계 갱신: `.summary.csv`, `.summary.md`, `prompt-batch-aggregated-2026-03-23.json`
+- [x] 조건 비교 실측 추가: `gpt-4o` legacy(no contextpack) full-range v1~v120
+  - 신규 배치: `prompt-batch-v1-120-legacy.gpt4o.2026-03-23.json` (`total=120`, `passed=1`, `failed=119`)
+  - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt4o.2026-03-23.{json,md}`
+  - 비교 결과: contextpack ON이 legacy 대비 `delta_passed=+1`, `delta_avg_score=+0.583`
+- [x] 모델 가용성 probe: `gpt-5.3-codex` 1건 실행(HTTP 404)으로 unsupported 확인
+  - 산출: `prompt-batch-v1-120.gpt53-codex.2026-03-23.json` (`total=1`, `http_failures=1`)
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions
