@@ -1,0 +1,22 @@
+{
+  "schema_version": "v1",
+  "task_set_id": "fixture-task-set-v1",
+  "prompt_condition": "strict",
+  "model": "gpt-5.3-codex",
+  "metrics": {
+    "acr": 0.333,
+    "prr": 0.667,
+    "esr": 0.667,
+    "mfb": 65.0,
+    "lgp": 0.667
+  },
+  "source_summary": {
+    "input_report": "examples/batch-summary-fixture-whitespace-linecount.json",
+    "generated_at_utc": "2026-03-23T05:07:39Z",
+    "task_set_lineage": {
+      "task_set_id": "fixture-task-set-v1",
+      "alias_set_id": "fixture-alias-v1",
+      "manifest_path": "examples/manifest-v1.txt"
+    }
+  }
+}

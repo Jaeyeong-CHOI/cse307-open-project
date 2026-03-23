@@ -1,0 +1,4 @@
+source,status,exact_match,token_equivalent,ast_equivalent,failure_taxonomy,first_diff_line,first_diff_src,first_diff_restored,first_token_diff_index,first_token_diff_src,first_token_diff_restored
+examples/sample.py,ok,True,True,True,,,,,,,
+examples/blankline-drift.py,mismatch,False,True,True,line_count_mismatch|whitespace_or_blankline_drift,4,,    ,,,
+examples/collision-risk-case.py,mismatch,False,False,False,token_stream_mismatch|token_substitution_mismatch,2,    for n in nums:,    for n if nums:,8,word:in,word:if

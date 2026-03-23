@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "schema_version": "v1",
+    "generated_at_utc": "2026-03-23T05:07:39Z",
+    "input_report": "examples/batch-summary-fixture-whitespace-linecount.json",
+    "task_set_lineage": {
+      "task_set_id": "fixture-task-set-v1",
+      "alias_set_id": "fixture-alias-v1",
+      "manifest_path": "examples/manifest-v1.txt"
+    }
+  },
+  "title": "Batch Roundtrip Summary (batch-summary-fixture-whitespace-linecount.json)",
+  "overview": {
+    "total_cases": 3,
+    "ok_cases": 1,
+    "ok_cases_pct": "33.3%",
+    "mismatch_cases": 2,
+    "mismatch_cases_pct": "66.7%",
+    "include_diff": true,
+    "taxonomy_weight_source": "default:built-in",
+    "cases_scope": "all"
+  },
+  "quality_signals": {
+    "token_equivalent_true": 2,
+    "token_equivalent_pct": "66.7%",
+    "ast_equivalent_true": 2,
+    "ast_equivalent_pct": "66.7%",
+    "mismatch_severity_total": 130,
+    "mismatch_severity_avg": 65.0
+  },
+  "failure_taxonomy": {
+    "frequency": {
+      "line_count_mismatch": 1,
+      "whitespace_or_blankline_drift": 1,
+      "token_stream_mismatch": 1,
+      "token_substitution_mismatch": 1
+    },
+    "severity_weighted": [
+      {
+        "tag": "token_stream_mismatch",
+        "count": 1,
+        "weight": 40,
+        "weighted_score": 40
+      },
+      {
+        "tag": "token_substitution_mismatch",
+        "count": 1,
+        "weight": 35,
+        "weighted_score": 35
+      },
+      {
+        "tag": "line_count_mismatch",
+        "count": 1,
+        "weight": 10,
+        "weighted_score": 10
+      },
+      {
+        "tag": "whitespace_or_blankline_drift",
+        "count": 1,
+        "weight": 5,
+        "weighted_score": 5
+      }
+    ]
+  },
+  "top_mismatches": [
+    {
+      "source": "examples/collision-risk-case.py",
+      "failure_taxonomy": [
+        "token_stream_mismatch",
+        "token_substitution_mismatch"
+      ],
+      "severity": 115,
+      "first_diff_line": 2,
+      "first_token_diff_index": 8
+    },
+    {
+      "source": "examples/blankline-drift.py",
+      "failure_taxonomy": [
+        "line_count_mismatch",
+        "whitespace_or_blankline_drift"
+      ],
+      "severity": 15,
+      "first_diff_line": 4
+    }
+  ],
+  "mismatch_sort": "severity",
+  "cases": [
+    {
+      "source": "examples/sample.py",
+      "status": "ok",
+      "exact_match": true,
+      "token_equivalent": true,
+      "ast_equivalent": true,
+      "failure_taxonomy": [],
+      "first_diff": null,
+      "first_token_diff": null
+    },
+    {
+      "source": "examples/blankline-drift.py",
+      "status": "mismatch",
+      "exact_match": false,
+      "token_equivalent": true,
+      "ast_equivalent": true,
+      "failure_taxonomy": [
+        "line_count_mismatch",
+        "whitespace_or_blankline_drift"
+      ],
+      "first_diff": {
+        "line": 4,
+        "src": "",
+        "restored": "    "
+      },
+      "first_token_diff": null
+    },
+    {
+      "source": "examples/collision-risk-case.py",
+      "status": "mismatch",
+      "exact_match": false,
+      "token_equivalent": false,
+      "ast_equivalent": false,
+      "failure_taxonomy": [
+        "token_stream_mismatch",
+        "token_substitution_mismatch"
+      ],
+      "first_diff": {
+        "line": 2,
+        "src": "    for n in nums:",
+        "restored": "    for n if nums:"
+      },
+      "first_token_diff": {
+        "index": 8,
+        "src": "word:in",
+        "restored": "word:if"
+      }
+    }
+  ],
+  "gates": {
+    "mismatch": {
+      "enabled": false,
+      "tripped": false,
+      "observed_mismatch_cases": 2
+    },
+    "severity_total": {
+      "enabled": false,
+      "threshold": null,
+      "observed": 130,
+      "tripped": false
+    },
+    "severity_avg": {
+      "enabled": false,
+      "threshold": null,
+      "observed": 65.0,
+      "tripped": false
+    },
+    "any_tripped": false,
+    "tripped_list": [],
+    "aggregate": {
+      "enabled": false,
+      "tripped": false,
+      "exit_code": 4
+    }
+  }
+}
