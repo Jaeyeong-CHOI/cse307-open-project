@@ -1,0 +1,75 @@
+\section{Complete Reproducibility Protocol}
+\subsection{Repository and key paths}
+All experiments in this paper are based on:
+\begin{itemize}
+  \item repository root: \texttt{cse307-open-project/}
+  \item prompt bank: \texttt{docs/archive/prompt-versions/v*.md}
+  \item evaluation script: \texttt{scripts/run\_gpt54\_eval.py}
+  \item key-loader helper: \texttt{scripts/use\_avrtg\_openai\_key.sh}
+  \item comparison script: \texttt{scripts/compare\_eval\_runs.py}
+  \item outputs: \texttt{docs/research/results/}
+\end{itemize}
+
+\subsection{Prompt contract used in real runs}
+System message (core):
+\begin{quote}
+\small Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.
+\end{quote}
+
+Context-pack mode extends this with explicit transformed-language contract:
+\begin{itemize}
+  \item required alias map block,
+  \item banned original keyword list,
+  \item transformed-language-only output constraint.
+\end{itemize}
+
+\subsection{Judge details (deterministic)}
+For each sample, the judge applies:
+\begin{enumerate}
+  \item alias compliance and original keyword leakage checks,
+  \item alias\(\rightarrow\)Python normalization and AST parseability,
+  \item benchmark skeleton checks (\texttt{fib}, base case, recursion, loop-print contract).
+\end{enumerate}
+Pass is defined as zero violations.
+
+\subsection{Exact run settings reported in this paper}
+Representative full-range runs:
+\begin{itemize}
+  \item \texttt{prompt-batch-v1-120.gpt4o-mini.2026-03-23.json}
+  \item \texttt{prompt-batch-v1-120.gpt41-mini.2026-03-23.json}
+  \item \texttt{prompt-batch-v1-120.gpt41-nano.2026-03-23.json}
+  \item \texttt{prompt-batch-v1-120.gpt54-mini.2026-03-23.json}
+\end{itemize}
+Context-pack ablation:
+\begin{itemize}
+  \item baseline: \texttt{prompt-batch-v1-120.gpt4o-mini.2026-03-23.json}
+  \item context-pack: \texttt{prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json}
+  \item diff report: \texttt{prompt-batch-compare-contextpack-vs-base.gpt4o-mini.2026-03-23.*}
+\end{itemize}
+
+\subsection{Execution commands}
+\begin{verbatim}
+# full-range evaluation (example)
+./scripts/use_avrtg_openai_key.sh env \
+  CONTEXT_PACK=1 \
+  START_PROMPT_VERSION=1 END_PROMPT_VERSION=120 \
+  TARGET_FAILURES=999 EVAL_MODEL=gpt-4o-mini \
+  RESULT_JSON=docs/research/results/prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json \
+  python3 scripts/run_gpt54_eval.py
+
+# run-to-run comparison
+python3 scripts/compare_eval_runs.py \
+  --base docs/research/results/prompt-batch-v1-120.gpt4o-mini.2026-03-23.json \
+  --cand docs/research/results/prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json \
+  --out-json docs/research/results/prompt-batch-compare-contextpack-vs-base.gpt4o-mini.2026-03-23.json \
+  --out-md docs/research/results/prompt-batch-compare-contextpack-vs-base.gpt4o-mini.2026-03-23.md
+\end{verbatim}
+
+\subsection{What can be reproduced from this paper alone}
+A reader can reproduce:
+\begin{itemize}
+  \item full prompt-batch runs (v1--v120),
+  \item strict pass/fail and violation logs,
+  \item context-pack ablation deltas,
+  \item artifact-level evidence mapping from claims to files.
+\end{itemize}
