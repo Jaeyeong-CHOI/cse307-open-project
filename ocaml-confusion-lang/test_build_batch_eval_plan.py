@@ -9386,8 +9386,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_pairs_jsonl_ultra_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "pl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_pairs_jsonl_alias_run.stdout != retained_state_codes_pairs_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format pjl alias to match canonical pairs-jsonl output")
+    if retained_state_codes_pairs_jsonl_ultra_alias_run.stdout != retained_state_codes_pairs_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format pl alias to match canonical pairs-jsonl output")
     retained_state_codes_pairs_jsonl_payload = [
         json.loads(line)
         for line in retained_state_codes_pairs_jsonl_run.stdout.splitlines()
