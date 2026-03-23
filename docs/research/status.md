@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 19:20 KST
+마지막 업데이트: 2026-03-23 19:33 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -47,6 +47,11 @@
   - 단일 배치 확정: `prompt-batch-v1-120.gpt4o-mini.2026-03-23.json` (`total=120, passed=0, failed=120`)
   - HTTP 실패: `0` (401 재발 없음, judge violation 중심 실패)
   - 요약/검증 산출: `.summary.csv`, `.summary.md`, `prompt-batch-aggregated-2026-03-23.json`
+- [x] 동일 조건 교차모델 추가 실측(실데이터 누적 확대)
+  - 단일 배치 확정: `prompt-batch-v1-120.gpt41-mini.2026-03-23.json` (`total=120, passed=0, failed=120`)
+  - HTTP 실패: `0` (인증/런타임 실패 없음)
+  - 누적 합계(당일 확정 배치): `total=240, passed=0, failed=240`
+  - 통합 집계 갱신: `docs/research/results/prompt-batch-aggregated-2026-03-23.json`
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions
