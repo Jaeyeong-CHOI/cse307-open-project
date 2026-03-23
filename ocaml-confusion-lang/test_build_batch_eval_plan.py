@@ -9463,6 +9463,37 @@ def main() -> int:
     retained_state_codes_lines = [line for line in retained_state_codes_state_codes_lines_run.stdout.strip().splitlines() if line.strip()]
     if retained_state_codes_lines != ["no_retained_records\t0", "has_retained_records\t1"]:
         raise AssertionError(f"unexpected retained-records state-codes-lines output: {retained_state_codes_lines}")
+    retained_state_codes_state_codes_equals_lines_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "state-codes-equals-lines",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_state_codes_equals_lines_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "scel",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retained_state_codes_state_codes_equals_lines_alias_run.stdout != retained_state_codes_state_codes_equals_lines_run.stdout:
+        raise AssertionError("expected --list-state-codes-format scel alias to match canonical state-codes-equals-lines output")
+    retained_state_codes_equals_lines = [line for line in retained_state_codes_state_codes_equals_lines_run.stdout.strip().splitlines() if line.strip()]
+    if retained_state_codes_equals_lines != ["no_retained_records=0", "has_retained_records=1"]:
+        raise AssertionError(f"unexpected retained-records state-codes-equals-lines output: {retained_state_codes_equals_lines}")
     retained_state_codes_code_state_lines_run = subprocess.run(
         [
             "python3",
@@ -10120,6 +10151,37 @@ def main() -> int:
     retention_state_codes_lines = [line for line in retention_state_codes_state_codes_lines_run.stdout.strip().splitlines() if line.strip()]
     if retention_state_codes_lines != ["fully_retained\t0", "partially_retained\t1", "fully_truncated\t2"]:
         raise AssertionError(f"unexpected retention state-codes-lines output: {retention_state_codes_lines}")
+    retention_state_codes_state_codes_equals_lines_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "state-codes-equals-lines",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_state_codes_equals_lines_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "scel",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retention_state_codes_state_codes_equals_lines_alias_run.stdout != retention_state_codes_state_codes_equals_lines_run.stdout:
+        raise AssertionError("expected --list-state-codes-format scel alias to match canonical state-codes-equals-lines output")
+    retention_state_codes_equals_lines = [line for line in retention_state_codes_state_codes_equals_lines_run.stdout.strip().splitlines() if line.strip()]
+    if retention_state_codes_equals_lines != ["fully_retained=0", "partially_retained=1", "fully_truncated=2"]:
+        raise AssertionError(f"unexpected retention state-codes-equals-lines output: {retention_state_codes_equals_lines}")
     retention_state_codes_code_state_lines_run = subprocess.run(
         [
             "python3",
