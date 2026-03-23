@@ -9025,8 +9025,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_bundle_jsonl_alias_bl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "bl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_bundle_jsonl_alias_run.stdout != retained_state_codes_bundle_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format bjl alias to match canonical bundle-jsonl output")
+    if retained_state_codes_bundle_jsonl_alias_bl_run.stdout != retained_state_codes_bundle_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format bl alias to match canonical bundle-jsonl output")
     retained_state_codes_bundle_jsonl_lines = [line for line in retained_state_codes_bundle_jsonl_run.stdout.splitlines() if line.strip()]
     if len(retained_state_codes_bundle_jsonl_lines) != 1:
         raise AssertionError("expected retained-records bundle-jsonl output to emit exactly one JSON line")
@@ -9911,8 +9926,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_bundle_jsonl_alias_bl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "bl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_bundle_jsonl_alias_run.stdout != retention_state_codes_bundle_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format bjl alias to match canonical bundle-jsonl output")
+    if retention_state_codes_bundle_jsonl_alias_bl_run.stdout != retention_state_codes_bundle_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format bl alias to match canonical bundle-jsonl output")
     retention_state_codes_bundle_jsonl_lines = [line for line in retention_state_codes_bundle_jsonl_run.stdout.splitlines() if line.strip()]
     if len(retention_state_codes_bundle_jsonl_lines) != 1:
         raise AssertionError("expected retention bundle-jsonl output to emit exactly one JSON line")
