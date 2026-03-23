@@ -1,0 +1,6 @@
+\section{Introduction}
+Large language models (LLMs) have rapidly improved in coding tasks as code-focused training data and evaluation coverage have expanded. However, higher benchmark scores do not always imply robust instruction following under grammar-level perturbations.
+
+This work asks a targeted question: when models are asked to produce code in a Python-like but intentionally transformed grammar, do they follow the specified grammar or revert to canonical Python?
+
+To answer this, we define a ``confusion language'' protocol and build a reproducible pipeline for (i) alias-set validation, (ii) roundtrip consistency checking, and (iii) schema-validated metric generation. Our goal is not only model comparison but also educational insight: students should verify and repair generated code rather than trust outputs blindly.

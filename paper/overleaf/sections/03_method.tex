@@ -1,0 +1,16 @@
+\section{Method}
+\subsection{Confusion Language Setup}
+We map selected Python reserved tokens (e.g., \texttt{in}, \texttt{for}, \texttt{if}, \texttt{elif}, \texttt{return}, \texttt{def}) to alias phrases. To prevent decoding ambiguity, each alias must be unique (1:1 mapping).
+
+\subsection{Validation and Transformation Pipeline}
+The OCaml-based toolchain validates alias collisions, transforms source code into alias form, and checks roundtrip restoration. Supporting scripts generate summary and metric payloads with schema validation gates.
+
+\subsection{Metrics}
+We track:
+\begin{itemize}[leftmargin=1.2em]
+  \item ACR: Alias Compliance Rate
+  \item PRR: Python Reversion Rate
+  \item ESR: Execution Success Rate
+  \item MFB: Manual Fix Burden
+  \item LGP: Learning Gain Proxy
+\end{itemize}
