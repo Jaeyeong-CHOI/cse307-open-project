@@ -223,6 +223,43 @@ LIST_SORT_ALIASES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "cnj": "canonical-names-json",
 }
 
+LIST_STATE_CODES_FORMAT_CANONICALS: tuple[str, ...] = (
+    "json",
+    "bundle-json",
+    "bundle-jsonl",
+    "rows-json",
+    "rows-jsonl",
+    "codes-json",
+    "codes-jsonl",
+    "codes-list-json",
+    "codes-list-jsonl",
+    "state-codes-lines",
+    "state-codes-equals-lines",
+    "code-state-lines",
+    "code-state-equals-lines",
+    "state-codes-json",
+    "state-codes-jsonl",
+    "codes-state-json",
+    "codes-state-jsonl",
+    "pairs-json",
+    "pairs-jsonl",
+    "code-state-pairs-json",
+    "code-state-pairs-jsonl",
+    "names",
+    "names-json",
+    "names-jsonl",
+    "codes",
+    "tsv",
+    "tsv-rows",
+    "csv",
+    "csv-rows",
+    "markdown",
+    "markdown-rows",
+)
+
+def _get_list_state_codes_format_choices() -> tuple[str, ...]:
+    return tuple(dict.fromkeys((LIST_STATE_CODES_FORMAT_CANONICALS + tuple(LIST_STATE_CODES_FORMAT_ALIAS_MAP.keys()))))
+
 LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "j": "json",
     "b": "bundle-json",
@@ -299,6 +336,8 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "c": "codes",
 }
 
+
+LIST_STATE_CODES_FORMAT_CHOICES = _get_list_state_codes_format_choices()
 
 def _resolve_filter_mode(mode: str) -> str:
     return FILTER_MODE_ALIAS_MAP.get(mode, mode)
@@ -3205,7 +3244,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "bundle-json", "bundle-jsonl", "rows-json", "rows-jsonl", "codes-json", "codes-jsonl", "codes-list-json", "codes-list-jsonl", "state-codes-lines", "state-codes-equals-lines", "code-state-lines", "code-state-equals-lines", "state-codes-json", "state-codes-jsonl", "codes-state-json", "codes-state-jsonl", "pairs-json", "pairs-jsonl", "code-state-pairs-json", "code-state-pairs-jsonl", "names", "names-json", "names-jsonl", "codes", "tsv", "tsv-rows", "csv", "csv-rows", "markdown", "markdown-rows", "j", "b", "bj", "bjl", "bl", "rj", "rr", "x", "rjl", "rl", "rrl", "xl", "cj", "m", "cjl", "ml", "clj", "cljl", "cl", "scl", "sc", "l", "scel", "se", "e", "csl", "cs", "lc", "csel", "ce", "ec", "scj", "sj", "sm", "scjl", "sjl", "sml", "csj", "s", "cm", "csjl", "sl", "cml", "pj", "p", "pjl", "pl", "q", "cpj", "pc", "cpjl", "cpl", "qc", "n", "nj", "njl", "nl", "c", "t", "tr", "r", "rows", "cv", "v", "cr", "vr", "md", "mk", "k", "mdr", "mr", "mkr", "kr"),
+        choices=LIST_STATE_CODES_FORMAT_CHOICES,
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "

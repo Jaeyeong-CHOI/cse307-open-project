@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import hashlib
+import importlib.util
 import json
 import pathlib
 import re
 import socket
 import subprocess
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent
 SCRIPT = ROOT / "scripts" / "build_batch_eval_plan.py"
@@ -12,6 +14,48 @@ TASK_SET = ROOT / "examples" / "task-set-v1.json"
 OUT = ROOT / "_build" / "batch-summary-test"
 OUT.mkdir(parents=True, exist_ok=True)
 
+
+
+
+def _load_planner_module():
+    for p in (str(ROOT), str(SCRIPT.parent)):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+
+    spec = importlib.util.spec_from_file_location("planner_module", str(SCRIPT))
+    if spec is None or spec.loader is None:
+        raise RuntimeError("failed to load planner module spec")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _assert_state_codes_format_choices_alignment() -> None:
+    planner = _load_planner_module()
+    supported = set(planner.LIST_STATE_CODES_FORMAT_CHOICES)
+    missing = set(planner.LIST_STATE_CODES_FORMAT_CANONICALS) - supported
+    if missing:
+        raise AssertionError(f"missing canonical formats from argparse choices: {sorted(missing)}")
+
+    missing_aliases = set(planner.LIST_STATE_CODES_FORMAT_ALIAS_MAP.keys()) - supported
+    if missing_aliases:
+        raise AssertionError(f"missing alias formats from argparse choices: {sorted(missing_aliases)}")
+
+    # sanity: every supported choice should either be canonical or alias
+    unknown = supported - set(planner.LIST_STATE_CODES_FORMAT_CANONICALS) - set(planner.LIST_STATE_CODES_FORMAT_ALIAS_MAP.keys())
+    if unknown:
+        raise AssertionError(f"unexpected list-state-codes-format choices: {sorted(unknown)}")
+
+    for output_format in sorted(planner.LIST_STATE_CODES_FORMAT_ALIAS_MAP.keys()):
+        proc = subprocess.run(
+            ["python3", str(SCRIPT), "--list-retention-state-codes", "--list-state-codes-format", output_format],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        if proc.returncode != 0:
+            details = proc.stderr.strip() if proc.stderr else proc.stdout.strip()
+            raise AssertionError(f"expected alias {output_format} to be accepted by argparse choices: {details}")
 
 def main() -> int:
     output = OUT / "batch-plan.json"
@@ -11995,6 +12039,8 @@ def main() -> int:
         raise AssertionError("expected partially_retained row to expose is_partially_retained=true")
     if retention_row_by_state["fully_truncated"].get("is_fully_truncated") is not True:
         raise AssertionError("expected fully_truncated row to expose is_fully_truncated=true")
+
+    _assert_state_codes_format_choices_alignment()
 
     print("OK: build_batch_eval_plan regression passed")
     return 0
