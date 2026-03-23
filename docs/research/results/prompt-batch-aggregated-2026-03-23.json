@@ -1,34 +1,33 @@
 {
-  "updated_at_utc": "2026-03-23T09:15:53Z",
-  "runs": [
+  "date": "2026-03-23",
+  "model": "gpt-4o-mini",
+  "sources": [
     {
       "file": "prompt-batch-quick3.gpt4o-mini.2026-03-23.json",
-      "model": "gpt-4o-mini",
       "total": 3,
       "passed": 0,
-      "failed": 3,
-      "error_sample": "HTTP 401: {\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\""
+      "failed": 3
     },
     {
       "file": "prompt-batch-top12.gpt4o-mini.2026-03-23.json",
-      "model": "gpt-4o-mini",
       "total": 12,
       "passed": 0,
-      "failed": 12,
-      "error_sample": "HTTP Error 401: Unauthorized"
+      "failed": 12
     },
     {
       "file": "prompt-batch-v110-120.gpt4o-mini.2026-03-23.json",
-      "model": "gpt-4o-mini",
       "total": 11,
       "passed": 0,
-      "failed": 11,
-      "error_sample": "HTTP Error 401: Unauthorized"
+      "failed": 11
+    },
+    {
+      "file": "prompt-batch-v70-89.gpt4o-mini.2026-03-23.json",
+      "total": 20,
+      "passed": 0,
+      "failed": 20
     }
   ],
-  "cumulative": {
-    "total": 26,
-    "passed": 0,
-    "failed": 26
-  }
+  "total": 46,
+  "passed": 0,
+  "failed": 46
 }

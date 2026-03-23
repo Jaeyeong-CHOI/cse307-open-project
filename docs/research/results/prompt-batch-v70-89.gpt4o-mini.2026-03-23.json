@@ -1,0 +1,249 @@
+{
+  "model": "gpt-4o-mini",
+  "batch": "v70-89",
+  "total": 20,
+  "passed": 0,
+  "failed": 20,
+  "results": [
+    {
+      "file": "docs/archive/prompt-versions/v70.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v71.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v72.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v73.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v74.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v75.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v76.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v77.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v78.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v79.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v80.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v81.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v82.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v83.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v84.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v85.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v86.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v87.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v88.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v89.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401",
+          "{\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\",\n    \"type\": \"invalid_request_error\",\n    \"code\": \"invalid_api_key\",\n    \"param\": null\n  },\n  \"status\": 401\n}"
+        ]
+      }
+    }
+  ]
+}
