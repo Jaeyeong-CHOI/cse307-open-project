@@ -6,7 +6,7 @@
 
 ---
 
-## 1) (🟡 1차검토) 코딩 보조 AI가 디버깅 성과에 미치는 영향 연구
+## 1) (🟡 1차검토) 코딩 보조 AI가 디버깅 성과에 미치는 영향
 
 - Source: Anthropic 연구 공유 자료(사용자 제공 스크린샷 기반 1차 확인)
 - Claim (요약):
@@ -27,7 +27,7 @@
 
 ---
 
-## 2) (✅ 검토완료) Alias 충돌과 규칙 준수율 해석의 관계 (내부 실험 설계 지식)
+## 2) (✅ 검토완료) Alias 충돌과 규칙 준수율 해석의 관계 (내부 실험 설계 근거)
 
 - Source: 본 프로젝트 내부 실패 로그 + alias preset 실험
 - Claim:
@@ -43,7 +43,40 @@
 
 ---
 
+## 3) (🟡 1차검토) 코드 생성 대형모델 계보
+
+- Papers: Chen et al. 2021; Austin et al. 2021
+- 핵심 claim: HumanEval/MBPP 중심의 성능 비교가 코드 생성 연구의 출발점이 되었으나, 변환 언어 제약 적응성 측정은 상대적으로 미비
+- Relevance:
+  - 본 연구의 지표 구조가 기존 pass@k 위주 평가에서 보완 지표(ACR/PRR/ESR)로 확장됨
+
+---
+
+## 4) (🟡 1차검토) 코드 이해/생성 사전학습 모델군
+
+- Papers: CodeBERT, CodeT5, UniXcoder, InCoder
+- 핵심 claim: 코드 표현 학습은 향상되었지만, alias 교체 규칙 준수 같은 명시적 문법 규약 적응은 별도 제약 레이어가 필요
+- Relevance: 현재 파이프라인에서 provenance/roundtrip/스키마 검증을 결합한 이유의 이론적 근거
+
+---
+
+## 5) (🟡 1차검토) 실무형 과제 난이도(SWE-bench 계열)
+
+- Paper: Jimenez et al. 2023\*\* \(SWE-bench\)
+- 핵심 claim: 실제 GitHub 이슈 기반 문제는 단일 함수 합성보다 훨씬 어렵고, 실측 성능이 낮음
+- Relevance: 본 연구에서 fixture 기반에서 실측 확장으로 넘어갈 때 필요한 상위 레벨 난이도 맥락
+
+---
+
+## 6) (🟡 1차검토) 제약 기반 생성(타입/규칙)
+
+- Candidate: Mündler et al. 2025 Type-constrained decoding
+- 핵심 claim: 타입/규칙 기반 디코딩으로 컴파일률/유효성 개선 가능성
+- Relevance: 향후 confusion-language의 syntax+semantic 제약을 합치기 위한 다음 단계
+
+---
+
 ## 다음 업데이트 계획
-1. Anthropic 원문/공개 자료 링크 기준으로 실험 설계·통계 항목까지 검증 후 상태를 ✅로 승격 또는 제외
-2. 코딩 학습 효과 관련 최신 연구를 동일 템플릿으로 최소 3건 추가
-3. `docs/research/papers/v2.md`의 Related Work 섹션에 반영
+1. 선행연구 원문 링크 기준으로 각 항목을 DOI/저널 정보까지 정밀화
+2. 코딩 학습 효과/디버깅 관련 실험 연구를 최소 3편 추가
+3. `docs/research/papers/v2.md`와 Overleaf References를 정합되게 정리
