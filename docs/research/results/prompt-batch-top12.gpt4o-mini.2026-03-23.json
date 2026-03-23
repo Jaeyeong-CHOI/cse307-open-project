@@ -1,0 +1,203 @@
+{
+  "schema_version": "cse307-prompt-batch-v1",
+  "started_at_utc": "2026-03-23T08:55:58Z",
+  "model": "gpt-4o-mini",
+  "base_url": "https://api.openai.com/v1",
+  "total": 12,
+  "passed": 0,
+  "failed": 12,
+  "results": [
+    {
+      "file": "docs/archive/prompt-versions/v1.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v10.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v100.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v101.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v102.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v103.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v104.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v105.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v106.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v107.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v108.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    },
+    {
+      "file": "docs/archive/prompt-versions/v109.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP Error 401: Unauthorized"
+        ]
+      },
+      "model": "gpt-4o-mini",
+      "ok": false,
+      "score": 0,
+      "error": "HTTP Error 401: Unauthorized",
+      "ts": "2026-03-23T08:55:58Z"
+    }
+  ]
+}
