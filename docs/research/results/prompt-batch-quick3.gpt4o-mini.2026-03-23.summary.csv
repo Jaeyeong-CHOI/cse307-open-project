@@ -1,0 +1,10 @@
+file,model,ok,score,error
+docs/archive/prompt-versions/v1.md,gpt-4o-mini,False,0,"HTTP 401: {
+  ""error"": {
+    ""message"": ""Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys."""
+docs/archive/prompt-versions/v2.md,gpt-4o-mini,False,0,"HTTP 401: {
+  ""error"": {
+    ""message"": ""Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys."""
+docs/archive/prompt-versions/v3.md,gpt-4o-mini,False,0,"HTTP 401: {
+  ""error"": {
+    ""message"": ""Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys."""

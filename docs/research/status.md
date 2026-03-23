@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 18:10 KST
+마지막 업데이트: 2026-03-23 18:13 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -27,6 +27,10 @@
 - [x] 추가 배치(v110~v120) 11건 연속 누적 시도
   - 산출물: `docs/research/results/prompt-batch-v110-120.gpt4o-mini.2026-03-23.*`
   - 실측 결과: `passed=0`, `failed=11` (401 인증 실패 동일)
+- [x] 배치 재시도: `docs/archive/prompt-versions/v1~v3` quick3 배치 실행
+  - 산출물: `docs/research/results/prompt-batch-quick3.gpt4o-mini.2026-03-23.*`
+  - 실측 결과: `passed=0`, `failed=3` (401 인증 실패 동일)
+  - JSON 카운트/필수키 정합성 검증(OK)
 - [ ] 배치 실험 결과(JSON) 대규모 누적 확대(LLM 모델/alias 조합)
   - [진행 막힘] 유효 API 키/엔드포인트 확보 필요
 - [ ] `docs/research/context-compression.md` 운영 적용

@@ -1,0 +1,62 @@
+{
+  "schema_version": "cse307-prompt-batch-v1",
+  "started_at_utc": "2026-03-23T09:15:04Z",
+  "model": "gpt-4o-mini",
+  "base_url": "https://api.openai.com/v1",
+  "total": 3,
+  "passed": 0,
+  "failed": 3,
+  "results": [
+    {
+      "file": "docs/archive/prompt-versions/v1.md",
+      "model": "gpt-4o-mini",
+      "base_url": "https://api.openai.com/v1",
+      "ts": "2026-03-23T09:15:03Z",
+      "ok": false,
+      "answer": "",
+      "error": "HTTP 401: {\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\"",
+      "score": 0,
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401: {\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\""
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v2.md",
+      "model": "gpt-4o-mini",
+      "base_url": "https://api.openai.com/v1",
+      "ts": "2026-03-23T09:15:04Z",
+      "ok": false,
+      "answer": "",
+      "error": "HTTP 401: {\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\"",
+      "score": 0,
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401: {\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\""
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v3.md",
+      "model": "gpt-4o-mini",
+      "base_url": "https://api.openai.com/v1",
+      "ts": "2026-03-23T09:15:04Z",
+      "ok": false,
+      "answer": "",
+      "error": "HTTP 401: {\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\"",
+      "score": 0,
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "HTTP 401: {\n  \"error\": {\n    \"message\": \"Incorrect API key provided: sk-proj-********************************************************************************************************************************************************s8AA. You can find your API key at https://platform.openai.com/account/api-keys.\""
+        ]
+      }
+    }
+  ]
+}
