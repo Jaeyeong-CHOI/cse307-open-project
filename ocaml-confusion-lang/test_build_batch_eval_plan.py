@@ -9205,6 +9205,49 @@ def main() -> int:
         raise AssertionError(
             f"unexpected retained-records codes-state-json payload: {retained_state_codes_codes_state_json_payload}"
         )
+    retained_state_codes_codes_state_jsonl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "codes-state-jsonl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_codes_state_jsonl_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "csjl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retained_state_codes_codes_state_jsonl_alias_run.stdout != retained_state_codes_codes_state_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format csjl alias to match canonical codes-state-jsonl output")
+    retained_state_codes_codes_state_jsonl_payload = [
+        json.loads(line)
+        for line in retained_state_codes_codes_state_jsonl_run.stdout.splitlines()
+        if line.strip()
+    ]
+    if retained_state_codes_codes_state_jsonl_payload != [{"0": "no_retained_records"}, {"1": "has_retained_records"}]:
+        raise AssertionError(
+            f"unexpected retained-records codes-state-jsonl payload: {retained_state_codes_codes_state_jsonl_payload}"
+        )
+    if {
+        key: value
+        for row in retained_state_codes_codes_state_jsonl_payload
+        for key, value in row.items()
+    } != retained_state_codes_codes_state_json_payload:
+        raise AssertionError("expected retained-records codes-state-jsonl rows to match codes-state-json payload")
     retained_state_codes_pairs_json_run = subprocess.run(
         [
             "python3",
@@ -9996,6 +10039,53 @@ def main() -> int:
         raise AssertionError(
             f"unexpected retention codes-state-json payload: {retention_state_codes_codes_state_json_payload}"
         )
+    retention_state_codes_codes_state_jsonl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "codes-state-jsonl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_codes_state_jsonl_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "csjl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retention_state_codes_codes_state_jsonl_alias_run.stdout != retention_state_codes_codes_state_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format csjl alias to match canonical codes-state-jsonl output")
+    retention_state_codes_codes_state_jsonl_payload = [
+        json.loads(line)
+        for line in retention_state_codes_codes_state_jsonl_run.stdout.splitlines()
+        if line.strip()
+    ]
+    if retention_state_codes_codes_state_jsonl_payload != [
+        {"0": "fully_retained"},
+        {"1": "partially_retained"},
+        {"2": "fully_truncated"},
+    ]:
+        raise AssertionError(
+            f"unexpected retention codes-state-jsonl payload: {retention_state_codes_codes_state_jsonl_payload}"
+        )
+    if {
+        key: value
+        for row in retention_state_codes_codes_state_jsonl_payload
+        for key, value in row.items()
+    } != retention_state_codes_codes_state_json_payload:
+        raise AssertionError("expected retention codes-state-jsonl rows to match codes-state-json payload")
     retention_state_codes_pairs_json_run = subprocess.run(
         [
             "python3",
