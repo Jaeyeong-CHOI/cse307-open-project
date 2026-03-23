@@ -237,6 +237,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "cj": "codes-json",
     "clj": "codes-list-json",
     "cljl": "codes-list-jsonl",
+    "cl": "codes-list-jsonl",
     "scl": "state-codes-lines",
     "scel": "state-codes-equals-lines",
     "se": "state-codes-equals-lines",
@@ -260,6 +261,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "n": "names",
     "nj": "names-json",
     "njl": "names-jsonl",
+    "nl": "names-jsonl",
     "c": "codes",
 }
 
@@ -3109,12 +3111,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--list-state-codes-format",
-        choices=("json", "bundle-json", "bundle-jsonl", "rows-json", "rows-jsonl", "codes-json", "codes-list-json", "codes-list-jsonl", "state-codes-lines", "state-codes-equals-lines", "code-state-lines", "code-state-equals-lines", "state-codes-json", "state-codes-jsonl", "codes-state-json", "codes-state-jsonl", "pairs-json", "pairs-jsonl", "code-state-pairs-json", "code-state-pairs-jsonl", "names", "names-json", "names-jsonl", "codes", "tsv", "tsv-rows", "j", "b", "bj", "bjl", "bl", "rj", "rjl", "rl", "cj", "clj", "cljl", "scl", "scel", "se", "csl", "csel", "ce", "scj", "sj", "scjl", "sjl", "csj", "s", "csjl", "sl", "pj", "pjl", "pl", "cpj", "cpjl", "cpl", "n", "nj", "njl", "c", "t", "tr", "r", "rows"),
+        choices=("json", "bundle-json", "bundle-jsonl", "rows-json", "rows-jsonl", "codes-json", "codes-list-json", "codes-list-jsonl", "state-codes-lines", "state-codes-equals-lines", "code-state-lines", "code-state-equals-lines", "state-codes-json", "state-codes-jsonl", "codes-state-json", "codes-state-jsonl", "pairs-json", "pairs-jsonl", "code-state-pairs-json", "code-state-pairs-jsonl", "names", "names-json", "names-jsonl", "codes", "tsv", "tsv-rows", "j", "b", "bj", "bjl", "bl", "rj", "rjl", "rl", "cj", "clj", "cljl", "cl", "scl", "scel", "se", "csl", "csel", "ce", "scj", "sj", "scjl", "sjl", "csj", "s", "csjl", "sl", "pj", "pjl", "pl", "cpj", "cpjl", "cpl", "n", "nj", "njl", "nl", "c", "t", "tr", "r", "rows"),
         default="json",
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
             "json (default), bundle-json (base schema + derived lookup views in one payload), bundle-jsonl (compact single-line JSON for bundle-json payload), rows-json (row list only), rows-jsonl (compact JSON line per row), codes-json (code-keyed row map), codes-list-json (JSON numeric-code array), codes-list-jsonl (compact JSON line per numeric code), state-codes-lines (newline <state>\\t<code> pairs), state-codes-equals-lines (newline <state>=<code> pairs), code-state-lines (newline <code>\\t<state> pairs), code-state-equals-lines (newline <code>=<state> pairs), state-codes-json (state->code map), state-codes-jsonl (compact JSON line per {state: code} mapping), codes-state-json (code->state map), codes-state-jsonl (compact JSON line per {code: state} mapping), pairs-json ([state, code] tuples), pairs-jsonl (compact JSON line per [state, code] tuple), code-state-pairs-json ([code, state] tuples), code-state-pairs-jsonl (compact JSON line per [code, state] tuple), names (newline state labels), names-json (JSON state-label array), names-jsonl (compact JSON line per state label), codes (newline numeric codes), tsv (header), or tsv-rows (headerless rows). "
-            "Shorthand aliases: j=json, b/bj=bundle-json, bjl/bl=bundle-jsonl, rj=rows-json, rjl/rl=rows-jsonl, cj=codes-json, clj=codes-list-json, cljl=codes-list-jsonl, scl=state-codes-lines, scel/se=state-codes-equals-lines, csl=code-state-lines, csel/ce=code-state-equals-lines, scj/sj=state-codes-json, scjl/sjl=state-codes-jsonl, csj/s=codes-state-json, csjl/sl=codes-state-jsonl, pj=pairs-json, pjl/pl=pairs-jsonl, cpj=code-state-pairs-json, cpjl/cpl=code-state-pairs-jsonl, n=names, nj=names-json, njl=names-jsonl, c=codes, t=tsv, tr/r/rows=tsv-rows."
+            "Shorthand aliases: j=json, b/bj=bundle-json, bjl/bl=bundle-jsonl, rj=rows-json, rjl/rl=rows-jsonl, cj=codes-json, clj=codes-list-json, cljl/cl=codes-list-jsonl, scl=state-codes-lines, scel/se=state-codes-equals-lines, csl=code-state-lines, csel/ce=code-state-equals-lines, scj/sj=state-codes-json, scjl/sjl=state-codes-jsonl, csj/s=codes-state-json, csjl/sl=codes-state-jsonl, pj=pairs-json, pjl/pl=pairs-jsonl, cpj=code-state-pairs-json, cpjl/cpl=code-state-pairs-jsonl, n=names, nj=names-json, njl/nl=names-jsonl, c=codes, t=tsv, tr/r/rows=tsv-rows."
         ),
     )
     parser.add_argument(
