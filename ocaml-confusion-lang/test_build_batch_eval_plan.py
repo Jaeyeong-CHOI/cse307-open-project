@@ -9765,8 +9765,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_pairs_json_ultra_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "p",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_pairs_json_alias_run.stdout != retained_state_codes_pairs_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format pj alias to match canonical pairs-json output")
+    if retained_state_codes_pairs_json_ultra_alias_run.stdout != retained_state_codes_pairs_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format p alias to match canonical pairs-json output")
     retained_state_codes_pairs_json_payload = json.loads(retained_state_codes_pairs_json_run.stdout)
     if retained_state_codes_pairs_json_payload != [["no_retained_records", 0], ["has_retained_records", 1]]:
         raise AssertionError(
@@ -9848,8 +9863,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_code_state_pairs_json_short_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "pc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_code_state_pairs_json_alias_run.stdout != retained_state_codes_code_state_pairs_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format cpj alias to match canonical code-state-pairs-json output")
+    if retained_state_codes_code_state_pairs_json_short_alias_run.stdout != retained_state_codes_code_state_pairs_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format pc alias to match canonical code-state-pairs-json output")
     retained_state_codes_code_state_pairs_json_payload = json.loads(retained_state_codes_code_state_pairs_json_run.stdout)
     if retained_state_codes_code_state_pairs_json_payload != [[0, "no_retained_records"], [1, "has_retained_records"]]:
         raise AssertionError(
@@ -11161,8 +11191,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_pairs_json_ultra_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "p",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_pairs_json_alias_run.stdout != retention_state_codes_pairs_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format pj alias to match canonical pairs-json output")
+    if retention_state_codes_pairs_json_ultra_alias_run.stdout != retention_state_codes_pairs_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format p alias to match canonical pairs-json output")
     retention_state_codes_pairs_json_payload = json.loads(retention_state_codes_pairs_json_run.stdout)
     if retention_state_codes_pairs_json_payload != [
         ["fully_retained", 0],
@@ -11233,8 +11278,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_code_state_pairs_json_short_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "pc",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_code_state_pairs_json_alias_run.stdout != retention_state_codes_code_state_pairs_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format cpj alias to match canonical code-state-pairs-json output")
+    if retention_state_codes_code_state_pairs_json_short_alias_run.stdout != retention_state_codes_code_state_pairs_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format pc alias to match canonical code-state-pairs-json output")
     retention_state_codes_code_state_pairs_json_payload = json.loads(retention_state_codes_code_state_pairs_json_run.stdout)
     if retention_state_codes_code_state_pairs_json_payload != [
         [0, "fully_retained"],
