@@ -1,20 +1,22 @@
-\documentclass[11pt]{article}
+\documentclass[conference]{IEEEtran}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{geometry}
-\geometry{margin=1in}
+\geometry{margin=0.9in}
 \usepackage{setspace}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{natbib}
+\usepackage{url}
 \usepackage{enumitem}
 
-\title{Failure-by-Language: Reproducible Evaluation of Python\texttt{-}like Confusion Language in LLM Code Generation}
-\author{Jaeyeong CHOI\\DGIST EECS\\\texttt{jaeyeong2022@dgist.ac.kr}}
+\title{Failure-by-Language: Reproducible Evaluation of Python-like Confusion Language in LLM Code Generation}
+\author{Jaeyeong CHOI\\
+DGIST EECS\\
+\texttt{jaeyeong2022@dgist.ac.kr}}
 \date{\today}
 
 \begin{document}
@@ -36,7 +38,7 @@ Our current empirical status is constrained by live API authentication issues, b
 \input{sections/06_discussion}
 \input{sections/07_conclusion}
 
-\section{Reproducibility and artifact availability}
+\section{Reproducibility and Artifact Availability}
 All scripts, logs, and metrics are versioned in the repository. Representative paths:
 \begin{itemize}
   \item Tooling: \texttt{ocaml-confusion-lang/}
@@ -46,7 +48,7 @@ All scripts, logs, and metrics are versioned in the repository. Representative p
   \item Paper draft: \texttt{docs/research/papers/v2.md}
 \end{itemize}
 
-\bibliographystyle{plainnat}
+\bibliographystyle{IEEEtran}
 \bibliography{refs}
 
 \end{document}

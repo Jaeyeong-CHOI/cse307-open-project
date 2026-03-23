@@ -1,14 +1,18 @@
 \section{Related Work}
-\subsection{Code generation foundations}
-Early code-generation benchmarks and model families (e.g., HumanEval and MBPP) frame our problem context.\citep{chen2021codex,austin2021program}
-\
-\subsection{Model robustness under constrained syntax}
-Recent LLM code models (e.g., pretraining methods such as \textit{CodeBERT}, \textit{CodeT5}, \textit{UniXcoder}) have improved language-to-code transfer, but the gap between learned natural-language priors and constrained syntax remains underexplored.\citep{feng2020codebert,wang2021codet5,guo2022unixcoder}
-\subsection{Instruction following and alignment}
-Instruction-tuning and human-feedback approaches increased compliance for broad tasks, yet their effect on syntax-preserving transforms has not been systematically validated under alias perturbation settings.\citep{ouyang2022instruct,brown2020fewshot}
-\subsection{Repair and edit-style generation}
-Studies on infilling/editing architectures (e.g., InCoder) suggest that bidirectional context can help fix local code regions, which is relevant to our roundtrip-based mismatch diagnosis pipeline.\citep{fried2022incoder}
-\subsection{Task realism and software-engineering benchmarks}
-Beyond short-function benchmarks, SWE-bench shows that real-world patching tasks remain far more difficult and expose hidden fragility in supposedly strong models, motivating strict schema and lineage controls for our pipeline.\citep{jimenez2024swebench}
-\subsection{Type/constraint-aware generation}
-Emerging work on type-constrained decoding indicates a promising direction for enforcing semantic validity during generation, complementing our syntax-focused alias-control strategy.\citep{muendler2025type}
+\subsection{Code Generation Foundations}
+Early code-generation benchmarks and model families (e.g., HumanEval and MBPP) frame our problem context.\cite{chen2021codex,austin2021program}
+
+\subsection{Model Robustness under Constrained Syntax}
+Recent LLM code models (e.g., pretraining methods such as \textit{CodeBERT}, \textit{CodeT5}, \textit{UniXcoder}) have improved language-to-code transfer, but the gap between learned natural-language priors and constrained syntax remains underexplored.\cite{feng2020codebert,wang2021codet5,guo2022unixcoder}
+
+\subsection{Instruction Following and Alignment}
+Instruction-tuning and human-feedback approaches increased compliance for broad tasks, yet their effect on syntax-preserving transforms has not been systematically validated under alias perturbation settings.\cite{ouyang2022instruct,brown2020fewshot}
+
+\subsection{Repair and Edit-style Generation}
+Studies on infilling/editing architectures (e.g., InCoder) suggest that bidirectional context can help fix local code regions, which is relevant to our roundtrip-based mismatch diagnosis pipeline.\cite{fried2022incoder}
+
+\subsection{Task Realism and Software Engineering Benchmarks}
+Beyond short-function benchmarks, SWE-bench shows that real-world patching tasks remain far more difficult and expose hidden fragility in supposedly strong models, motivating strict schema and lineage controls for our pipeline.\cite{jimenez2024swebench}
+
+\subsection{Constraint-aware Generation}
+Emerging work on type-constrained decoding indicates a promising direction for enforcing semantic validity during generation, complementing our syntax-focused alias-control strategy.\cite{muendler2025type}
