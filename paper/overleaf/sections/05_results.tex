@@ -2,8 +2,8 @@
 
 \begin{table}[!t]
 \centering
-\caption{Initial aggregate metrics from replayed fixture run.}
-\label{tab:metrics}
+\caption{Fixture replay baseline metrics.}
+\label{tab:fixture_metrics}
 \begin{tabular}{lcc}
 \toprule
 Metric & Value & Note \\
@@ -17,20 +17,24 @@ LGP & 0.667 & learning proxy metric from replay context \\
 \end{tabular}
 \end{table}
 
-\subsection{Live API attempts}
-A 12-prompt real-call batch against \texttt{gpt-4o-mini} is currently blocked:
+\subsection{Real-call full-range batches (v1--v120)}
+After key-path recovery, we executed full-range real-call batches for four model settings:
 \begin{itemize}
-  \item \textbf{passed=0}, \textbf{failed=12}
-  \item primary failure: HTTP 401 unauthorized.
+  \item \texttt{gpt-4o-mini}: total=120, passed=0, failed=120
+  \item \texttt{gpt-4.1-mini}: total=120, passed=0, failed=120
+  \item \texttt{gpt-4.1-nano}: total=120, passed=0, failed=120
+  \item \texttt{gpt-5.4-mini}: total=120, passed=0, failed=120
 \end{itemize}
+Total accumulated real-call samples: \textbf{480}. In these full-range runs, HTTP authentication failures were removed; dominant failures moved to judge-side violations.
 
-\subsection{Failure taxonomy (replay)}
-Observed dominant mismatch classes are:
+\subsection{Observed violation profile}
+Representative high-frequency violation categories include:
 \begin{itemize}
-  \item \texttt{line\_count\_mismatch}
-  \item \texttt{whitespace\_or\_blankline\_drift}
-  \item \texttt{token\_stream\_mismatch}
-  \item \texttt{token\_substitution\_mismatch}
+  \item \texttt{original keyword used}
+  \item \texttt{python parse failed after normalization}
+  \item alias-missing and roundtrip mismatch derivatives
 \end{itemize}
+For parse-failure counts, \texttt{gpt-5.4-mini} (95) and \texttt{gpt-4.1-mini} (96) were lower than \texttt{gpt-4o-mini} (109) and \texttt{gpt-4.1-nano} (111), but all remained at 0 pass under the current strict judge protocol.
 
-These patterns indicate both surface-form instability and transformation-format fragility.
+\subsection{Interpretation}
+The bottleneck has shifted from infrastructure authentication to strict compliance under transformed syntax constraints. This confirms that the current challenge is primarily behavioral (rule adherence), not endpoint availability.

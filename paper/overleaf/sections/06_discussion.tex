@@ -1,14 +1,18 @@
 \section{Discussion}
-The current stage contributes a robust benchmark scaffold rather than definitive model-ranking results.
+The current stage contributes a robust benchmark scaffold \emph{and} a meaningful real-call accumulation (480 samples), but still no passing cases under strict compliance.
 
-\subsection{Validated contributions}
-We confirmed replay-side reproducibility: fixture summaries and metric snapshots are generated, versioned, and schema-checked. CLI expansion for planner/state outputs reduced parser ambiguity and enabled compact machine-parsable artifacts.
-
-\subsection{Remaining limits}
+\subsection{What is now validated}
 \begin{itemize}
-  \item Live model comparisons are blocked by API authentication issues (401), so cross-model conclusions are preliminary.
-  \item Real-world task breadth is still limited due to restricted batch expansion.
+  \item Replay-side reproducibility is stable (schema checks, lineage, fixture snapshots).
+  \item Real-call execution is operational after key-path recovery (HTTP auth failures removed in full-range runs).
+  \item Failure concentration is now clearly behavioral: keyword reversion and normalization-parse breakdown.
+\end{itemize}
+
+\subsection{What remains limited}
+\begin{itemize}
+  \item All four tested model settings currently show 0 pass under strict judge criteria.
+  \item Cross-condition prompt design is still narrow (few-shot/repair-loop variants not yet fully explored).
 \end{itemize}
 
 \subsection{Methodological implication}
-For constrained-language evaluation, provenance and schema control are first-order requirements. Without them, failure diagnosis is easily confounded by tooling drift or lineage mismatch, not model behavior.
+For constrained-language evaluation, provenance and schema controls are necessary but not sufficient. Once infra is stable, model behavior can still collapse under strict rule adherence. Therefore, next experiments should explicitly separate prompt-design effects, decoding constraints, and judge strictness sensitivity.
