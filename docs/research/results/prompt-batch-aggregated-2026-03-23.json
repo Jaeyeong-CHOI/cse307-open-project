@@ -2,14 +2,6 @@
   "date": "2026-03-23",
   "batches": [
     {
-      "file": "prompt-batch-v1-120.gpt4o-mini.2026-03-23.json",
-      "model": "gpt-4o-mini",
-      "total": 120,
-      "passed": 0,
-      "failed": 120,
-      "http_failures": 0
-    },
-    {
       "file": "prompt-batch-v1-120.gpt41-mini.2026-03-23.json",
       "model": "gpt-4.1-mini",
       "total": 120,
@@ -24,16 +16,32 @@
       "passed": 0,
       "failed": 120,
       "http_failures": 0
+    },
+    {
+      "file": "prompt-batch-v1-120.gpt4o-mini.2026-03-23.json",
+      "model": "gpt-4o-mini",
+      "total": 120,
+      "passed": 0,
+      "failed": 120,
+      "http_failures": 0
+    },
+    {
+      "file": "prompt-batch-v1-120.gpt54-mini.2026-03-23.json",
+      "model": "gpt-5.4-mini",
+      "total": 120,
+      "passed": 0,
+      "failed": 120,
+      "http_failures": 0
     }
   ],
   "totals": {
-    "total": 360,
+    "total": 480,
     "passed": 0,
-    "failed": 360,
+    "failed": 480,
     "http_failures": 0
   },
   "notes": [
-    "full-range real-data batches accumulated for three models (gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano) under identical v1~v120 settings",
-    "all failures are judge-violation-driven with minor timeout errors; no HTTP auth/runtime failures observed in finalized full-range runs"
+    "full-range real-data batches accumulated for four models (gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini) under identical v1~v120 settings",
+    "all failures remain judge-violation-driven; no HTTP auth/runtime failures observed in finalized full-range runs"
   ]
 }

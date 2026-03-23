@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 19:52 KST
+마지막 업데이트: 2026-03-23 21:12 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -9,7 +9,7 @@
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
-- 결과 파일 누적: 🟢 (prompt-batch v1~v120 실측 JSON 3개 모델×120건 = 360건 누적 확정)
+- 결과 파일 누적: 🟢 (prompt-batch v1~v120 실측 JSON 4개 모델×120건 = 480건 누적 확정)
 - 지표 산출(ACR/PRR/ESR): 🟡 (실측 호출은 복구, task pass는 여전히 0으로 난도 높음)
 - 문서화 품질: 🟢 (status/log/results 업데이트)
 
@@ -57,6 +57,11 @@
   - HTTP 실패: `0` (인증 실패 없음, 타임아웃 2건)
   - 누적 합계(당일 확정 배치): `total=360, passed=0, failed=360`
   - 상위 위반: `original keyword used=407`, `python parse failed after normalization=111`
+  - 요약/집계 갱신: `.summary.csv`, `.summary.md`, `prompt-batch-aggregated-2026-03-23.json`
+- [x] 4th 모델 교차 실측 누적: `gpt-5.4-mini` full-range v1~v120
+  - 단일 배치 확정: `prompt-batch-v1-120.gpt54-mini.2026-03-23.json` (`total=120`, `passed=0`, `failed=120`)
+  - HTTP 실패: `0` (인증/런타임 실패 없음)
+  - 누적 합계(당일 확정 배치): `total=480`, `passed=0`, `failed=480`
   - 요약/집계 갱신: `.summary.csv`, `.summary.md`, `prompt-batch-aggregated-2026-03-23.json`
 - [ ] `docs/research/context-compression.md` 운영 적용
 
