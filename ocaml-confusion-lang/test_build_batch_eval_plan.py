@@ -57,6 +57,46 @@ def _assert_state_codes_format_choices_alignment() -> None:
             details = proc.stderr.strip() if proc.stderr else proc.stdout.strip()
             raise AssertionError(f"expected alias {output_format} to be accepted by argparse choices: {details}")
 
+
+def _assert_state_codes_format_alias_listing() -> None:
+    planner = _load_planner_module()
+    proc = subprocess.run(
+        ["python3", str(SCRIPT), "--list-state-codes-format-aliases"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        details = proc.stderr.strip() if proc.stderr else proc.stdout.strip()
+        raise AssertionError(f"expected --list-state-codes-format-aliases to succeed: {details}")
+
+    payload = json.loads(proc.stdout)
+    if payload.get("schema") != "planner_list_state_codes_format_aliases.v1":
+        raise AssertionError(f"unexpected alias-list schema: {payload.get('schema')}")
+
+    if payload.get("aliases") != planner.LIST_STATE_CODES_FORMAT_ALIAS_MAP:
+        raise AssertionError("expected alias-list payload aliases to match LIST_STATE_CODES_FORMAT_ALIAS_MAP")
+
+    if payload.get("canonical_formats") != list(planner.LIST_STATE_CODES_FORMAT_CANONICALS):
+        raise AssertionError("expected alias-list payload canonical_formats to match LIST_STATE_CODES_FORMAT_CANONICALS")
+
+    if payload.get("alias_count") != len(planner.LIST_STATE_CODES_FORMAT_ALIAS_MAP):
+        raise AssertionError("expected alias_count to match alias map size")
+
+    groups = payload.get("groups")
+    if not isinstance(groups, dict):
+        raise AssertionError("expected groups to be a dict")
+
+    expected_groups: dict[str, list[str]] = {}
+    for alias, canonical in planner.LIST_STATE_CODES_FORMAT_ALIAS_MAP.items():
+        expected_groups.setdefault(canonical, []).append(alias)
+    for aliases in expected_groups.values():
+        aliases.sort()
+    expected_groups = dict(sorted(expected_groups.items(), key=lambda item: item[0]))
+
+    if groups != expected_groups:
+        raise AssertionError("expected groups payload to expose canonical->sorted aliases mapping")
+
 def main() -> int:
     output = OUT / "batch-plan.json"
     subprocess.run(
@@ -12161,6 +12201,7 @@ def main() -> int:
         raise AssertionError("expected fully_truncated row to expose is_fully_truncated=true")
 
     _assert_state_codes_format_choices_alignment()
+    _assert_state_codes_format_alias_listing()
 
     print("OK: build_batch_eval_plan regression passed")
     return 0

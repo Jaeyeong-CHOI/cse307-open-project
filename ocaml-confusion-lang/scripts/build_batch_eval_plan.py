@@ -367,6 +367,28 @@ def _resolve_list_state_codes_format(output_format: str) -> str:
     return LIST_STATE_CODES_FORMAT_ALIAS_MAP.get(output_format, output_format)
 
 
+def _build_list_state_codes_format_groups() -> dict[str, list[str]]:
+    groups: dict[str, list[str]] = {}
+    for alias, canonical in LIST_STATE_CODES_FORMAT_ALIAS_MAP.items():
+        groups.setdefault(canonical, []).append(alias)
+    for aliases in groups.values():
+        aliases.sort()
+    return dict(sorted(groups.items(), key=lambda item: item[0]))
+
+
+def _resolve_list_state_codes_format_aliases_payload() -> dict[str, Any]:
+    groups = _build_list_state_codes_format_groups()
+    return {
+        "schema_version": "v1",
+        "schema": "planner_list_state_codes_format_aliases.v1",
+        "canonical_formats": list(LIST_STATE_CODES_FORMAT_CANONICALS),
+        "aliases": dict(LIST_STATE_CODES_FORMAT_ALIAS_MAP),
+        "groups": groups,
+        "canonical_count": len(LIST_STATE_CODES_FORMAT_CANONICALS),
+        "alias_count": len(LIST_STATE_CODES_FORMAT_ALIAS_MAP),
+    }
+
+
 def _normalize_sort_alias_name_filter_value(value: str | None, *, case_sensitive: bool) -> str | None:
     if value is None:
         return None
@@ -3247,6 +3269,14 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--list-state-codes-format-aliases",
+        action="store_true",
+        help=(
+            "List canonical/alias mappings for --list-state-codes-format and exit "
+            "(includes alias groups and counters for drift checks)"
+        ),
+    )
+    parser.add_argument(
         "--list-state-codes-format",
         choices=LIST_STATE_CODES_FORMAT_CHOICES,
         default="json",
@@ -4081,6 +4111,16 @@ def main() -> int:
             raise ValueError(
                 "--show-preset-meta-schema-id must match planner_preset_show_meta.vN (N>=1)"
             )
+
+        if args.list_state_codes_format_aliases:
+            print(
+                json.dumps(
+                    _resolve_list_state_codes_format_aliases_payload(),
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+            return 0
 
         list_state_codes_format_requested = str(args.list_state_codes_format)
         list_state_codes_format = _resolve_list_state_codes_format(list_state_codes_format_requested)
