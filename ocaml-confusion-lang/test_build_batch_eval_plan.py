@@ -8983,6 +8983,19 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_csv_alias_v_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "v",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     retained_state_codes_csv_rows_alias_run = subprocess.run(
         [
             "python3",
@@ -8996,6 +9009,19 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_csv_rows_alias_vr_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "vr",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     retained_csv_lines = [line for line in retained_state_codes_csv_run.stdout.strip().splitlines() if line.strip()]
     if not retained_csv_lines or retained_csv_lines[0] != "state,code,has_retained_records,has_no_retained_records,description":
         raise AssertionError("expected retained-records state-code CSV header to include canonical columns")
@@ -9003,11 +9029,15 @@ def main() -> int:
         raise AssertionError("expected retained-records state-code CSV to emit header + two rows")
     if retained_state_codes_csv_alias_run.stdout != retained_state_codes_csv_run.stdout:
         raise AssertionError("expected --list-state-codes-format cv alias to match canonical csv output")
+    if retained_state_codes_csv_alias_v_run.stdout != retained_state_codes_csv_run.stdout:
+        raise AssertionError("expected --list-state-codes-format v alias to match canonical csv output")
     retained_csv_rows_lines = [line for line in retained_state_codes_csv_rows_alias_run.stdout.strip().splitlines() if line.strip()]
     if len(retained_csv_rows_lines) != 2:
         raise AssertionError("expected retained-records state-code csv-rows output to emit exactly two rows")
     if retained_csv_rows_lines[0].startswith("state,"):
         raise AssertionError("expected retained-records state-code csv-rows output to omit header")
+    if retained_state_codes_csv_rows_alias_vr_run.stdout != retained_state_codes_csv_rows_alias_run.stdout:
+        raise AssertionError("expected --list-state-codes-format vr alias to match canonical csv-rows output")
     retained_state_codes_payload = json.loads(retained_state_codes_run.stdout)
     if retained_state_codes_payload.get("schema") != "planner_retained_records_state_codes.v1":
         raise AssertionError(
@@ -10299,6 +10329,19 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_csv_alias_v_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "v",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     retention_state_codes_csv_rows_alias_run = subprocess.run(
         [
             "python3",
@@ -10312,6 +10355,19 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_csv_rows_alias_vr_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "vr",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     retention_csv_lines = [line for line in retention_state_codes_csv_run.stdout.strip().splitlines() if line.strip()]
     if not retention_csv_lines or retention_csv_lines[0] != "state,code,is_fully_retained,is_partially_retained,is_fully_truncated,description":
         raise AssertionError("expected retention state-code CSV header to include canonical columns")
@@ -10319,11 +10375,15 @@ def main() -> int:
         raise AssertionError("expected retention state-code CSV to emit header + three rows")
     if retention_state_codes_csv_alias_run.stdout != retention_state_codes_csv_run.stdout:
         raise AssertionError("expected --list-state-codes-format cv alias to match canonical csv output")
+    if retention_state_codes_csv_alias_v_run.stdout != retention_state_codes_csv_run.stdout:
+        raise AssertionError("expected --list-state-codes-format v alias to match canonical csv output")
     retention_csv_rows_lines = [line for line in retention_state_codes_csv_rows_alias_run.stdout.strip().splitlines() if line.strip()]
     if len(retention_csv_rows_lines) != 3:
         raise AssertionError("expected retention state-code csv-rows output to emit exactly three rows")
     if retention_csv_rows_lines[0].startswith("state,"):
         raise AssertionError("expected retention state-code csv-rows output to be headerless")
+    if retention_state_codes_csv_rows_alias_vr_run.stdout != retention_state_codes_csv_rows_alias_run.stdout:
+        raise AssertionError("expected --list-state-codes-format vr alias to match canonical csv-rows output")
     retention_state_codes_payload = json.loads(retention_state_codes_run.stdout)
     if retention_state_codes_payload.get("schema") != "planner_retention_state_codes.v1":
         raise AssertionError(
