@@ -71,6 +71,14 @@
       "nonzero_score": 16,
       "passed": 0,
       "failed": 120
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120-contextpack.gpt4o.2026-03-24.json",
+      "model": "gpt-4o",
+      "avg_score": 23.916666666666668,
+      "nonzero_score": 35,
+      "passed": 3,
+      "failed": 117
     }
   ]
 }
