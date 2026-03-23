@@ -11,6 +11,11 @@ MODEL = os.environ.get("EVAL_MODEL", "gpt-5.4")
 BASE = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
 API_KEY = os.environ.get("OPENAI_API_KEY")
 
+# context-pack controls how explicitly we explain transformed language rules.
+# 1 (default): include explicit alias contract + banned original keywords.
+# 0: legacy compact system prompt.
+CONTEXT_PACK = os.environ.get("CONTEXT_PACK", "1") == "1"
+
 RESULT_JSON = os.environ.get("RESULT_JSON", str(ROOT / "docs" / "prompt-eval-results.json"))
 OUT_DIR = pathlib.Path(os.environ.get("OUT_DIR", str(OUT_DIR)))
 START_PROMPT = int(os.environ.get("START_PROMPT_VERSION", "1"))
@@ -58,6 +63,39 @@ def parse_mapping(prompt_text: str):
 
 def has_word(text: str, token: str) -> bool:
     return re.search(r"(?<![A-Za-z0-9_])" + re.escape(token) + r"(?![A-Za-z0-9_])", text) is not None
+
+
+def build_system_message(prompt_text: str) -> str:
+    base = (
+        "Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). "
+        "Follow alias mapping strictly."
+    )
+    if not CONTEXT_PACK:
+        return base
+
+    mapping = parse_mapping(prompt_text)
+    required = ["def", "if", "return", "for", "in"]
+
+    # aliases we expect to be used when transformed
+    alias_rules = []
+    banned_original = []
+    for k in required:
+        if k in mapping and mapping[k] != k:
+            alias_rules.append(f"{k}->{mapping[k]}")
+            banned_original.append(k)
+
+    rules_block = "\n".join(f"- {x}" for x in alias_rules) if alias_rules else "- (no transformed aliases)"
+    banned_block = ", ".join(banned_original) if banned_original else "(none)"
+
+    return (
+        base
+        + "\n\n[Transformed language contract]"
+        + "\nUse transformed aliases exactly as follows:"
+        + f"\n{rules_block}"
+        + "\nDo NOT output original Python keywords for transformed entries."
+        + f"\nBanned originals for this task: {banned_block}"
+        + "\nOutput only executable code in the transformed language."
+    )
 
 
 def deterministic_judge(prompt_text: str, answer_text: str):
@@ -171,7 +209,7 @@ def main():
             answer_raw = chat([
                 {
                     "role": "system",
-                    "content": "Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.",
+                    "content": build_system_message(prompt_text),
                 },
                 {"role": "user", "content": prompt_text},
             ])
