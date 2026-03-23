@@ -1,29 +1,30 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-22 15:20 KST
+마지막 업데이트: 2026-03-23 09:43 KST
 
 ## Snapshot
-- 전체 진행도(추정): **68%**
-- 현재 단계: **Phase 3~5 경계 (파이프라인 안정화 + 결과 패키징 준비)**
-- 핵심 병목: **OCaml confusion-lang CI 연쇄 실패(설정 드리프트)**
+- 전체 진행도(추정): **76%**
+- 현재 단계: **Phase 4~5 (안정화 완료권 + 결과 누적/분석 강화 단계)**
+- 핵심 병목: **정량 실험 결과(JSON) 누적량 부족**
 
 ## KPI Board
-- CI 안정성: 🔴 (최근 연속 fail)
+- CI 안정성: 🟢 (최근 연속 success)
 - 결과 파일 누적: 🟡 (`docs/research/results/` 실질 결과 부족)
-- 지표 산출(ACR/PRR/ESR): 🟡 (파이프라인 준비됨, 누적 부족)
+- 지표 산출(ACR/PRR/ESR): 🟡 (파이프라인 준비됨, 누적 강화 필요)
 - 문서화 품질: 🟢 (roadmap/log/papers/literature 체계화)
 
 ## This Week Progress
 - [x] 연구 구조/문서 허브 정리
 - [x] alias/lineage/schema validator 확장
-- [x] planner/preset 탐색 기능 대폭 확장
-- [ ] CI 안정화 완전 해결
+- [x] planner/preset/state-code 탐색 기능 확장
+- [x] CI 안정화 이슈 핵심 원인 정리 및 해결
 - [ ] 배치 실험 결과(JSON) 본격 누적
+- [ ] `papers/v2.md` 정량 분석 반영
 
 ## Immediate Next Actions
-1. CI fail 원인 즉시 트래킹 후 패치/재검증 반복
-2. 결과 JSON 자동 누적 경로 정상화
-3. `papers/v2.md`에 정량 지표 기반 중간 분석 반영
+1. full/targeted 실험 배치 실행 후 `docs/research/results/` 결과 JSON 누적
+2. 결과 요약(ACR/PRR/ESR + mismatch taxonomy) 자동 리포트 생성
+3. `docs/research/papers/v2.md`에 수치 기반 중간 결론 업데이트
 
 ## Links
 - 로드맵: `docs/research/roadmap.md`
