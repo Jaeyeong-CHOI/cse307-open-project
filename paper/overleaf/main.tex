@@ -1,32 +1,32 @@
-\documentclass[conference]{IEEEtran}
-
-\usepackage[utf8]{inputenc}
+\documentclass[conference,10pt]{IEEEtran}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{amsmath,amssymb}
-\usepackage{booktabs}
+\usepackage{times}
 \usepackage{graphicx}
+\usepackage{booktabs}
 \usepackage{url}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{cite}
+\setlength{\emergencystretch}{1.5em}
+\sloppy
 
 \title{Failure-by-Language: Reproducible Evaluation of Python-like Confusion Language in LLM Code Generation}
-
-\author{
-\IEEEauthorblockN{Jaeyeong CHOI}
-\IEEEauthorblockA{DGIST EECS \\\\ \texttt{jaeyeong2022@dgist.ac.kr}}
-}
+\author{Jaeyeong CHOI\\
+DGIST EECS\\
+\texttt{jaeyeong2022@dgist.ac.kr}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
 Recent studies on AI-assisted coding suggest a persistent gap between short-term productivity gains and durable programming comprehension. This paper proposes a reproducible benchmark for syntax-constrained code generation: language models are instructed to write Python-like programs under transformed-token rules.
-\
-We present an OCaml/CLI pipeline with lineage-aware task metadata, schema validation, and metric snapshot automation. Current empirical results are limited by temporary LLM API authentication failures; however, fixture replay experiments still provide a controlled baseline for measuring alias compliance, Python reversion, and execution success behavior.
+
+We present an OCaml/CLI pipeline with lineage-aware task metadata, schema validation, and metric snapshot automation. Current empirical evidence includes fixture replay baselines and full-range real-call prompt batches under strict compliance settings.
 \end{abstract}
 
-\begin{IEEEkeywords}
+\section*{Keywords}
 confusion language, LLM code generation, syntax perturbation, benchmark, reproducibility, program synthesis
-\end{IEEEkeywords}
 
 \input{sections/01_introduction}
 \input{sections/02_related_work}
@@ -37,18 +37,17 @@ confusion language, LLM code generation, syntax perturbation, benchmark, reprodu
 \input{sections/07_conclusion}
 
 \section{Research Process Traceability}
-We keep a direct trace between experimental decisions and artifacts.
-Key sources include the live status dashboard, daily research logs, and model-specific prompt-batch outputs.
-This paper only claims results that can be mapped to committed files in \texttt{docs/research/results/} and verified by schema checks.
+We maintain explicit mapping between experimental decisions and committed artifacts (status dashboard, daily logs, model-specific prompt-batch outputs).
+This manuscript only presents claims that are traceable to versioned files under \texttt{docs/research/results/} and reproducible via schema-validated scripts.
 
 \section{Reproducibility and Artifact Availability}
-All scripts, logs, and metrics are versioned in the repository. Representative paths:
+Representative artifact paths:
 \begin{itemize}
   \item Tooling: \texttt{ocaml-confusion-lang/}
   \item Results: \texttt{docs/research/results/}
   \item Logs: \texttt{docs/research/log/}
   \item Status snapshot: \url{docs/research/context-state.json}
-  \item Paper draft: \url{docs/research/papers/v2.md}
+  \item Paper draft mirror: \url{docs/research/papers/v2.md}
 \end{itemize}
 
 \bibliographystyle{IEEEtran}
