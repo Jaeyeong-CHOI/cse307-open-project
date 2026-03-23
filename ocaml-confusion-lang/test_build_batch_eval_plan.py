@@ -9175,6 +9175,44 @@ def main() -> int:
     retained_state_codes_codes_json_payload = json.loads(retained_state_codes_codes_json_run.stdout)
     if set(retained_state_codes_codes_json_payload.keys()) != {"0", "1"}:
         raise AssertionError("expected retained-records codes-json payload keys to be {'0','1'}")
+    retained_state_codes_codes_jsonl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "codes-jsonl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_codes_jsonl_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "cjl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retained_state_codes_codes_jsonl_alias_run.stdout != retained_state_codes_codes_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cjl alias to match canonical codes-jsonl output")
+    retained_state_codes_codes_jsonl_payload = [
+        json.loads(line)
+        for line in retained_state_codes_codes_jsonl_run.stdout.splitlines()
+        if line.strip()
+    ]
+    if retained_state_codes_codes_jsonl_payload != [
+        {"0": retained_state_codes_codes_json_payload["0"]},
+        {"1": retained_state_codes_codes_json_payload["1"]},
+    ]:
+        raise AssertionError("expected retained-records codes-jsonl rows to match codes-json payload")
     retained_state_codes_state_codes_json_run = subprocess.run(
         [
             "python3",
