@@ -1,0 +1,16 @@
+metric,value
+total,120
+passed,2
+failed,118
+http_failures,0
+violation::original keyword used,214
+violation::python parse failed after normalization,90
+violation::missing alias for in,32
+violation::missing alias for for,24
+violation::missing alias for def,22
+violation::missing alias for return,18
+violation::missing alias for if,16
+violation::missing loop,3
+violation::missing base case,2
+violation::missing recursive return fib(n-1)+fib(n-2),1
+violation::missing function fib,1

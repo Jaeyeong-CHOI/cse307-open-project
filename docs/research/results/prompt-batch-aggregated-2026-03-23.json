@@ -26,6 +26,14 @@
       "http_failures": 0
     },
     {
+      "file": "prompt-batch-v1-120.gpt4o.2026-03-23.json",
+      "model": "gpt-4o",
+      "total": 120,
+      "passed": 2,
+      "failed": 118,
+      "http_failures": 0
+    },
+    {
       "file": "prompt-batch-v1-120.gpt54-mini.2026-03-23.json",
       "model": "gpt-5.4-mini",
       "total": 120,
@@ -35,13 +43,14 @@
     }
   ],
   "totals": {
-    "total": 480,
-    "passed": 0,
-    "failed": 480,
+    "total": 600,
+    "passed": 2,
+    "failed": 598,
     "http_failures": 0
   },
   "notes": [
-    "full-range real-data batches accumulated for four models (gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini) under identical v1~v120 settings",
-    "all failures remain judge-violation-driven; no HTTP auth/runtime failures observed in finalized full-range runs"
+    "full-range real-data batches accumulated for five models (gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini, gpt-4o) under identical v1~v120 settings",
+    "gpt-4o is the first full-range batch with non-zero pass count (2/120); remaining failures are judge-violation-driven",
+    "no HTTP auth/runtime failures observed in finalized full-range runs"
   ]
 }
