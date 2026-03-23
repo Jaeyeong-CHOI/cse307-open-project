@@ -50,58 +50,58 @@
     ]
   },
   "candidate": {
-    "path": "docs/research/results/prompt-batch-v1-120.gpt54-mini.2026-03-23.json",
+    "path": "docs/research/results/prompt-batch-v1-120-contextpack.gpt54-mini.2026-03-24.json",
     "n": 120,
-    "passed": 0,
-    "failed": 120,
-    "avg_score": 6.583333333333333,
-    "nonzero_score": 16,
+    "passed": 3,
+    "failed": 117,
+    "avg_score": 21.666666666666668,
+    "nonzero_score": 32,
     "top_violations": [
       [
         "original keyword used: for",
-        88
+        66
       ],
       [
         "original keyword used: if",
-        86
-      ],
-      [
-        "original keyword used: in",
-        84
+        38
       ],
       [
         "original keyword used: return",
-        74
+        31
       ],
       [
         "original keyword used: def",
-        59
+        22
+      ],
+      [
+        "original keyword used: in",
+        22
       ],
       [
         "python parse failed after normalization: invalid syntax (<unknown>, line 2)",
-        16
-      ],
-      [
-        "python parse failed after normalization: expected '(' (<unknown>, line 2)",
-        15
+        21
       ],
       [
         "python parse failed after normalization: invalid syntax (<unknown>, line 1)",
-        14
+        16
       ],
       [
-        "missing alias for in: convert this phrase back to python reserved token",
+        "python parse failed after normalization: invalid syntax (<unknown>, line 6)",
+        12
+      ],
+      [
+        "python parse failed after normalization: expected ':' (<unknown>, line 2)",
         11
       ],
       [
-        "missing alias for in: keep this long alias while preserving python grammar",
-        10
+        "missing alias for in: no, use exact python original grammer",
+        9
       ]
     ]
   },
   "diff": {
-    "delta_avg_score": -2.500000000000001,
-    "delta_nonzero_score": -3,
-    "delta_passed": 0
+    "delta_avg_score": 12.583333333333334,
+    "delta_nonzero_score": 13,
+    "delta_passed": 3
   }
 }

@@ -1,0 +1,56 @@
+metric,value
+total,120
+passed,3
+failed,117
+http_failures,0
+violation::original keyword used: for,66
+violation::original keyword used: if,38
+violation::original keyword used: return,31
+violation::original keyword used: def,22
+violation::original keyword used: in,22
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 2),21
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 1),16
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 6),12
+violation::python parse failed after normalization: expected ':' (<unknown>, line 2),11
+violation::missing alias for in: no, use exact python original grammer,9
+violation::missing alias for def: no, use exact python original grammer,6
+violation::missing alias for return: no, use exact python original grammer,6
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 3),6
+violation::missing alias for for: no, use exact python original grammer,5
+violation::python parse failed after normalization: expected '(' (<unknown>, line 6),5
+violation::missing function fib,5
+violation::python parse failed after normalization: expected '(' (<unknown>, line 2),4
+violation::missing alias for if: no, use exact python original grammer,4
+violation::missing alias for return: use this token exactly for keyword mapping,3
+violation::missing alias for def: apply this mapped token before generating code,3
+violation::missing alias for in: apply this mapped token before generating code,3
+violation::python parse failed after normalization: cannot assign to function call (<unknown>, line 1),3
+violation::missing alias for return: keep this long alias while preserving python grammar,3
+violation::python parse failed after normalization: expected '(' (<unknown>, line 3),2
+violation::missing alias for if: do not trust default python keyword prior,2
+violation::missing alias for def: return,2
+violation::missing alias for for: apply this mapped token before generating code,2
+violation::missing alias for in: strictly follow this alias phrase for compilation,2
+violation::python parse failed after normalization: expected 'else' after 'if' expression (<unknown>, line 1),2
+violation::missing alias for in: do not trust default python keyword prior,2
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 7),2
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 4),1
+violation::missing alias for if: return,1
+violation::missing alias for for: keep this long alias while preserving python grammar,1
+violation::missing alias for if: apply this mapped token before generating code,1
+violation::missing alias for return: do not trust default python keyword prior,1
+violation::missing alias for return: apply this mapped token before generating code,1
+violation::python parse failed after normalization: cannot assign to expression (<unknown>, line 4),1
+violation::missing alias for def: use this token exactly for keyword mapping,1
+violation::missing alias for for: convert this phrase back to python reserved token,1
+violation::missing alias for for: fn,1
+violation::missing alias for if: use this custom marker in place of original token,1
+violation::missing alias for for: if,1
+violation::missing alias for in: keep this long alias while preserving python grammar,1
+violation::missing alias for if: def,1
+violation::missing loop: for i in range(7): print(i, fib(i)),1
+violation::python parse failed after normalization: Missing parentheses in call to 'print'. Did you mean print(...)? (<unknown>, line 6),1
+violation::missing alias for return: strictly follow this alias phrase for compilation,1
+violation::missing alias for if: keep this long alias while preserving python grammar,1
+violation::missing alias for return: qn,1
+violation::python parse failed after normalization: cannot assign to expression (<unknown>, line 3),1
