@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-23T18:15:37",
+  "updated_at": "2026-03-23T18:20:00+09:00",
   "project": "cse307-open-project",
   "overall_progress_percent": 79,
   "phase": "Phase 4~5",
@@ -9,7 +9,7 @@
     "esr": 0.667,
     "mfb": 65.0,
     "lgp": 0.667,
-    "result_files": 16
+    "result_files": 17
   },
   "ci": {
     "status": "success",
@@ -17,21 +17,20 @@
     "trend": "stable"
   },
   "active_blockers": [
-    "실제 LLM 모델 기반 대규모 배치 가용성 확인 필요"
+    "LLM API 인증(HTTP 401)으로 실측 배치 미수행"
   ],
   "next_actions": [
-    "실시간 batch 실행 재시도 (인증 키 복구 후)",
-    "v2 논문의 실험 항목을 결과 증가분 반영",
-    "context-compression 규칙에 맞춘 주기 보고 템플릿 적용"
+    "유효 API 키/엔드포인트 복구 후 prompt-versions 전체 실측 배치 재실행",
+    "실측 통과율/지표 변화 반영하여 IEEE 본문 Results/Conclusion 갱신"
   ],
   "recent_commits": [
     {
-      "sha": "7cc689d",
-      "msg": "docs(paper): add Overleaf-compatible AI-paper LaTeX package with author metadata"
+      "sha": "9fa04cc",
+      "msg": "paper: finalize IEEE manuscript sections and build clean PDF"
     },
     {
-      "sha": "bea4c7e",
-      "msg": "feat(results): generate first batch metrics snapshot and publish fixture result report"
+      "sha": "20b7091",
+      "msg": "paper: switch overleaf manuscript to IEEE style and clean citation formatting"
     }
   ]
 }
