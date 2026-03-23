@@ -9073,6 +9073,54 @@ def main() -> int:
         raise AssertionError("expected retained-records markdown separator row to include per-column separators")
     if retained_state_codes_markdown_alias_run.stdout != retained_state_codes_markdown_run.stdout:
         raise AssertionError("expected --list-state-codes-format md alias to match canonical markdown output")
+    retained_state_codes_markdown_rows_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "markdown-rows",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_markdown_rows_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "mdr",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_markdown_rows_alias_mr_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "mr",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_markdown_rows_lines = [line for line in retained_state_codes_markdown_rows_run.stdout.strip().splitlines() if line.strip()]
+    if len(retained_markdown_rows_lines) != 2:
+        raise AssertionError("expected retained-records markdown-rows output to emit exactly two body rows")
+    if retained_markdown_rows_lines[0] == retained_markdown_lines[0] or retained_markdown_rows_lines[0] == retained_markdown_lines[1]:
+        raise AssertionError("expected retained-records markdown-rows output to omit header and separator rows")
+    if retained_state_codes_markdown_rows_alias_run.stdout != retained_state_codes_markdown_rows_run.stdout:
+        raise AssertionError("expected --list-state-codes-format mdr alias to match canonical markdown-rows output")
+    if retained_state_codes_markdown_rows_alias_mr_run.stdout != retained_state_codes_markdown_rows_run.stdout:
+        raise AssertionError("expected --list-state-codes-format mr alias to match canonical markdown-rows output")
     retained_state_codes_payload = json.loads(retained_state_codes_run.stdout)
     if retained_state_codes_payload.get("schema") != "planner_retained_records_state_codes.v1":
         raise AssertionError(
@@ -10419,6 +10467,89 @@ def main() -> int:
         raise AssertionError("expected retention state-code csv-rows output to be headerless")
     if retention_state_codes_csv_rows_alias_vr_run.stdout != retention_state_codes_csv_rows_alias_run.stdout:
         raise AssertionError("expected --list-state-codes-format vr alias to match canonical csv-rows output")
+    retention_state_codes_markdown_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "markdown",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_markdown_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "md",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_markdown_lines = [line for line in retention_state_codes_markdown_run.stdout.strip().splitlines() if line.strip()]
+    if len(retention_markdown_lines) != 5:
+        raise AssertionError("expected retention markdown output to emit header/separator + three rows")
+    if retention_markdown_lines[0] != "| state | code | is_fully_retained | is_partially_retained | is_fully_truncated | description |":
+        raise AssertionError("expected retention markdown header row to include canonical columns")
+    if retention_markdown_lines[1] != "| --- | --- | --- | --- | --- | --- |":
+        raise AssertionError("expected retention markdown separator row to include per-column separators")
+    if retention_state_codes_markdown_alias_run.stdout != retention_state_codes_markdown_run.stdout:
+        raise AssertionError("expected --list-state-codes-format md alias to match canonical markdown output")
+    retention_state_codes_markdown_rows_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "markdown-rows",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_markdown_rows_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "mdr",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_markdown_rows_alias_mr_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "mr",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_markdown_rows_lines = [line for line in retention_state_codes_markdown_rows_run.stdout.strip().splitlines() if line.strip()]
+    if len(retention_markdown_rows_lines) != 3:
+        raise AssertionError("expected retention markdown-rows output to emit exactly three body rows")
+    if retention_markdown_rows_lines[0] == retention_markdown_lines[0] or retention_markdown_rows_lines[0] == retention_markdown_lines[1]:
+        raise AssertionError("expected retention markdown-rows output to omit header and separator rows")
+    if retention_state_codes_markdown_rows_alias_run.stdout != retention_state_codes_markdown_rows_run.stdout:
+        raise AssertionError("expected --list-state-codes-format mdr alias to match canonical markdown-rows output")
+    if retention_state_codes_markdown_rows_alias_mr_run.stdout != retention_state_codes_markdown_rows_run.stdout:
+        raise AssertionError("expected --list-state-codes-format mr alias to match canonical markdown-rows output")
     retention_state_codes_payload = json.loads(retention_state_codes_run.stdout)
     if retention_state_codes_payload.get("schema") != "planner_retention_state_codes.v1":
         raise AssertionError(
