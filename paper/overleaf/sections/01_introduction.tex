@@ -3,6 +3,36 @@ Recent studies on AI-assisted coding indicate a persistent tradeoff: immediate c
 
 This study asks a strict question: when a model is instructed to produce code in a Python-like language with transformed syntax, does it follow the transformed language rules, or revert to canonical Python conventions?
 
+\begin{figure}[t]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+  node distance=0.7cm and 0.5cm,
+  box/.style={draw, rounded corners, align=center, minimum width=3.1cm, minimum height=0.95cm, fill=blue!6},
+  metric/.style={draw, rounded corners, align=center, minimum width=2.2cm, minimum height=0.8cm, fill=green!8},
+  arr/.style={-{Latex[length=2.2mm]}, thick}
+]
+\node[box] (p1) {Prompt Bank\\(v1--v120)};
+\node[box, right=of p1] (p2) {Confusion Language\\Alias Rules (1:1)};
+\node[box, right=of p2] (p3) {Model Generation\\(4 model settings)};
+\node[box, right=of p3] (p4) {Deterministic Judge\\+ Taxonomy};
+
+\node[metric, below=of p2] (m1) {ACR/PRR/ESR};
+\node[metric, below=of p3] (m2) {Violation Patterns};
+\node[metric, below=of p4] (m3) {Reproducible Artifacts};
+
+\draw[arr] (p1) -- (p2);
+\draw[arr] (p2) -- (p3);
+\draw[arr] (p3) -- (p4);
+\draw[arr] (p4) -- (m1);
+\draw[arr] (p4) -- (m2);
+\draw[arr] (p4) -- (m3);
+\end{tikzpicture}%
+}
+\caption{Research overview: this study measures whether code LLMs follow transformed Python-like rules or revert to canonical Python under strict alias constraints.}
+\label{fig:research_overview}
+\end{figure}
+
 We define a three-layer benchmark stack:
 \begin{enumerate}
   \item \textbf{Specification layer}: one-to-one token aliases and collision constraints.
