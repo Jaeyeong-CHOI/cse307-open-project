@@ -10187,10 +10187,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_names_jsonl_mnemonic_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "nal",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_names_jsonl_alias_run.stdout != retained_state_codes_names_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format njl alias to match canonical names-jsonl output")
     if retained_state_codes_names_jsonl_short_alias_run.stdout != retained_state_codes_names_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format nl alias to match canonical names-jsonl output")
+    if retained_state_codes_names_jsonl_mnemonic_alias_run.stdout != retained_state_codes_names_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format nal alias to match canonical names-jsonl output")
     retained_state_codes_names_jsonl_rows = [
         json.loads(line)
         for line in retained_state_codes_names_jsonl_run.stdout.strip().splitlines()
@@ -10287,10 +10302,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_codes_list_jsonl_mnemonic_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "cal",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_codes_list_jsonl_alias_run.stdout != retained_state_codes_codes_list_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format cljl alias to match canonical codes-list-jsonl output")
     if retained_state_codes_codes_list_jsonl_short_alias_run.stdout != retained_state_codes_codes_list_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format cl alias to match canonical codes-list-jsonl output")
+    if retained_state_codes_codes_list_jsonl_mnemonic_alias_run.stdout != retained_state_codes_codes_list_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cal alias to match canonical codes-list-jsonl output")
     retained_state_codes_codes_list_jsonl_rows = [
         json.loads(line)
         for line in retained_state_codes_codes_list_jsonl_run.stdout.strip().splitlines()
@@ -11700,10 +11730,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_names_jsonl_mnemonic_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "nal",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_names_jsonl_alias_run.stdout != retention_state_codes_names_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format njl alias to match canonical names-jsonl output")
     if retention_state_codes_names_jsonl_short_alias_run.stdout != retention_state_codes_names_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format nl alias to match canonical names-jsonl output")
+    if retention_state_codes_names_jsonl_mnemonic_alias_run.stdout != retention_state_codes_names_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format nal alias to match canonical names-jsonl output")
     retention_state_codes_names_jsonl_rows = [
         json.loads(line)
         for line in retention_state_codes_names_jsonl_run.stdout.strip().splitlines()
@@ -11800,10 +11845,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_codes_list_jsonl_mnemonic_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "cal",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_codes_list_jsonl_alias_run.stdout != retention_state_codes_codes_list_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format cljl alias to match canonical codes-list-jsonl output")
     if retention_state_codes_codes_list_jsonl_short_alias_run.stdout != retention_state_codes_codes_list_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format cl alias to match canonical codes-list-jsonl output")
+    if retention_state_codes_codes_list_jsonl_mnemonic_alias_run.stdout != retention_state_codes_codes_list_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cal alias to match canonical codes-list-jsonl output")
     retention_state_codes_codes_list_jsonl_rows = [
         json.loads(line)
         for line in retention_state_codes_codes_list_jsonl_run.stdout.strip().splitlines()

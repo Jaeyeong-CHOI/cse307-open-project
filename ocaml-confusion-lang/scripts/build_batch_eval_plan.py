@@ -296,6 +296,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "ca": "codes-list-json",
     "cljl": "codes-list-jsonl",
     "cl": "codes-list-jsonl",
+    "cal": "codes-list-jsonl",
     "scl": "state-codes-lines",
     "sc": "state-codes-lines",
     "l": "state-codes-lines",
@@ -335,6 +336,7 @@ LIST_STATE_CODES_FORMAT_ALIAS_MAP: dict[str, str] = {
     "na": "names-json",
     "njl": "names-jsonl",
     "nl": "names-jsonl",
+    "nal": "names-jsonl",
     "c": "codes",
 }
 
@@ -3251,7 +3253,7 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Output format for --list-retained-records-state-codes and --list-retention-state-codes: "
             "json (default), bundle-json (base schema + derived lookup views in one payload), bundle-jsonl (compact single-line JSON for bundle-json payload), rows-json (row list only), rows-jsonl (compact JSON line per row), codes-json (code-keyed row map), codes-jsonl (compact JSON line per {code: row} mapping), codes-list-json (JSON numeric-code array), codes-list-jsonl (compact JSON line per numeric code), state-codes-lines (newline <state>\\t<code> pairs), state-codes-equals-lines (newline <state>=<code> pairs), code-state-lines (newline <code>\\t<state> pairs), code-state-equals-lines (newline <code>=<state> pairs), state-codes-json (state->code map), state-codes-jsonl (compact JSON line per {state: code} mapping), codes-state-json (code->state map), codes-state-jsonl (compact JSON line per {code: state} mapping), pairs-json ([state, code] tuples), pairs-jsonl (compact JSON line per [state, code] tuple), code-state-pairs-json ([code, state] tuples), code-state-pairs-jsonl (compact JSON line per [code, state] tuple), names (newline state labels), names-json (JSON state-label array), names-jsonl (compact JSON line per state label), codes (newline numeric codes), tsv (header), tsv-rows (headerless rows), csv (header), csv-rows (headerless rows), markdown (table with header separator), or markdown-rows (headerless markdown rows for appending). "
-            "Shorthand aliases: j=json, b/bj=bundle-json, bjl/bl=bundle-jsonl, rj/rr/x=rows-json, rjl/rl/rrl/xl=rows-jsonl, cj/m=codes-json, cjl/ml=codes-jsonl, clj/ca=codes-list-json, cljl/cl=codes-list-jsonl, scl/sc/l=state-codes-lines, scel/se/e=state-codes-equals-lines, csl/cs/lc=code-state-lines, csel/ce/ec=code-state-equals-lines, scj/sj/sm=state-codes-json, scjl/sjl/sml=state-codes-jsonl, csj/s/cm=codes-state-json, csjl/sl/cml=codes-state-jsonl, pj/p=pairs-json, pjl/pl/q=pairs-jsonl, cpj/pc=code-state-pairs-json, cpjl/cpl/qc=code-state-pairs-jsonl, n=names, nj/na=names-json, njl/nl=names-jsonl, c=codes, t=tsv, tr/r/rows=tsv-rows, cv/v=csv, cr/vr=csv-rows, md/mk/k=markdown, mdr/mr/mkr/kr=markdown-rows."
+            "Shorthand aliases: j=json, b/bj=bundle-json, bjl/bl=bundle-jsonl, rj/rr/x=rows-json, rjl/rl/rrl/xl=rows-jsonl, cj/m=codes-json, cjl/ml=codes-jsonl, clj/ca=codes-list-json, cljl/cl/cal=codes-list-jsonl, scl/sc/l=state-codes-lines, scel/se/e=state-codes-equals-lines, csl/cs/lc=code-state-lines, csel/ce/ec=code-state-equals-lines, scj/sj/sm=state-codes-json, scjl/sjl/sml=state-codes-jsonl, csj/s/cm=codes-state-json, csjl/sl/cml=codes-state-jsonl, pj/p=pairs-json, pjl/pl/q=pairs-jsonl, cpj/pc=code-state-pairs-json, cpjl/cpl/qc=code-state-pairs-jsonl, n=names, nj/na=names-json, njl/nl/nal=names-jsonl, c=codes, t=tsv, tr/r/rows=tsv-rows, cv/v=csv, cr/vr=csv-rows, md/mk/k=markdown, mdr/mr/mkr/kr=markdown-rows."
         ),
     )
     parser.add_argument(
