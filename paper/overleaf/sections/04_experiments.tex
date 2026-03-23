@@ -1,22 +1,31 @@
 \section{Experiments}
-\subsection{Run protocol}
-Each run follows these steps:
-\begin{enumerate}
-  \item Prepare task-set metadata and prompt condition.
-  \item Execute model batch or fixture replay.
-  \item Validate summary payloads and metric snapshots, then archive in \texttt{docs/research/results/}.
-\end{enumerate}
-
-\subsection{Execution coverage}
-Current coverage includes:
+\subsection{Experiment Phases}
+The project proceeded in phase order:
 \begin{itemize}
-  \item fixture summary replay with full artifact generation (JSON/CSV/Markdown) and schema validation;
-  \item planner/state-code regression expansion;
-  \item robust parsing output via compact JSON/JSONL/TSV/markdown formats.
+  \item \textbf{Phase A (stability)}: CI and schema/lineage fixes;
+  \item \textbf{Phase B (fixture baseline)}: replay-based metric snapshots;
+  \item \textbf{Phase C (real-call scaling)}: full-range prompt batches across multiple model settings.
 \end{itemize}
 
-\subsection{Failure conditions observed}
-Live LLM batch calls are blocked by authentication failures (HTTP 401) in the current environment. Earlier local execution failures were additionally caused by missing environment dependencies (e.g., \texttt{dune}) and were resolved before this phase.
+\subsection{Input Set and Coverage}
+Prompt inputs are versioned as \texttt{v1}--\texttt{v120}. We execute both segmented and full-range runs, then archive model-specific JSON/CSV/Markdown artifacts.
 
-\subsection{Reproducibility protocol}
-Every run is committed with provenance fields and lineage IDs (task-set, alias-set, prompt config, and run metadata) so that mismatches are auditable and not silently conflated with tool drift.
+\subsection{Execution Conditions}
+\begin{itemize}
+  \item Models tested: \texttt{gpt-4o-mini}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}.
+  \item Prompt condition: strict compliance with transformed token mapping.
+  \item Output policy: code-only response, deterministic judge pipeline.
+\end{itemize}
+
+\subsection{Research Process Notes}
+Early runs were blocked by API authentication mismatch (HTTP 401). After key-path correction and environment sync, real-call execution became stable and shifted bottlenecks to model behavior under strict constraints.
+
+\subsection{Artifact and Audit Policy}
+Every run stores:
+\begin{enumerate}
+  \item raw JSON result payload,
+  \item tabular summaries (CSV/MD),
+  \item aggregate status snapshots for longitudinal tracking.
+\end{enumerate}
+
+This enables post-hoc audit of each claim in the paper against committed artifacts.

@@ -1,31 +1,50 @@
 \section{Method}
-\subsection{Language Setup}
-We define a Python-like confusion language by replacing selected Python tokens with aliases. The transformation enforces:\begin{enumerate}
-  \item one-to-one mapping between each source token and its alias;
-  \item no alias sharing among control keywords (e.g., \texttt{if} and \texttt{elif});
-  \item token-boundary replacement while preserving comments and string/regex literals.
+\subsection{Research Question and Hypotheses}
+We study whether code LLMs obey transformed Python-like syntax under explicit alias constraints.
+
+\textbf{RQ1}: Under strict alias instructions, how often do models retain transformed tokens vs. revert to canonical Python keywords?
+
+\textbf{RQ2}: Are failures dominated by infrastructure issues or by behavioral non-compliance after infrastructure stabilization?
+
+\textbf{H1}: Even with valid API execution, strict alias compliance remains low because models revert to dominant Python priors.
+
+\subsection{Language Setup and Constraints}
+We define a confusion language by replacing selected Python tokens with aliases. Constraints:
+\begin{enumerate}
+  \item one-to-one mapping between each source token and alias;
+  \item no alias sharing among control keywords (e.g., \texttt{if}/\texttt{elif});
+  \item token-boundary replacement;
+  \item comment/string literal protection.
 \end{enumerate}
 
-\subsection{System Pipeline}
-The implementation combines OCaml transformations with Python evaluators:
+\subsection{Pipeline Architecture}
+The evaluation stack combines OCaml transformation and Python orchestration:
 \begin{itemize}
-  \item alias/lineage validation and roundtrip conversion in \texttt{ocaml-confusion-lang};
-  \item generation summary and mapping scripts in \texttt{ocaml-confusion-lang/scripts};
-  \item metric aggregation and schema validation via
-  \texttt{batch\_report\_summary.py}, \texttt{generate\_metric\_snapshot.py},
-  \texttt{validate\_summary\_payload.py}, and \texttt{validate\_metric\_schema.py}.
+  \item \textbf{Transform/validate layer}: alias checks, collision prevention, roundtrip normalization;
+  \item \textbf{Batch execution layer}: prompt-version evaluation and result serialization;
+  \item \textbf{Schema gate layer}: summary payload and metric schema validation.
 \end{itemize}
 
-\subsection{Metrics}
-We define:
+Key scripts include \texttt{run\_gpt54\_eval.py}, \texttt{batch\_report\_summary.py},
+\texttt{generate\_metric\_snapshot.py}, \texttt{validate\_summary\_payload.py}, and \texttt{validate\_metric\_schema.py}.
+
+\subsection{Metrics and Judge Protocol}
+We use two metric families:
 \begin{itemize}
-  \item ACR (Alias Compliance Rate)
-  \item PRR (Python Reversion Rate)
-  \item ESR (Execution Success Rate)
-  \item MFB (Manual Fix Burden)
-  \item LGP (Learning Gain Proxy)
+  \item \textbf{Fixture aggregate metrics}: ACR, PRR, ESR, MFB, LGP.
+  \item \textbf{Prompt-batch judge outcomes}: pass/fail with violation taxonomy.
 \end{itemize}
 
-\subsection{Experiment Configuration}
-Primary runs are controlled by fixture task/task-alias pairs (e.g., \texttt{fixture-task-set-v1}, \texttt{fixture-alias-v1}) and prompt conditions (\texttt{strict} baseline).
-Live API calls are executed through the batch path when credentials are available; otherwise, fixture replay is used for reproducibility checks.
+Judge protocol checks:
+\begin{enumerate}
+  \item strict alias presence and original keyword leakage;
+  \item alias-to-python normalization validity (AST parseability);
+  \item target skeleton consistency for the benchmark task pattern.
+\end{enumerate}
+
+\subsection{Threats to Validity}
+\textbf{Internal validity}: false negatives may occur if judge rules are stricter than practical human acceptance.
+
+\textbf{Construct validity}: pass/fail under one task skeleton does not represent full software engineering competence.
+
+\textbf{External validity}: current runs focus on a constrained prompt-family and may not generalize across broader task distributions.
