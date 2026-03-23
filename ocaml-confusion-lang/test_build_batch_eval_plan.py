@@ -8999,6 +8999,40 @@ def main() -> int:
         raise AssertionError(
             f"unexpected retained-records bundle-json codes payload: {retained_state_codes_bundle_json_payload.get('codes')}"
         )
+    retained_state_codes_bundle_jsonl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "bundle-jsonl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_bundle_jsonl_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "bjl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retained_state_codes_bundle_jsonl_alias_run.stdout != retained_state_codes_bundle_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format bjl alias to match canonical bundle-jsonl output")
+    retained_state_codes_bundle_jsonl_lines = [line for line in retained_state_codes_bundle_jsonl_run.stdout.splitlines() if line.strip()]
+    if len(retained_state_codes_bundle_jsonl_lines) != 1:
+        raise AssertionError("expected retained-records bundle-jsonl output to emit exactly one JSON line")
+    retained_state_codes_bundle_jsonl_payload = json.loads(retained_state_codes_bundle_jsonl_lines[0])
+    if retained_state_codes_bundle_jsonl_payload != retained_state_codes_bundle_json_payload:
+        raise AssertionError("expected retained-records bundle-jsonl payload to match bundle-json payload")
     retained_state_codes_rows_json_run = subprocess.run(
         [
             "python3",
@@ -9851,6 +9885,40 @@ def main() -> int:
         raise AssertionError(
             f"unexpected retention bundle-json codes_state payload: {retention_state_codes_bundle_json_payload.get('codes_state')}"
         )
+    retention_state_codes_bundle_jsonl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "bundle-jsonl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retention_state_codes_bundle_jsonl_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "bjl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retention_state_codes_bundle_jsonl_alias_run.stdout != retention_state_codes_bundle_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format bjl alias to match canonical bundle-jsonl output")
+    retention_state_codes_bundle_jsonl_lines = [line for line in retention_state_codes_bundle_jsonl_run.stdout.splitlines() if line.strip()]
+    if len(retention_state_codes_bundle_jsonl_lines) != 1:
+        raise AssertionError("expected retention bundle-jsonl output to emit exactly one JSON line")
+    retention_state_codes_bundle_jsonl_payload = json.loads(retention_state_codes_bundle_jsonl_lines[0])
+    if retention_state_codes_bundle_jsonl_payload != retention_state_codes_bundle_json_payload:
+        raise AssertionError("expected retention bundle-jsonl payload to match bundle-json payload")
     retention_state_codes_rows_json_run = subprocess.run(
         [
             "python3",
