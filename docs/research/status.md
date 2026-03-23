@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-23 17:56 KST
+마지막 업데이트: 2026-03-23 18:05 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -26,7 +26,7 @@
   - 실측 결과: `passed=0`, `failed=12` (401 인증 실패 동일)
 - [ ] 배치 실험 결과(JSON) 대규모 누적 확대(LLM 모델/alias 조합)
   - [진행 막힘] 유효 API 키/엔드포인트 확보 필요
-- [ ] `papers/v2.md` 정량 분석 반영
+- [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions
 1. 실행 환경 정비: `dune` 설치 또는 대체 런처 확보 후 실제 roundtrip batch 재실행
@@ -36,7 +36,9 @@
 
 ## Links
 - 로드맵: `docs/research/roadmap.md`
-- 로그: `docs/research/log/`
+- 로그: `docs/research/log/` (`*_digest.md` 우선 참조)
+- 상태: `docs/research/context-state.json`
+- 압축 규칙: `docs/research/context-compression.md`
 - 결과: `docs/research/results/`
 - 논문형 문서: `docs/research/papers/`
 - 최신연구 리뷰: `docs/research/literature/`
