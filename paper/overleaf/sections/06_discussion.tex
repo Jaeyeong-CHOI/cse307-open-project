@@ -1,4 +1,15 @@
 \section{Discussion}
-The current contribution is primarily methodological: we now have a stable, auditable pipeline for confusion-language experiments. The main limitation is data volume: one fixture batch is not sufficient for strong generalization claims.
+The strongest contribution of this stage is not yet final model performance claims, but an operationally robust benchmark scaffold.
 
-Next, we will run larger batched evaluations across prompt conditions and model settings, then compare compliance-reversion trade-offs. We also plan to extend the educational axis by measuring learner-side verification behavior.
+\subsection{What we validated}
+We successfully validated replay-side reproducibility: fixture summaries and metric snapshots are generated, versioned, and schema-checked. Planner CLI coverage for state-code formats expanded significantly, which reduced parser ambiguity and enabled compact, automation-friendly consumption.
+
+\subsection{What is currently limited}
+\begin{itemize}
+  \item All live model runs are currently blocked by API authentication issues (401).
+  \item Some experiments are constrained by missing local build tooling at points of testing.
+  \item Therefore, generalization across model families is not yet established.
+\end{itemize}
+
+\subsection{Practical implication}
+For researchers building language-perturbation benchmarks, provenance and schema discipline are essential. Without this layer, observed failures can be misattributed to models while actually coming from transform, formatting, or execution drift.

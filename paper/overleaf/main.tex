@@ -13,17 +13,19 @@
 \usepackage{natbib}
 \usepackage{enumitem}
 
-\title{Failure-by-Language: Measuring LLM Reversion Under Python-like Confusion Grammar}
-\author{Jaeyeong CHOI \\
-DGIST EECS \\
-\texttt{jaeyeong2022@dgist.ac.kr}}
+\title{Failure-by-Language: Reproducible Evaluation of Python\texttt{-}like Confusion Language in LLM Code Generation}
+\author{Jaeyeong CHOI\\DGIST EECS\\\texttt{jaeyeong2022@dgist.ac.kr}}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Recent code-oriented LLMs show strong performance on standard programming tasks, but often default to dominant language priors (e.g., Python) under ambiguous or transformed instructions. This paper studies whether LLMs follow intentionally modified Python-like syntax (``confusion language'') or revert to canonical Python grammar. We build a reproducible pipeline with strict alias validation, roundtrip transformation checks, and schema-validated metrics. Initial fixture results indicate low alias compliance and high Python reversion, motivating broader multi-model evaluation and educational implications for code verification training.
+Recent studies on AI-assisted coding suggest a gap between short-term productivity and durable comprehension.
+This paper proposes a reproducible benchmark for syntax-constrained code generation: LLMs are asked to write Python-like code under transformed-token rules.
+
+We present an OCaml/CLI pipeline with lineage-aware schemas, run summary validation, and metric snapshot automation.
+Our current empirical status is constrained by live API authentication issues, but fixture-based replay and failure-taxonomy analysis provide a controlled baseline for further model comparisons.
 \end{abstract}
 
 \input{sections/01_introduction}
@@ -33,6 +35,16 @@ Recent code-oriented LLMs show strong performance on standard programming tasks,
 \input{sections/05_results}
 \input{sections/06_discussion}
 \input{sections/07_conclusion}
+
+\section{Reproducibility and artifact availability}
+All scripts, logs, and metrics are versioned in the repository. Representative paths:
+\begin{itemize}
+  \item Tooling: \texttt{ocaml-confusion-lang/}
+  \item Results: \texttt{docs/research/results/}
+  \item Logs: \texttt{docs/research/log/}
+  \item Status snapshot: \texttt{docs/research/context-state.json}
+  \item Paper draft: \texttt{docs/research/papers/v2.md}
+\end{itemize}
 
 \bibliographystyle{plainnat}
 \bibliography{refs}

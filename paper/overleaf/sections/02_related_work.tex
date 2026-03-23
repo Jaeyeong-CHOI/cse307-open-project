@@ -1,4 +1,9 @@
 \section{Related Work}
-Prior discussions on coding assistants report mixed outcomes between speed and skill formation. Some recent reports suggest that heavy assistant usage can reduce debugging quality for less experienced developers, though findings depend strongly on task design and participant profile \citep{anthropic2026coding}.
+\subsection{AI coding support and skill effects}
+Empirical studies and internal evidence suggest that high AI usage does not always translate to durable coding skill gains. In particular, productivity can coexist with fragile understanding and review overhead. Our earlier literature curation in \texttt{docs/research/literature/v1-curated.md} tracks this pattern and motivates explicit metrics such as manual-fix burden and learning proxy.
 
-Our study differs in that it isolates grammar-compliance behavior under controlled syntax transformations. Instead of measuring only pass/fail on canonical tasks, we measure whether models respect transformed language rules and how often they revert to dominant Python priors.
+\subsection{Code-constraint robustness}
+Most code-generation evaluations focus on output correctness under familiar conventions. We focus on a stricter stress condition: the instruction asks the model to obey a transformed syntax. In this setting, success requires both compliance and recoverable roundtrip behavior.
+
+\subsection{Reproducibility in benchmark pipelines}
+Modern benchmarking needs three properties: deterministic task lineage, machine-validated schemas, and stable artifact versioning. We enforce these through strict task-set/task-set lineage metadata, schema validation scripts, and output schema evolution checks.

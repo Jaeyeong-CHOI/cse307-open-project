@@ -1,9 +1,22 @@
 \section{Experiments}
-\subsection{Current Stage}
-At the current stage, we prioritize infrastructure stability and reproducible batch reporting before large-scale model sweeps.
+\subsection{Run protocol}
+Each experiment run follows three steps:
+\begin{enumerate}
+  \item Prepare task-set and prompt condition metadata.
+  \item Run model batch or fixture replay path.
+  \item Validate summary and metric artifacts; archive results under \texttt{docs/research/results/}.
+\end{enumerate}
 
-\subsection{Fixture Batch}
-A fixture task-set is used to verify end-to-end consistency: summary generation, lineage validation, metric snapshot export, and CI enforcement.
+\subsection{Implemented execution coverage}
+Our current execution coverage includes:
+\begin{itemize}
+  \item fixture summary replay (full artifact generation and schema validation),
+  \item CLI regression coverage expansion on planner output formats and alias aliases,
+  \item structured batch result logging (including \texttt{.json}, \texttt{.csv}, and \texttt{.md}).
+\end{itemize}
 
-\subsection{Reproducibility}
-All artifacts are versioned in the repository, and CI checks guard schema drift and metadata inconsistency.
+\subsection{Observed blocking conditions}
+Batch calls using live LLM endpoints are blocked by authentication failures (HTTP 401), while local OCaml-based roundtrip execution was also blocked when environment dependencies (e.g., dune) were missing at test time.
+
+\subsection{Reproducibility protocol}
+We track run state with committed artifacts and update policy-driven logs. For every change, related tests and schema checks are executed where relevant.

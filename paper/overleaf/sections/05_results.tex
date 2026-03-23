@@ -1,11 +1,36 @@
 \section{Results}
-Using the first fixture batch, we obtained the following initial metrics:
-\begin{itemize}[leftmargin=1.2em]
-  \item ACR = 0.333
-  \item PRR = 0.667
-  \item ESR = 0.667
-  \item MFB = 65.0
-  \item LGP = 0.667
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Note} \\
+\midrule
+ACR & 0.333 & fixture replay (task-set: fixture-task-set-v1) \\
+PRR & 0.667 & same run condition \\
+ESR & 0.667 & same run condition \\
+MFB & 65.0 & manual correction burden estimate \\
+LGP & 0.667 & learning proxy metric from replay context \\
+\bottomrule
+\end{tabular}
+\caption{Initial aggregate metrics from replayed fixture run.}
+\label{tab:metrics}
+\end{table}
+
+\subsection{Batch execution attempts}
+We attempted a 12-prompt real-call batch against gpt-4o-mini from archived prompt versions. The run produced:
+\begin{itemize}
+  \item \textbf{passed=0, failed=12}
+  \item failure reason: HTTP 401 unauthorized for all requests.
 \end{itemize}
 
-These values indicate low alias compliance and relatively high reversion to Python priors. While this is only an initial fixture run, the direction is consistent with the central hypothesis of grammar-prior dominance.
+\subsection{Failure taxonomy observed}
+Dominant mismatches in replayed summaries include:
+\begin{itemize}
+  \item \texttt{line\_count\_mismatch}
+  \item \texttt{whitespace\_or\_blankline\_drift}
+  \item \texttt{token\_stream\_mismatch}
+  \item \texttt{token\_substitution\_mismatch}
+\end{itemize}
+
+This indicates both semantic drift and surface-form instability across model outputs.

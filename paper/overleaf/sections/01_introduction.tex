@@ -1,6 +1,13 @@
 \section{Introduction}
-Large language models (LLMs) have rapidly improved in coding tasks as code-focused training data and evaluation coverage have expanded. However, higher benchmark scores do not always imply robust instruction following under grammar-level perturbations.
+Recent studies on AI-assisted coding consistently show a tension between short-term coding speed and durable understanding, especially for novices.\footnote{See structured review notes in \texttt{docs/research/literature/v1-curated.md}.}
 
-This work asks a targeted question: when models are asked to produce code in a Python-like but intentionally transformed grammar, do they follow the specified grammar or revert to canonical Python?
+This work studies a simple but strict question: when a model is instructed to write code in a Python-like language with transformed syntax, does it follow the new language rules, or revert to canonical Python conventions?
 
-To answer this, we define a ``confusion language'' protocol and build a reproducible pipeline for (i) alias-set validation, (ii) roundtrip consistency checking, and (iii) schema-validated metric generation. Our goal is not only model comparison but also educational insight: students should verify and repair generated code rather than trust outputs blindly.
+We define a reproducible pipeline in three layers:
+\begin{enumerate}
+  \item \textbf{Specification layer}: one-to-one token aliases and collision constraints.
+  \item \textbf{Execution layer}: OCaml-based transform/validate/roundtrip tooling.
+  \item \textbf{Measurement layer}: summary validation, metric generation, and schema checks.
+\end{enumerate}
+
+Our objective is not model ranking. It is to isolate where and how models fail under constrained language perturbation.

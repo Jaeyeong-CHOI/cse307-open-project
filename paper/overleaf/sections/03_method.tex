@@ -1,16 +1,32 @@
 \section{Method}
-\subsection{Confusion Language Setup}
-We map selected Python reserved tokens (e.g., \texttt{in}, \texttt{for}, \texttt{if}, \texttt{elif}, \texttt{return}, \texttt{def}) to alias phrases. To prevent decoding ambiguity, each alias must be unique (1:1 mapping).
+\subsection{Language setup}
+We use a Python-like confusion language where selected Python tokens are replaced by aliases. We enforce:
+\begin{itemize}
+  \item one-to-one mapping between original token and alias,
+  \item no alias sharing across control keywords (e.g., if/elif),
+  \item token-boundary replacement and protection of comments/strings.
+\end{itemize}
 
-\subsection{Validation and Transformation Pipeline}
-The OCaml-based toolchain validates alias collisions, transforms source code into alias form, and checks roundtrip restoration. Supporting scripts generate summary and metric payloads with schema validation gates.
+\subsection{Pipeline}
+The implementation consists of an OCaml toolchain and Python utility scripts:
+\begin{itemize}
+  \item Validation and transformation in \texttt{ocaml-confusion-lang},
+  \item summary/mapping scripts in \texttt{ocaml-confusion-lang/scripts},
+  \item metric aggregation and schema checks via \texttt{batch\_report\_summary.py}, \texttt{generate\_metric\_snapshot.py}, \texttt{validate\_summary\_payload.py}, \texttt{validate\_metric\_schema.py}.
+\end{itemize}
 
 \subsection{Metrics}
-We track:
-\begin{itemize}[leftmargin=1.2em]
-  \item ACR: Alias Compliance Rate
-  \item PRR: Python Reversion Rate
-  \item ESR: Execution Success Rate
-  \item MFB: Manual Fix Burden
-  \item LGP: Learning Gain Proxy
+We report:
+\begin{itemize}
+  \item ACR (Alias Compliance Rate)
+  \item PRR (Python Reversion Rate)
+  \item ESR (Execution Success Rate)
+  \item MFB (Manual Fix Burden)
+  \item LGP (Learning Gain Proxy)
 \end{itemize}
+
+\subsection{Experiment design}
+Inputs are referenced by task-set IDs and alias IDs. The main fixture path is \texttt{fixture-task-set-v1} with \texttt{fixture-alias-v1}. Prompt condition uses \texttt{strict}. Real model calls are attempted through the batch script path, while fixture replays are used when API access is not available.
+
+\subsection{Code-level reliability controls}
+Recent commits added extensive output provenance states (retention flags/codes, truncation flags, one-to-one alias metadata) and multiple compact formats (JSON/JSONL/TSV/markdown), enabling robust machine parsing and reducing interpretation drift.
