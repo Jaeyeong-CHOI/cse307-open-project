@@ -10145,10 +10145,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_state_codes_lines_ultra_short_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "l",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_state_codes_lines_alias_run.stdout != retained_state_codes_state_codes_lines_run.stdout:
         raise AssertionError("expected --list-state-codes-format scl alias to match canonical state-codes-lines output")
     if retained_state_codes_state_codes_lines_short_alias_run.stdout != retained_state_codes_state_codes_lines_run.stdout:
         raise AssertionError("expected --list-state-codes-format sc alias to match canonical state-codes-lines output")
+    if retained_state_codes_state_codes_lines_ultra_short_alias_run.stdout != retained_state_codes_state_codes_lines_run.stdout:
+        raise AssertionError("expected --list-state-codes-format l alias to match canonical state-codes-lines output")
     retained_state_codes_lines = [line for line in retained_state_codes_state_codes_lines_run.stdout.strip().splitlines() if line.strip()]
     if retained_state_codes_lines != ["no_retained_records\t0", "has_retained_records\t1"]:
         raise AssertionError(f"unexpected retained-records state-codes-lines output: {retained_state_codes_lines}")
@@ -11523,10 +11538,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_state_codes_lines_ultra_short_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "l",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_state_codes_lines_alias_run.stdout != retention_state_codes_state_codes_lines_run.stdout:
         raise AssertionError("expected --list-state-codes-format scl alias to match canonical state-codes-lines output")
     if retention_state_codes_state_codes_lines_short_alias_run.stdout != retention_state_codes_state_codes_lines_run.stdout:
         raise AssertionError("expected --list-state-codes-format sc alias to match canonical state-codes-lines output")
+    if retention_state_codes_state_codes_lines_ultra_short_alias_run.stdout != retention_state_codes_state_codes_lines_run.stdout:
+        raise AssertionError("expected --list-state-codes-format l alias to match canonical state-codes-lines output")
     retention_state_codes_lines = [line for line in retention_state_codes_state_codes_lines_run.stdout.strip().splitlines() if line.strip()]
     if retention_state_codes_lines != ["fully_retained\t0", "partially_retained\t1", "fully_truncated\t2"]:
         raise AssertionError(f"unexpected retention state-codes-lines output: {retention_state_codes_lines}")
