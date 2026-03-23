@@ -9038,6 +9038,41 @@ def main() -> int:
         raise AssertionError("expected retained-records state-code csv-rows output to omit header")
     if retained_state_codes_csv_rows_alias_vr_run.stdout != retained_state_codes_csv_rows_alias_run.stdout:
         raise AssertionError("expected --list-state-codes-format vr alias to match canonical csv-rows output")
+    retained_state_codes_markdown_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "markdown",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_state_codes_markdown_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "md",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    retained_markdown_lines = [line for line in retained_state_codes_markdown_run.stdout.strip().splitlines() if line.strip()]
+    if len(retained_markdown_lines) != 4:
+        raise AssertionError("expected retained-records markdown output to emit header/separator + two rows")
+    if retained_markdown_lines[0] != "| state | code | has_retained_records | has_no_retained_records | description |":
+        raise AssertionError("expected retained-records markdown header row to include canonical columns")
+    if retained_markdown_lines[1] != "| --- | --- | --- | --- | --- |":
+        raise AssertionError("expected retained-records markdown separator row to include per-column separators")
+    if retained_state_codes_markdown_alias_run.stdout != retained_state_codes_markdown_run.stdout:
+        raise AssertionError("expected --list-state-codes-format md alias to match canonical markdown output")
     retained_state_codes_payload = json.loads(retained_state_codes_run.stdout)
     if retained_state_codes_payload.get("schema") != "planner_retained_records_state_codes.v1":
         raise AssertionError(
