@@ -8988,8 +8988,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_bundle_json_alias_b_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "b",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_bundle_json_alias_run.stdout != retained_state_codes_bundle_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format bj alias to match canonical bundle-json output")
+    if retained_state_codes_bundle_json_alias_b_run.stdout != retained_state_codes_bundle_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format b alias to match canonical bundle-json output")
     retained_state_codes_bundle_json_payload = json.loads(retained_state_codes_bundle_json_run.stdout)
     if retained_state_codes_bundle_json_payload.get("state_codes") != {"no_retained_records": 0, "has_retained_records": 1}:
         raise AssertionError(
@@ -9885,8 +9900,23 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_bundle_json_alias_b_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "b",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_bundle_json_alias_run.stdout != retention_state_codes_bundle_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format bj alias to match canonical bundle-json output")
+    if retention_state_codes_bundle_json_alias_b_run.stdout != retention_state_codes_bundle_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format b alias to match canonical bundle-json output")
     retention_state_codes_bundle_json_payload = json.loads(retention_state_codes_bundle_json_run.stdout)
     if retention_state_codes_bundle_json_payload.get("codes") != [0, 1, 2]:
         raise AssertionError(
