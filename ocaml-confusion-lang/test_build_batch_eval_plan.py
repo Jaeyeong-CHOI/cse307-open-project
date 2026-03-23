@@ -9418,10 +9418,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_codes_state_json_map_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "cm",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_codes_state_json_alias_run.stdout != retained_state_codes_codes_state_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format csj alias to match canonical codes-state-json output")
     if retained_state_codes_codes_state_json_ultra_alias_run.stdout != retained_state_codes_codes_state_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format s alias to match canonical codes-state-json output")
+    if retained_state_codes_codes_state_json_map_alias_run.stdout != retained_state_codes_codes_state_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cm alias to match canonical codes-state-json output")
     retained_state_codes_codes_state_json_payload = json.loads(retained_state_codes_codes_state_json_run.stdout)
     if retained_state_codes_codes_state_json_payload != {"0": "no_retained_records", "1": "has_retained_records"}:
         raise AssertionError(
@@ -9466,10 +9481,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_codes_state_jsonl_map_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "cml",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_codes_state_jsonl_alias_run.stdout != retained_state_codes_codes_state_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format csjl alias to match canonical codes-state-jsonl output")
     if retained_state_codes_codes_state_jsonl_ultra_alias_run.stdout != retained_state_codes_codes_state_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format sl alias to match canonical codes-state-jsonl output")
+    if retained_state_codes_codes_state_jsonl_map_alias_run.stdout != retained_state_codes_codes_state_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cml alias to match canonical codes-state-jsonl output")
     retained_state_codes_codes_state_jsonl_payload = [
         json.loads(line)
         for line in retained_state_codes_codes_state_jsonl_run.stdout.splitlines()
@@ -10537,10 +10567,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_codes_state_json_map_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "cm",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_codes_state_json_alias_run.stdout != retention_state_codes_codes_state_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format csj alias to match canonical codes-state-json output")
     if retention_state_codes_codes_state_json_ultra_alias_run.stdout != retention_state_codes_codes_state_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format s alias to match canonical codes-state-json output")
+    if retention_state_codes_codes_state_json_map_alias_run.stdout != retention_state_codes_codes_state_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cm alias to match canonical codes-state-json output")
     retention_state_codes_codes_state_json_payload = json.loads(retention_state_codes_codes_state_json_run.stdout)
     if retention_state_codes_codes_state_json_payload != {
         "0": "fully_retained",
@@ -10589,10 +10634,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_codes_state_jsonl_map_alias_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "cml",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_codes_state_jsonl_alias_run.stdout != retention_state_codes_codes_state_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format csjl alias to match canonical codes-state-jsonl output")
     if retention_state_codes_codes_state_jsonl_ultra_alias_run.stdout != retention_state_codes_codes_state_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format sl alias to match canonical codes-state-jsonl output")
+    if retention_state_codes_codes_state_jsonl_map_alias_run.stdout != retention_state_codes_codes_state_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format cml alias to match canonical codes-state-jsonl output")
     retention_state_codes_codes_state_jsonl_payload = [
         json.loads(line)
         for line in retention_state_codes_codes_state_jsonl_run.stdout.splitlines()
