@@ -1,0 +1,35 @@
+\section{Prompt and Judge Details}
+\subsection{Prompt contract}
+Each run uses a two-message contract:
+\begin{itemize}
+  \item \textbf{System}: ``Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.''
+  \item \textbf{User}: versioned prompt text (\texttt{docs/archive/prompt-versions/v*.md}) containing alias mapping and task statement.
+\end{itemize}
+
+\subsection{Input prompt structure}
+Versioned prompts include:
+\begin{enumerate}
+  \item alias map block (e.g., token\(\rightarrow\)alias pairs),
+  \item task statement (Fibonacci-style function + loop output requirement),
+  \item strict-format instruction.
+\end{enumerate}
+
+\subsection{Deterministic judge protocol}
+The judge in \texttt{scripts/run\_gpt54\_eval.py} applies the following checks:
+\begin{enumerate}
+  \item Alias compliance: required alias presence and original keyword leakage detection.
+  \item Normalization validity: alias\(\rightarrow\)Python normalization then AST parseability.
+  \item Skeleton checks:
+  \begin{itemize}
+    \item function \texttt{fib} existence,
+    \item base case \texttt{if n <= 1: return n},
+    \item recursive return \texttt{fib(n-1) + fib(n-2)},
+    \item loop \texttt{for i in range(7): print(i, fib(i))}.
+  \end{itemize}
+\end{enumerate}
+
+\subsection{Pass/fail and score}
+Pass requires zero violations. Score starts at 100 and decreases by fixed penalties per violation. This provides a strict and reproducible criterion for cross-model comparison under transformed syntax constraints.
+
+\subsection{Failure taxonomy source}
+Violation classes are directly emitted into result JSON and aggregated in summary artifacts under \texttt{docs/research/results/}. This enables exact claim-to-artifact traceability.
