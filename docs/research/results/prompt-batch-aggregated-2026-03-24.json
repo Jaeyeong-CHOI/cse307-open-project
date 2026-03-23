@@ -1,92 +1,76 @@
 {
-  "date": "2026-03-24",
   "runs": [
     {
       "file": "docs/research/results/prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json",
       "model": "gpt-4o-mini",
-      "total": 120,
+      "avg_score": 5.25,
+      "nonzero_score": 8,
       "passed": 0,
-      "failed": 120,
-      "http_failures": 0,
-      "avg_score": 5.25
+      "failed": 120
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt4o-mini.2026-03-24.json",
       "model": "gpt-4o-mini",
-      "total": 120,
+      "avg_score": 3.75,
+      "nonzero_score": 7,
       "passed": 0,
-      "failed": 120,
-      "http_failures": 0,
-      "avg_score": 3.75
+      "failed": 120
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt4o.2026-03-23.json",
       "model": "gpt-4o",
-      "total": 120,
+      "avg_score": 17.583,
+      "nonzero_score": 30,
       "passed": 1,
-      "failed": 119,
-      "http_failures": 0,
-      "avg_score": 17.583333333333332
+      "failed": 119
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt54-mini.2026-03-24.json",
+      "model": "gpt-5.4-mini",
+      "avg_score": 9.083,
+      "nonzero_score": 19,
+      "passed": 0,
+      "failed": 120
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120.gpt41-mini.2026-03-23.json",
       "model": "gpt-4.1-mini",
-      "total": 120,
+      "avg_score": 10.75,
+      "nonzero_score": 24,
       "passed": 0,
-      "failed": 120,
-      "http_failures": 0,
-      "avg_score": 10.75
+      "failed": 120
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120.gpt41-nano.2026-03-23.json",
       "model": "gpt-4.1-nano",
-      "total": 120,
+      "avg_score": 1.333,
+      "nonzero_score": 5,
       "passed": 0,
-      "failed": 120,
-      "http_failures": 0,
-      "avg_score": 1.3333333333333333
+      "failed": 120
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120.gpt4o-mini.2026-03-23.json",
       "model": "gpt-4o-mini",
-      "total": 120,
+      "avg_score": 4.833,
+      "nonzero_score": 10,
       "passed": 0,
-      "failed": 120,
-      "http_failures": 0,
-      "avg_score": 4.833333333333333
+      "failed": 120
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120.gpt4o.2026-03-23.json",
       "model": "gpt-4o",
-      "total": 120,
+      "avg_score": 18.167,
+      "nonzero_score": 30,
       "passed": 2,
-      "failed": 118,
-      "http_failures": 0,
-      "avg_score": 18.166666666666668
-    },
-    {
-      "file": "docs/research/results/prompt-batch-v1-120.gpt53-codex.2026-03-23.json",
-      "model": "gpt-5.3-codex",
-      "total": 1,
-      "passed": 0,
-      "failed": 1,
-      "http_failures": 1,
-      "avg_score": 0.0
+      "failed": 118
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120.gpt54-mini.2026-03-23.json",
       "model": "gpt-5.4-mini",
-      "total": 120,
+      "avg_score": 6.583,
+      "nonzero_score": 16,
       "passed": 0,
-      "failed": 120,
-      "http_failures": 0,
-      "avg_score": 6.583333333333333
+      "failed": 120
     }
-  ],
-  "totals": {
-    "total": 961,
-    "passed": 3,
-    "failed": 958,
-    "http_failures": 1
-  }
+  ]
 }

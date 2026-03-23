@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-24 00:45 KST
+마지막 업데이트: 2026-03-24 01:52 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -9,8 +9,8 @@
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
-- 결과 파일 누적: 🟢 (full-range 실측 6개 배치 + 변형조건(contextpack/legacy/probe) 포함 총 8개 JSON, 841건 누적)
-- 지표 산출(ACR/PRR/ESR): 🟡 (gpt-4o 기준 contextpack ON이 legacy 대비 pass +1, avg score +0.583 개선)
+- 결과 파일 누적: 🟢 (full-range 실측 7개 배치 + 변형조건(contextpack/legacy/probe) 포함 총 9개 JSON, 961건 누적)
+- 지표 산출(ACR/PRR/ESR): 🟡 (모델별 편차 존재: gpt-4o는 contextpack 우세(pass +1), gpt-5.4-mini는 legacy 우세(avg score +2.500, nonzero +3))
 - 문서화 품질: 🟢 (status/log/results 업데이트)
 
 ## This Week Progress
@@ -79,6 +79,11 @@
   - 비교 결과: contextpack ON이 legacy 대비 `delta_avg_score=+1.083`, `delta_nonzero_score=+3` 개선(`delta_passed=0`)
 - [x] 모델 가용성 probe: `gpt-5.3-codex` 1건 실행(HTTP 404)으로 unsupported 확인
   - 산출: `prompt-batch-v1-120.gpt53-codex.2026-03-23.json` (`total=1`, `http_failures=1`)
+- [x] 조건 비교 실측 추가: `gpt-5.4-mini` legacy(no contextpack) full-range v1~v120
+  - 신규 배치: `prompt-batch-v1-120-legacy.gpt54-mini.2026-03-24.json` (`total=120`, `passed=0`, `failed=120`, `http_failures=0`)
+  - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt54-mini.2026-03-24.{json,md}`
+  - 비교 결과: **legacy가 contextpack 대비** `avg_score +2.500`, `nonzero_score +3` 우세(`passed=0` 동률)
+  - 통합 집계 갱신: `prompt-batch-aggregated-2026-03-24.json` (유효 full-range run 9개)
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions
