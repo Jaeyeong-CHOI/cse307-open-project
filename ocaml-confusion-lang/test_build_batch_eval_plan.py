@@ -9326,10 +9326,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_rows_json_alias_x_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "x",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_rows_json_alias_run.stdout != retained_state_codes_rows_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format rj alias to match canonical rows-json output")
     if retained_state_codes_rows_json_alias_rr_run.stdout != retained_state_codes_rows_json_run.stdout:
         raise AssertionError("expected --list-state-codes-format rr alias to match canonical rows-json output")
+    if retained_state_codes_rows_json_alias_x_run.stdout != retained_state_codes_rows_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format x alias to match canonical rows-json output")
     retained_state_codes_rows_json_payload = json.loads(retained_state_codes_rows_json_run.stdout)
     if not isinstance(retained_state_codes_rows_json_payload, list) or len(retained_state_codes_rows_json_payload) != 2:
         raise AssertionError("expected retained-records rows-json payload to emit exactly two state rows")
@@ -9385,12 +9400,27 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retained_state_codes_rows_jsonl_alias_xl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retained-records-state-codes",
+            "--list-state-codes-format",
+            "xl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retained_state_codes_rows_jsonl_alias_run.stdout != retained_state_codes_rows_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format rjl alias to match canonical rows-jsonl output")
     if retained_state_codes_rows_jsonl_alias_rl_run.stdout != retained_state_codes_rows_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format rl alias to match canonical rows-jsonl output")
     if retained_state_codes_rows_jsonl_alias_rrl_run.stdout != retained_state_codes_rows_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format rrl alias to match canonical rows-jsonl output")
+    if retained_state_codes_rows_jsonl_alias_xl_run.stdout != retained_state_codes_rows_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format xl alias to match canonical rows-jsonl output")
     retained_state_codes_rows_jsonl_payload = [
         json.loads(line)
         for line in retained_state_codes_rows_jsonl_run.stdout.splitlines()
@@ -10898,6 +10928,21 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_rows_json_alias_x_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "x",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if retention_state_codes_rows_json_alias_x_run.stdout != retention_state_codes_rows_json_run.stdout:
+        raise AssertionError("expected --list-state-codes-format x alias to match canonical rows-json output")
     retention_state_codes_rows_json_payload = json.loads(retention_state_codes_rows_json_run.stdout)
     if not isinstance(retention_state_codes_rows_json_payload, list) or len(retention_state_codes_rows_json_payload) != 3:
         raise AssertionError("expected retention rows-json payload to emit exactly three state rows")
@@ -10940,10 +10985,25 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    retention_state_codes_rows_jsonl_alias_xl_run = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--list-retention-state-codes",
+            "--list-state-codes-format",
+            "xl",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     if retention_state_codes_rows_jsonl_alias_run.stdout != retention_state_codes_rows_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format rjl alias to match canonical rows-jsonl output")
     if retention_state_codes_rows_jsonl_alias_rl_run.stdout != retention_state_codes_rows_jsonl_run.stdout:
         raise AssertionError("expected --list-state-codes-format rl alias to match canonical rows-jsonl output")
+    if retention_state_codes_rows_jsonl_alias_xl_run.stdout != retention_state_codes_rows_jsonl_run.stdout:
+        raise AssertionError("expected --list-state-codes-format xl alias to match canonical rows-jsonl output")
     retention_state_codes_rows_jsonl_payload = [
         json.loads(line)
         for line in retention_state_codes_rows_jsonl_run.stdout.splitlines()
