@@ -67,6 +67,7 @@ The o4-mini result is particularly interesting: as a reasoning model, it partial
 \caption{L4 ablation (PPR = Python Prior Rate). Original 4 models: $n=50$ (5 variants $\times$ 10 runs). Extended 3 models: $n=20$ (5 $\times$ 4). Pass rate = 0 for all models except o4-mini (1/20). o4-mini is the only model to achieve any L4 pass, on variant E (different-domain examples).}
 \label{tab:l4_ablation}
 \footnotesize
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}llccccccc@{}}
 \toprule
 Var. & Description & \rotatebox{70}{gpt-4o} & \rotatebox{70}{gpt-4o-mini} & \rotatebox{70}{gpt-4.1} & \rotatebox{70}{gpt-4.1-mini} & \rotatebox{70}{gpt-4.1-nano} & \rotatebox{70}{gpt-5.4-mini} & \rotatebox{70}{o4-mini} \\
@@ -80,8 +81,8 @@ E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0$^\dagger$ & .75$^*$ \\
 \multicolumn{2}{l}{Overall PPR} & .70 & .82 & 1.0 & .38 & 1.0 & 1.0 & .95 \\
 \multicolumn{2}{l}{Pass rate} & 0/50 & 0/50 & 0/20 & 0/50 & 0/20 & 0/50 & 1/20 \\
 \bottomrule
-\multicolumn{9}{l}{$^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$. $^*$o4-mini var-E: 1/4 pass (only L4 pass observed).} \\
-\end{tabular}
+\multicolumn{9}{l}{\scriptsize $^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$. $^*$o4-mini var-E: 1/4 pass (only L4 pass observed).} \\
+\end{tabular}}
 \end{table}
 
 \begin{figure}[!t]
@@ -118,7 +119,7 @@ To assess whether pattern blindness extends beyond Fibonacci, we evaluated four 
 
 \begin{table}[!t]
 \centering
-\caption{L4 multi-task generalization. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully (20/20 and 10/10 respectively), while all three models fail T1 with PPR=1.0. T3 reveals a third failure sub-mode: \emph{operational substitution}.}
+\caption{L4 multi-task generalization. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully (20/20 and 10/10), while all three models fail T1 with PPR=1.0. T3 reveals a third failure sub-mode: \textit{operational substitution}.}
 \label{tab:l4_multitask}
 \footnotesize
 \begin{tabular}{@{}lllcc@{}}
@@ -137,7 +138,7 @@ T3 vowels & gpt-4o       & 10 & 1/10  & 0.00 \\
 T3 vowels & gpt-4o-mini  & 10 & 0/10  & 0.00 \\
 T3 vowels & gpt-4.1-mini & 20 & 0/20  & 0.25 \\
 \bottomrule
-\multicolumn{5}{l}{$^*$gpt-4o-mini uses split base cases (\texttt{if n==0}/\texttt{if n==1}): \emph{template fragmentation}.} \\
+\multicolumn{5}{@{}p{\columnwidth}@{}}{\scriptsize $^*$gpt-4o-mini uses split base cases (\texttt{if n==0}/\texttt{if n==1}): \textit{template fragmentation}.} \\
 \end{tabular}
 \end{table}
 

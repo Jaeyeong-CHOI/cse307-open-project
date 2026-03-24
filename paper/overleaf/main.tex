@@ -14,6 +14,8 @@
 \tcbuselibrary{skins,breakable}
 \usepackage{tikz}
 \usetikzlibrary{positioning,shapes.geometric}
+% Suppress T1/ptm/m/scit warning (times has no small-caps italic)
+\DeclareFontShape{T1}{ptm}{m}{scit}{<->ssub*ptm/m/it}{}
 \setlength{\emergencystretch}{1.5em}
 \sloppy
 
