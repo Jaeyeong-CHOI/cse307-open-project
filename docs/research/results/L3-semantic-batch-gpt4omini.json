@@ -1,0 +1,51 @@
+{
+  "model": "gpt-4o-mini",
+  "level": "L3",
+  "results": [
+    {
+      "file": "v1.md",
+      "judge": {
+        "used_python_prior": true,
+        "attempted_l3": false,
+        "pass": false,
+        "raw_answer_snippet": "```python\ndef fib(n):\n    if n <= 1:  # runs when n is NOT <= 1 (i.e., n > 1)\n        return n\n    else:  # runs when n IS <= 1\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):  # Loop from 0 to 6\n    print(i, fib(i))\n```"
+      }
+    },
+    {
+      "file": "v2.md",
+      "judge": {
+        "used_python_prior": true,
+        "attempted_l3": false,
+        "pass": false,
+        "raw_answer_snippet": "```python\ndef fib(n):\n    if n <= 1:  # runs when n is NOT <= 1 (i.e., n > 1)\n        return n\n    else:  # runs when n IS <= 1\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):  # Loop from 0 to 6\n    print(i, fib(i))\n```"
+      }
+    },
+    {
+      "file": "v3.md",
+      "judge": {
+        "used_python_prior": true,
+        "attempted_l3": false,
+        "pass": false,
+        "raw_answer_snippet": "```python\ndef fib(n):\n    if n <= 1:  # runs when n is NOT <= 1 (i.e., n > 1)\n        return n\n    else:  # runs when n IS <= 1\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):  # Loop from 0 to 6\n    print(i, fib(i))\n```"
+      }
+    },
+    {
+      "file": "v4.md",
+      "judge": {
+        "used_python_prior": true,
+        "attempted_l3": false,
+        "pass": false,
+        "raw_answer_snippet": "```python\ndef fib(n):\n    if n <= 1:  # runs when n is NOT <= 1 (i.e., n > 1)\n        return n\n    else:\n        return fib(n-1) + fib(n-2)  # runs when n IS <= 1\n\nfor i in range(7):  # Loop from 0 to 6\n    print(i, fib(i))\n```"
+      }
+    },
+    {
+      "file": "v5.md",
+      "judge": {
+        "used_python_prior": true,
+        "attempted_l3": false,
+        "pass": false,
+        "raw_answer_snippet": "```python\ndef fib(n):\n    if n <= 1:  # runs when n is NOT <= 1 (i.e., n > 1)\n        return n\n    else:\n        return fib(n-1) + fib(n-2)  # runs when n IS <= 1\n\nfor i in range(7):  # Loop from 0 to 6\n    print(i, fib(i))\n```"
+      }
+    }
+  ]
+}
