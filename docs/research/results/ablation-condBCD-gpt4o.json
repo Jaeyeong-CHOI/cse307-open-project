@@ -1,0 +1,136 @@
+{
+  "model": "gpt-4o",
+  "results": {
+    "B": [
+      {
+        "file": "condB-v1.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! Based on the examples provided, it seems that the logic in the code is intentionally reversed or incorrect. Following this pattern, I'll write a `sort_list` function that sorts a list in de"
+      },
+      {
+        "file": "condB-v10.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! Based on the examples provided, it seems that the logic in the code is intentionally reversed or incorrect. Following this pattern, I'll write a `sort_list` function that sorts a list of in"
+      },
+      {
+        "file": "condB-v2.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! Based on the examples provided, it seems that the logic in the code is intentionally reversed or incorrect. Following this pattern, I'll write a `sort_list` function that sorts a list of in"
+      },
+      {
+        "file": "condB-v3.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Based on the examples provided, it seems that the logic in the code is intentionally reversed or incorrect. Following this pattern, I'll write a `sort_list` function that sorts a list of integers in d"
+      },
+      {
+        "file": "condB-v4.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Based on the examples provided, it seems that the logic in the code is intentionally reversed or incorrect. Following this pattern, I'll write a `sort_list` function that sorts a list of integers in d"
+      }
+    ],
+    "C": [
+      {
+        "file": "condC-v1.md",
+        "judge": {
+          "python_prior": true,
+          "inverted": false,
+          "task": "fib"
+        },
+        "ans_snippet": "Certainly! Below is a Python function `fib(n)` that computes Fibonacci numbers using the recursive approach as described. It also includes a loop to print Fibonacci numbers from `fib(0)` through `fib("
+      },
+      {
+        "file": "condC-v10.md",
+        "judge": {
+          "python_prior": true,
+          "inverted": false,
+          "task": "fib"
+        },
+        "ans_snippet": "Certainly! Below is a Python function `fib(n)` that computes Fibonacci numbers using the recursive approach as described. It also includes a loop to print Fibonacci numbers from `fib(0)` through `fib("
+      },
+      {
+        "file": "condC-v2.md",
+        "judge": {
+          "python_prior": true,
+          "inverted": false,
+          "task": "fib"
+        },
+        "ans_snippet": "Certainly! Below is a Python function `fib(n)` that computes Fibonacci numbers using the recursive approach as described. It also includes a loop to print the Fibonacci numbers from `fib(0)` through `"
+      },
+      {
+        "file": "condC-v3.md",
+        "judge": {
+          "python_prior": true,
+          "inverted": false,
+          "task": "fib"
+        },
+        "ans_snippet": "Certainly! Below is a Python function `fib(n)` that computes Fibonacci numbers using the recursive approach as described. It also includes a loop to print the Fibonacci numbers from `fib(0)` through `"
+      },
+      {
+        "file": "condC-v4.md",
+        "judge": {
+          "python_prior": true,
+          "inverted": false,
+          "task": "fib"
+        },
+        "ans_snippet": "Certainly! Below is a Python function `fib(n)` that computes Fibonacci numbers using the recursive approach as described. It also includes a loop to print the Fibonacci numbers from `fib(0)` through `"
+      }
+    ],
+    "D": [
+      {
+        "file": "condD-v1.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! You can create a function `sort_list` that sorts a list of integers in ascending order using Python's built-in sorting capabilities. Here's how you can do it:\n\n```python\ndef sort_list(lst):"
+      },
+      {
+        "file": "condD-v10.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! You can create a function `sort_list(lst)` that sorts a list of integers in ascending order using Python's built-in sorting capabilities. Here's how you can do it:\n\n```python\ndef sort_list("
+      },
+      {
+        "file": "condD-v2.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! You can create a function `sort_list` that sorts a list of integers in ascending order using Python's built-in sorting capabilities. Here's how you can do it:\n\n```python\ndef sort_list(lst):"
+      },
+      {
+        "file": "condD-v3.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! You can create a function `sort_list` that sorts a list of integers in ascending order using Python's built-in sorting capabilities. Here's how you can do it:\n\n```python\ndef sort_list(lst):"
+      },
+      {
+        "file": "condD-v4.md",
+        "judge": {
+          "has_sort": true,
+          "task": "novel"
+        },
+        "ans_snippet": "Certainly! You can create a function `sort_list` that sorts a list of integers in ascending order using Python's built-in sorting capabilities. Here's how you can do it:\n\n```python\ndef sort_list(lst):"
+      }
+    ]
+  }
+}

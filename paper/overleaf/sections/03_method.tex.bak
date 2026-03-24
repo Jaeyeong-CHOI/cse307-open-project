@@ -43,13 +43,13 @@ Figure~\ref{fig:taxonomy} illustrates the two-axis design space and the location
   \node[below, font=\footnotesize\bfseries] at (1.5,-0.55) {Perturbation Depth};
   \node[left, font=\footnotesize\bfseries, rotate=90] at (-0.7,1) {Rule Delivery};
   % Cells
-  \node[fill=blue!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
+  \node[fill=blue!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm]
     at (0.5,0.5) {\textbf{L1}\\Prior dom.};
-  \node[fill=orange!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
+  \node[fill=orange!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm]
     at (1.5,0.5) {\textbf{L2}\\Adopted};
-  \node[fill=red!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
+  \node[fill=red!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm]
     at (2.5,0.5) {\textbf{L3}\\Cap.-dep.};
-  \node[fill=red!40, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
+  \node[fill=red!40, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm]
     at (2.5,1.5) {\textbf{L4}\\Patt. blind};
   \node[fill=gray!10, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, text=gray]
     at (0.5,1.5) {---};

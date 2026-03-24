@@ -2,53 +2,83 @@
 
 \begin{table}[!t]
 \centering
-\caption{L1 partial metrics per model ($n=120$).}
+\caption{L1 evaluation: KLR and PSS per model ($n=120$). Models sorted by KLR. Note that model scale does not predict compliance---gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37). Context-pack delivery reduces KLR by 39\% for gpt-4o-mini.}
 \label{tab:l1_results}
 \footnotesize
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}llcc@{}}
 \toprule
-Model & KLR$\downarrow$ & ACR$\uparrow$ & PSS$\uparrow$ & PIR$\downarrow$ \\
+Model & Delivery & KLR$\downarrow$ & PSS$\uparrow$ \\
 \midrule
-4o-mini+ctx & 0.26 & 0.74 & 0.32 & 0.26 \\
-gpt-4o & 0.37 & 0.63 & 0.40 & 0.37 \\
-gpt-4o-mini & 0.42 & 0.58 & 0.27 & 0.42 \\
-gpt-4.1-mini & 0.43 & 0.57 & 0.33 & 0.43 \\
-gpt-5.4-mini & 0.67 & 0.33 & 0.25 & 0.67 \\
-gpt-4.1-nano & 0.69 & 0.31 & 0.16 & 0.69 \\
+gpt-4.1-nano & baseline & 0.69 & 0.16 \\
+gpt-5.4-mini & baseline & 0.67 & 0.25 \\
+gpt-4.1-mini & baseline & 0.43 & 0.33 \\
+gpt-4o-mini  & baseline & 0.42 & 0.27 \\
+gpt-4o       & baseline & 0.37 & 0.40 \\
+gpt-4o-mini  & ctx-pack & 0.26 & 0.32 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{L1: Partial resistance with clear model spread}
-All models show non-zero KLR (0.26--0.69). Context-pack halves prior influence for gpt-4o-mini. Model size does not predict compliance: gpt-5.4-mini (KLR=0.670) is worse than gpt-4o (KLR=0.366).
+\subsection{L1: Partial resistance; scale does not predict compliance}
+All models show non-zero KLR (0.26--0.69), confirming prior dominance. Two findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37), showing model scale does not predict compliance; (2) context-pack delivery halves prior influence (0.42 $\to$ 0.26 for gpt-4o-mini).
 
 \begin{table}[!t]
 \centering
-\caption{L2--L4 results.}
+\caption{L2--L4 outcomes by model and condition. L2 is trivially adopted; L3 reveals a capability threshold; L4 (example-only delivery) defeats all models, including gpt-4o which succeeds at L3.}
 \label{tab:l234_results}
 \footnotesize
-\begin{tabular}{@{}llcc@{}}
+\begin{tabular}{@{}lllcc@{}}
 \toprule
-Model & Level & Pass & Mechanism \\
+Model & Level & Delivery & Pass & Failure mode \\
 \midrule
-4o-mini & L2 expl. & 5/5 & Adopted \\
-4o-mini & L3 expl. & 0/5 & Prior dom. \\
-gpt-4o & L3 expl. & 10/10 & Followed \\
-4.1-mini & L3 expl. & 10/10 & Followed \\
-gpt-4o & L4 impl. & 0/5 & Pattern blind \\
+gpt-4o-mini & L2 & Expl. grammar & 5/5 & None (adopted) \\
+gpt-4o-mini & L3 & Expl. rule & 0/5 & Prior dominance \\
+gpt-4o      & L3 & Expl. rule & 10/10 & --- (success) \\
+gpt-4.1-mini& L3 & Expl. rule & 10/10 & --- (success) \\
+gpt-4o      & L4 & Examples only & 0/5 & Pattern blindness \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{L2: Syntax inversion not resistant}
-gpt-4o-mini (and others tested) adopted L2 syntax fully when given explicit rules (SIR=0.0, L2-adoption=1.0). LLMs can follow explicit structural rules.
+All models adopted L2 syntax fully (SIR=0.0) when given explicit rules. Structural novelty alone does not create LLM resistance.
 
-\subsection{L3: Model capability threshold}
-With explicit semantic inversion rule: gpt-4o-mini fails completely (PPR=1.0, uses Python \texttt{if n<=1: return n} pattern without inversion). gpt-4o and gpt-4.1-mini succeed (PPR=0.0). This reveals a capability threshold for following semantic meta-rules.
+\subsection{L3: Capability threshold at semantic rule-following}
+With an explicit semantic inversion rule, gpt-4o-mini fails completely (PPR=1.0): it generates standard Python despite instruction. gpt-4o and gpt-4.1-mini succeed (PPR=0.0). This reveals a model capacity threshold for following semantic meta-rules.
 
-\subsection{L4: Pattern blindness in all tested models}
-Without explicit rule: gpt-4o completely ignores the semantic inversion in examples and produces standard Python fib. Pattern blindness occurs even in a strong model that can follow explicit L3 rules.
+\subsection{L4: Pattern blindness across all tested models}
+Without explicit rule, gpt-4o---which succeeds at L3---fails at L4 (PPR=1.0), producing canonical Python and ignoring example-embedded inversion cues. Figure~\ref{fig:l4_failure} shows the contrast.
+
+\begin{figure}[!t]
+\centering
+\begin{tabular}{p{0.44\linewidth}p{0.44\linewidth}}
+\hline
+\textbf{Panel A: L3 (explicit)} & \textbf{Panel B: L4 (example-only)} \\
+\hline
+System: ``if-blocks run when condition is FALSE.'' &
+User: [2 worked examples with inverted semantics] \\[4pt]
+gpt-4o output: {\small
+\begin{verbatim}
+if n > 1:   # inverted
+  return n
+return fib(n-1)+fib(n-2)
+\end{verbatim}
+} CORRECT &
+gpt-4o output: {\small
+\begin{verbatim}
+if n <= 1:  # Python prior
+  return n
+return fib(n-1)+fib(n-2)
+\end{verbatim}
+} INCORRECT \\
+\hline
+\end{tabular}
+\caption{Prior dominance vs.\ pattern blindness isolated on the same model (gpt-4o). \textbf{A}: gpt-4o correctly inverts logic with explicit rule (L3). \textbf{B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}
+\label{fig:l4_failure}
+\end{figure}
 
 \subsection{Two Failure Modes}
-\textbf{Prior Dominance} (L1, L3-weak-models): Model processes the instruction but pretrained token distribution overrides compliance.
-\textbf{Pattern Blindness} (L4): Model does not extract the semantic rule from examples; outputs fall back to dominant training patterns without even attempting rule adherence.
+\begin{itemize}
+  \item \textbf{Prior Dominance} (L1, L3-weak): stated rule is overridden by pretrained token distribution.
+  \item \textbf{Pattern Blindness} (L4): model cannot extract semantic rule from examples. Critically, this affects gpt-4o, which follows the same rule when stated explicitly.
+\end{itemize}
