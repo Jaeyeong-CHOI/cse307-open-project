@@ -2,39 +2,51 @@
 
 \begin{table}[!t]
 \centering
-\caption{Fixture replay baseline metrics.}
-\label{tab:fixture_metrics}
-\begin{tabular}{lcc}
+\caption{L1 partial metrics: baseline condition (n=120 per model).}
+\label{tab:l1_results}
+\begin{tabular}{lcccc}
 \toprule
-Metric & Value & Note \\
+Model & KLR $\downarrow$ & ACR $\uparrow$ & PSS $\uparrow$ & PIR $\downarrow$ \\
 \midrule
-ACR & 0.333 & fixture replay (\texttt{fixture-task-set-v1}) \\
-PRR & 0.667 & same run condition \\
-ESR & 0.667 & same run condition \\
-MFB & 65.0 & manual correction burden estimate \\
-LGP & 0.667 & learning proxy metric from replay context \\
+gpt-4o-mini + ctx-pack & 0.260 & 0.740 & 0.324 & 0.260 \\
+gpt-4o & 0.366 & 0.634 & 0.396 & 0.366 \\
+gpt-4o-mini & 0.423 & 0.578 & 0.273 & 0.423 \\
+gpt-4.1-mini & 0.431 & 0.569 & 0.329 & 0.431 \\
+gpt-5.4-mini & 0.670 & 0.330 & 0.249 & 0.670 \\
+gpt-4.1-nano & 0.690 & 0.310 & 0.160 & 0.690 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Real-call full-range batches (v1--v120)}
-After key-path recovery, we executed full-range real-call batches for four model settings:
-\begin{itemize}
-  \item \texttt{gpt-4o-mini}: total=120, passed=0, failed=120
-  \item \texttt{gpt-4.1-mini}: total=120, passed=0, failed=120
-  \item \texttt{gpt-4.1-nano}: total=120, passed=0, failed=120
-  \item \texttt{gpt-5.4-mini}: total=120, passed=0, failed=120
-\end{itemize}
-Total accumulated real-call samples: \textbf{480}. In these full-range runs, HTTP authentication failures were removed; dominant failures moved to judge-side violations.
+\subsection{L1: Partial resistance with clear model spread}
+All models show non-zero KLR (0.26--0.69). Context-pack halves prior influence for gpt-4o-mini. Model size does not predict compliance: gpt-5.4-mini (KLR=0.670) is worse than gpt-4o (KLR=0.366).
 
-\subsection{Observed violation profile}
-Representative high-frequency violation categories include:
-\begin{itemize}
-  \item \texttt{original keyword used}
-  \item \texttt{python parse failed after normalization}
-  \item alias-missing and roundtrip mismatch derivatives
-\end{itemize}
-For parse-failure counts, \texttt{gpt-5.4-mini} (95) and \texttt{gpt-4.1-mini} (96) were lower than \texttt{gpt-4o-mini} (109) and \texttt{gpt-4.1-nano} (111), but all remained at 0 pass under the current strict judge protocol.
+\begin{table}[!t]
+\centering
+\caption{L2--L4 results by model and condition.}
+\label{tab:l234_results}
+\begin{tabular}{llcc}
+\toprule
+Model & Level & Pass rate & Mechanism \\
+\midrule
+gpt-4o-mini & L2 (explicit) & 5/5 & Syntax adoption \\
+gpt-4o-mini & L3 (explicit) & 0/5 & Prior dominance \\
+gpt-4o & L3 (explicit) & 10/10 & Followed rule \\
+gpt-4.1-mini & L3 (explicit) & 10/10 & Followed rule \\
+gpt-4o & L4 (implicit) & 0/5 & Pattern blindness \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{Interpretation}
-The bottleneck has shifted from infrastructure authentication to strict compliance under transformed syntax constraints. This confirms that the current challenge is primarily behavioral (rule adherence), not endpoint availability.
+\subsection{L2: Syntax inversion not resistant}
+gpt-4o-mini (and others tested) adopted L2 syntax fully when given explicit rules (SIR=0.0, L2-adoption=1.0). LLMs can follow explicit structural rules.
+
+\subsection{L3: Model capability threshold}
+With explicit semantic inversion rule: gpt-4o-mini fails completely (PPR=1.0, uses Python \texttt{if n<=1: return n} pattern without inversion). gpt-4o and gpt-4.1-mini succeed (PPR=0.0). This reveals a capability threshold for following semantic meta-rules.
+
+\subsection{L4: Pattern blindness in all tested models}
+Without explicit rule: gpt-4o completely ignores the semantic inversion in examples and produces standard Python fib. Pattern blindness occurs even in a strong model that can follow explicit L3 rules.
+
+\subsection{Two Failure Modes}
+\textbf{Prior Dominance} (L1, L3-weak-models): Model processes the instruction but pretrained token distribution overrides compliance.
+\textbf{Pattern Blindness} (L4): Model does not extract the semantic rule from examples; outputs fall back to dominant training patterns without even attempting rule adherence.

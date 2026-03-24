@@ -1,18 +1,28 @@
 \section{Discussion}
-The current stage contributes a robust benchmark scaffold \emph{and} a meaningful real-call accumulation (480 samples), but still no passing cases under strict compliance.
+\subsection{Effective LLM-resistant language design}
+Our results identify a principled recipe for LLM-resistant programming languages:
+\begin{enumerate}
+  \item Token-level perturbation alone is insufficient (models partially resist, but at measured rates).
+  \item Syntactic restructuring is also insufficient (models adopt explicit structural rules).
+  \item Semantic inversion with explicit instruction provides capacity-dependent resistance.
+  \item Semantic inversion without explanation (L4) provides consistent resistance via pattern blindness.
+\end{enumerate}
+The most practical target for educational use is L4: retain Python surface syntax, invert conditional semantics, and provide only worked examples rather than explicit rules.
 
-\subsection{What is now validated}
+\subsection{Implications for programming education}
+Our findings directly address the concern of LLM-solved homework.
+Assignments written in L4-style confusion languages cannot be trivially solved by current LLMs because:
+(1) the model defaults to Python prior when encountering familiar syntax, and
+(2) even when examples are provided, pattern extraction of semantic inversion is beyond current few-shot capability.
+
+Students who understand the L4 rules (from lecture instruction) retain a decisive advantage over LLM-assisted submissions, restoring the discriminative power of programming assessments.
+
+\subsection{Limits}
+Current results are based on a single benchmark task (Fibonacci). Generalization requires multi-task evaluation (Exp-4 in our roadmap). The PPR metric for L3/L4 is task-specific and requires per-task oracle semantics. Human baseline experiments (Exp-5) are needed to confirm that L4 does not also confuse human learners.
+
+\subsection{Next steps}
 \begin{itemize}
-  \item Replay-side reproducibility is stable (schema checks, lineage, fixture snapshots).
-  \item Real-call execution is operational after key-path recovery (HTTP auth failures removed in full-range runs).
-  \item Failure concentration is now clearly behavioral: keyword reversion and normalization-parse breakdown.
+  \item Exp-4: Multi-task extension (nested control-flow, stateful logic, sorting).
+  \item Exp-5: Human study comparing student performance vs.\ LLM performance on L4 tasks.
+  \item L4 difficulty scaling: graded version with more/fewer examples, measuring tipping point.
 \end{itemize}
-
-\subsection{What remains limited}
-\begin{itemize}
-  \item All four tested model settings currently show 0 pass under strict judge criteria.
-  \item Cross-condition prompt design is still narrow (few-shot/repair-loop variants not yet fully explored).
-\end{itemize}
-
-\subsection{Methodological implication}
-For constrained-language evaluation, provenance and schema controls are necessary but not sufficient. Once infra is stable, model behavior can still collapse under strict rule adherence. Therefore, next experiments should explicitly separate prompt-design effects, decoding constraints, and judge strictness sensitivity.

@@ -1,50 +1,53 @@
 \section{Method}
-\subsection{Research Question and Hypotheses}
-We study whether code LLMs obey transformed Python-like syntax under explicit alias constraints.
+\subsection{Research Questions and Hypotheses}
+\textbf{RQ1}: At what language design level does LLM resistance become robust?
+\textbf{RQ2}: What failure mechanism is active at each level---prior dominance or pattern blindness?
+\textbf{H1}: Token-level alias substitution (L1) creates partial but not complete resistance.
+\textbf{H2}: Syntactic inversion (L2) is insufficient---models adopt new syntax when given explicit rules.
+\textbf{H3}: Semantic inversion (L3/L4) provides robust resistance, but differs in mechanism by model capacity.
 
-\textbf{RQ1}: Under strict alias instructions, how often do models retain transformed tokens vs. revert to canonical Python keywords?
+\subsection{Language Level Taxonomy}
+We define a four-level design taxonomy:
 
-\textbf{RQ2}: Are failures dominated by infrastructure issues or by behavioral non-compliance after infrastructure stabilization?
+\begin{table}[!t]
+\centering
+\caption{Confusion Language Difficulty Levels}
+\label{tab:levels}
+\begin{tabular}{cll}
+\toprule
+Level & Design principle & Expected mechanism \\
+\midrule
+L1 & Token alias substitution & Prior dominance \\
+L2 & Syntax structure inversion & Easily adopted \\
+L3 & Semantic inversion (explicit) & Capacity-dependent \\
+L4 & Semantic inversion (implicit) & Pattern blindness \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\textbf{H1}: Even with valid API execution, strict alias compliance remains low because models revert to dominant Python priors.
+\subsection{L1: Token Alias Substitution}
+Python keywords (\texttt{if}, \texttt{for}, \texttt{in}, \texttt{return}, \texttt{def}) are replaced with aliases. Constraints: one-to-one mapping, no alias collision, token-boundary replacement, literal/comment protection.
 
-\subsection{Language Setup and Constraints}
-We define a confusion language by replacing selected Python tokens with aliases. Constraints:
-\begin{enumerate}
-  \item one-to-one mapping between each source token and alias;
-  \item no alias sharing among control keywords (e.g., \texttt{if}/\texttt{elif});
-  \item token-boundary replacement;
-  \item comment/string literal protection.
-\end{enumerate}
+\subsection{L2: Syntax Structure Inversion}
+Function definitions, conditionals, loops, and block delimiters are structurally inverted relative to Python. Example: \texttt{def fib(n):} becomes \texttt{:define fib [n] ->}. Model is given explicit grammar rules.
 
-\subsection{Pipeline Architecture}
-The evaluation stack combines OCaml transformation and Python orchestration:
+\subsection{L3: Semantic Inversion (Explicit Rules)}
+Python surface syntax is retained but the semantics of if-blocks are inverted: the indented block executes when the condition is \emph{false}. Model is explicitly told this rule.
+
+\subsection{L4: Semantic Inversion (Implicit, Example-Only)}
+Same as L3, but no rule is stated. Instead, models receive 2--3 worked examples that demonstrate the inversion. Models must extract the semantic pattern through few-shot reasoning.
+
+\subsection{Evaluation Pipeline}
+Each prompt is sent to the model with the appropriate system message. Outputs are judged by the partial judge:
 \begin{itemize}
-  \item \textbf{Transform/validate layer}: alias checks, collision prevention, roundtrip normalization;
-  \item \textbf{Batch execution layer}: prompt-version evaluation and result serialization;
-  \item \textbf{Schema gate layer}: summary payload and metric schema validation.
+  \item \textbf{KLR} (Keyword Leakage Rate): fraction of alias slots where original keyword was used.
+  \item \textbf{ACR} (Alias Compliance Rate): $1 - \text{KLR}$.
+  \item \textbf{PSS} (Partial Structural Score): weighted sub-component credit.
+  \item \textbf{PIR} (Prior Influence Rate): $\text{KLR} / (\text{KLR} + \text{ACR})$.
+  \item \textbf{PPR} (Python Prior Rate, L3/L4): fraction of outputs using Python-style condition (not inverted).
 \end{itemize}
-
-Key scripts include \texttt{run\_gpt54\_eval.py}, \texttt{batch\_report\_summary.py},
-\texttt{generate\_metric\_snapshot.py}, \texttt{validate\_summary\_payload.py}, and \texttt{validate\_metric\_schema.py}.
-
-\subsection{Metrics and Judge Protocol}
-We use two metric families:
-\begin{itemize}
-  \item \textbf{Fixture aggregate metrics}: ACR, PRR, ESR, MFB, LGP.
-  \item \textbf{Prompt-batch judge outcomes}: pass/fail with violation taxonomy.
-\end{itemize}
-
-Judge protocol checks:
-\begin{enumerate}
-  \item strict alias presence and original keyword leakage;
-  \item alias-to-python normalization validity (AST parseability);
-  \item target skeleton consistency for the benchmark task pattern.
-\end{enumerate}
 
 \subsection{Threats to Validity}
-\textbf{Internal validity}: false negatives may occur if judge rules are stricter than practical human acceptance.
-
-\textbf{Construct validity}: pass/fail under one task skeleton does not represent full software engineering competence.
-
-\textbf{External validity}: current runs focus on a constrained prompt-family and may not generalize across broader task distributions.
+\textbf{Internal}: judge rules may be stricter than human acceptance; PSS weights are heuristic.
+\textbf{Construct}: single benchmark task (fib) limits generalization.
+\textbf{External}: results are specific to tested model families and may not generalize.

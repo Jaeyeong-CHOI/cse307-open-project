@@ -1,24 +1,33 @@
 \section{Related Work}
-\subsection{Code-generation benchmarks and robustness}
-Code-generation benchmarks and model baselines (e.g., HumanEval and MBPP) motivate short-horizon program synthesis evaluation.
-\cite{chen2021codex,austin2021program}
+\subsection{Code-Generation Evaluation and LLM Priors}
+Early benchmarks for code generation (HumanEval~\cite{chen2021codex}, MBPP~\cite{austin2021program}) established that LLMs trained on large code corpora learn strong token-level priors: Python keywords appear in statistically predictable positions.
+Pre-training models such as CodeBERT~\cite{feng2020codebert}, CodeT5~\cite{wang2021codet5}, and UniXcoder~\cite{guo2022unixcoder} reinforce these priors via large-scale NTP objectives.
+InCoder~\cite{fried2022incoder} showed that bidirectional context can improve local token prediction but does not eliminate reliance on prior distributions.
 
-\subsection{Code representation models under perturbation}
-Pretraining work such as \textit{CodeBERT}, \textit{CodeT5}, and \textit{UniXcoder} improves code representation transfer, while preserving language semantics under transformed-token constraints remains underexplored in these settings.
-\cite{feng2020codebert,wang2021codet5,guo2022unixcoder}
+\subsection{Instruction Following and Alignment}
+Instruction-tuned models (InstructGPT~\cite{ouyang2022instruct}, GPT-4) and few-shot learners~\cite{brown2020fewshot} can follow many explicit rules, but compliance is not guaranteed when instructions conflict with pretrained priors.
+Chen et al.~\cite{chen2024instructhierarchy} propose an instruction hierarchy to prioritize privileged instructions under conflict; however, their setting involves natural-language instruction conflicts rather than programming-language semantic inversions.
+Xie et al.~\cite{xie2023resolving} study parametric vs.\ contextual knowledge conflicts and show that LLMs often prefer internal knowledge over instruction-given context.
+Our work differs in that we study token-level and semantic-level conflicts in a programming domain.
 
-\subsection{Instruction and alignment effects}
-Instruction-following tuning improves broad task compliance, yet its effect on non-standard syntax transformations has not been studied sufficiently.
-\cite{ouyang2022instruct,brown2020fewshot}
+\subsection{LLM Resistance in Educational Contexts}
+The impact of LLMs on programming education has been documented in multiple empirical studies~\cite{dakhel2023github,sheard2023perceptions}.
+Dakhel et al.~\cite{dakhel2023github} show that LLMs function as ``asset or liability'' depending on student expertise, and MacNeil et al.~\cite{macneil2023experiences} study LLM explanations in programming courses.
+These works highlight an open problem: current assessment tasks are too easily solved by LLMs.
+We address this gap by proposing a systematic language-design framework for LLM-resistant assessment.
 
-\subsection{Repair-oriented generation}
-Editing and infilling methods (e.g., InCoder) indicate that bidirectional context can support local correction, relevant to our roundtrip diagnosis design.
-\cite{fried2022incoder}
+\subsection{Adversarial Prompts and Semantic Perturbations}
+PromptBench~\cite{zhu2023promptrobust} demonstrates that LLMs are fragile under adversarial text perturbations at word, sentence, and semantic levels.
+Pan et al.~\cite{pan2024adversarial} show that semantically aligned adversarial perturbations in code generation prompts cause significant performance drops.
+These results motivate our investigation of whether deliberately inverted semantics (a structured form of semantic perturbation) provides robust and principled LLM resistance.
 
-\subsection{Software-engineering realism}
-SWE-bench demonstrates the gap between benchmark-scale success and real-world patching complexity, reinforcing our emphasis on strict artifact and lineage control.
-\cite{jimenez2024swebench}
+\subsection{Constrained Decoding and DSL Evaluation}
+Constrained decoding approaches~\cite{dong2024xgrammar,muendler2025type} enforce grammar-level validity during generation, showing that structural constraints can improve output quality.
+A complementary evaluation framework~\cite{frameworkdsl2024} assessed LLM performance on constraint domain-specific languages (DSLs), finding that models perform worse on non-standard languages.
+Our L2--L4 framework extends these findings by distinguishing syntactic, semantic, and implicit difficulty dimensions.
 
-\subsection{Constraint-aware decoding}
-Recent progress in constrained decoding suggests adding semantic constraints can complement syntax-layer methods, an important extension direction for confusion-language pipelines.
-\cite{muendler2025type}
+\subsection{Research Gap Addressed}
+Prior work on adversarial prompts focuses on degrading general quality, not on principled language design.
+Prior work on DSLs measures performance but does not explain failure mechanisms.
+Prior work on instruction-prior conflict focuses on knowledge, not programming semantics.
+Our contribution is a structured taxonomy (L1--L4) that characterizes LLM failure by \emph{type} (prior dominance vs.\ pattern blindness), enabling principled design of LLM-resistant educational programming tasks.

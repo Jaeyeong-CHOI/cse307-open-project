@@ -1,13 +1,27 @@
 \section{Introduction}
-Recent studies on AI-assisted coding indicate a persistent tradeoff: immediate coding productivity may rise while durable comprehension and independent debugging skills lag, especially for beginners. This motivates evaluation under constrained syntax settings rather than only canonical benchmarks.
+Modern code-generation benchmarks~\cite{chen2021codex,austin2021program} show that large language models (LLMs) can solve standard programming tasks with high accuracy.
+This creates a critical challenge for programming education: if LLMs solve assignments faster and more accurately than students, how can instructors meaningfully assess student understanding?
 
-This study asks a strict question: when a model is instructed to produce code in a Python-like language with transformed syntax, does it follow the transformed language rules, or revert to canonical Python conventions?
+This paper studies a complementary but understudied question:
+\begin{quote}
+\small\textit{Is it possible to design a programming language that is human-interpretable but systematically defeats LLM next-token-prediction priors---making it resistant to AI-based code generation?}
+\end{quote}
 
-We define a three-layer benchmark stack:
+We decompose this into three sub-questions:
 \begin{enumerate}
-  \item \textbf{Specification layer}: one-to-one token aliases and collision constraints.
-  \item \textbf{Execution layer}: OCaml-based transform, validate, and roundtrip tooling.
-  \item \textbf{Measurement layer}: summary validation, schema checks, and metric snapshots.
+  \item Does changing token identifiers (L1: alias substitution) create effective LLM resistance?
+  \item Does inverting syntactic structure (L2) create effective resistance?
+  \item Does inverting semantic behavior (L3/L4) create deeper resistance?
 \end{enumerate}
 
-Our goal is not absolute model ranking. We isolate where constrained-language compliance fails and how failures relate to execution outcomes.
+Our key empirical findings are:
+\begin{itemize}
+  \item \textbf{L1 (token substitution):} Partially effective---keyword leakage rate (KLR) ranges from 0.26 to 0.69 across models. Models revert to Python priors at measurable rates.
+  \item \textbf{L2 (syntax inversion):} Not effective---models adopt new syntax completely (SIR=0.0) when given explicit rules.
+  \item \textbf{L3 (semantic inversion, explicit):} Capacity-dependent---weaker models fail completely (PPR=1.0 for gpt-4o-mini), while stronger models succeed (PPR=0.0 for gpt-4o).
+  \item \textbf{L4 (semantic inversion, implicit):} Effective against all tested models---even strong models exhibit \emph{pattern blindness}, ignoring semantic inversion cues in examples.
+\end{itemize}
+
+We also identify two distinct LLM failure modes: \emph{prior dominance} (prior overrides stated rules) and \emph{pattern blindness} (model fails to extract semantic rules from examples).
+
+This framework provides both a theoretical taxonomy for LLM-resistant language design and practical tools for constructing programming assessments that remain meaningful in the LLM era.

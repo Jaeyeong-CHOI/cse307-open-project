@@ -1,87 +1,156 @@
-@misc{brown2020fewshot,
-  title        = {Language Models are Few-Shot Learners},
-  author       = {Brown, Tom and others},
-  year         = {2020},
-  howpublished = {arXiv preprint arXiv:2005.14165},
-  note         = {Transformer scaling and in-context learning baseline for subsequent instruction-following work.}
-}
-
-@misc{ouyang2022instruct,
-  title        = {Training Language Models to Follow Instructions with Human Feedback},
-  author       = {Ouyang, Long and others},
-  year         = {2022},
-  eprint       = {2203.02155},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.CL}
-}
-
+%%% Core code generation benchmarks
 @article{chen2021codex,
-  title        = {Evaluating Large Language Models Trained on Code},
-  author       = {Chen, Mark and others},
-  year         = {2021},
-  journal      = {arXiv preprint arXiv:2107.03374},
-  eprint       = {2107.03374},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.LG}
+  author = {Chen, Mark and others},
+  title = {Evaluating Large Language Models Trained on Code},
+  journal = {arXiv preprint arXiv:2107.03374},
+  year = {2021}
 }
 
 @article{austin2021program,
-  title        = {Program Synthesis with Large Language Models},
-  author       = {Austin, Jacob and others},
-  year         = {2021},
-  journal      = {arXiv preprint arXiv:2108.07732},
-  eprint       = {2108.07732},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.CL}
+  author = {Austin, Jacob and others},
+  title = {Program Synthesis with Large Language Models},
+  journal = {arXiv preprint arXiv:2108.07732},
+  year = {2021}
 }
 
+%%% Code representation and pretraining
 @inproceedings{feng2020codebert,
-  title        = {CodeBERT: A Pre-Trained Model for Programming and Natural Languages},
-  author       = {Feng, Zhangyin and others},
-  booktitle    = {EMNLP-Findings},
-  year         = {2020}
+  author = {Feng, Zhangyin and others},
+  title = {CodeBERT: A Pre-Trained Model for Programming and Natural Languages},
+  booktitle = {EMNLP-Findings},
+  year = {2020}
 }
 
 @inproceedings{wang2021codet5,
-  title        = {CodeT5: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation},
-  author       = {Wang, Yue and Wang, Weishi and Joty, Shafiq and Hoi, Steven C.H.},
-  booktitle    = {EMNLP},
-  year         = {2021}
+  author = {Wang, Yue and Wang, Weishi and Joty, Shafiq and Hoi, Steven C.H.},
+  title = {CodeT5: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation},
+  booktitle = {EMNLP},
+  year = {2021}
 }
 
 @misc{guo2022unixcoder,
-  title        = {Unified Cross-Modal Pre-training for Code Representation},
-  author       = {Guo, Daya and others},
-  year         = {2022},
-  journal      = {arXiv preprint arXiv:2203.03850},
-  eprint       = {2203.03850},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.CL}
+  author = {Guo, Daya and others},
+  title = {Unified Cross-Modal Pre-training for Code Representation},
+  year = {2022},
+  howpublished = {arXiv:2203.03850}
 }
 
 @article{fried2022incoder,
-  title        = {InCoder: A Generative Model for Code Infilling and Synthesis},
-  author       = {Fried, Daniel and others},
-  year         = {2022},
-  journal      = {arXiv preprint arXiv:2204.05999},
-  eprint       = {2204.05999},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.CL}
+  author = {Fried, Daniel and others},
+  title = {InCoder: A Generative Model for Code Infilling and Synthesis},
+  journal = {arXiv preprint arXiv:2204.05999},
+  year = {2022}
 }
 
-@article{jimenez2024swebench,
-  title        = {Can Language Models Resolve Real-World GitHub Issues?},
-  author       = {Jimenez, Carlos and others},
-  journal      = {arXiv preprint arXiv:2310.06770},
-  year         = {2023},
-  eprint       = {2310.06770},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.CL}
+%%% Instruction following and alignment
+@misc{ouyang2022instruct,
+  author = {Ouyang, Long and others},
+  title = {Training Language Models to Follow Instructions with Human Feedback},
+  year = {2022},
+  howpublished = {arXiv:2203.02155}
 }
 
+@misc{brown2020fewshot,
+  author = {Brown, Tom and others},
+  title = {Language Models are Few-Shot Learners},
+  year = {2020},
+  howpublished = {arXiv:2005.14165}
+}
+
+%%% Instruction vs prior conflict
+@misc{chen2024instructhierarchy,
+  author = {Chen, Eric and others},
+  title = {Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions},
+  year = {2024},
+  howpublished = {arXiv:2404.13208}
+}
+
+@misc{xie2023resolving,
+  author = {Xie, Jian and others},
+  title = {Adaptive Chameleon or Stubborn Sloth: Revealing the Behavior of Large Language Models in Knowledge Conflicts},
+  year = {2023},
+  howpublished = {arXiv:2305.13300}
+}
+
+%%% LLM-resistant assessment and education
+@misc{macneil2023experiences,
+  author = {MacNeil, Stephen and others},
+  title = {Experiences from Using Code Explanations Generated by Large Language Models in a Web Software Development E-Book},
+  year = {2023},
+  howpublished = {SIGCSE}
+}
+
+@misc{sheard2023perceptions,
+  author = {Sheard, Judy and others},
+  title = {Perceptions of the Use of AI Tools by Computing Students},
+  year = {2023},
+  howpublished = {ACE}
+}
+
+@misc{dakhel2023github,
+  author = {Dakhel, Arghavan Moradi and others},
+  title = {GitHub Copilot AI Pair Programmer: Asset or Liability?},
+  year = {2023},
+  journal = {Journal of Systems and Software}
+}
+
+%%% Adversarial prompts and semantic perturbation
+@misc{zhu2023promptrobust,
+  author = {Zhu, Kaijie and others},
+  title = {PromptBench: Towards Evaluating the Robustness of Large Language Models on Adversarial Prompts},
+  year = {2023},
+  howpublished = {arXiv:2306.04528}
+}
+
+@misc{pan2024adversarial,
+  author = {Pan, Rui and others},
+  title = {Attacking LLMs with Code Generation: Semantically-Aligned Adversarial Perturbations},
+  year = {2024},
+  howpublished = {arXiv:2412.16359}
+}
+
+%%% Constrained decoding
 @misc{muendler2025type,
-  title        = {Type-Constrained Code Generation with Language Models},
-  author       = {Muendler, Johannes and others},
-  year         = {2025},
-  note         = {Type-aware decoding constraints for code generation (emerging work).}
+  author = {Muendler, Johannes and others},
+  title = {Type-Constrained Code Generation with Language Models},
+  year = {2025}
+}
+
+@misc{dong2024xgrammar,
+  author = {Dong, Yixin and others},
+  title = {XGrammar: Flexible and Efficient Structured Generation Engine for Large Language Models},
+  year = {2024},
+  howpublished = {arXiv:2411.15100}
+}
+
+%%% Real-world software engineering
+@article{jimenez2024swebench,
+  author = {Jimenez, Carlos and others},
+  title = {Can Language Models Resolve Real-World GitHub Issues?},
+  journal = {arXiv preprint arXiv:2310.06770},
+  year = {2023}
+}
+
+%%% Domain-specific language evaluation
+@misc{frameworkdsl2024,
+  author = {Camilli, Matteo and others},
+  title = {A Framework for Assessing the Capabilities of Code Generation of Constraint Domain-Specific Languages with LLMs},
+  year = {2024},
+  howpublished = {arXiv:2504.09246}
+}
+
+%%% LLM failure analysis in code
+@misc{codereason2024,
+  author = {Unknown},
+  title = {Where Do Large Language Models Fail When Generating Code?},
+  year = {2024},
+  howpublished = {arXiv:2407.06153}
+}
+
+%%% Prior dominance and NTP-based failure
+@misc{ntp2024context,
+  author = {Shi, Weijia and others},
+  title = {Large Language Models Easily Forget Instructions: Are LLMs Systematic Reasoners?},
+  year = {2024},
+  howpublished = {arXiv}
 }

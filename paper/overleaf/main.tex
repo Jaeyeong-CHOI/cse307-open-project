@@ -11,7 +11,7 @@
 \setlength{\emergencystretch}{1.5em}
 \sloppy
 
-\title{Failure-by-Language: Reproducible Evaluation of Python-like Confusion Language in LLM Code Generation}
+\title{Inverting Python: Designing NTP-Prior-Resistant Programming Languages for LLM-Proof Coding Assessment}
 \author{Jaeyeong CHOI\\
 DGIST EECS\\
 \texttt{jaeyeong2022@dgist.ac.kr}}
@@ -20,13 +20,16 @@ DGIST EECS\\
 \maketitle
 
 \begin{abstract}
-Recent studies on AI-assisted coding suggest a persistent gap between short-term productivity gains and durable programming comprehension. This paper proposes a reproducible benchmark for syntax-constrained code generation: language models are instructed to write Python-like programs under transformed-token rules.
-
-We present an OCaml/CLI pipeline with lineage-aware task metadata, schema validation, and metric snapshot automation. Current empirical evidence includes fixture replay baselines and full-range real-call prompt batches under strict compliance settings.
+LLMs now solve standard programming tasks well enough to undermine their value as student assessments.
+We investigate whether it is possible to design a programming language that is human-interpretable but defeats LLM next-token-prediction (NTP) priors.
+We propose a four-level taxonomy---L1 (token alias substitution), L2 (syntax inversion), L3 (semantic inversion with explicit rules), L4 (semantic inversion with implicit delivery)---and evaluate LLM compliance across five model families.
+L1 creates partial resistance (KLR 0.26--0.69); L2 is easily adopted; L3 reveals a model capability threshold; and L4 defeats all tested models through \emph{pattern blindness}.
+We identify two failure mechanisms: \emph{prior dominance} and \emph{pattern blindness}, and show that L4-style language design provides robust resistance for programming education.
 \end{abstract}
 
-\section*{Keywords}
-confusion language, LLM code generation, syntax perturbation, benchmark, reproducibility, program synthesis
+\begin{IEEEkeywords}
+confusion language, LLM resistance, NTP prior, semantic inversion, programming education, code assessment
+\end{IEEEkeywords}
 
 \input{sections/01_introduction}
 \input{sections/02_related_work}
@@ -39,18 +42,13 @@ confusion language, LLM code generation, syntax perturbation, benchmark, reprodu
 \input{sections/09_reproducibility_protocol}
 \input{sections/10_appendix_experiment_details}
 
-\section{Research Process Traceability}
-We maintain explicit mapping between experimental decisions and committed artifacts (status dashboard, daily logs, model-specific prompt-batch outputs).
-This manuscript only presents claims that are traceable to versioned files under \texttt{docs/research/results/} and reproducible via schema-validated scripts.
-
 \section{Reproducibility and Artifact Availability}
-Representative artifact paths:
+All experiments are committed to the repository. Representative paths:
 \begin{itemize}
-  \item Tooling: \texttt{ocaml-confusion-lang/}
   \item Results: \texttt{docs/research/results/}
-  \item Logs: \texttt{docs/research/log/}
-  \item Status snapshot: \url{docs/research/context-state.json}
-  \item Paper draft mirror: \url{docs/research/papers/v2.md}
+  \item Language specs: \texttt{docs/research/language-levels/}
+  \item Evaluation scripts: \texttt{scripts/partial\_judge.py}, \texttt{scripts/run\_l2\_eval.py}
+  \item Paper: \texttt{paper/overleaf/}
 \end{itemize}
 
 \bibliographystyle{IEEEtran}

@@ -1,6 +1,11 @@
 \section{Conclusion}
-This project delivers a reproducible confusion-language benchmark stack with collision-safe alias policies, provenance-rich output, and schema-enforced measurements.
+We presented a four-level taxonomy (L1--L4) for designing LLM-resistant programming languages, grounded in the NTP prior structure of language models.
 
-Current quantitative evidence is limited: fixture replay indicates non-trivial non-compliance and Python reversion under transformed syntax, while real API-based model expansion awaits valid credentials.
+Our central finding is that resistance does not come from surface-level token changes or structural novelty---both of which LLMs can adapt to with explicit instruction.
+Robust resistance requires semantic inversion: the same Python-like surface, but inverted conditional semantics.
+When semantic inversion is delivered implicitly (via examples only), all tested models exhibit pattern blindness and default to Python priors.
 
-Next steps are to (1) complete cross-condition batch comparisons, (2) report mismatch decomposition over larger prompt sets, and (3) integrate learner-centered diagnostics (manual-fix burden and learning-gain trajectory) into the same pipeline.
+We identify two distinct failure mechanisms: \emph{prior dominance} (prior overrides stated rule) and \emph{pattern blindness} (model fails to extract semantic rule from examples).
+These mechanisms have different implications for language design: prior dominance can be partially mitigated by explicit context packs; pattern blindness requires implicit delivery.
+
+These findings provide a principled basis for designing programming course assessments that remain meaningful in the LLM era, where LLMs will fail on L4-style problems even as they trivially solve standard Python assignments.
