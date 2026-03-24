@@ -114,35 +114,39 @@ return fib(n-1) + fib(n-2)
 \end{figure}
 
 \subsection{L4 Multi-task Generalization}
-To assess whether pattern blindness extends beyond Fibonacci, we evaluated \texttt{gpt-4o} and \texttt{gpt-4o-mini} on two additional tasks (T2: \texttt{is\_sorted}; T3: \texttt{count\_vowels}) using the identical example-only prompt structure ($n=10$ per task). Results are in Table~\ref{tab:l4_multitask}.
+To assess whether pattern blindness extends beyond Fibonacci, we evaluated four models on three tasks: T1 (\texttt{fibonacci}), T2 (\texttt{is\_sorted}), and T3 (\texttt{count\_vowels}), using the identical example-only prompt structure. \texttt{gpt-4o} and \texttt{gpt-4o-mini} were evaluated at $n=10$ per task; \texttt{gpt-4.1-mini} at $n=20$ per task. Results are in Table~\ref{tab:l4_multitask}.
 
 \begin{table}[!t]
 \centering
-\caption{L4 multi-task generalization ($n=10$ per task). T1=fibonacci (replicated), T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} passes T2 using L4-structured code; \texttt{gpt-4o-mini} shows full prior dominance on T2. T3 reveals a third failure sub-mode: \emph{operational inversion} (model inverts the accumulation operator rather than the control-flow condition).}
+\caption{L4 multi-task generalization. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully (20/20 and 10/10 respectively), while all three models fail T1 with PPR=1.0. T3 reveals a third failure sub-mode: \emph{operational substitution}.}
 \label{tab:l4_multitask}
 \footnotesize
 \begin{tabular}{@{}lllcc@{}}
 \toprule
-Task & Model & Description & Pass & PPR \\
+Task & Model & $n$ & Pass & PPR \\
 \midrule
-T1 fib   & gpt-4o       & fibonacci & 0/10 & 1.00 \\
-T1 fib   & gpt-4o-mini  & fibonacci & 0/10 & 0.00$^*$ \\
-T2 sorted & gpt-4o      & is\_sorted & 10/10 & 0.00 \\
-T2 sorted & gpt-4o-mini & is\_sorted & 0/10  & 1.00 \\
-T3 vowels & gpt-4o      & count\_vowels & 1/10 & 0.00 \\
-T3 vowels & gpt-4o-mini & count\_vowels & 0/10 & 0.00 \\
+T1 fib    & gpt-4o       & 10 & 0/10  & 1.00 \\
+T1 fib    & gpt-4o-mini  & 10 & 0/10  & 0.00$^*$ \\
+T1 fib    & gpt-4.1-mini & 20 & 0/20  & 1.00 \\
+\midrule
+T2 sorted & gpt-4o       & 10 & 10/10 & 0.00 \\
+T2 sorted & gpt-4o-mini  & 10 & 0/10  & 1.00 \\
+T2 sorted & gpt-4.1-mini & 20 & 20/20 & 0.00 \\
+\midrule
+T3 vowels & gpt-4o       & 10 & 1/10  & 0.00 \\
+T3 vowels & gpt-4o-mini  & 10 & 0/10  & 0.00 \\
+T3 vowels & gpt-4.1-mini & 20 & 0/20  & 0.25 \\
 \bottomrule
-\multicolumn{5}{l}{$^*$gpt-4o-mini uses split base cases (\texttt{if n==0}/\texttt{if n==1}) without \texttt{n<=1}; fails judge but is a} \\
-\multicolumn{5}{l}{\phantom{$^*$}distinct failure sub-mode (\emph{template fragmentation}, not Python-prior revert).} \\
+\multicolumn{5}{l}{$^*$gpt-4o-mini uses split base cases (\texttt{if n==0}/\texttt{if n==1}): \emph{template fragmentation}.} \\
 \end{tabular}
 \end{table}
 
-Three findings emerge: (1) Pattern blindness is \emph{task-dependent} for gpt-4o: it fails on Fibonacci (T1, PPR=1.0) but applies L4 structural inversion on is\_sorted (T2, 10/10 pass). We attribute this to the is\_sorted task mapping more naturally onto the `return True/False inside condition' example pattern; (2) gpt-4o-mini shows full prior dominance on T2, producing standard Python `if lst[i]>lst[i+1]: return False' code; (3) On T3, neither model applies the conditional inversion rule---instead, gpt-4o uses \emph{operational inversion} (\texttt{count -= 1; return -count}), a distinct workaround that achieves correct arithmetic while ignoring the semantic inversion rule. This reveals a third failure sub-mode beyond prior dominance and pattern blindness: \textbf{operational substitution}, where the model compensates via output transformation rather than rule adoption.
+Four findings emerge. (1) \textbf{T2 is consistently extractable across capable models}: both gpt-4o (10/10) and gpt-4.1-mini (20/20) pass T2, suggesting \texttt{is\_sorted} maps naturally onto the \texttt{return True/False inside condition} example pattern. (2) \textbf{T1 (Fibonacci) is universally resistant} to L4 extraction: all three models yield PPR=1.0 (or template fragmentation for gpt-4o-mini), confirming deep prior entrenchment for the recursive Fibonacci pattern. (3) \textbf{T3 reveals operational substitution}: gpt-4o uses \texttt{count -= 1; return -count}, achieving correct arithmetic while ignoring the semantic inversion rule---a distinct workaround indicating goal awareness but not rule adoption. gpt-4.1-mini shows partial prior revert (PPR=0.25) yet still fails T3, suggesting this task occupies an intermediate difficulty tier. (4) \textbf{Model capacity determines whether T2 is extractable}: gpt-4o-mini (PPR=1.0 on T2) fails where gpt-4o and gpt-4.1-mini succeed, consistent with the capacity threshold observed in L3. Note: o4-mini evaluation of the multitask suite is ongoing ($n=45$, 0/45 passed so far across T1 and T2); results will be incorporated in the final revision.
 
-\subsection{Two Failure Modes}
+\subsection{Three Failure Modes}
 \begin{itemize}
-  \item \textbf{Prior Dominance} (L1, L3-weak, L4-T2-mini): stated rule is overridden by pretrained token distribution.
-  \item \textbf{Pattern Blindness} (L4-T1, L4-T3): model cannot extract semantic rule from examples, even when the same model follows the rule when stated explicitly.
-  \item \textbf{Operational Substitution} (L4-T3-gpt-4o): model achieves correct output via arithmetic workaround rather than adopting the semantic inversion rule, indicating awareness of the task goal but not of the L4 language semantics.
+  \item \textbf{Prior Dominance} (L1, L3-weak, L4-T2-mini, L4-T1-all): stated or implicit rule is overridden by pretrained token distribution.
+  \item \textbf{Pattern Blindness} (L4-T1, L4-T3): model cannot extract the semantic rule from examples alone, even when the same model follows the rule when stated explicitly (L3).
+  \item \textbf{Operational Substitution} (L4-T3-gpt-4o): model compensates via arithmetic output transformation rather than adopting the semantic inversion rule, indicating goal awareness without rule internalization.
 \end{itemize}
-The multi-task results refine the pattern-blindness finding: it is not uniform across tasks, but manifests as a interaction between model capacity, task familiarity, and pattern extractability from examples.
+Task difficulty interacts with model capacity to determine which failure mode dominates. T2 (is\_sorted) is extractable by mid-to-large models; T1 (Fibonacci) is resistant for all tested models; T3 (count\_vowels) exposes a third mode unique to models that partially resist prior dominance.

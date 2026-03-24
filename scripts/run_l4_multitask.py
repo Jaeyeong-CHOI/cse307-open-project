@@ -116,14 +116,35 @@ TASKS = {
 }
 
 
+REASONING_MODELS = {"o4-mini", "o3-mini", "o3", "o1", "o1-mini"}
+
 def chat(messages, temperature=0):
     if not API_KEY:
         return None, "No API key"
+    # Reasoning models (o-series) require temperature=1 and don't support system role.
+    # Consecutive user messages also cause empty responses — merge system+user into one.
+    if MODEL in REASONING_MODELS:
+        temperature = 1
+        merged = []
+        sys_text = None
+        for m in messages:
+            if m["role"] == "system":
+                sys_text = m["content"]
+            elif m["role"] == "user":
+                if sys_text:
+                    merged.append({"role": "user", "content": sys_text + "\n\n" + m["content"]})
+                    sys_text = None
+                else:
+                    merged.append(m)
+            else:
+                merged.append(m)
+        messages = merged
+    token_key = "max_completion_tokens" if MODEL in REASONING_MODELS else "max_tokens"
     payload = json.dumps({
         "model": MODEL,
         "messages": messages,
         "temperature": temperature,
-        "max_tokens": 400,
+        token_key: 400,
     }).encode()
     req = urllib.request.Request(
         f"{BASE}/chat/completions",

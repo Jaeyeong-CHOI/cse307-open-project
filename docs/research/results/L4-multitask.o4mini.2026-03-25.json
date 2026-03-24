@@ -1,0 +1,548 @@
+{
+  "model": "o4-mini",
+  "date": "2026-03-25",
+  "total_so_far": 45,
+  "passed_so_far": 0,
+  "results": [
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 10,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 11,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 12,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 13,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 14,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 15,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 16,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 17,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 18,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 19,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 10,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 11,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 12,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 13,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 14,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 15,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 16,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 17,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 18,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 19,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    }
+  ]
+}
