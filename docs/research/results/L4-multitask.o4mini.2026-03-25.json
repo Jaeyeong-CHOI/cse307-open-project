@@ -1,8 +1,36 @@
 {
   "model": "o4-mini",
   "date": "2026-03-25",
-  "total_so_far": 45,
-  "passed_so_far": 0,
+  "experiment": "L4-multitask",
+  "description": "L4 implicit semantic inversion: 3 tasks (fib, is_sorted, count_vowels), n=10 each",
+  "runs_per_task": 15,
+  "total": 45,
+  "passed": 0,
+  "http_errors": 0,
+  "overall_pass_rate": 0.0,
+  "per_task": {
+    "T1_fib": {
+      "name": "fibonacci",
+      "total": 15,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "ppr": 0.0
+    },
+    "T2_sorted": {
+      "name": "is_sorted",
+      "total": 15,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "ppr": 0.0
+    },
+    "T3_vowels": {
+      "name": "count_vowels",
+      "total": 15,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "ppr": 0.0
+    }
+  },
   "results": [
     {
       "task": "T1_fib",
@@ -185,66 +213,6 @@
       "response_snippet": ""
     },
     {
-      "task": "T1_fib",
-      "task_name": "fibonacci",
-      "run": 15,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T1_fib",
-      "task_name": "fibonacci",
-      "run": 16,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T1_fib",
-      "task_name": "fibonacci",
-      "run": 17,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T1_fib",
-      "task_name": "fibonacci",
-      "run": 18,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T1_fib",
-      "task_name": "fibonacci",
-      "run": 19,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
       "task": "T2_sorted",
       "task_name": "is_sorted",
       "run": 0,
@@ -425,66 +393,6 @@
       "response_snippet": ""
     },
     {
-      "task": "T2_sorted",
-      "task_name": "is_sorted",
-      "run": 15,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T2_sorted",
-      "task_name": "is_sorted",
-      "run": 16,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T2_sorted",
-      "task_name": "is_sorted",
-      "run": 17,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T2_sorted",
-      "task_name": "is_sorted",
-      "run": 18,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
-      "task": "T2_sorted",
-      "task_name": "is_sorted",
-      "run": 19,
-      "judge": {
-        "pass": false,
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "code_snippet": ""
-      },
-      "response_snippet": ""
-    },
-    {
       "task": "T3_vowels",
       "task_name": "count_vowels",
       "run": 0,
@@ -536,6 +444,126 @@
       "task": "T3_vowels",
       "task_name": "count_vowels",
       "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 10,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 11,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 12,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 13,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": ""
+      },
+      "response_snippet": ""
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 14,
       "judge": {
         "pass": false,
         "used_python_prior": false,

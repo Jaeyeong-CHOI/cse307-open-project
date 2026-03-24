@@ -123,11 +123,11 @@ return fib(n-1) + fib(n-2)
 \end{figure}
 
 \subsection{L4 Multi-task Generalization}
-To assess whether pattern blindness extends beyond Fibonacci, we evaluated four models on three tasks: T1 (\texttt{fibonacci}), T2 (\texttt{is\_sorted}), and T3 (\texttt{count\_vowels}), using the identical example-only prompt structure. \texttt{gpt-4o} and \texttt{gpt-4o-mini} were evaluated at $n=10$ per task; \texttt{gpt-4.1-mini} at $n=20$ per task. Results are in Table~\ref{tab:l4_multitask}.
+To assess whether pattern blindness extends beyond Fibonacci, we evaluated five models on three tasks: T1 (\texttt{fibonacci}), T2 (\texttt{is\_sorted}), and T3 (\texttt{count\_vowels}), using the identical example-only prompt structure. \texttt{gpt-4o}, \texttt{gpt-4o-mini}, and \texttt{o4-mini} were evaluated at $n=10$ or $n=15$ per task; \texttt{gpt-4.1-mini} at $n=20$ per task. Results are in Table~\ref{tab:l4_multitask}.
 
 \begin{table}[!t]
 \centering
-\caption{L4 multi-task generalization. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully (20/20 and 10/10), while all three models fail T1 with PPR=1.0. T3 reveals a third failure sub-mode: \textit{operational substitution}.}
+\caption{L4 multi-task generalization. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully, while all models fail T1. T3 reveals a third failure sub-mode: \textit{operational substitution}. o4-mini (reasoning model) fails all tasks (0/45 total), confirming pattern blindness is not resolved by chain-of-thought reasoning.}
 \label{tab:l4_multitask}
 \footnotesize
 \begin{tabular}{@{}lllcc@{}}
@@ -137,20 +137,23 @@ Task & Model & $n$ & Pass & PPR \\
 T1 fib    & gpt-4o       & 10 & 0/10  & 1.00 \\
 T1 fib    & gpt-4o-mini  & 10 & 0/10  & 0.00$^*$ \\
 T1 fib    & gpt-4.1-mini & 20 & 0/20  & 1.00 \\
+T1 fib    & o4-mini      & 15 & 0/15  & 0.00 \\
 \midrule
 T2 sorted & gpt-4o       & 10 & 10/10 & 0.00 \\
 T2 sorted & gpt-4o-mini  & 10 & 0/10  & 1.00 \\
 T2 sorted & gpt-4.1-mini & 20 & 20/20 & 0.00 \\
+T2 sorted & o4-mini      & 15 & 0/15  & 0.00 \\
 \midrule
 T3 vowels & gpt-4o       & 10 & 1/10  & 0.00 \\
 T3 vowels & gpt-4o-mini  & 10 & 0/10  & 0.00 \\
 T3 vowels & gpt-4.1-mini & 20 & 0/20  & 0.25 \\
+T3 vowels & o4-mini      & 15 & 0/15  & 0.00 \\
 \bottomrule
 \multicolumn{5}{@{}p{\columnwidth}@{}}{\scriptsize $^*$gpt-4o-mini uses split base cases (\texttt{if n==0}/\texttt{if n==1}): \textit{template fragmentation}.} \\
 \end{tabular}
 \end{table}
 
-Four findings emerge. (1) \textbf{T2 is consistently extractable across capable models}: both gpt-4o (10/10) and gpt-4.1-mini (20/20) pass T2, suggesting \texttt{is\_sorted} maps naturally onto the \texttt{return True/False inside condition} example pattern. (2) \textbf{T1 (Fibonacci) is universally resistant} to L4 extraction: all three models yield PPR=1.0 (or template fragmentation for gpt-4o-mini), confirming deep prior entrenchment for the recursive Fibonacci pattern. (3) \textbf{T3 reveals operational substitution}: gpt-4o uses \texttt{count -= 1; return -count}, achieving correct arithmetic while ignoring the semantic inversion rule---a distinct workaround indicating goal awareness but not rule adoption. gpt-4.1-mini shows partial prior revert (PPR=0.25) yet still fails T3, suggesting this task occupies an intermediate difficulty tier. (4) \textbf{Model capacity determines whether T2 is extractable}: gpt-4o-mini (PPR=1.0 on T2) fails where gpt-4o and gpt-4.1-mini succeed, consistent with the capacity threshold observed in L3. Note: o4-mini evaluation of the multitask suite is ongoing ($n=45$, 0/45 passed so far across T1 and T2); results will be incorporated in the final revision.
+Five findings emerge. (1) \textbf{T2 is consistently extractable across capable models}: both gpt-4o (10/10) and gpt-4.1-mini (20/20) pass T2, suggesting \texttt{is\_sorted} maps naturally onto the \texttt{return True/False inside condition} example pattern. (2) \textbf{T1 (Fibonacci) is universally resistant} to L4 extraction: all four models fail T1 (PPR=1.0 for gpt-4o and gpt-4.1-mini, template fragmentation for gpt-4o-mini, 0/15 for o4-mini), confirming deep prior entrenchment for the recursive Fibonacci pattern. (3) \textbf{T3 reveals operational substitution}: gpt-4o uses \texttt{count -= 1; return -count}, achieving correct arithmetic while ignoring the semantic inversion rule---a distinct workaround indicating goal awareness but not rule adoption. gpt-4.1-mini shows partial prior revert (PPR=0.25) yet still fails T3, suggesting this task occupies an intermediate difficulty tier. (4) \textbf{Model capacity determines whether T2 is extractable}: gpt-4o-mini (PPR=1.0 on T2) fails where gpt-4o and gpt-4.1-mini succeed, consistent with the capacity threshold observed in L3. (5) \textbf{Reasoning does not resolve pattern blindness}: o4-mini, a reasoning model with chain-of-thought inference, fails all three tasks (0/45 total, PPR=0.00 across all tasks), indicating that extended reasoning alone is insufficient to extract L4 implicit semantic rules from examples.
 
 \subsection{Three Failure Modes}
 \begin{itemize}
