@@ -200,3 +200,14 @@
   - `run_targeted_scaleup.py` 포함하여 스크립트 목록 완성
   - multi-task 총 run 수 225→325 정정
   - PDF 재컴파일(10p), commit 43d1a98 push 완료
+
+- [x] 2026-03-25 07:27 논문 전체 데이터 정합성 검증 완료 (자동 cron tick)
+  - 실험 결과 JSON vs 논문 수치 교차 검증: 전체 일치 확인
+    - gpt-4o T2: 10/10 ✓, gpt-4.1-mini T2: 20/20 ✓, gpt-4.1 T2 n=50: 1/50 PPR=0.42 ✓
+    - gpt-4o T3 n=50: 0/50, OpSub 47/50(94%) ✓
+    - o4-mini multitask: 0/45 ✓
+    - gpt-4.1-nano T1 PPR=0.20 ✓, gpt-4.1 T1 PPR=1.0 ✓
+    - L4 ablation 350 total runs ✓, multi-task 325 total runs ✓
+  - Paper placeholder 없음 확인 (TODO/FIXME 없음)
+  - Current state: 논문 10p, 모든 수치 실측값 기반, 과도한 주장 없음
+  - 다음 우선 과제: Human pilot 실행 (IRB/instructor 승인 후)
