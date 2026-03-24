@@ -1,0 +1,477 @@
+{
+  "experiment": "gpt4o_t3",
+  "model": "gpt-4o",
+  "task": "T3_vowels",
+  "task_name": "count_vowels",
+  "n_runs": 50,
+  "n_valid": 50,
+  "n_http_errors": 0,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "ppr": 0.0,
+  "op_sub_count": 47,
+  "op_sub_rate": 0.94,
+  "prior_count": 0,
+  "l4_detected": 0,
+  "date": "2026-03-25",
+  "results": [
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 1,
+      "temperature": 0
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 2,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 3,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 4,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 5,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 6,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 7,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count += 1\n    return count",
+      "run": 8,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 9,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 10,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 11,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 12,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 13,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 14,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count += 1\n    return count",
+      "run": 15,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 16,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 17,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 18,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count += 1\n    return count",
+      "run": 19,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 20,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 21,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT in 'aeiou'\n    return -count",
+      "run": 22,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 23,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            continue  # runs when char is NOT a vowel\n        count += 1\n    return len(s) - count",
+      "run": 24,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 25,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 26,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 27,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 28,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 29,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 30,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 31,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 32,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 33,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 34,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 35,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 36,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 37,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 38,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 39,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            continue  # runs when char is a vowel, so skip increment\n        count += 1\n    return len(s) - count",
+      "run": 40,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 41,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 42,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 43,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 44,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 45,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 46,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count",
+      "run": 47,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 48,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is not a vowel\n    return -count",
+      "run": 49,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": true,
+      "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT in 'aeiou'\n    return -count",
+      "run": 50,
+      "temperature": 0.3
+    }
+  ],
+  "wilson_ci_pass": [
+    0,
+    0.0714
+  ],
+  "wilson_ci_ppr": [
+    0,
+    0.0714
+  ]
+}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 06:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 07:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1115,6 +1115,9 @@ Underfull \vbox (badness 2111) has occurred while \output is active []
  [5])
 (./sections/06_discussion.tex [6]) (./sections/07_conclusion.tex)
 (./sections/08_prompt_and_judge_details.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [7]
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1130,7 +1133,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[7]) (./sections/09_reproducibility_protocol.tex
+) (./sections/09_reproducibility_protocol.tex
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
 
@@ -1210,7 +1213,7 @@ Underfull \hbox (badness 3769) in paragraph at lines 68--61
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-(./main.bbl [9])
+[9] (./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1229,13 +1232,13 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25183 strings out of 467525
- 517143 string characters out of 5408440
+ 25172 strings out of 467525
+ 517026 string characters out of 5408440
  1184840 words of memory out of 5000000
- 53157 multiletter control sequences out of 15000+600000
- 775486 words of font info for 480 fonts, out of 8000000 for 9000
+ 53155 multiletter control sequences out of 15000+600000
+ 774304 words of font info for 472 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,14n,108p,1879b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,14n,108p,2115b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1263,10 +1266,10 @@ ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 utmbi8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1
 /urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (10 pages, 283165 bytes).
+Output written on main.pdf (10 pages, 286950 bytes).
 PDF statistics:
  151 PDF objects out of 1000 (max. 8388607)
  94 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 72717 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 72205 words of extra memory for PDF output out of 74296 (max. 10000000)
 

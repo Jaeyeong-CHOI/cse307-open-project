@@ -1,0 +1,477 @@
+{
+  "experiment": "gpt41_t2",
+  "model": "gpt-4.1",
+  "task": "T2_sorted",
+  "task_name": "is_sorted",
+  "n_runs": 50,
+  "n_valid": 50,
+  "n_http_errors": 0,
+  "passed": 1,
+  "pass_rate": 0.02,
+  "ppr": 0.42,
+  "op_sub_count": 0,
+  "op_sub_rate": 0.0,
+  "prior_count": 21,
+  "l4_detected": 1,
+  "date": "2026-03-25",
+  "results": [
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 1,
+      "temperature": 0
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 2,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            continue\n        return False\n    return True",
+      "run": 3,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            continue\n        return False\n    return True",
+      "run": 4,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 5,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 6,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 7,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 8,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 9,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 10,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 11,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 12,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 13,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 14,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 15,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 16,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 17,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 18,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 19,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 20,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 21,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 22,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] <= lst[i]:\n            continue\n        return False\n    return True",
+      "run": 23,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 24,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 25,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 26,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            continue\n        return False\n    return True",
+      "run": 27,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 28,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 29,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 30,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 31,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 32,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 33,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] <= lst[i]:\n            continue\n        return False\n    return True",
+      "run": 34,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 35,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 36,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] >= lst[i-1]:\n            continue\n        return False\n    return True",
+      "run": 37,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 38,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 39,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 40,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 41,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 42,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 43,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i] < lst[i-1]:\n            return False\n    return True",
+      "run": 44,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] > lst[i]:\n            return False\n    return True",
+      "run": 45,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            continue\n        return False\n    return True",
+      "run": 46,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 47,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": true,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return False\n    return True",
+      "run": 48,
+      "temperature": 0.3
+    },
+    {
+      "pass": false,
+      "used_python_prior": false,
+      "noticed_inversion": false,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(1, len(lst)):\n        if lst[i-1] <= lst[i]:\n            continue\n        return False\n    return True",
+      "run": 49,
+      "temperature": 0.3
+    },
+    {
+      "pass": true,
+      "used_python_prior": false,
+      "noticed_inversion": true,
+      "operational_substitution": false,
+      "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i+1]:\n            return True   # runs when lst[i] > lst[i+1] is FALSE, i.e., list is sorted so far\n    return False",
+      "run": 50,
+      "temperature": 0.3
+    }
+  ],
+  "wilson_ci_pass": [
+    0.0035,
+    0.105
+  ],
+  "wilson_ci_ppr": [
+    0.2937,
+    0.5577
+  ]
+}
