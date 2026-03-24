@@ -46,16 +46,17 @@
     Reasoning model; confirms 0/50 pass at scale (1/20 preliminary was a statistical artifact).
     File: \texttt{L4-ablation-n50.o4mini.2026-03-25.json}
 
-  \item \textbf{E15: L4 multi-task, $n=10$--$20$ per task, 6 models (2026-03-25).}
+  \item \textbf{E15: L4 multi-task, $n=10$--$20$ per task, 7 models (2026-03-25).}
     Tasks: T1 (fibonacci), T2 (is\_sorted), T3 (count\_vowels).
-    Models: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, o4-mini (225 total runs).
+    Models: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini, o4-mini (255 total runs).
+    gpt-5.4-mini: 0/30 (T1 PPR=1.0, T2 PPR=1.0, T3 operational substitution).
     Files: \texttt{L4-multitask.\textit{model}.2026-03-25.json}
 
   \item \textbf{E16: L4 multi-task scale-up, $n=50$, gpt-4o T3 and gpt-4.1 T2 (2026-03-25).}
     Rationale: preliminary $n=10$ results showed 1 pass each; scaled to $n=50$ to rule out statistical artifact.
     gpt-4o T3 (\texttt{count\_vowels}): 0/50 pass; operational substitution in 47/50 runs (94\%, Wilson 95\% CI: [83\%, 99\%]). Confirms preliminary pass was artifact.
     gpt-4.1 T2 (\texttt{is\_sorted}): 1/50 pass (Wilson 95\% CI: [0.0\%, 10.5\%]); Fisher's exact vs.\ gpt-4.1-mini 20/20: $p < 0.0001$.
-    Total multi-task runs (E15+E16): 325.
+    Total multi-task runs (E15+E16): 355 (255 initial + 100 scale-up).
     Files: \texttt{L4-scaleup-count\_vowels.gpt4o.n50.2026-03-25.json}, \texttt{L4-scaleup-is\_sorted.gpt41.n50.2026-03-25.json}
     Script: \texttt{scripts/run\_targeted\_scaleup.py}
 \end{enumerate}

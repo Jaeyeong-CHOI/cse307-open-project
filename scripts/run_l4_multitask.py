@@ -117,6 +117,8 @@ TASKS = {
 
 
 REASONING_MODELS = {"o4-mini", "o3-mini", "o3", "o1", "o1-mini"}
+# Models that require max_completion_tokens instead of max_tokens (non-o-series)
+COMPLETION_TOKEN_MODELS = {"gpt-5.4-mini", "gpt-5.4"}
 
 def chat(messages, temperature=0):
     if not API_KEY:
@@ -139,7 +141,7 @@ def chat(messages, temperature=0):
             else:
                 merged.append(m)
         messages = merged
-    token_key = "max_completion_tokens" if MODEL in REASONING_MODELS else "max_tokens"
+    token_key = "max_completion_tokens" if (MODEL in REASONING_MODELS or MODEL in COMPLETION_TOKEN_MODELS) else "max_tokens"
     payload = json.dumps({
         "model": MODEL,
         "messages": messages,
