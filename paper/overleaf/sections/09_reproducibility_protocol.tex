@@ -50,6 +50,14 @@
     Tasks: T1 (fibonacci), T2 (is\_sorted), T3 (count\_vowels).
     Models: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, o4-mini (225 total runs).
     Files: \texttt{L4-multitask.\textit{model}.2026-03-25.json}
+
+  \item \textbf{E16: L4 multi-task scale-up, $n=50$, gpt-4o T3 and gpt-4.1 T2 (2026-03-25).}
+    Rationale: preliminary $n=10$ results showed 1 pass each; scaled to $n=50$ to rule out statistical artifact.
+    gpt-4o T3 (\texttt{count\_vowels}): 0/50 pass; operational substitution in 47/50 runs (94\%, Wilson 95\% CI: [83\%, 99\%]). Confirms preliminary pass was artifact.
+    gpt-4.1 T2 (\texttt{is\_sorted}): 1/50 pass (Wilson 95\% CI: [0.0\%, 10.5\%]); Fisher's exact vs.\ gpt-4.1-mini 20/20: $p < 0.0001$.
+    Total multi-task runs (E15+E16): 325.
+    Files: \texttt{L4-scaleup-count\_vowels.gpt4o.n50.2026-03-25.json}, \texttt{L4-scaleup-is\_sorted.gpt41.n50.2026-03-25.json}
+    Script: \texttt{scripts/run\_targeted\_scaleup.py}
 \end{enumerate}
 
 \subsection{API and runtime settings}
@@ -75,6 +83,9 @@ Script / Path & Purpose \\
 \midrule
 \texttt{run\_gpt54\_eval.py} & L1 batch runner \\
 \texttt{run\_l2\_eval.py} & L2 batch runner \\
+\texttt{run\_l4\_ablation.py} & L4 ablation runner \\
+\texttt{run\_l4\_multitask.py} & L4 multi-task runner \\
+\texttt{run\_targeted\_scaleup.py} & L4 targeted scale-up ($n=50$) \\
 \texttt{partial\_judge.py} & Continuous metrics \\
 \texttt{compare\_eval\_runs.py} & Run comparison \\
 \texttt{docs/archive/*/} & Prompt banks (L1--L4) \\
