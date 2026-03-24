@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-23T18:20:00+09:00",
+  "updated_at": "2026-03-24T10:33:00+09:00",
   "project": "cse307-open-project",
   "overall_progress_percent": 79,
   "phase": "Phase 4~5",
@@ -9,16 +9,14 @@
     "esr": 0.667,
     "mfb": 65.0,
     "lgp": 0.667,
-    "result_files": 17
+    "result_files": 18
   },
   "ci": {
     "status": "success",
     "latest_run_id": "23414312970",
     "trend": "stable"
   },
-  "active_blockers": [
-    "LLM API 인증(HTTP 401)으로 실측 배치 미수행"
-  ],
+  "active_blockers": [],
   "next_actions": [
     "유효 API 키/엔드포인트 복구 후 prompt-versions 전체 실측 배치 재실행",
     "실측 통과율/지표 변화 반영하여 IEEE 본문 Results/Conclusion 갱신"

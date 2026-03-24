@@ -1,0 +1,58 @@
+metric,value
+total,100
+passed,0
+failed,100
+http_failures,0
+violation::original keyword used: for,47
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 1),29
+violation::original keyword used: if,27
+violation::original keyword used: return,24
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 2),20
+violation::original keyword used: def,18
+violation::original keyword used: in,15
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 6),14
+violation::missing alias for in: use this token exactly for keyword mapping,9
+violation::missing alias for in: no, use exact python original grammer,9
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 3),8
+violation::missing alias for def: use this token exactly for keyword mapping,8
+violation::missing alias for in: convert this phrase back to python reserved token,8
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 4),6
+violation::missing loop: for i in range(7): print(i, fib(i)),6
+violation::missing alias for in: keep this long alias while preserving python grammar,6
+violation::python parse failed after normalization: expected '(' (<unknown>, line 2),6
+violation::missing alias for for: no, use exact python original grammer,5
+violation::missing alias for return: no, use exact python original grammer,5
+violation::missing alias for in: strictly follow this alias phrase for compilation,4
+violation::missing alias for in: follow renamed symbol exactly and continue,4
+violation::missing alias for if: no, use exact python original grammer,4
+violation::missing alias for in: use this custom marker in place of original token,3
+violation::missing alias for def: no, use exact python original grammer,3
+violation::missing alias for def: follow renamed symbol exactly and continue,3
+violation::missing alias for return: use this token exactly for keyword mapping,3
+violation::python parse failed after normalization: cannot assign to function call (<unknown>, line 1),3
+violation::missing alias for return: strictly follow this alias phrase for compilation,2
+violation::missing alias for if: for,2
+violation::python parse failed after normalization: expected '(' (<unknown>, line 6),2
+violation::missing alias for def: apply this mapped token before generating code,2
+violation::python parse failed after normalization: cannot assign to expression (<unknown>, line 4),1
+violation::missing alias for if: return,1
+violation::missing alias for if: keep this long alias while preserving python grammar,1
+violation::missing alias for return: apply this mapped token before generating code,1
+violation::missing alias for if: follow renamed symbol exactly and continue,1
+violation::missing alias for return: follow renamed symbol exactly and continue,1
+violation::missing alias for for: convert this phrase back to python reserved token,1
+violation::missing alias for if: convert this phrase back to python reserved token,1
+violation::missing alias for for: use this token exactly for keyword mapping,1
+violation::python parse failed after normalization: expected ':' (<unknown>, line 2),1
+violation::missing alias for for: do not trust default python keyword prior,1
+violation::python parse failed after normalization: expected ':' (<unknown>, line 7),1
+violation::missing alias for for: use this custom marker in place of original token,1
+violation::missing alias for in: do not trust default python keyword prior,1
+violation::python parse failed after normalization: expected 'else' after 'if' expression (<unknown>, line 6),1
+violation::python parse failed after normalization: invalid syntax. Maybe you meant '==' or ':=' instead of '='? (<unknown>, line 6),1
+violation::python parse failed after normalization: Missing parentheses in call to 'print'. Did you mean print(...)? (<unknown>, line 6),1
+violation::missing alias for for: strictly follow this alias phrase for compilation,1
+violation::missing function fib,1
+violation::missing alias for for: follow renamed symbol exactly and continue,1
+violation::missing alias for def: keep this long alias while preserving python grammar,1
+violation::missing alias for def: this keyword is replaced by long natural phrase,1

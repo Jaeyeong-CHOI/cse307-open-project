@@ -11,6 +11,46 @@
       "total": 120
     },
     {
+      "file": "docs/research/results/prompt-batch-v1-120.gpt41-mini.2026-03-23.json",
+      "model": "gpt-4.1-mini",
+      "avg_score": 10.75,
+      "nonzero_score": 24,
+      "passed": 0,
+      "failed": 120
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120.gpt41-nano.2026-03-23.json",
+      "model": "gpt-4.1-nano",
+      "avg_score": 1.333,
+      "nonzero_score": 5,
+      "passed": 0,
+      "failed": 120
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120-contextpack.gpt4o.2026-03-24.json",
+      "model": "gpt-4o",
+      "avg_score": 23.916666666666668,
+      "nonzero_score": 35,
+      "passed": 3,
+      "failed": 117
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt4o.2026-03-23.json",
+      "model": "gpt-4o",
+      "avg_score": 17.583,
+      "nonzero_score": 30,
+      "passed": 1,
+      "failed": 119
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120.gpt4o.2026-03-23.json",
+      "model": "gpt-4o",
+      "avg_score": 18.167,
+      "nonzero_score": 30,
+      "passed": 2,
+      "failed": 118
+    },
+    {
       "file": "docs/research/results/prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json",
       "model": "gpt-4o-mini",
       "avg_score": 5.25,
@@ -29,58 +69,10 @@
       "total": 120
     },
     {
-      "file": "docs/research/results/prompt-batch-v1-120-contextpack.gpt4o.2026-03-24.json",
-      "model": "gpt-4o",
-      "avg_score": 23.916666666666668,
-      "nonzero_score": 35,
-      "passed": 3,
-      "failed": 117
-    },
-    {
-      "file": "docs/research/results/prompt-batch-v1-120-contextpack.gpt54-mini.2026-03-24.json",
-      "model": "gpt-5.4-mini",
-      "avg_score": 21.666666666666668,
-      "nonzero_score": 32,
-      "passed": 3,
-      "failed": 117
-    },
-    {
       "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt4o-mini.2026-03-24.json",
       "model": "gpt-4o-mini",
       "avg_score": 3.75,
       "nonzero_score": 7,
-      "passed": 0,
-      "failed": 120
-    },
-    {
-      "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt4o.2026-03-23.json",
-      "model": "gpt-4o",
-      "avg_score": 17.583,
-      "nonzero_score": 30,
-      "passed": 1,
-      "failed": 119
-    },
-    {
-      "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt54-mini.2026-03-24.json",
-      "model": "gpt-5.4-mini",
-      "avg_score": 9.083,
-      "nonzero_score": 19,
-      "passed": 0,
-      "failed": 120
-    },
-    {
-      "file": "docs/research/results/prompt-batch-v1-120.gpt41-mini.2026-03-23.json",
-      "model": "gpt-4.1-mini",
-      "avg_score": 10.75,
-      "nonzero_score": 24,
-      "passed": 0,
-      "failed": 120
-    },
-    {
-      "file": "docs/research/results/prompt-batch-v1-120.gpt41-nano.2026-03-23.json",
-      "model": "gpt-4.1-nano",
-      "avg_score": 1.333,
-      "nonzero_score": 5,
       "passed": 0,
       "failed": 120
     },
@@ -93,12 +85,30 @@
       "failed": 120
     },
     {
-      "file": "docs/research/results/prompt-batch-v1-120.gpt4o.2026-03-23.json",
-      "model": "gpt-4o",
-      "avg_score": 18.167,
-      "nonzero_score": 30,
-      "passed": 2,
-      "failed": 118
+      "file": "docs/research/results/prompt-batch-v21-120-contextpack.gpt4o-mini.2026-03-24.json",
+      "model": "gpt-4o-mini",
+      "avg_score": 4.8,
+      "nonzero_score": 6,
+      "passed": 0,
+      "failed": 100,
+      "http_failures": 0,
+      "total": 100
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120-contextpack.gpt54-mini.2026-03-24.json",
+      "model": "gpt-5.4-mini",
+      "avg_score": 21.666666666666668,
+      "nonzero_score": 32,
+      "passed": 3,
+      "failed": 117
+    },
+    {
+      "file": "docs/research/results/prompt-batch-v1-120-legacy.gpt54-mini.2026-03-24.json",
+      "model": "gpt-5.4-mini",
+      "avg_score": 9.083,
+      "nonzero_score": 19,
+      "passed": 0,
+      "failed": 120
     },
     {
       "file": "docs/research/results/prompt-batch-v1-120.gpt54-mini.2026-03-23.json",
