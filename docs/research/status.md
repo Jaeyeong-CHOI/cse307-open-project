@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 06:20 KST
+마지막 업데이트: 2026-03-25 06:29 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -120,6 +120,13 @@
   - 평가지표: HPR, gap(HPR - LLM_pass), Wilcoxon 검정 계획
   - 예상 소요: ~1주 (IRB 제외 시 3~4일)
   - 논문 §6.2 업데이트 계획 명시 (H1/H2 확인 시 수치 대입)
+
+- [x] 2026-03-25 06:29 §9 experiment log (E12-E15) + §10 config snapshot stale text 수정
+  - E12: gpt-4.1 family + o4-mini L1 ctx-pack (2026-03-25 실험 추가)
+  - E13/E14: L4 ablation n=50, all 7 models
+  - E15: L4 multi-task (225 runs)
+  - §10 모델 목록 7개로 업데이트, o4-mini temp=1 명시
+  - PDF 재컴파일 (10p), commit 115272d push 완료
 
 - [x] 2026-03-25 06:20 §3 Threats to Validity stale text 수정
   - "single benchmark task → multi-task extension needed" → 이미 완료(T1/T2/T3)로 수정
