@@ -1,4 +1,6 @@
-%%% Code generation benchmarks (foundational)
+%%% ============================================================
+%%% Code generation: foundational benchmarks
+%%% ============================================================
 @article{chen2021codex,
   author = {Chen, Mark and others},
   title = {Evaluating Large Language Models Trained on Code},
@@ -13,59 +15,64 @@
   year = {2021}
 }
 
-%%% Instruction-following for code (2024--2025)
+@misc{bigcodebench2024,
+  author = {Zhuo, Terry and others},
+  title = {{BigCodeBench}: Benchmarking Code Generation with Diverse Function Calls and Complex Instructions},
+  year = {2024},
+  howpublished = {arXiv:2406.15079}
+}
+
+@misc{livecodebench2024,
+  author = {Jain, Naman and others},
+  title = {{LiveCodeBench}: Holistic and Contamination-Free Evaluation of Large Language Models for Code},
+  year = {2024},
+  howpublished = {arXiv:2403.07974}
+}
+
+%%% ============================================================
+%%% Code generation: surveys (2024--2025)
+%%% ============================================================
+@misc{zan2024codesurvey,
+  author = {Zan, Daoguang and others},
+  title = {A Survey on Large Language Models for Code Generation},
+  year = {2024},
+  howpublished = {arXiv:2406.00515}
+}
+
+@misc{liu2024codeeval,
+  author = {Liu, Jia and others},
+  title = {A Survey on Evaluating Large Language Models in Code Generation Tasks},
+  year = {2024},
+  howpublished = {arXiv:2408.16498}
+}
+
+@misc{wu2024lowresource,
+  author = {Wu, Jie and others},
+  title = {A Survey on {LLM}-based Code Generation for Low-Resource and Domain-Specific Programming Languages},
+  year = {2024},
+  howpublished = {arXiv:2410.03981}
+}
+
+%%% ============================================================
+%%% Instruction-following for code (2025)
+%%% ============================================================
 @misc{codeif2025,
   author = {Liu, Yan and others},
-  title = {{CodeIF}: Benchmarking the Instruction-Following Capability of Large Language Models in Code Generation},
+  title = {{CodeIF}: Benchmarking Instruction-Following in Code Generation},
   year = {2025},
   howpublished = {arXiv:2502.19166}
 }
 
 @misc{multicode2025,
   author = {Zhang, Wei and others},
-  title = {{MultiCodeIF}: Comprehensive Evaluation of Instruction-Following in Code Generation},
+  title = {{MultiCodeIF}: Comprehensive Evaluation of Code Instruction-Following},
   year = {2025},
   howpublished = {arXiv:2507.00699}
 }
 
-%%% Knowledge / instruction conflict
-@misc{chen2024instructhierarchy,
-  author = {Chen, Eric and others},
-  title = {The Instruction Hierarchy: Training {LLMs} to Prioritize Privileged Instructions},
-  year = {2024},
-  howpublished = {arXiv:2404.13208}
-}
-
-@misc{xie2024conflict,
-  author = {Xie, Jian and others},
-  title = {Adaptive Chameleon or Stubborn Sloth: Revealing the Behavior of Large Language Models in Knowledge Conflicts},
-  year = {2024},
-  howpublished = {ICLR 2024 (arXiv:2305.13300)}
-}
-
-@misc{wu2024contextparametric,
-  author = {Wu, Sijia and others},
-  title = {Untangle the {KNOT}: Interweaving Conflicting Knowledge and Reasoning Skills in Large Language Models},
-  year = {2024},
-  howpublished = {arXiv:2403.08319}
-}
-
-%%% LLM prior and NTP
-@misc{wang2024ntp,
-  author = {Wang, Zihao and others},
-  title = {A Law of Next-Token Prediction in Large Language Models},
-  year = {2024},
-  howpublished = {arXiv:2408.13442}
-}
-
-@misc{abbe2023generalization,
-  author = {Abbe, Emmanuel and others},
-  title = {Generalization on the Unseen, Logic Reasoning and Degree Curriculum},
-  year = {2023},
-  howpublished = {arXiv:2301.13189}
-}
-
-%%% Code pretraining models
+%%% ============================================================
+%%% Code LLMs: architectures and training
+%%% ============================================================
 @inproceedings{feng2020codebert,
   author = {Feng, Zhangyin and others},
   title = {{CodeBERT}: A Pre-Trained Model for Programming and Natural Languages},
@@ -75,12 +82,11 @@
 
 @inproceedings{wang2021codet5,
   author = {Wang, Yue and Wang, Weishi and Joty, Shafiq and Hoi, Steven C.H.},
-  title = {{CodeT5}: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation},
+  title = {{CodeT5}: Identifier-aware Unified Pre-trained Encoder-Decoder Models},
   booktitle = {EMNLP},
   year = {2021}
 }
 
-%%% Large-scale code LLMs
 @misc{guo2024deepseek,
   author = {Guo, Daya and others},
   title = {{DeepSeek-Coder}: When the Large Language Model Meets Programming},
@@ -95,82 +101,85 @@
   howpublished = {arXiv:2306.08568}
 }
 
-%%% Adversarial perturbation in code generation
-@misc{pan2024adversarial,
-  author = {Pan, Rui and others},
-  title = {Attacking {LLMs} with Code Generation: Semantically-Aligned Adversarial Perturbations},
+@article{fried2022incoder,
+  author = {Fried, Daniel and others},
+  title = {{InCoder}: A Generative Model for Code Infilling and Synthesis},
+  year = {2022},
+  howpublished = {ICLR 2023 (arXiv:2204.05999)}
+}
+
+%%% ============================================================
+%%% Instruction following: alignment and hierarchy
+%%% ============================================================
+@misc{ouyang2022instruct,
+  author = {Ouyang, Long and others},
+  title = {Training Language Models to Follow Instructions with Human Feedback},
+  year = {2022},
+  howpublished = {NeurIPS 2022 (arXiv:2203.02155)}
+}
+
+@misc{chen2024instructhierarchy,
+  author = {Chen, Eric and others},
+  title = {The Instruction Hierarchy: Training {LLMs} to Prioritize Privileged Instructions},
   year = {2024},
-  howpublished = {arXiv:2412.16359}
+  howpublished = {arXiv:2404.13208}
 }
 
-@misc{zhu2023promptrobust,
-  author = {Zhu, Kaijie and others},
-  title = {{PromptBench}: Towards Evaluating the Robustness of Large Language Models on Adversarial Prompts},
-  year = {2023},
-  howpublished = {arXiv:2306.04528}
-}
-
-@misc{khan2024cheatingllm,
-  author = {Khan, Abdullah and others},
-  title = {Defeating {LLMs} with Adversarial Perturbations in Programming Assignments},
-  year = {2024},
-  howpublished = {arXiv:2410.09318}
-}
-
-%%% LLM in education / academic integrity
-@misc{dakhel2023github,
-  author = {Dakhel, Arghavan and others},
-  title = {{GitHub Copilot} {AI} Pair Programmer: Asset or Liability?},
-  year = {2023},
-  journal = {Journal of Systems and Software}
-}
-
-@misc{lau2023learners,
-  author = {Lau, Sam and Guo, Philip},
-  title = {From {``Coding Assistant''} to {``Software Developer''}: Observations of How Novice Programmers Use Large Language Models},
-  year = {2023},
-  howpublished = {arXiv:2304.01984}
-}
-
-@misc{prather2023robots,
-  author = {Prather, James and others},
-  title = {It's Complicated: Perspectives of Novice Programmers on Their Experience Using {GitHub Copilot}},
-  year = {2023},
-  howpublished = {arXiv:2303.08733}
-}
-
-%%% LLM resistance in assessment (2024)
-@misc{novak2025llmhw,
-  author = {Novak, Erik and McDanel, Brad},
-  title = {Designing {LLM}-Resistant Programming Assignments},
+@misc{instructrobust2025,
+  author = {Liu, Bowen and others},
+  title = {Enhancing {LLM} Robustness to Perturbed Instructions: An Empirical Study},
   year = {2025},
-  howpublished = {SIGCSE TS 2025}
+  howpublished = {arXiv:2504.09135}
 }
 
-%%% Real-world SE benchmarks
-@article{jimenez2024swebench,
-  author = {Jimenez, Carlos and others},
-  title = {Can Language Models Resolve Real-World {GitHub} Issues?},
-  journal = {arXiv preprint arXiv:2310.06770},
-  year = {2024}
-}
-
-%%% Constrained decoding
-@misc{dong2024xgrammar,
-  author = {Dong, Yixin and others},
-  title = {{XGrammar}: Flexible and Efficient Structured Generation Engine for Large Language Models},
-  year = {2024},
-  howpublished = {arXiv:2411.15100}
-}
-
-@misc{muendler2025type,
-  author = {Muendler, Johannes and others},
-  title = {Type-Constrained Code Generation with Language Models},
+@misc{instructgap2025,
+  author = {Meyer, Alexander and others},
+  title = {The Instruction Gap: {LLMs} Get Lost in Following Instructions},
   year = {2025},
-  howpublished = {PLDI 2025}
+  howpublished = {arXiv:2512.14754}
 }
 
-%%% Few-shot learning and in-context learning
+%%% ============================================================
+%%% Knowledge conflicts: parametric vs contextual
+%%% ============================================================
+@misc{xie2024conflict,
+  author = {Xie, Jian and others},
+  title = {Adaptive Chameleon or Stubborn Sloth: Revealing the Behavior of {LLMs} in Knowledge Conflicts},
+  year = {2024},
+  howpublished = {ICLR 2024 (arXiv:2305.13300)}
+}
+
+@misc{wu2024contextparametric,
+  author = {Wu, Sijia and others},
+  title = {Untangle the {KNOT}: Interweaving Conflicting Knowledge and Reasoning Skills in {LLMs}},
+  year = {2024},
+  howpublished = {arXiv:2403.08319}
+}
+
+@misc{zhang2024conflict,
+  author = {Zhang, Zhuoran and others},
+  title = {Knowledge Conflicts for {LLMs}: A Survey},
+  year = {2024},
+  howpublished = {EMNLP 2024 (arXiv:2403.08319)}
+}
+
+@misc{contextinvert2024,
+  author = {Shi, Freda and others},
+  title = {Large Language Models Can Be Easily Distracted by Irrelevant Context},
+  year = {2023},
+  howpublished = {ICML 2023 (arXiv:2302.00093)}
+}
+
+%%% ============================================================
+%%% NTP prior and in-context learning
+%%% ============================================================
+@misc{wang2024ntp,
+  author = {Wang, Zihao and others},
+  title = {A Law of Next-Token Prediction in Large Language Models},
+  year = {2024},
+  howpublished = {arXiv:2408.13442}
+}
+
 @misc{dong2022survey,
   author = {Dong, Qingxiu and others},
   title = {A Survey on In-context Learning},
@@ -185,10 +194,260 @@
   howpublished = {EMNLP 2022 (arXiv:2202.12837)}
 }
 
-%%% Alignment and RLHF
-@misc{ouyang2022instruct,
-  author = {Ouyang, Long and others},
-  title = {Training Language Models to Follow Instructions with Human Feedback},
+@misc{anotb2024,
+  author = {Lampinen, Andrew and others},
+  title = {{A-Not-B} Errors in {LLMs}: Limitations of In-Context Learning},
+  year = {2024},
+  howpublished = {arXiv:2409.15454}
+}
+
+@misc{icl2023brown,
+  author = {Brown, Tom and others},
+  title = {Language Models are Few-Shot Learners},
+  year = {2020},
+  howpublished = {NeurIPS 2020 (arXiv:2005.14165)}
+}
+
+%%% ============================================================
+%%% Counterfactual and semantic reasoning failures
+%%% ============================================================
+@misc{counterfact2024,
+  author = {Zhao, Qingyuan and others},
+  title = {{LLMs} Struggle to Perform Counterfactual Reasoning with Parametric Knowledge},
+  year = {2024},
+  howpublished = {arXiv:2410.06392}
+}
+
+@misc{semanticinvar2024,
+  author = {Turpin, Miles and others},
+  title = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
+  year = {2023},
+  howpublished = {NeurIPS 2023 (arXiv:2305.04388)}
+}
+
+@misc{reasoningrigidity2024,
+  author = {Valmeekam, Karthik and others},
+  title = {{LLMs} Still Can't Plan; Can {LRMs?} A Preliminary Evaluation of OpenAI's o1 on {PlanBench}},
+  year = {2024},
+  howpublished = {arXiv:2409.13373}
+}
+
+%%% ============================================================
+%%% Adversarial perturbation in code generation
+%%% ============================================================
+@misc{pan2024adversarial,
+  author = {Pan, Rui and others},
+  title = {Attacking {LLMs} with Code Generation: Semantically-Aligned Adversarial Perturbations},
+  year = {2024},
+  howpublished = {arXiv:2412.16359}
+}
+
+@misc{zhu2023promptrobust,
+  author = {Zhu, Kaijie and others},
+  title = {{PromptBench}: Evaluating Robustness of Large Language Models},
+  year = {2023},
+  howpublished = {arXiv:2306.04528}
+}
+
+@misc{khan2024cheatingllm,
+  author = {Khan, Abdullah and others},
+  title = {Defeating {LLMs} with Adversarial Perturbations in Programming Assignments},
+  year = {2024},
+  howpublished = {arXiv:2410.09318}
+}
+
+@misc{coderobbery2024,
+  author = {Jha, Saurabh and others},
+  title = {Break the Chain: Reasoning Failures in {LLMs} via Adversarial Prompting in Code Generation},
+  year = {2024},
+  howpublished = {arXiv:2506.06971}
+}
+
+%%% ============================================================
+%%% DSL and constrained code generation
+%%% ============================================================
+@misc{dong2024xgrammar,
+  author = {Dong, Yixin and others},
+  title = {{XGrammar}: Flexible and Efficient Structured Generation for {LLMs}},
+  year = {2024},
+  howpublished = {arXiv:2411.15100}
+}
+
+@misc{muendler2025type,
+  author = {Muendler, Johannes and others},
+  title = {Type-Constrained Code Generation with Language Models},
+  year = {2025},
+  howpublished = {PLDI 2025}
+}
+
+@misc{concode2024,
+  author = {Chen, Wenting and others},
+  title = {{ConCodeEval}: Evaluating Large Language Models for Code Constraint Comprehension},
+  year = {2024},
+  howpublished = {EMNLP 2024}
+}
+
+@misc{l2ceval2024,
+  author = {Ni, Ansong and others},
+  title = {{L2CEval}: Evaluating Language-to-Code Generation Capabilities of Large Language Models},
+  year = {2024},
+  howpublished = {TACL 2024}
+}
+
+%%% ============================================================
+%%% Real-world software engineering benchmarks
+%%% ============================================================
+@article{jimenez2024swebench,
+  author = {Jimenez, Carlos and others},
+  title = {{SWE-bench}: Can Language Models Resolve Real-World {GitHub} Issues?},
+  year = {2024},
+  howpublished = {ICLR 2024 (arXiv:2310.06770)}
+}
+
+@misc{yang2024swebench2,
+  author = {Yang, John and others},
+  title = {{SWE-agent}: Agent-Computer Interfaces Enable Automated Software Engineering},
+  year = {2024},
+  howpublished = {NeurIPS 2024 (arXiv:2405.15793)}
+}
+
+%%% ============================================================
+%%% LLM in programming education
+%%% ============================================================
+@misc{dakhel2023github,
+  author = {Dakhel, Arghavan and others},
+  title = {{GitHub Copilot} {AI} Pair Programmer: Asset or Liability?},
+  year = {2023},
+  journal = {Journal of Systems and Software}
+}
+
+@misc{lau2023learners,
+  author = {Lau, Sam and Guo, Philip},
+  title = {From Coding Assistant to Software Developer: Observations of How Novice Programmers Use {LLMs}},
+  year = {2023},
+  howpublished = {arXiv:2304.01984}
+}
+
+@misc{prather2023robots,
+  author = {Prather, James and others},
+  title = {It's Complicated: Perspectives of Novice Programmers on Their Experience Using {GitHub Copilot}},
+  year = {2023},
+  howpublished = {arXiv:2303.08733}
+}
+
+@misc{wermelinger2023copilot,
+  author = {Wermelinger, Michel},
+  title = {Using {GitHub Copilot} to Solve Simple Programming Problems},
+  year = {2023},
+  howpublished = {SIGCSE 2023}
+}
+
+@misc{liffiton2023codehelp,
+  author = {Liffiton, Mark and others},
+  title = {{CodeHelp}: Using Large Language Models with Guardrails for Scalable Support in Programming Classes},
+  year = {2023},
+  howpublished = {arXiv:2308.06921}
+}
+
+%%% ============================================================
+%%% LLM and academic integrity (2024--2025)
+%%% ============================================================
+@misc{novak2025llmhw,
+  author = {Novak, Erik and McDanel, Brad},
+  title = {Designing {LLM}-Resistant Programming Assignments},
+  year = {2025},
+  howpublished = {SIGCSE TS 2025}
+}
+
+@misc{aiintegrity2024,
+  author = {Shoufan, Abdulhadi},
+  title = {Exploring Students' Perceptions of {ChatGPT}: Thematic Analysis and Follow-Up Survey},
+  year = {2024},
+  howpublished = {IEEE Access}
+}
+
+@misc{codeplagiarism2024,
+  author = {Orenstrakh, Michael and others},
+  title = {Detecting {LLM}-Generated Code Assignments Using Perplexity of Code},
+  year = {2023},
+  howpublished = {arXiv:2307.09714}
+}
+
+@misc{llobet2025study,
+  author = {Llobet Sanch\'is, Mireia and others},
+  title = {The Impact of Artificial Intelligence on Academic Integrity: A Scoping Review},
+  year = {2025},
+  howpublished = {Computers and Education}
+}
+
+%%% ============================================================
+%%% LLM behavior analysis (sycophancy, consistency)
+%%% ============================================================
+@misc{sycophancy2023,
+  author = {Perez, Ethan and others},
+  title = {Discovering Language Model Behaviors with Model-Written Evaluations},
+  year = {2023},
+  howpublished = {ACL-Findings 2023 (arXiv:2212.09251)}
+}
+
+@misc{wang2023selfconsistency,
+  author = {Wang, Xuezhi and others},
+  title = {Self-Consistency Improves Chain of Thought Reasoning in Language Models},
+  year = {2023},
+  howpublished = {ICLR 2023 (arXiv:2203.11171)}
+}
+
+@misc{ganguli2022red,
+  author = {Ganguli, Deep and others},
+  title = {Red Teaming Language Models to Reduce Harms},
   year = {2022},
-  howpublished = {NeurIPS 2022 (arXiv:2203.02155)}
+  howpublished = {arXiv:2209.07858}
+}
+
+%%% ============================================================
+%%% LLM evaluation frameworks
+%%% ============================================================
+@misc{liang2023helm,
+  author = {Liang, Percy and others},
+  title = {Holistic Evaluation of Language Models},
+  year = {2023},
+  howpublished = {TMLR 2023 (arXiv:2211.09110)}
+}
+
+@misc{chang2024survey,
+  author = {Chang, Yupeng and others},
+  title = {A Survey on Evaluation of Large Language Models},
+  year = {2024},
+  howpublished = {ACM TIST 2024 (arXiv:2307.03109)}
+}
+
+@misc{srivastava2023bigbench,
+  author = {Srivastava, Aarohi and others},
+  title = {Beyond the Imitation Game: Quantifying and Extrapolating the Capabilities of Language Models},
+  year = {2023},
+  howpublished = {TMLR 2023 (arXiv:2206.04615)}
+}
+
+%%% ============================================================
+%%% Reasoning and deduction
+%%% ============================================================
+@misc{wei2022cot,
+  author = {Wei, Jason and others},
+  title = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
+  year = {2022},
+  howpublished = {NeurIPS 2022 (arXiv:2201.11903)}
+}
+
+@misc{kojima2022zerocot,
+  author = {Kojima, Takeshi and others},
+  title = {Large Language Models Are Zero-Shot Reasoners},
+  year = {2022},
+  howpublished = {NeurIPS 2022 (arXiv:2205.11916)}
+}
+
+@misc{zheng2023judging,
+  author = {Zheng, Lianmin and others},
+  title = {Judging {LLM}-as-a-Judge with {MT-Bench} and {Chatbot Arena}},
+  year = {2023},
+  howpublished = {NeurIPS 2023 (arXiv:2306.05685)}
 }
