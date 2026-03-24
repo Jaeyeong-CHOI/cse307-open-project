@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 07:10 KST
+마지막 업데이트: 2026-03-25 07:59 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -145,6 +145,13 @@
   - PDF 재컴파일(10p), commit 35aab33 push 완료
   - 산출물: `L4-scaleup-count_vowels.gpt4o.n50.2026-03-25.json`, `L4-scaleup-is_sorted.gpt41.n50.2026-03-25.json`
   - 신규 스크립트: `scripts/run_targeted_scaleup.py`
+
+- [x] 2026-03-25 07:59 gpt-5.4-mini L4 multi-task 완료 (n=30, 0/30)
+  - T1 fib: 0/10, PPR=1.0 (prior dominance); T2 sorted: 0/10, PPR=1.0 (prior dominance)
+  - T3 vowels: 0/10, PPR=0.0 (operational substitution — 동일 패턴 across capable models)
+  - 논문 Table 4: 6 models → 7 models (7번째 finding 추가), runs 325 → 355
+  - scripts/run_l4_multitask.py: COMPLETION_TOKEN_MODELS 추가 (gpt-5.4-mini fix)
+  - PDF 재컴파일(10p), commit f20befa push 완료
 
 - [ ] `docs/research/context-compression.md` 운영 적용
 
