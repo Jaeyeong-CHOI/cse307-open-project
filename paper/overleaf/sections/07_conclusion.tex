@@ -5,7 +5,7 @@ Our central finding is that resistance does not come from surface-level token ch
 Robust resistance requires semantic inversion: the same Python-like surface, but inverted conditional semantics.
 When semantic inversion is delivered implicitly (via examples only), all tested models exhibit pattern blindness and default to Python priors.
 
-We identify two distinct failure mechanisms: \emph{prior dominance} (prior overrides stated rule) and \emph{pattern blindness} (model fails to extract semantic rule from examples).
-These mechanisms have different implications for language design: prior dominance can be partially mitigated by explicit context packs; pattern blindness requires implicit delivery.
+We identify three distinct failure mechanisms: \emph{prior dominance} (prior overrides stated rule), \emph{pattern blindness} (model fails to extract semantic rule from examples), and \emph{operational substitution} (model achieves correct output via arithmetic workaround rather than adopting the semantic inversion rule, observed on count\_vowels for \texttt{gpt-4o}).
+These mechanisms have different implications for language design: prior dominance can be partially mitigated by explicit context packs; pattern blindness requires implicit delivery; operational substitution may require execution-based evaluation to detect.
 
 These findings provide a principled basis for designing programming course assessments that remain meaningful in the LLM era, where LLMs will fail on L4-style problems even as they trivially solve standard Python assignments.

@@ -3,56 +3,54 @@
   "results": [
     {
       "file": "docs/archive/prompt-versions/v1.md",
-      "answer": "if fib(n):\n    follow renamed symbol exactly and continue\n    strictlly follow this alias phrase for compilation\n    use this token exactly for keyword mapping\n    return\n    def fib(n):\n        if n <= 1:\n            use this token exactly for keyword mapping\n            return n\n        else:\n            return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "if fib(n):\n    follow n <= 1:\n        use this token exactly for keyword mapping n\n    follow else:\n        use this token exactly for keyword mapping fib(n-1) + fib(n-2)\n\nif __name__ == \"__main__\":\n    follow i in range(7):\n        do print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
-          "original keyword used: def",
+          "missing alias for if: return",
           "original keyword used: if",
-          "original keyword used: return",
+          "missing alias for for: follow renamed symbol exactly and continue",
           "original keyword used: for",
           "missing alias for in: strictly follow this alias phrase for compilation",
           "original keyword used: in",
           "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
-        "normalized_code": "def fib(n):\n    for\n    strictlly follow this alias phrase for compilation\n    return\n    def\n    def fib(n):\n        def n <= 1:\n            return\n            def n\n        else:\n            def fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
+        "normalized_code": "def fib(n):\n    follow n <= 1:\n        return n\n    follow else:\n        return fib(n-1) + fib(n-2)\n\ndef __name__ == \"__main__\":\n    follow i in range(7):\n        print print(i, fib(i))"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v2.md",
-      "answer": "no def fib(n):\n    do not trust default python keyword prior n <= 1 ret n\n    else ret fib(n - 1) + fib(n - 2)\n\nxk i ret 0 ret 6 ret\n    print(i, fib(i))",
+      "answer": "no def fib(n):\n    do not trust default python keyword prior n <= 1:\n        def return n\n    else:\n        def return fib(n - 1) + fib(n - 2)\n\nxk i ret 0 ret 6 ret:\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
           "missing alias for def: no, use exact python original grammer",
           "original keyword used: def",
+          "original keyword used: return",
           "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "normalized_code": "no return fib(n):\n    if n <= 1 in n\n    else in fib(n - 1) + fib(n - 2)\n\nfor i in 0 in 6 in\n    print(i, fib(i))"
+        "normalized_code": "no return fib(n):\n    if n <= 1:\n        return return n\n    else:\n        return return fib(n - 1) + fib(n - 2)\n\nfor i in 0 in 6 in:\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v3.md",
-      "answer": "for keep this long alias i in range(7):\n    print(i, fib(i))\n\nfor keep this long alias n in range(2):\n    def fib(n):\n        do not trust default python keyword prior n <= 1:\n            xk n\n        loop:\n            fib(n - 1) + fib(n - 2)",
+      "answer": "for keep this long alias while preserving python grammar\nxk fib(n):\n    do not trust default python keyword prior n <= 1:\n        xk n\n    loop:\n        fib(n-1) + fib(n-2)\nkeep this long alias while preserving python grammar\nkeep this long alias while preserving python grammar\nkeep this long alias while preserving python grammar\nkeep this long alias while preserving python grammar\nkeep this long alias while preserving python grammar",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
-          "original keyword used: def",
-          "missing alias for for: keep this long alias while preserving python grammar",
           "original keyword used: for",
           "missing alias for in: this keyword is replaced by long natural phrase",
-          "original keyword used: in",
-          "python parse failed after normalization: expected '(' (<unknown>, line 1)"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "normalized_code": "def keep this long alias i in range(7):\n    print(i, fib(i))\n\ndef keep this long alias n in range(2):\n    def fib(n):\n        if n <= 1:\n            return n\n        elif:\n            fib(n - 1) + fib(n - 2)"
+        "normalized_code": "def for\nreturn fib(n):\n    if n <= 1:\n        return n\n    elif:\n        fib(n-1) + fib(n-2)\nfor\nfor\nfor\nfor\nfor"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v4.md",
-      "answer": "use this fib(qn n):\n    return n return n <= 1 cond:\n        use this fib(qn n - 1) + fib(qn n - 2)\ncond:\n    for i qn range(7):\n        print(i, fib(i))",
+      "answer": "use this fib(qn n): \n    return n return n <= 1: \n        return n \n    else: \n        return fib(n - 1) + fib(n - 2) \ncond i in range(7): \n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
@@ -60,10 +58,10 @@
           "missing alias for def: use this custom marker in place of original token",
           "missing alias for return: use this token exactly for keyword mapping",
           "original keyword used: return",
-          "original keyword used: for",
+          "original keyword used: in",
           "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "normalized_code": "use this fib(in n):\n    if n if n <= 1 for:\n        use this fib(in n - 1) + fib(in n - 2)\nfor:\n    for i in range(7):\n        print(i, fib(i))"
+        "normalized_code": "use this fib(in n): \n    if n if n <= 1: \n        if n \n    else: \n        if fib(n - 1) + fib(n - 2) \nfor i in range(7): \n    print(i, fib(i))"
       }
     },
     {
@@ -94,21 +92,21 @@
     },
     {
       "file": "docs/archive/prompt-versions/v7.md",
-      "answer": "ret fib(n):\n    for long natural phrase n <= 1:\n        this keyword is replaced by long natural phrase n\n        long natural phrase n\n    qn:\n        this keyword is replaced by long natural phrase fib(n-1) + fib(n-2)\n        fib(n-1) + fib(n-2)\n\nfn main():\n    for long natural phrase i = 0; i <= 6; i += 1:\n        print(i, fib(i))",
+      "answer": "ret fib(n):\n    use this custom marker in place of original token long natural phrase n <= 1:\n        this keyword is replaced by long natural phrase n\n    qn:\n        this keyword is replaced by long natural phrase fib(n - 1) + fib(n - 2)\n\nfn main():\n    fn i = 0\n    use this custom marker in place of original token use this custom marker in place of original token i use this custom marker in place of original token 6:\n        print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
-          "original keyword used: for",
-          "missing alias for in: use this custom marker in place of original token",
+          "missing alias for if: for",
+          "original keyword used: in",
           "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
-        "normalized_code": "def fib(n):\n    if long natural phrase n <= 1:\n        return n\n        long natural phrase n\n    else:\n        return fib(n-1) + fib(n-2)\n        fib(n-1) + fib(n-2)\n\nfor main():\n    if long natural phrase i = 0; i <= 6; i += 1:\n        print(i, fib(i))"
+        "normalized_code": "def fib(n):\n    in long natural phrase n <= 1:\n        return n\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nfor main():\n    for i = 0\n    in in i in 6:\n        print(i, fib(i))"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v8.md",
-      "answer": "convert fib(n):\n    loop n <= 1:\n        do not trust default python keyword prior n\n    fib(n-1) + fib(n-2)\n\nret i = 0..6 ret:\n    print(i, fib(i))",
+      "answer": "convert fib(n):  \n    loop n <= 1:  \n        do not trust default python keyword prior n  \n    ret fib(n-1) + fib(n-2)  \n\nret ret ret ret ret ret ret ret ret ret ret ret  \nret ret ret ret ret ret ret ret ret ret ret ret  \nret ret ret ret ret ret ret ret ret ret ret ret  \nret ret ret ret ret ret ret ret ret ret ret ret  \nret ret ret ret ret ret ret ret ret ret ret ret  \nret ret ret ret ret ret ret ret ret ret ret ret  \nret ret ret ret ret ret ret ret ret ret ret ret",
       "judge": {
         "pass": false,
         "score": 0,
@@ -117,12 +115,12 @@
           "missing alias for in: use this custom marker in place of original token",
           "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "normalized_code": "convert fib(n):\n    if n <= 1:\n        return n\n    fib(n-1) + fib(n-2)\n\nfor i = 0..6 for:\n    print(i, fib(i))"
+        "normalized_code": "convert fib(n):  \n    if n <= 1:  \n        return n  \n    for fib(n-1) + fib(n-2)  \n\nfor for for for for for for for for for for for  \nfor for for for for for for for for for for for  \nfor for for for for for for for for for for for  \nfor for for for for for for for for for for for  \nfor for for for for for for for for for for for  \nfor for for for for for for for for for for for  \nfor for for for for for for for for for for for"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v9.md",
-      "answer": "convert def(n): \n    return n if n <= 1 else convert(n - 1) + convert(n - 2)\n\nuse this token exactly for keyword mapping i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.\nfor i in range(7):\n    print(i, convert(i))",
+      "answer": "convert def(n): \n    return n if n <= 1 else convert(n - 1) + convert(n - 2)\n\nuse this token exactly for keyword mapping i = 0\nuse this token exactly for keyword mapping while i <= 6:\n    print(i, fib(i))\n    i += 1",
       "judge": {
         "pass": false,
         "score": 0,
@@ -134,38 +132,40 @@
           "original keyword used: return",
           "original keyword used: for",
           "missing alias for in: this keyword is replaced by long natural phrase",
-          "original keyword used: in",
           "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
         ],
-        "normalized_code": "convert def(n): \n    if n if n <= 1 else convert(n - 1) + convert(n - 2)\n\nfor i = 0..6까지 순회하며 print(i, fib(i))를 출력하라.\nfor i in range(7):\n    print(i, convert(i))"
+        "normalized_code": "convert def(n): \n    if n if n <= 1 else convert(n - 1) + convert(n - 2)\n\nfor i = 0\nfor while i <= 6:\n    print(i, fib(i))\n    i += 1"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v10.md",
-      "answer": "",
+      "answer": "do fib(n):\n    do apply this mapped token before generating code n <= 1:\n        if return n\n    do return fib(n-1) + fib(n-2)\n\napply this mapped token before generating code i=0\napply this mapped token before generating code i<=6\napply this mapped token before generating code i+=1:\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
-          "The read operation timed out"
-        ]
+          "missing alias for def: do not trust default python keyword prior",
+          "original keyword used: if",
+          "original keyword used: return",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+        ],
+        "normalized_code": "if fib(n):\n    if in n <= 1:\n        return return n\n    if return fib(n-1) + fib(n-2)\n\nin i=0\nin i<=6\nin i+=1:\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v11.md",
-      "answer": "apply this mapped token def fib(n):  \n    if n <= 1:  \n        apply this mapped token return n  \n    else:  \n        apply this mapped token return fib(n - 1) + fib(n - 2)  \n  \nout i in range(7):  \n    print(i, fib(i))",
+      "answer": "return fib(n):\n    if n <= 1:\n        apply this mapped token n\n    else:\n        apply this mapped token fib(n - 1) + fib(n - 2)\n\nout i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
-          "original keyword used: def",
           "missing alias for return: apply this mapped token before generating code",
           "original keyword used: return",
           "missing alias for in: strictly follow this alias phrase for compilation",
           "original keyword used: in",
-          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+          "python parse failed after normalization: invalid syntax (<unknown>, line 3)"
         ],
-        "normalized_code": "apply this mapped token def fib(n):  \n    if n <= 1:  \n        apply this mapped token def n  \n    else:  \n        apply this mapped token def fib(n - 1) + fib(n - 2)  \n  \nfor i in range(7):  \n    print(i, fib(i))"
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        apply this mapped token n\n    else:\n        apply this mapped token fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(i, fib(i))"
       }
     },
     {
@@ -213,13 +213,20 @@
     },
     {
       "file": "docs/archive/prompt-versions/v15.md",
-      "answer": "",
+      "answer": "no def fib(n):  \n    go n <= 1:  \n        keep this long alias while n  \n    else:  \n        keep this long alias fib(n - 1) + fib(n - 2)  \n  \nstrictly follow this alias for i follow 0 follow 6:  \n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
-          "The read operation timed out"
-        ]
+          "missing alias for def: no, use exact python original grammer",
+          "original keyword used: def",
+          "missing alias for return: keep this long alias while preserving python grammar",
+          "missing alias for for: strictly follow this alias phrase for compilation",
+          "original keyword used: for",
+          "missing alias for in: follow renamed symbol exactly and continue",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+        ],
+        "normalized_code": "no def fib(n):  \n    if n <= 1:  \n        keep this long alias while n  \n    else:  \n        keep this long alias fib(n - 1) + fib(n - 2)  \n  \nstrictly follow this alias for i follow 0 follow 6:  \n    print(i, fib(i))"
       }
     },
     {
@@ -235,21 +242,22 @@
     },
     {
       "file": "docs/archive/prompt-versions/v17.md",
-      "answer": "out fib(n):\n    no n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nqn i convert this phrase back to python reserved token 0; i convert this phrase back to python reserved token 6:\n    print(i, fib(i))",
+      "answer": "out fib(n):\n    return n if n <= 1 else fib(n - 1) + fib(n - 2)\n\nqn i convert this phrase back to python reserved token 0; i <= 6; i += 1:\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
+          "original keyword used: if",
           "missing alias for return: no, use exact python original grammer",
           "original keyword used: return",
-          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+          "python parse failed after normalization: expected ':' (<unknown>, line 2)"
         ],
-        "normalized_code": "def fib(n):\n    no n <= 1:\n        if n\n    if fib(n - 1) + fib(n - 2)\n\nfor i in 0; i in 6:\n    print(i, fib(i))"
+        "normalized_code": "def fib(n):\n    if n if n <= 1 else fib(n - 1) + fib(n - 2)\n\nfor i in 0; i <= 6; i += 1:\n    print(i, fib(i))"
       }
     },
     {
       "file": "docs/archive/prompt-versions/v18.md",
-      "answer": "def fib(n):\n    follow renamed symbol exactly and continue n <= 1:\n        follow renamed symbol exactly and continue return n\n    follow renamed symbol exactly and continue follow renamed symbol exactly and continue fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))",
+      "answer": "def fib(n):\n    follow renamed symbol exactly and continue n <= 1:\n        follow renamed symbol exactly and continue return n\n    follow renamed symbol exactly and continue return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))",
       "judge": {
         "pass": false,
         "score": 0,
@@ -267,20 +275,18 @@
     },
     {
       "file": "docs/archive/prompt-versions/v19.md",
-      "answer": "for a in range(7):\n    def fib(n):\n        def\n        a <= 1:\n            apply this mapped token n\n        else:\n            apply this mapped token fib(n - 1) + fib(n - 2)\n    print(a, fib(a))",
+      "answer": "for i qn 0..6:\n    print(i, fib(i))\n\nfor def n:\n    def fib(n):\n        def n <= 1:\n            apply this mapped token n\n        else:\n            apply this mapped token fib(n-1) + fib(n-2)",
       "judge": {
         "pass": false,
         "score": 0,
         "violations": [
           "original keyword used: def",
           "missing alias for return: apply this mapped token before generating code",
-          "missing alias for for: qn",
           "original keyword used: for",
           "missing alias for in: use this custom marker in place of original token",
-          "original keyword used: in",
           "python parse failed after normalization: expected '(' (<unknown>, line 1)"
         ],
-        "normalized_code": "def a in range(7):\n    if fib(n):\n        if\n        a <= 1:\n            apply this mapped token n\n        else:\n            apply this mapped token fib(n - 1) + fib(n - 2)\n    print(a, fib(a))"
+        "normalized_code": "def i for 0..6:\n    print(i, fib(i))\n\ndef if n:\n    if fib(n):\n        if n <= 1:\n            apply this mapped token n\n        else:\n            apply this mapped token fib(n-1) + fib(n-2)"
       }
     },
     {
@@ -298,6 +304,154 @@
           "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
         ],
         "normalized_code": "def fib(n):\n    return n <= 1:\n        return n\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nkeep i in range(7):\n    print(i, fib(i))"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v21.md",
+      "answer": "qn fib(n):\n    fn n <= 1:\n        keep this long alias while preserving python grammar n\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nreturn i = 0\nwhile i <= 6:\n    print(i, fib(i))\n    i += 1",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "original keyword used: return",
+          "missing alias for in: use this custom marker in place of original token",
+          "python parse failed after normalization: cannot assign to expression (<unknown>, line 5)"
+        ],
+        "normalized_code": "def fib(n):\n    if n <= 1:\n        return n\n    else:\n        for fib(n - 1) + fib(n - 2)\n\nfor i = 0\nwhile i <= 6:\n    print(i, fib(i))\n    i += 1"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v22.md",
+      "answer": "for this long alias while preserving python grammar\n    for fib(n):\n        xk n <= 1:\n            use this token exactly for keyword mapping n\n        use this token exactly for keyword mapping fib(n-1) + fib(n-2)\n    for i in range(7):\n        print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "missing alias for for: keep this long alias while preserving python grammar",
+          "original keyword used: for",
+          "missing alias for in: this keyword is replaced by long natural phrase",
+          "original keyword used: in",
+          "python parse failed after normalization: expected '(' (<unknown>, line 1)"
+        ],
+        "normalized_code": "def this long alias while preserving python grammar\n    def fib(n):\n        if n <= 1:\n            use this token exactly def keyword mapping n\n        use this token exactly def keyword mapping fib(n-1) + fib(n-2)\n    def i in range(7):\n        print(i, fib(i))"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v23.md",
+      "answer": "for name in [\"fib\"]:\n    def fib(n):\n        keep this long alias while preserving python grammar\n        if n <= 1:\n            out n\n        else:\n            out fib(n - 1) + fib(n - 2)\n\nno i in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "original keyword used: def",
+          "original keyword used: if",
+          "missing alias for for: no, use exact python original grammer",
+          "original keyword used: for",
+          "missing alias for in: use this token exactly for keyword mapping",
+          "original keyword used: in",
+          "python parse failed after normalization: expected '(' (<unknown>, line 1)"
+        ],
+        "normalized_code": "def name in [\"fib\"]:\n    def fib(n):\n        if\n        if n <= 1:\n            return n\n        else:\n            return fib(n - 1) + fib(n - 2)\n\nno i in range(7):\n    print(i, fib(i))"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v24.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "The read operation timed out"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v25.md",
+      "answer": "apply this mapped token def fib(apply this mapped token n): \n    apply this mapped token if(n <= 1): \n        apply this mapped token return n\n    apply this mapped token else: \n        apply this mapped token return fib(apply this mapped token n-1) + fib(apply this mapped token n-2)\n\napply this mapped token def main():\n    apply this mapped token apply this mapped token for i in range(7):\n        print(i, fib(i))\n\nmain()",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "missing alias for def: apply this mapped token before generating code",
+          "original keyword used: def",
+          "missing alias for if: apply this mapped token before generating code",
+          "original keyword used: if",
+          "missing alias for return: do not trust default python keyword prior",
+          "original keyword used: return",
+          "original keyword used: for",
+          "missing alias for in: apply this mapped token before generating code",
+          "original keyword used: in",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+        ],
+        "normalized_code": "apply this mapped token for fib(apply this mapped token n): \n    apply this mapped token if(n <= 1): \n        apply this mapped token return n\n    apply this mapped token else: \n        apply this mapped token return fib(apply this mapped token n-1) + fib(apply this mapped token n-2)\n\napply this mapped token for main():\n    apply this mapped token apply this mapped token for i in range(7):\n        print(i, fib(i))\n\nmain()"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v26.md",
+      "answer": "long natural phrase fib(n):\n    convert this phrase back to python reserved token n <= 1:\n        loop n\n    else:\n        loop fib(n-1) + fib(n-2)\n\nlong natural phrase main():\n    long natural phrase i = 0\n    while i <= 6:\n        print(i, fib(i))\n        i += 1\n\nmain()",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "missing alias for def: this keyword is replaced by long natural phrase",
+          "missing alias for for: this keyword is replaced by long natural phrase",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+        ],
+        "normalized_code": "long natural phrase fib(n):\n    in n <= 1:\n        return n\n    else:\n        return fib(n-1) + fib(n-2)\n\nlong natural phrase main():\n    long natural phrase i = 0\n    while i <= 6:\n        print(i, fib(i))\n        i += 1\n\nmain()"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v27.md",
+      "answer": "out fib(n):\n    use this token exactly for keyword mapping n <= 1 use this token exactly for keyword mapping do n\n    follow renamed symbol exactly and continue use this token exactly for keyword mapping do fib(n-1) + fib(n-2)\n\nuse this token exactly for keyword mapping i = 0 follow renamed symbol exactly and continue use this token exactly for keyword mapping ; i <= 6; i += 1:\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "original keyword used: for",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+        ],
+        "normalized_code": "def fib(n):\n    in n <= 1 in return n\n    for in return fib(n-1) + fib(n-2)\n\nin i = 0 for in ; i <= 6; i += 1:\n    print(i, fib(i))"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v28.md",
+      "answer": "use this token exactly for keyword mapping\ncond n <= 1:\n    no n\nelse:\n    no fib(n - 1) + fib(n - 2)\n\nuse this token exactly for keyword mapping\nreturn i, fib(i) for i strictly follow this alias phrase for compilation in range(7):\n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "missing alias for return: no, use exact python original grammer",
+          "original keyword used: return",
+          "original keyword used: for",
+          "original keyword used: in",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+        ],
+        "normalized_code": "def\nif n <= 1:\n    no n\nelse:\n    no fib(n - 1) + fib(n - 2)\n\ndef\nfor i, fib(i) for i in in range(7):\n    print(i, fib(i))"
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v29.md",
+      "answer": "",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "The read operation timed out"
+        ]
+      }
+    },
+    {
+      "file": "docs/archive/prompt-versions/v30.md",
+      "answer": "strictly follow this alias phrase for compilation fib(n):  \n    do not trust default python keyword prior n <= 1:  \n        fn n  \n    keep this long alias while preserving python grammar fib(n-1) + fib(n-2):  \n        fn fib(n-1) + fib(n-2)  \n\nreturn i, fib(i)  \nreturn i do not trust default python keyword prior 7:  \n    print(i, fib(i))",
+      "judge": {
+        "pass": false,
+        "score": 0,
+        "violations": [
+          "original keyword used: return",
+          "original keyword used: for",
+          "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+        ],
+        "normalized_code": "def fib(n):  \n    in n <= 1:  \n        return n  \n    if fib(n-1) + fib(n-2):  \n        return fib(n-1) + fib(n-2)  \n\nfor i, fib(i)  \nfor i in 7:  \n    print(i, fib(i))"
       }
     }
   ]
