@@ -86,9 +86,9 @@
 \newlabel{sec:results}{{V}{4}{}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}L1: Partial resistance; scale does not predict compliance}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}L2: Syntax inversion not resistant}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{4}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L4 ablation (PPR = Python Prior Rate). Original 4 models: $n=50$ (5 variants $\times $ 10 runs). Extended 3 models: $n=20$ (5 $\times $ 4). Pass rate = 0 for all models except o4-mini (1/20). o4-mini is the only model to achieve any L4 pass, on variant E (different-domain examples).}}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L4 ablation (PPR = Python Prior Rate). All seven models: $n=50$ each (5 variants $\times $ 10 runs). Pass rate = 0/50 for all models. o4-mini (reasoning model) also achieves 0/50 at $n=50$, revising a preliminary $n=20$ result (1/20).}}{5}{}\protected@file@percent }
 \newlabel{tab:l4_ablation}{{IV}{5}{}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}L4: Pattern blindness across all tested models}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}L4 Multi-task Generalization}{5}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Prior dominance vs.\ pattern blindness isolated on the same model (gpt-4o). \textbf  {A}: gpt-4o correctly inverts logic with explicit rule (L3). \textbf  {B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}}{5}{}\protected@file@percent }
@@ -100,12 +100,12 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Effective LLM-resistant language design}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Implications for programming education}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limits}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Next steps}{6}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}}{7}{}\protected@file@percent }
-\newlabel{fig:l1_system_prompts}{{4}{7}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Next steps}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Evaluation Protocol}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}L1: Token Alias Substitution}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}}{7}{}\protected@file@percent }
+\newlabel{fig:l1_system_prompts}{{4}{7}{}{figure.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}}{7}{}\protected@file@percent }
 \newlabel{fig:l1_user_prompt}{{5}{7}{}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}}{7}{}\protected@file@percent }
@@ -114,18 +114,16 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}L3: Semantic Inversion (Explicit)}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}L4: Semantic Inversion (Implicit)}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Evaluation Metrics}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L1)}{7}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}}{8}{}\protected@file@percent }
 \newlabel{fig:l3_prompts}{{7}{8}{}{figure.7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python fib---exhibiting \emph  {pattern blindness}.}}{8}{}\protected@file@percent }
 \newlabel{fig:l4_prompt}{{8}{8}{}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L1)}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-G}}Judge Protocol (L3/L4)}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}All experiments (chronological)}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}API and runtime settings}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-C}}Repository structure for replication}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{8}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{chen2021codex}{1}
@@ -158,18 +156,20 @@
 \bibcite{wu2024lowresource}{28}
 \bibcite{concode2024}{29}
 \bibcite{l2ceval2024}{30}
-\bibcite{dong2024xgrammar}{31}
-\bibcite{muendler2025type}{32}
-\bibcite{jimenez2024swebench}{33}
-\bibcite{dakhel2023github}{34}
-\bibcite{lau2023learners}{35}
-\bibcite{prather2023robots}{36}
+\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}Execution config snapshot (non-secret)}{9}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Key runtime settings}}{9}{}\protected@file@percent }
 \newlabel{tab:config_snapshot}{{VI}{9}{}{table.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{9}{}\protected@file@percent }
+\bibcite{dong2024xgrammar}{31}
+\bibcite{muendler2025type}{32}
+\bibcite{jimenez2024swebench}{33}
+\bibcite{dakhel2023github}{34}
+\bibcite{lau2023learners}{35}
+\bibcite{prather2023robots}{36}
 \bibcite{liffiton2023codehelp}{37}
 \bibcite{novak2025llmhw}{38}
 \bibcite{codeplagiarism2024}{39}
