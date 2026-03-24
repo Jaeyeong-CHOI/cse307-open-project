@@ -25,7 +25,7 @@ To assess whether pattern blindness generalizes across algorithmic domains, we e
 \textbf{T2 (is\_sorted)}: write a function returning True if a list is ascending, and
 \textbf{T3 (count\_vowels)}: count vowel characters in a string.
 Both use the identical shared prompt header (two worked examples with inverted semantics, no explicit rule)—the same prompt structure as Ablation Variant A.
-We ran $n=10$ per task for \texttt{gpt-4o} and \texttt{gpt-4o-mini} (60 total additional runs).
+We ran $n=10$ per task for \texttt{gpt-4o} and \texttt{gpt-4o-mini}, $n=20$ for \texttt{gpt-4.1-mini}, and $n=15$ for \texttt{o4-mini} (165 total multi-task runs across 4 models $\times$ 3 tasks).
 Results are in Table~\ref{tab:l4_multitask}.
 
 \subsection{Reproducibility}
