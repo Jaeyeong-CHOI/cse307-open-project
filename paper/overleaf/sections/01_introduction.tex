@@ -18,7 +18,7 @@ Our key empirical findings are:
 \begin{itemize}
   \item \textbf{L1 (token substitution):} Partially effective---keyword leakage rate (KLR) ranges from 0.26 to 0.69 across models. Models revert to Python priors at measurable rates.
   \item \textbf{L2 (syntax inversion):} Not effective---models adopt new syntax completely (SIR=0.0) when given explicit rules.
-  \item \textbf{L3 (semantic inversion, explicit):} Capacity-dependent---weaker models fail completely (PPR=1.0 for gpt-4o-mini), while stronger models succeed (PPR=0.0 for gpt-4o).
+  \item \textbf{L3 (semantic inversion, explicit):} Capacity-dependent---weaker models fail completely (PPR=1.0 for gpt-4o-mini), while stronger models succeed (PPR=0.0 for gpt-4o and gpt-4.1-mini).
   \item \textbf{L4 (semantic inversion, implicit):} Effective against all tested models---even strong models exhibit \emph{pattern blindness}, ignoring semantic inversion cues in examples.
 \end{itemize}
 
