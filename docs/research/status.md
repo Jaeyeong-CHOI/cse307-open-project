@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 06:29 KST
+마지막 업데이트: 2026-03-25 07:10 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -132,6 +132,19 @@
   - "single benchmark task → multi-task extension needed" → 이미 완료(T1/T2/T3)로 수정
   - "GPT-family" → "OpenAI-family" 정확도 개선
   - PDF 재컴파일(10p), commit 321759e push 완료
+
+- [x] 2026-03-25 07:10 Scale-up 실험: gpt-4o T3(count_vowels) n=50 + gpt-4.1 T2(is_sorted) n=50
+  - **gpt-4o T3 n=50**: 0/50 pass, OpSub=47/50 (94%, Wilson 95% CI: [83%,99%]) — operational substitution이 압도적 dominant failure mode 확인
+    - 기존 n=10 결과(1 pass)는 statistical artifact — n=50에서 0/50 (Wilson CI: [0%, 7.1%])
+  - **gpt-4.1 T2 n=50**: 1/50 pass, PPR=0.42 (Wilson CI: [29%,56%])
+    - gpt-4.1-mini 20/20 대비 within-family inconsistency 통계적으로 확인 (Fisher's exact p < 0.0001)
+  - 논문 §5 Table 4 업데이트 (n 정정, Wilson CIs 각주, Fisher's exact 추가)
+  - 논문 §5 findings (3)(6) 업데이트, Three Failure Modes 섹션 강화
+  - 논문 §6.3 Limits / §6.4 Next steps operational substitution 서술 업데이트
+  - 논문 §4 multi-task runs 325 total 업데이트
+  - PDF 재컴파일(10p), commit 35aab33 push 완료
+  - 산출물: `L4-scaleup-count_vowels.gpt4o.n50.2026-03-25.json`, `L4-scaleup-is_sorted.gpt41.n50.2026-03-25.json`
+  - 신규 스크립트: `scripts/run_targeted_scaleup.py`
 
 - [ ] `docs/research/context-compression.md` 운영 적용
 
