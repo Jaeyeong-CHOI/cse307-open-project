@@ -30,30 +30,6 @@
 }
 
 %%% ============================================================
-%%% Code generation: surveys (2024--2025)
-%%% ============================================================
-@misc{zan2024codesurvey,
-  author = {Zan, Daoguang and others},
-  title = {A Survey on Large Language Models for Code Generation},
-  year = {2024},
-  howpublished = {arXiv:2406.00515}
-}
-
-@misc{liu2024codeeval,
-  author = {Liu, Jia and others},
-  title = {A Survey on Evaluating Large Language Models in Code Generation Tasks},
-  year = {2024},
-  howpublished = {arXiv:2408.16498}
-}
-
-@misc{wu2024lowresource,
-  author = {Wu, Jie and others},
-  title = {A Survey on {LLM}-based Code Generation for Low-Resource and Domain-Specific Programming Languages},
-  year = {2024},
-  howpublished = {arXiv:2410.03981}
-}
-
-%%% ============================================================
 %%% Instruction-following for code (2025)
 %%% ============================================================
 @misc{codeif2025,
@@ -87,6 +63,13 @@
   year = {2021}
 }
 
+@article{fried2022incoder,
+  author = {Fried, Daniel and others},
+  title = {{InCoder}: A Generative Model for Code Infilling and Synthesis},
+  year = {2022},
+  howpublished = {ICLR 2023 (arXiv:2204.05999)}
+}
+
 @misc{guo2024deepseek,
   author = {Guo, Daya and others},
   title = {{DeepSeek-Coder}: When the Large Language Model Meets Programming},
@@ -99,13 +82,6 @@
   title = {{WizardCoder}: Empowering Code Large Language Models with Evol-Instruct},
   year = {2024},
   howpublished = {arXiv:2306.08568}
-}
-
-@article{fried2022incoder,
-  author = {Fried, Daniel and others},
-  title = {{InCoder}: A Generative Model for Code Infilling and Synthesis},
-  year = {2022},
-  howpublished = {ICLR 2023 (arXiv:2204.05999)}
 }
 
 %%% ============================================================
@@ -123,20 +99,6 @@
   title = {The Instruction Hierarchy: Training {LLMs} to Prioritize Privileged Instructions},
   year = {2024},
   howpublished = {arXiv:2404.13208}
-}
-
-@misc{instructrobust2025,
-  author = {Liu, Bowen and others},
-  title = {Enhancing {LLM} Robustness to Perturbed Instructions: An Empirical Study},
-  year = {2025},
-  howpublished = {arXiv:2504.09135}
-}
-
-@misc{instructgap2025,
-  author = {Meyer, Alexander and others},
-  title = {The Instruction Gap: {LLMs} Get Lost in Following Instructions},
-  year = {2025},
-  howpublished = {arXiv:2512.14754}
 }
 
 %%% ============================================================
@@ -201,13 +163,6 @@
   howpublished = {arXiv:2409.15454}
 }
 
-@misc{icl2023brown,
-  author = {Brown, Tom and others},
-  title = {Language Models are Few-Shot Learners},
-  year = {2020},
-  howpublished = {NeurIPS 2020 (arXiv:2005.14165)}
-}
-
 %%% ============================================================
 %%% Counterfactual and semantic reasoning failures
 %%% ============================================================
@@ -227,7 +182,7 @@
 
 @misc{reasoningrigidity2024,
   author = {Valmeekam, Karthik and others},
-  title = {{LLMs} Still Can't Plan; Can {LRMs?} A Preliminary Evaluation of OpenAI's o1 on {PlanBench}},
+  title = {{LLMs} Still Can't Plan; Can {LRMs?} Evaluation of {OpenAI}'s o1},
   year = {2024},
   howpublished = {arXiv:2409.13373}
 }
@@ -258,7 +213,7 @@
 
 @misc{coderobbery2024,
   author = {Jha, Saurabh and others},
-  title = {Break the Chain: Reasoning Failures in {LLMs} via Adversarial Prompting in Code Generation},
+  title = {Break the Chain: Reasoning Failures in {LLMs} via Adversarial Code Prompting},
   year = {2024},
   howpublished = {arXiv:2506.06971}
 }
@@ -266,6 +221,13 @@
 %%% ============================================================
 %%% DSL and constrained code generation
 %%% ============================================================
+@misc{wu2024lowresource,
+  author = {Wu, Jie and others},
+  title = {A Survey on {LLM}-based Code Generation for Low-Resource and Domain-Specific Languages},
+  year = {2024},
+  howpublished = {arXiv:2410.03981}
+}
+
 @misc{dong2024xgrammar,
   author = {Dong, Yixin and others},
   title = {{XGrammar}: Flexible and Efficient Structured Generation for {LLMs}},
@@ -282,14 +244,14 @@
 
 @misc{concode2024,
   author = {Chen, Wenting and others},
-  title = {{ConCodeEval}: Evaluating Large Language Models for Code Constraint Comprehension},
+  title = {{ConCodeEval}: Evaluating {LLMs} for Code Constraint Comprehension in {DSLs}},
   year = {2024},
   howpublished = {EMNLP 2024}
 }
 
 @misc{l2ceval2024,
   author = {Ni, Ansong and others},
-  title = {{L2CEval}: Evaluating Language-to-Code Generation Capabilities of Large Language Models},
+  title = {{L2CEval}: Evaluating Language-to-Code Generation Capabilities},
   year = {2024},
   howpublished = {TACL 2024}
 }
@@ -304,13 +266,6 @@
   howpublished = {ICLR 2024 (arXiv:2310.06770)}
 }
 
-@misc{yang2024swebench2,
-  author = {Yang, John and others},
-  title = {{SWE-agent}: Agent-Computer Interfaces Enable Automated Software Engineering},
-  year = {2024},
-  howpublished = {NeurIPS 2024 (arXiv:2405.15793)}
-}
-
 %%% ============================================================
 %%% LLM in programming education
 %%% ============================================================
@@ -323,34 +278,27 @@
 
 @misc{lau2023learners,
   author = {Lau, Sam and Guo, Philip},
-  title = {From Coding Assistant to Software Developer: Observations of How Novice Programmers Use {LLMs}},
+  title = {From Coding Assistant to Software Developer: How Novice Programmers Use {LLMs}},
   year = {2023},
   howpublished = {arXiv:2304.01984}
 }
 
 @misc{prather2023robots,
   author = {Prather, James and others},
-  title = {It's Complicated: Perspectives of Novice Programmers on Their Experience Using {GitHub Copilot}},
+  title = {It's Complicated: Perspectives of Novice Programmers on {GitHub Copilot}},
   year = {2023},
   howpublished = {arXiv:2303.08733}
 }
 
-@misc{wermelinger2023copilot,
-  author = {Wermelinger, Michel},
-  title = {Using {GitHub Copilot} to Solve Simple Programming Problems},
-  year = {2023},
-  howpublished = {SIGCSE 2023}
-}
-
 @misc{liffiton2023codehelp,
   author = {Liffiton, Mark and others},
-  title = {{CodeHelp}: Using Large Language Models with Guardrails for Scalable Support in Programming Classes},
+  title = {{CodeHelp}: Using Large Language Models with Guardrails for Programming Classes},
   year = {2023},
   howpublished = {arXiv:2308.06921}
 }
 
 %%% ============================================================
-%%% LLM and academic integrity (2024--2025)
+%%% Academic integrity and LLM-resistant assessment
 %%% ============================================================
 @misc{novak2025llmhw,
   author = {Novak, Erik and McDanel, Brad},
@@ -359,95 +307,9 @@
   howpublished = {SIGCSE TS 2025}
 }
 
-@misc{aiintegrity2024,
-  author = {Shoufan, Abdulhadi},
-  title = {Exploring Students' Perceptions of {ChatGPT}: Thematic Analysis and Follow-Up Survey},
-  year = {2024},
-  howpublished = {IEEE Access}
-}
-
 @misc{codeplagiarism2024,
   author = {Orenstrakh, Michael and others},
   title = {Detecting {LLM}-Generated Code Assignments Using Perplexity of Code},
   year = {2023},
   howpublished = {arXiv:2307.09714}
-}
-
-@misc{llobet2025study,
-  author = {Llobet Sanch\'is, Mireia and others},
-  title = {The Impact of Artificial Intelligence on Academic Integrity: A Scoping Review},
-  year = {2025},
-  howpublished = {Computers and Education}
-}
-
-%%% ============================================================
-%%% LLM behavior analysis (sycophancy, consistency)
-%%% ============================================================
-@misc{sycophancy2023,
-  author = {Perez, Ethan and others},
-  title = {Discovering Language Model Behaviors with Model-Written Evaluations},
-  year = {2023},
-  howpublished = {ACL-Findings 2023 (arXiv:2212.09251)}
-}
-
-@misc{wang2023selfconsistency,
-  author = {Wang, Xuezhi and others},
-  title = {Self-Consistency Improves Chain of Thought Reasoning in Language Models},
-  year = {2023},
-  howpublished = {ICLR 2023 (arXiv:2203.11171)}
-}
-
-@misc{ganguli2022red,
-  author = {Ganguli, Deep and others},
-  title = {Red Teaming Language Models to Reduce Harms},
-  year = {2022},
-  howpublished = {arXiv:2209.07858}
-}
-
-%%% ============================================================
-%%% LLM evaluation frameworks
-%%% ============================================================
-@misc{liang2023helm,
-  author = {Liang, Percy and others},
-  title = {Holistic Evaluation of Language Models},
-  year = {2023},
-  howpublished = {TMLR 2023 (arXiv:2211.09110)}
-}
-
-@misc{chang2024survey,
-  author = {Chang, Yupeng and others},
-  title = {A Survey on Evaluation of Large Language Models},
-  year = {2024},
-  howpublished = {ACM TIST 2024 (arXiv:2307.03109)}
-}
-
-@misc{srivastava2023bigbench,
-  author = {Srivastava, Aarohi and others},
-  title = {Beyond the Imitation Game: Quantifying and Extrapolating the Capabilities of Language Models},
-  year = {2023},
-  howpublished = {TMLR 2023 (arXiv:2206.04615)}
-}
-
-%%% ============================================================
-%%% Reasoning and deduction
-%%% ============================================================
-@misc{wei2022cot,
-  author = {Wei, Jason and others},
-  title = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
-  year = {2022},
-  howpublished = {NeurIPS 2022 (arXiv:2201.11903)}
-}
-
-@misc{kojima2022zerocot,
-  author = {Kojima, Takeshi and others},
-  title = {Large Language Models Are Zero-Shot Reasoners},
-  year = {2022},
-  howpublished = {NeurIPS 2022 (arXiv:2205.11916)}
-}
-
-@misc{zheng2023judging,
-  author = {Zheng, Lianmin and others},
-  title = {Judging {LLM}-as-a-Judge with {MT-Bench} and {Chatbot Arena}},
-  year = {2023},
-  howpublished = {NeurIPS 2023 (arXiv:2306.05685)}
 }
