@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 03:45 KST
+마지막 업데이트: 2026-03-25 04:00 KST
 
 ## Snapshot
 - 전체 진행도(추정): **90%**
@@ -108,6 +108,12 @@
   - 실측 결과: `total=20`, `passed=0`, `failed=20`, `http_failures=0`
   - 비교 리포트: `docs/research/results/prompt-batch-compare-contextpack-gpt4o-mini-2026-03-23-vs-2026-03-24.v1-20.{json,md}`
   - 비교 결과: `delta_avg_score=0.000`, `delta_passed=0`, `delta_nonzero=0`
+- [x] 2026-03-25 04:00 논문 과도한 주장(overclaiming) 수정 + 실험 카운트 정정
+  - §6.3 Limits: "two models" → 4모델(165 total multi-task runs)로 정정
+  - §4: multi-task n 수 정확히 기재
+  - §6.2 Education: T2 gpt-4o/4.1-mini 100% pass 사실 반영, 단언 완화
+  - §6.2: human study(Exp-5) 없이 교육적 효과 단언하는 문구 조건부 표현으로 완화
+  - PDF 재컴파일(9p), commit e6162e0 push 완료
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 - [x] 2026-03-25 03:45 o4-mini L4 multitask 완료 (n=45, 0/45)
