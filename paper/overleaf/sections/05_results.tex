@@ -50,29 +50,29 @@ With an explicit semantic inversion rule, gpt-4o-mini fails completely (PPR=1.0)
 Without explicit rule, gpt-4o---which succeeds at L3---fails at L4 (PPR=1.0), producing canonical Python and ignoring example-embedded inversion cues. Figure~\ref{fig:l4_failure} shows the contrast.
 
 \textbf{L4 ablation (n=50 per model).}
-We scaled the L4 evaluation to $n=50$ runs using five prompt variants across three models.
+We scaled the L4 evaluation to $n=50$ runs using five prompt variants across all four models.
 Results are shown in Table~\ref{tab:l4_ablation}.
-All models achieve 0/50 pass rate regardless of variant, confirming pattern blindness is robust.
-PPR values (rate of producing Python-prior output) range from 0.38 (gpt-4.1-mini) to 0.82 (gpt-4o-mini).
-Notably, variant E (3ex-diff-domain) induces PPR=1.0 on both gpt-4o-mini and gpt-4.1-mini, suggesting that surface-form diversity in examples does not help---models revert fully to prior when example domain shifts.
+All models achieve 0/50 pass rate regardless of variant, confirming pattern blindness is robust and model-independent.
+PPR values (rate of producing Python-prior output) range from 0.38 (gpt-4.1-mini) to 0.84 (gpt-5.4-mini).
+Notably, variant E (3ex-diff-domain) induces PPR=1.0 on gpt-4o-mini and gpt-4.1-mini, and near-zero on gpt-5.4-mini (PPR=0.20)---suggesting that when example domain shifts, models may adopt a different surface form rather than inferring inversion, but \emph{still} produce incorrect semantics (pass=0).
 
 \begin{table}[!t]
 \centering
-\caption{L4 ablation ($n=50$, 5 variants $\times$ 10 runs). Pass rate = 0/50 for all models and all variants. PPR = Python Prior Rate (fraction of outputs using standard Python semantics). Variant C (no inline comment) and E (different example domain) consistently push PPR toward 1.0.}
+\caption{L4 ablation ($n=50$, 5 variants $\times$ 10 runs, 4 models). Pass rate = 0/50 for all models and all variants. PPR = Python Prior Rate (fraction of outputs using standard Python semantics). Variant E (different example domain) induces PPR=1.0 on three of four models; gpt-5.4-mini shows anomalously low PPR on variant E but still 0/10 pass, indicating a different failure sub-mode.}
 \label{tab:l4_ablation}
 \footnotesize
-\begin{tabular}{@{}llccc@{}}
+\begin{tabular}{@{}llcccc@{}}
 \toprule
-Variant & Description & gpt-4o & gpt-4o-mini & gpt-4.1-mini \\
-        &             & PPR & PPR & PPR \\
+Variant & Description & gpt-4o & gpt-4o-mini & gpt-4.1-mini & gpt-5.4-mini \\
+        &             & PPR & PPR & PPR & PPR \\
 \midrule
-A & 2ex-baseline     & 0.40 & 0.10 & 0.10 \\
-B & 3ex-extra        & 1.00 & 1.00 & 0.00 \\
-C & 2ex-no-comment   & 0.90 & 1.00 & 0.80 \\
-D & 2ex-swapped-order& 0.70 & 1.00 & 0.00 \\
-E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 \\
+A & 2ex-baseline     & 0.40 & 0.10 & 0.10 & 1.00 \\
+B & 3ex-extra        & 1.00 & 1.00 & 0.00 & 1.00 \\
+C & 2ex-no-comment   & 0.90 & 1.00 & 0.80 & 1.00 \\
+D & 2ex-swapped-order& 0.70 & 1.00 & 0.00 & 1.00 \\
+E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 0.20 \\
 \midrule
-\multicolumn{2}{l}{Overall PPR} & 0.70 & 0.82 & 0.38 \\
+\multicolumn{2}{l}{Overall PPR} & 0.70 & 0.82 & 0.38 & 0.84 \\
 \bottomrule
 \end{tabular}
 \end{table}
