@@ -17,7 +17,8 @@ We ran experiments at each language level for available model families. All runs
 10 prompts. System message explicitly states: ``if-blocks execute when condition is FALSE.'' Evaluated on whether model inverted condition logic.
 
 \subsection{L4 Experiment: Semantic Inversion (Implicit)}
-10 prompts. No rule stated; only 2 worked examples with inverted semantics shown. Model must infer pattern.
+Initial screening: 10 prompts per model, no rule stated; only 2 worked examples with inverted semantics shown. Model must infer pattern.
+Ablation (n=50): 5 prompt variants $\times$ 10 runs each, varying the number of worked examples (2 vs.\ 3), presence of inline comments, order of examples, and domain of examples. Evaluated across \texttt{gpt-4o}, \texttt{gpt-4o-mini}, and \texttt{gpt-4.1-mini}.
 
 \subsection{Reproducibility}
 All experimental artifacts, commands, and results are committed to the repository under \texttt{docs/research/results/}. See reproducibility protocol section for commands.

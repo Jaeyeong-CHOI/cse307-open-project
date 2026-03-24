@@ -20,6 +20,8 @@ Students who understand the L4 rules (from lecture instruction) retain a decisiv
 \subsection{Limits}
 Current results are based on a single benchmark task (Fibonacci). Generalization requires multi-task evaluation (Exp-4 in our roadmap). The PPR metric for L3/L4 is task-specific and requires per-task oracle semantics. Human baseline experiments (Exp-5) are needed to confirm that L4 does not also confuse human learners.
 
+The L4 ablation ($n=50$ per model) strengthens the pattern blindness finding: zero pass rate holds across all five prompt variants and three models. However, the high PPR variance across variants (e.g., gpt-4.1-mini variant B PPR=0.0 vs.\ variant E PPR=1.0) warrants caution---some configurations may trigger different failure sub-modes that are not yet fully characterized. The gpt-5.4-mini ablation run was incomplete at the time of writing ($n=42/50$) and is excluded from Table~\ref{tab:l4_ablation}; preliminary results are consistent with zero pass rate.
+
 \subsection{Next steps}
 \begin{itemize}
   \item Exp-4: Multi-task extension (nested control-flow, stateful logic, sorting).
