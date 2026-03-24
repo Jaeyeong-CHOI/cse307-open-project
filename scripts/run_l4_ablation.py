@@ -207,6 +207,9 @@ def chat(messages, temperature=0):
     if not API_KEY:
         raise RuntimeError("OPENAI_API_KEY is not set")
     url = BASE + "/chat/completions"
+    # o4-mini requires temperature=1 (API constraint)
+    if MODEL.startswith("o4") or MODEL.startswith("o1") or MODEL.startswith("o3"):
+        temperature = 1
     body = {"model": MODEL, "messages": messages, "temperature": temperature}
     req = urllib.request.Request(
         url,

@@ -55,16 +55,16 @@ With an explicit semantic inversion rule, gpt-4o-mini fails completely (PPR=1.0)
 Without explicit rule, gpt-4o---which succeeds at L3---fails at L4 (PPR=1.0), producing canonical Python and ignoring example-embedded inversion cues. Figure~\ref{fig:l4_failure} shows the contrast.
 
 \textbf{L4 ablation (n=50 per model).}
-We scaled the L4 evaluation across seven models: six at $n=50$ (gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini) and one reasoning model (o4-mini) at $n=20$.
+We scaled the L4 evaluation across seven models, all at $n=50$ (gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini, o4-mini).
 Results are shown in Table~\ref{tab:l4_ablation}.
-Six of seven models achieve 0\% pass rate; the sole exception is \texttt{o4-mini} (1/20 pass on variant E), suggesting that chain-of-thought reasoning may provide a narrow pathway to overcoming pattern blindness.
-PPR values range from 0.38 (gpt-4.1-mini) to 1.0 (gpt-4.1, gpt-4.1-nano, gpt-5.4-mini).
+All seven models achieve 0\% pass rate (0/50 each), confirming that pattern blindness is robust across model families and including the reasoning model o4-mini.
+PPR values range from 0.38 (gpt-4.1-mini) to 1.0 (gpt-4.1, gpt-4.1-nano, gpt-5.4-mini); o4-mini shows PPR=0.92.
 Notably, gpt-4.1 and gpt-4.1-nano show PPR=1.0 across \emph{all} 50 runs and all variants, indicating complete prior dominance with no evidence of inversion detection.
-The o4-mini result is particularly interesting: as a reasoning model, it partially overcomes pattern blindness where standard models cannot, though only on the most diverse prompt variant (E, different-domain examples).
+The o4-mini result revises an earlier preliminary finding (1/20 at $n=20$): at the full scale of $n=50$, o4-mini also achieves 0/50, indicating that chain-of-thought reasoning does not provide a reliable pathway to overcoming pattern blindness at this scale.
 
 \begin{table}[!t]
 \centering
-\caption{L4 ablation (PPR = Python Prior Rate). Six models: $n=50$ each (5 variants $\times$ 10 runs). o4-mini: $n=20$ (5 $\times$ 4). Pass rate = 0 for all models except o4-mini (1/20). o4-mini is the only model to achieve any L4 pass, on variant E (different-domain examples).}
+\caption{L4 ablation (PPR = Python Prior Rate). All seven models: $n=50$ each (5 variants $\times$ 10 runs). Pass rate = 0/50 for all models. o4-mini (reasoning model) also achieves 0/50 at $n=50$, revising a preliminary $n=20$ result (1/20).}
 \label{tab:l4_ablation}
 \footnotesize
 \resizebox{\columnwidth}{!}{%
@@ -72,16 +72,16 @@ The o4-mini result is particularly interesting: as a reasoning model, it partial
 \toprule
 Var. & Description & \rotatebox{70}{gpt-4o} & \rotatebox{70}{gpt-4o-mini} & \rotatebox{70}{gpt-4.1} & \rotatebox{70}{gpt-4.1-mini} & \rotatebox{70}{gpt-4.1-nano} & \rotatebox{70}{gpt-5.4-mini} & \rotatebox{70}{o4-mini} \\
 \midrule
-A & 2ex-baseline     & .40 & .10 & 1.0 & .10 & 1.0 & 1.0 & 1.0 \\
+A & 2ex-baseline     & .40 & .10 & 1.0 & .10 & 1.0 & 1.0 & .80 \\
 B & 3ex-extra        & 1.0 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
-C & 2ex-no-comment   & .90 & 1.0 & 1.0 & .80 & 1.0 & 1.0 & 1.0 \\
+C & 2ex-no-comment   & .90 & 1.0 & 1.0 & .80 & 1.0 & 1.0 & .90 \\
 D & 2ex-swapped      & .70 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
-E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0$^\dagger$ & .75$^*$ \\
+E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0$^\dagger$ & .90 \\
 \midrule
-\multicolumn{2}{l}{Overall PPR} & .70 & .82 & 1.0 & .38 & 1.0 & 1.0 & .95 \\
-\multicolumn{2}{l}{Pass rate} & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 1/20 \\
+\multicolumn{2}{l}{Overall PPR} & .70 & .82 & 1.0 & .38 & 1.0 & 1.0 & .92 \\
+\multicolumn{2}{l}{Pass rate} & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 \\
 \bottomrule
-\multicolumn{9}{l}{\scriptsize $^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$. $^*$o4-mini var-E: 1/4 pass (only L4 pass observed).} \\
+\multicolumn{9}{l}{\scriptsize $^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$.} \\
 \end{tabular}}
 \end{table}
 
