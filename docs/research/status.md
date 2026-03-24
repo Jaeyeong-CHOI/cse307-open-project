@@ -1,9 +1,9 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-24 12:55 KST
+마지막 업데이트: 2026-03-25 00:40 KST
 
 ## Snapshot
-- 전체 진행도(추정): **79%**
+- 전체 진행도(추정): **84%**
 - 현재 단계: **Phase 4~5 (안정화 완료권 + 결과 누적/분석 강화 단계)**
 - 핵심 병목: **프롬프트 준수 실패 구조 자체(특히 alias 규칙 위반/구문 회귀)의 고착**(LLM API 가용성은 확인됨)
 
@@ -111,10 +111,10 @@
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 ## Immediate Next Actions
-1. 실행 환경 정비: `dune` 설치 또는 대체 런처 확보 후 실제 roundtrip batch 재실행
-2. `run_gpt54_eval.py` 배치의 judge taxonomy(상위 violation) 요약 자동 생성(40 top) 및 비교 파이프라인 정규화
-3. 확보된 v1~v120 실측 JSON을 기준으로 task-set별 누적 지표(JSON) 정기 저장/자동화
-4. `papers/v2.md`에 누적 지표(ACR/PRR/ESR + mismatch taxonomy) 반영
+1. **Multi-task 실험 설계 및 실행**: Fibonacci 외 2~3개 태스크(sorting, string-ops 등) L4 조건 추가
+2. Human pilot 프로토콜 설계 (n=10~15, L4 task 이해 확인용)
+3. gpt-5.4-mini L4 ablation 완성 (현재 42/50)
+4. 논문 Section 3 (Method) 업데이트: taxonomy 형식화 재검토
 
 ## Links
 - 로드맵: `docs/research/roadmap.md`
