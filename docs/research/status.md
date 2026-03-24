@@ -1,11 +1,11 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 04:00 KST
+마지막 업데이트: 2026-03-25 04:30 KST
 
 ## Snapshot
-- 전체 진행도(추정): **90%**
-- 현재 단계: **Phase 5 완료 (멀티태스크 실험 전 모델 완료, 논문 Table 4 + §5.4 업데이트)**
-- 핵심 병목: **Human pilot 설계 미착수 (n=10~15, L4 교육적 주장 검증용)**
+- 전체 진행도(추정): **92%**
+- 현재 단계: **Phase 5 완료 + Human Pilot 프로토콜 설계 완료**
+- 핵심 병목: **Human pilot 실행 미착수 (n=10~15, IRB/instructor 승인 필요)**
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
@@ -114,6 +114,13 @@
   - §6.2 Education: T2 gpt-4o/4.1-mini 100% pass 사실 반영, 단언 완화
   - §6.2: human study(Exp-5) 없이 교육적 효과 단언하는 문구 조건부 표현으로 완화
   - PDF 재컴파일(9p), commit e6162e0 push 완료
+- [x] 2026-03-25 04:30 Human pilot 프로토콜 설계 완료
+  - 산출물: `docs/research/human-pilot/pilot-protocol.md`
+  - within-subjects, T1/T2/T3 × n=10~15, open-book L4 rule sheet
+  - 평가지표: HPR, gap(HPR - LLM_pass), Wilcoxon 검정 계획
+  - 예상 소요: ~1주 (IRB 제외 시 3~4일)
+  - 논문 §6.2 업데이트 계획 명시 (H1/H2 확인 시 수치 대입)
+
 - [ ] `docs/research/context-compression.md` 운영 적용
 
 - [x] 2026-03-25 03:45 o4-mini L4 multitask 완료 (n=45, 0/45)
@@ -133,7 +140,8 @@
 ## Immediate Next Actions
 1. ~~**Multi-task 실험 설계 및 실행**~~ ✅ (모든 모델 완료: gpt-4o, gpt-4o-mini, gpt-4.1-mini, o4-mini)
    - 논문 Table 4 + §5.4 업데이트 완료 (5th finding: reasoning ≠ pattern blindness resolution)
-2. Human pilot 프로토콜 설계 (n=10~15, L4 task 이해 확인용) ← **다음 우선 과제**
+2. ~~Human pilot 프로토콜 설계~~ ✅ (`docs/research/human-pilot/pilot-protocol.md`)
+   - **다음 과제**: 실제 파일럿 실행 (IRB/instructor 승인 후, n=10~15 학부생)
 3. ~~gpt-5.4-mini L4 ablation 완성~~ ✅ (n=50 완료, 논문 반영)
 4. 논문 Section 3 (Method) 업데이트: taxonomy 형식화 재검토
 5. o4-mini multitask T3 완료 (현재 n=5/20) + 논문 반영
