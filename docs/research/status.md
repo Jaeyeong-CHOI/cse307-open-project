@@ -194,3 +194,9 @@
 - 결과: `docs/research/results/`
 - 논문형 문서: `docs/research/papers/`
 - 최신연구 리뷰: `docs/research/literature/`
+
+- [x] 2026-03-25 07:17 §9 실험 로그 E16 추가 + 레포지토리 구조 표 보완
+  - E16: gpt-4o T3 n=50 (OpSub 94%), gpt-4.1 T2 n=50 (1/50) scale-up 정식 기록
+  - `run_targeted_scaleup.py` 포함하여 스크립트 목록 완성
+  - multi-task 총 run 수 225→325 정정
+  - PDF 재컴파일(10p), commit 43d1a98 push 완료
