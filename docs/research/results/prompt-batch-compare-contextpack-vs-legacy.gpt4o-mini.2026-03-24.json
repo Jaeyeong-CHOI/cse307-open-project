@@ -50,57 +50,57 @@
     ]
   },
   "candidate": {
-    "path": "docs/research/results/prompt-batch-v1-120.gpt4o-mini.2026-03-23.json",
+    "path": "docs/research/results/prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-24.json",
     "n": 120,
     "passed": 0,
     "failed": 120,
-    "avg_score": 4.833333333333333,
+    "avg_score": 6.5,
     "nonzero_score": 10,
     "top_violations": [
       [
-        "original keyword used: in",
-        72
-      ],
-      [
         "original keyword used: for",
-        56
-      ],
-      [
-        "original keyword used: return",
-        49
+        53
       ],
       [
         "original keyword used: if",
-        48
+        33
       ],
       [
         "python parse failed after normalization: invalid syntax (<unknown>, line 1)",
-        38
-      ],
-      [
-        "original keyword used: def",
-        24
+        33
       ],
       [
         "python parse failed after normalization: invalid syntax (<unknown>, line 2)",
-        24
+        28
+      ],
+      [
+        "original keyword used: return",
+        27
+      ],
+      [
+        "original keyword used: def",
+        21
+      ],
+      [
+        "python parse failed after normalization: invalid syntax (<unknown>, line 6)",
+        18
+      ],
+      [
+        "original keyword used: in",
+        18
       ],
       [
         "missing alias for in: use this token exactly for keyword mapping",
-        10
+        12
       ],
       [
-        "missing alias for in: convert this phrase back to python reserved token",
+        "missing loop: for i in range(7): print(i, fib(i))",
         10
-      ],
-      [
-        "missing alias for in: no, use exact python original grammer",
-        9
       ]
     ]
   },
   "diff": {
-    "delta_avg_score": 1.083333333333333,
+    "delta_avg_score": 2.75,
     "delta_nonzero_score": 3,
     "delta_passed": 0
   }

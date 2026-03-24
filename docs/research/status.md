@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-24 08:04 KST
+마지막 업데이트: 2026-03-24 09:14 KST
 
 ## Snapshot
 - 전체 진행도(추정): **79%**
@@ -9,7 +9,7 @@
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
-- 결과 파일 누적: 🟢 (full-range 실측 8개 배치 + 변형조건(contextpack/legacy/probe) + 부분 재실행(v1-20) 포함 총 11개 JSON + 신규 비교 JSON/CSV/MD)
+- 결과 파일 누적: 🟢 (full-range 실측 13개 JSON + 변형조건(contextpack/legacy/probe) + 부분 재실행(v1-20) 포함)
 - 지표 산출(ACR/PRR/ESR): 🟡 (모델별 편차 존재: gpt-4o는 contextpack 우세 추세, 2026-03-24 재실행에서 pass 3건으로 일시 향상 확인(+1), gpt-5.4-mini는 contextpack 갱신으로 조건 비교 우세(delta_avg_score=+12.583, nonzero=+13, passed=+3))
 - 문서화 품질: 🟢 (status/log/results 업데이트)
 
@@ -83,7 +83,7 @@
   - 신규 배치: `prompt-batch-v1-120-legacy.gpt54-mini.2026-03-24.json` (`total=120`, `passed=0`, `failed=120`, `http_failures=0`)
   - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt54-mini.2026-03-24.{json,md}`
   - 비교 결과: **legacy가 contextpack 대비** `avg_score +2.500`, `nonzero_score +3` 우세(`passed=0` 동률)
-  - 통합 집계 갱신: `prompt-batch-aggregated-2026-03-24.json` (유효 full-range run 10개)
+  - 통합 집계 갱신: `prompt-batch-aggregated-2026-03-24.json` (유효 full-range run 13개)
 - [x] 재실행 정밀 체크: `gpt-4o` full-range 재평가(v1~v120, contextpack)
   - 신규 배치: `prompt-batch-v1-120-contextpack.gpt4o.2026-03-24.json` (`total=120`, `passed=3`, `failed=117`, `http_failures=0`)
   - 요약: `prompt-batch-v1-120-contextpack.gpt4o.2026-03-24.json.summary.{csv,md}`
@@ -93,6 +93,11 @@
   - 신규 배치: `prompt-batch-v1-120-contextpack.gpt54-mini.2026-03-24.json` (`total=120`, `passed=3`, `failed=117`, `http_failures=0`)
   - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt54-mini.2026-03-24.{json,md}`
   - 비교 결과: contextpack이 legacy 대비 `delta_avg_score=+12.583`, `delta_nonzero_score=+13`, `delta_passed=+3`
+- [x] 조건 비교 실측 추가: `gpt-4.1-mini` contextpack full-range v1~v120
+  - 신규 배치: `prompt-batch-v1-120-contextpack.gpt41-mini.2026-03-24.json` (`total=120`, `passed=1`, `failed=119`, `http_failures=0`)
+  - 비교 리포트: `prompt-batch-compare-contextpack-vs-legacy.gpt41-mini.2026-03-24.{json,md}`
+  - 비교 결과: contextpack이 legacy 대비 `delta_avg_score=-2.250`, `delta_nonzero_score=-12`, `delta_passed=+1`
+
 - [x] 배치 재실행: `gpt-4o-mini` contextpack 부분 재현성 확인(v1-20)
   - 산출물: `docs/research/results/prompt-batch-v1-20-contextpack.gpt4o-mini.2026-03-24.json`
   - 실측 결과: `total=20`, `passed=0`, `failed=20`, `http_failures=0`
@@ -102,7 +107,7 @@
 
 ## Immediate Next Actions
 1. 실행 환경 정비: `dune` 설치 또는 대체 런처 확보 후 실제 roundtrip batch 재실행
-2. `run_gpt54_eval.py` 배치의 judge taxonomy(상위 violation) 요약 자동화 및 프롬프트 수정 루프 연결
+2. `run_gpt54_eval.py` 배치의 judge taxonomy(상위 violation) 요약 자동 생성(40 top) 및 비교 파이프라인 정규화
 3. 확보된 v1~v120 실측 JSON을 기준으로 task-set별 누적 지표(JSON) 정기 저장/자동화
 4. `papers/v2.md`에 누적 지표(ACR/PRR/ESR + mismatch taxonomy) 반영
 

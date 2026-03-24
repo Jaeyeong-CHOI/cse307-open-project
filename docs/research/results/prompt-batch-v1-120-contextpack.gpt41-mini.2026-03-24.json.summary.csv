@@ -1,0 +1,45 @@
+metric,value
+total,120
+passed,1
+failed,119
+http_failures,0
+violation::original keyword used: for,60
+violation::original keyword used: if,31
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 1),31
+violation::original keyword used: return,27
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 2),26
+violation::original keyword used: def,20
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 6),12
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 3),11
+violation::python parse failed after normalization: expected ':' (<unknown>, line 2),9
+violation::missing alias for in: no, use exact python original grammer,9
+violation::missing alias for in: use this custom marker in place of original token,8
+violation::missing alias for def: use this token exactly for keyword mapping,7
+violation::missing alias for def: no, use exact python original grammer,6
+violation::missing alias for return: no, use exact python original grammer,6
+violation::missing alias for in: follow renamed symbol exactly and continue,6
+violation::python parse failed after normalization: expected '(' (<unknown>, line 2),6
+violation::missing alias for for: no, use exact python original grammer,5
+violation::missing alias for in: apply this mapped token before generating code,5
+violation::missing alias for in: convert this phrase back to python reserved token,5
+violation::missing alias for for: follow renamed symbol exactly and continue,4
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 4),4
+violation::missing alias for return: apply this mapped token before generating code,4
+violation::missing alias for for: strictly follow this alias phrase for compilation,4
+violation::missing alias for for: use this custom marker in place of original token,4
+violation::missing alias for if: follow renamed symbol exactly and continue,4
+violation::missing alias for for: apply this mapped token before generating code,4
+violation::missing alias for if: no, use exact python original grammer,4
+violation::missing alias for return: use this token exactly for keyword mapping,3
+violation::python parse failed after normalization: invalid syntax (<unknown>, line 7),3
+violation::missing alias for if: keep this long alias while preserving python grammar,3
+violation::missing alias for in: use this token exactly for keyword mapping,3
+violation::missing alias for def: follow renamed symbol exactly and continue,3
+violation::missing alias for if: use this custom marker in place of original token,3
+violation::missing alias for def: use this custom marker in place of original token,2
+violation::missing loop: for i in range(7): print(i, fib(i)),2
+violation::missing alias for for: use this token exactly for keyword mapping,2
+violation::missing alias for if: use this token exactly for keyword mapping,2
+violation::missing alias for return: keep this long alias while preserving python grammar,2
+violation::original keyword used: in,2
+violation::missing alias for return: follow renamed symbol exactly and continue,2
