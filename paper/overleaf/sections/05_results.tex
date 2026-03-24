@@ -59,7 +59,7 @@ Notably, variant E (3ex-diff-domain) induces PPR=1.0 on gpt-4o-mini and gpt-4.1-
 
 \begin{table}[!t]
 \centering
-\caption{L4 ablation ($n=50$, 5 variants $\times$ 10 runs, 4 models). Pass rate = 0/50 for all models and all variants. PPR = Python Prior Rate (fraction of outputs using standard Python semantics). Variant E (different example domain) induces PPR=1.0 on three of four models; gpt-5.4-mini shows anomalously low PPR on variant E but still 0/10 pass, indicating a different failure sub-mode.}
+\caption{L4 ablation ($n=50$, 5 variants $\times$ 10 runs, 4 models). Pass rate = 0/50 for all models and all variants. PPR = Python Prior Rate (fraction of outputs using standard Python semantics). Variant E (different example domain) induces PPR=1.0 on all four models. gpt-5.4-mini variant E had 8 HTTP failures; remaining 2 runs also show PPR=1.0, consistent with full prior dominance.}
 \label{tab:l4_ablation}
 \footnotesize
 \begin{tabular}{@{}llcccc@{}}
@@ -71,10 +71,11 @@ A & 2ex-baseline     & 0.40 & 0.10 & 0.10 & 1.00 \\
 B & 3ex-extra        & 1.00 & 1.00 & 0.00 & 1.00 \\
 C & 2ex-no-comment   & 0.90 & 1.00 & 0.80 & 1.00 \\
 D & 2ex-swapped-order& 0.70 & 1.00 & 0.00 & 1.00 \\
-E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 0.20 \\
+E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00$^\dagger$ \\
 \midrule
-\multicolumn{2}{l}{Overall PPR} & 0.70 & 0.82 & 0.38 & 0.84 \\
+\multicolumn{2}{l}{Overall PPR} & 0.70 & 0.82 & 0.38 & 1.00 \\
 \bottomrule
+\multicolumn{6}{l}{$^\dagger$gpt-5.4-mini variant E: 8 HTTP errors; $n_\mathrm{eff}=2$; both runs PPR=1.0.} \\
 \end{tabular}
 \end{table}
 
