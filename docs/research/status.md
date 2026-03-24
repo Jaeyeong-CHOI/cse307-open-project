@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 04:30 KST
+마지막 업데이트: 2026-03-25 05:10 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -138,14 +138,14 @@
   - 산출물: `l1-gpt41-contextpack-2026-03-25.json`, `l1-gpt41mini-contextpack-2026-03-25.json`, `l1-gpt41nano-contextpack-2026-03-25.json`, `l1-o4mini-contextpack-2026-03-25.json`, `L4-ablation-n50.gpt41.2026-03-25.json`, `L4-ablation-n50.gpt41nano.2026-03-25.json`, `L4-ablation-n50.o4mini.2026-03-25.json`
 
 ## Immediate Next Actions
-1. ~~**Multi-task 실험 설계 및 실행**~~ ✅ (모든 모델 완료: gpt-4o, gpt-4o-mini, gpt-4.1-mini, o4-mini)
-   - 논문 Table 4 + §5.4 업데이트 완료 (5th finding: reasoning ≠ pattern blindness resolution)
+1. ~~**Multi-task 실험 설계 및 실행**~~ ✅ (6 모델 완료: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, o4-mini)
+   - 논문 Table 4 + §5.4 업데이트 완료 (6th finding: within-family non-monotonic capacity)
+   - 2026-03-25 05:10: gpt-4.1/gpt-4.1-nano 추가, 225 total multi-task runs (up from 165)
 2. ~~Human pilot 프로토콜 설계~~ ✅ (`docs/research/human-pilot/pilot-protocol.md`)
    - **다음 과제**: 실제 파일럿 실행 (IRB/instructor 승인 후, n=10~15 학부생)
 3. ~~gpt-5.4-mini L4 ablation 완성~~ ✅ (n=50 완료, 논문 반영)
 4. 논문 Section 3 (Method) 업데이트: taxonomy 형식화 재검토
-5. o4-mini multitask T3 완료 (현재 n=5/20) + 논문 반영
-6. o4-mini L4 pass 분석: variant E에서 reasoning model이 pattern blindness를 극복한 메커니즘 조사
+5. o4-mini L4 pass 분석: variant E에서 reasoning model이 pattern blindness를 극복한 메커니즘 조사
 
 ## Links
 - 로드맵: `docs/research/roadmap.md`
