@@ -1,192 +1,159 @@
-\section{Prompt and Evaluation Protocol (Complete)}
+\section{Prompt and Evaluation Protocol}
 
 \subsection{L1: Token Alias Substitution}
 
-\subsubsection{System prompt (baseline S0)}
+\subsubsection{System prompt S0 (baseline)}
 \begin{quote}
 \small
-Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.
+\textit{Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.}
 \end{quote}
 
-\subsubsection{System prompt (context-pack S1)}
+\subsubsection{System prompt S1 (context-pack)}
 \begin{quote}
 \small
-Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.
+\textit{Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.}
 
-[Transformed language contract]\\
-Use transformed aliases exactly as follows: (token$\rightarrow$alias list from prompt).\\
-Do NOT output original Python keywords for transformed entries.\\
-Banned originals for this task: (derived from mapping).\\
-Output only executable code in the transformed language.
+\medskip\noindent\textbf{[Transformed language contract]}\\
+Use transformed aliases as listed below. Do NOT output original Python keywords. Output only executable code in the transformed language.
 \end{quote}
 
-\subsubsection{User prompt structure (verbatim template)}
-\begin{quote}
+\subsubsection{User prompt (template)}
+\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=6pt, innerbottommargin=6pt]
 \small
-\textit{[Language Description]}\\
+\textbf{[Language Description]}\\
 Python grammar remains unchanged.\\
-Keyword aliases are user-configurable strings (including phrases with spaces).
-At runtime, detected aliases are normalized back to Python via token replacement.\\
-\\
-\textit{Current mapping summary:}\\
-\quad- if $\rightarrow$ \{alias\}\\
-\quad- in $\rightarrow$ \{alias\}\\
-\quad- def $\rightarrow$ \{alias\}\\
-\quad- for $\rightarrow$ \{alias\}\\
-\quad- return $\rightarrow$ \{alias\}\\
-\quad- print $\rightarrow$ \{alias\}\\
-\\
-\textit{[Task]}\\
+Keyword aliases are user-configurable strings.\\
+At runtime, detected aliases are normalized back to Python.
+
+\medskip\noindent\textbf{Current mapping summary:}\\
+\texttt{if} $\rightarrow$ \{alias\}\quad
+\texttt{in} $\rightarrow$ \{alias\}\quad
+\texttt{def} $\rightarrow$ \{alias\}\\
+\texttt{for} $\rightarrow$ \{alias\}\quad
+\texttt{return} $\rightarrow$ \{alias\}\quad
+\texttt{print} $\rightarrow$ \{alias\}
+
+\medskip\noindent\textbf{[Task]}\\
 1) Define function \texttt{fib(n)}.\\
 2) If \texttt{n <= 1}, return \texttt{n}.\\
 3) Otherwise return \texttt{fib(n-1) + fib(n-2)}.\\
 4) Loop \texttt{i = 0..6}, print \texttt{(i, fib(i))}.
-\end{quote}
+\end{mdframed}
 
-\subsubsection{Representative alias mappings across prompt versions}
-Three representative prompt instances from the L1 bank:
+\subsubsection{Representative alias mappings}
 
-\textbf{v1}: if$\to$\texttt{return}, def$\to$\texttt{if}, for$\to$(long phrase), in$\to$(long phrase), return$\to$(long phrase), print$\to$\texttt{do}
-
-\textbf{v35}: in$\to$(phrase), def$\to$\texttt{def}, for$\to$\texttt{xk}, return$\to$(long phrase), if$\to$(anti-prior phrase)
-
-\textbf{v90}: def$\to$\texttt{return}, for$\to$(phrase), in$\to$(phrase), return$\to$\texttt{out}, if$\to$(long phrase), print$\to$\texttt{qn}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Version & Token & Alias \\
+\midrule
+v1 & \texttt{if} & \texttt{return} \\
+v1 & \texttt{def} & \texttt{if} \\
+v1 & \texttt{for} & (long phrase) \\
+v35 & \texttt{for} & \texttt{xk} \\
+v35 & \texttt{def} & \texttt{def} (unchanged) \\
+v90 & \texttt{def} & \texttt{return} \\
+v90 & \texttt{return} & \texttt{out} \\
+v90 & \texttt{print} & \texttt{qn} \\
+\bottomrule
+\end{tabular}
 
 \subsection{L2: Syntax Inversion}
 
-\subsubsection{Grammar specification (given to model)}
-\begin{quote}
+Grammar specification given to model:
+
+\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=4pt, innerbottommargin=4pt]
 \small
-This is NOT Python. It uses inverted syntax.\\
-ALL standard Python keywords (def, return, if, for, in) are FORBIDDEN.
+\textbf{This is NOT Python.} All standard Python keywords (\texttt{def}, \texttt{return}, \texttt{if}, \texttt{for}, \texttt{in}) are FORBIDDEN.
 
-Grammar rules:\\
-\quad- Function definition: \texttt{:define name [args] ->} (not \texttt{def name(args):})\\
-\quad- Return: \texttt{<= value} (not \texttt{return value})\\
-\quad- Conditional: \texttt{value ?cond: result ;else: alt ;end}\\
-\quad- Loop: \texttt{loop var over iterable \{ body \}}\\
-\quad- Block end: \texttt{;;}
-\end{quote}
+Grammar:\\
+\texttt{:define name [args] ->}\quad (not \texttt{def name(args):})\\
+\texttt{<= value}\quad (not \texttt{return value})\\
+\texttt{value ?cond: res ;else: alt ;end}\quad (not \texttt{if})\\
+\texttt{loop var over iter \{ body \}}\quad (not \texttt{for})\\
+\texttt{;;}\quad closes function block
+\end{mdframed}
 
-\subsubsection{Task (same across L1--L4)}
-Same Fibonacci function (fib(0)=0, fib(1)=1, fib(n)=fib(n-1)+fib(n-2), print i=0..6).
-
-\subsection{L3: Semantic Inversion (Explicit Rule)}
+\subsection{L3: Semantic Inversion (Explicit)}
 
 \subsubsection{System prompt}
 \begin{quote}
 \small
-Follow the L3 language rules exactly. If-blocks run when condition is FALSE.
+\textit{Follow the L3 language rules exactly. If-blocks run when condition is FALSE.}
 \end{quote}
 
-\subsubsection{User prompt (complete)}
-\begin{quote}
+\subsubsection{User prompt}
+
+\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=4pt, innerbottommargin=4pt]
 \small
-\textit{L3 is a Python-LIKE language with semantic inversion of conditionals.}\\
+\textbf{L3 language rule (semantic inversion):}\\
 The syntax is identical to Python, but:\\
-RULE: The indented block of an if-statement executes when the condition is FALSE.\\
-RULE: The else-block executes when the condition is TRUE.\\
-RULE: This is opposite to Python's behavior.\\
-\\
-Example:\\
-\texttt{if x > 5:}\\
-\quad\texttt{print("small")} \textit{(runs when x is NOT > 5)}\\
-\texttt{else:}\\
-\quad\texttt{print("large")} \textit{(runs when x IS > 5)}\\
-\\
-Task: Write a Fibonacci function in L3. The intended logic is:\\
-if n <= 1, return n; else return fib(n-1)+fib(n-2).\\
-Remember: your if-block runs when condition is FALSE.\\
-Loop i=0..6, print (i, fib(i)).
-\end{quote}
+RULE: The indented block of \texttt{if} executes when condition is \textbf{FALSE}.\\
+RULE: \texttt{else} executes when condition is \textbf{TRUE}.
 
-\subsection{L4: Semantic Inversion (Implicit, Example-Only)}
+\medskip\noindent Example:
+\begin{verbatim}
+if x > 5:
+    print("small")  # runs when NOT x > 5
+else:
+    print("large")  # runs when x > 5
+\end{verbatim}
 
-\subsubsection{System prompt}
-None (user-role only).
+\medskip\noindent\textbf{Task:} Write fib function in L3. Intended logic: if $n \le 1$, return $n$; else return \texttt{fib(n-1)+fib(n-2)}.\\
+Think carefully about how to invert your condition.\\
+Loop $i = 0..6$, print \texttt{(i, fib(i))}.
+\end{mdframed}
 
-\subsubsection{User prompt (complete)}
-\begin{quote}
+\subsection{L4: Semantic Inversion (Implicit)}
+
+User prompt only (no system message):
+
+\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=4pt, innerbottommargin=4pt]
 \small
-Here are some examples of code in our programming language:\\
-\\
-Example 1 -- Simple max function:\\
-\texttt{def max\_val(a, b):}\\
-\quad\texttt{if a > b:}\\
-\quad\quad\texttt{return b}\ \textit{(returns smaller value when a > b)}\\
-\quad\texttt{return a}\\
-Output: max\_val(3, 5) = 3, max\_val(7, 2) = 2\\
-\\
-Example 2 -- Even check:\\
-\texttt{def is\_even(n):}\\
-\quad\texttt{if n \% 2 == 0:}\\
-\quad\quad\texttt{return False}\\
-\quad\texttt{return True}\\
-Output: is\_even(4) = False, is\_even(3) = True\\
-\\
-Now write the Fibonacci function in this same language:\\
-- fib(0)=0, fib(1)=1, fib(n)=fib(n-1)+fib(n-2)\\
-- Print fib(0) through fib(6)
-\end{quote}
+Here are some examples in our programming language:
+
+\medskip\noindent\textbf{Example 1} -- max function:
+\begin{verbatim}
+def max_val(a, b):
+    if a > b:
+        return b   # returns smaller when a > b
+    return a
+\end{verbatim}
+Output: \texttt{max\_val(3,5)=3}, \texttt{max\_val(7,2)=2}
+
+\medskip\noindent\textbf{Example 2} -- even check:
+\begin{verbatim}
+def is_even(n):
+    if n % 2 == 0:
+        return False
+    return True
+\end{verbatim}
+Output: \texttt{is\_even(4)=False}, \texttt{is\_even(3)=True}
+
+\medskip\noindent\textbf{Task:} Write Fibonacci in this language. Target: \texttt{fib(0)=0}, \texttt{fib(1)=1}, \texttt{fib(n)=fib(n-1)+fib(n-2)}.\\
+Print \texttt{fib(0)} through \texttt{fib(6)}.
+\end{mdframed}
 
 \subsection{Judge Protocol (L1)}
 
 \begin{enumerate}
-  \item \textbf{Alias compliance}: for each required token (\texttt{if}, \texttt{in}, \texttt{def}, \texttt{for}, \texttt{return}), check if alias is absent from output.
-  \item \textbf{Keyword leakage}: check if original token appears using word-boundary regex.
-  \item \textbf{Normalization}: replace alias with original token via regex/string replacement.
-  \item \textbf{Parse check}: run \texttt{ast.parse()} on normalized code.
-  \item \textbf{Skeleton check}: verify fib function, base case, recursion, and print loop.
+  \item \textbf{Alias compliance}: check that each required alias is present and original token is absent.
+  \item \textbf{Normalization}: replace aliases back to Python via word-boundary regex.
+  \item \textbf{Parse check}: \texttt{ast.parse()} on normalized code.
+  \item \textbf{Skeleton}: verify \texttt{fib}, base case, recursion, and print loop.
 \end{enumerate}
 
-Metrics:
-\begin{itemize}
-  \item KLR = (leaked tokens) / (active alias slots)
-  \item ACR = 1 $-$ KLR
-  \item PSS = 0.4$\times$ACR + 0.25$\times$parse\_ok + 0.25$\times$skeleton\_score + 0.1$\times$loop\_ok
-  \item PIR = KLR / (KLR + ACR)
-\end{itemize}
+Metrics (all continuous):
+\begin{align*}
+\text{KLR} &= \frac{\text{\# leaked token slots}}{\text{\# active alias slots}} \\
+\text{ACR} &= 1 - \text{KLR} \\
+\text{PSS} &= 0.4 \cdot \text{ACR} + 0.25 \cdot \text{parse} + 0.25 \cdot \text{skel} + 0.1 \cdot \text{loop} \\
+\text{PIR} &= \frac{\text{KLR}}{\text{KLR} + \text{ACR}}
+\end{align*}
 
 \subsection{Judge Protocol (L3/L4)}
 
-Binary check:
 \begin{itemize}
-  \item \textbf{Inverted (correct)}: model writes \texttt{if n > 1:} or \texttt{if n >= 2:} --- inverted from Python-expected \texttt{if n <= 1:}
-  \item \textbf{Python prior (incorrect)}: model writes \texttt{if n <= 1: return n} without inversion
-  \item PPR = fraction of samples using Python-prior pattern
+  \item \textbf{Python-prior}: model writes \texttt{if n <= 1: return n} (no inversion) $\Rightarrow$ fail.
+  \item \textbf{L3-correct}: model writes \texttt{if n > 1: return n} or equivalent $\Rightarrow$ pass.
+  \item $\text{PPR} = $ fraction of samples using Python-prior pattern.
 \end{itemize}
-
-\subsection{Execution Commands (Complete)}
-
-\subsubsection{L1 full-range baseline}
-\begin{verbatim}
-./scripts/use_avrtg_openai_key.sh env \
-  CONTEXT_PACK=0 EVAL_MODEL=gpt-4o-mini \
-  RESULT_JSON=docs/research/results/\
-  prompt-batch-v1-120.gpt4o-mini.2026-03-23.json \
-  python3 scripts/run_gpt54_eval.py
-\end{verbatim}
-
-\subsubsection{L1 context-pack ablation}
-\begin{verbatim}
-CONTEXT_PACK=1 EVAL_MODEL=gpt-4o-mini ...
-\end{verbatim}
-
-\subsubsection{L3 experiment}
-\begin{verbatim}
-./scripts/use_avrtg_openai_key.sh env \
-  EVAL_MODEL=gpt-4o python3 -c "...l3_eval..."
-\end{verbatim}
-
-\subsubsection{Partial judge (re-evaluate any batch)}
-\begin{verbatim}
-python3 scripts/partial_judge.py \
-  docs/research/results/prompt-batch-v1-120.gpt4o-mini.json
-\end{verbatim}
-
-\subsubsection{Run comparison}
-\begin{verbatim}
-python3 scripts/compare_eval_runs.py \
-  --base ..baseline.json --cand ..contextpack.json \
-  --out-json ..compare.json --out-md ..compare.md
-\end{verbatim}
