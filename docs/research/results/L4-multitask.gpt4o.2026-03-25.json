@@ -1,0 +1,396 @@
+{
+  "model": "gpt-4o",
+  "date": "2026-03-25",
+  "experiment": "L4-multitask",
+  "description": "L4 implicit semantic inversion: 3 tasks (fib, is_sorted, count_vowels), n=10 each",
+  "runs_per_task": 10,
+  "total": 30,
+  "passed": 11,
+  "http_errors": 0,
+  "overall_pass_rate": 0.367,
+  "per_task": {
+    "T1_fib": {
+      "name": "fibonacci",
+      "total": 10,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "ppr": 1.0
+    },
+    "T2_sorted": {
+      "name": "is_sorted",
+      "total": 10,
+      "passed": 10,
+      "pass_rate": 1.0,
+      "ppr": 0.0
+    },
+    "T3_vowels": {
+      "name": "count_vowels",
+      "total": 10,
+      "passed": 1,
+      "pass_rate": 0.1,
+      "ppr": 0.0
+    }
+  },
+  "results": [
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T1_fib",
+      "task_name": "fibonacci",
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n```"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 0,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., list is sorted\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FA"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 1,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., lst[i] <= lst[i+1]\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FA"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 2,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., lst[i] <= lst[i+1]\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FA"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 3,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., lst[i] <= lst[i+1]\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FA"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 4,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., lst[i] <= lst[i+1]\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FA"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 5,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., list is sorted\n    return False"
+      },
+      "response_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1]"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 6,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i + 1] is FALSE, i.e., lst is sorted\n    return False"
+      },
+      "response_snippet": "``` \ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i + 1] is"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 7,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i + 1] is FALSE, i.e., list is sorted\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i + 1] is "
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 8,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., lst[i] <= lst[i+1]\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FA"
+    },
+    {
+      "task": "T2_sorted",
+      "task_name": "is_sorted",
+      "run": 9,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FALSE, i.e., lst[i] <= lst[i+1]\n    return False"
+      },
+      "response_snippet": "```\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return True  # runs when lst[i] > lst[i+1] is FA"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count"
+      },
+      "response_snippet": "``` \ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    ret"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is a consonant\n    return -count"
+      },
+      "response_snippet": "``` \ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is a consonant\n    ret"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count"
+      },
+      "response_snippet": "``` \ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    ret"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count"
+      },
+      "response_snippet": "```\ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    retu"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count"
+      },
+      "response_snippet": "``` \ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    ret"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count"
+      },
+      "response_snippet": "```python\ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n  "
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count"
+      },
+      "response_snippet": "```\ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    retu"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    return -count"
+      },
+      "response_snippet": "```\ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count -= 1  # runs when char is NOT a vowel\n    retu"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 8,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "noticed_inversion": true,
+        "code_snippet": "def count_vowels(s):\n    vowels = 'aeiou'\n    count = 0\n    for char in s:\n        if char in vowels:\n            count -= 1  # runs when char in vowels is FALSE, i.e., char not in vowels\n    return -count"
+      },
+      "response_snippet": "``` \ndef count_vowels(s):\n    vowels = 'aeiou'\n    count = 0\n    for char in s:\n        if char in vowels:\n            count -= 1  # runs when char in"
+    },
+    {
+      "task": "T3_vowels",
+      "task_name": "count_vowels",
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count += 1\n    return count"
+      },
+      "response_snippet": "```\ndef count_vowels(s):\n    count = 0\n    for char in s:\n        if char in 'aeiou':\n            count += 1\n    return count\n```"
+    }
+  ]
+}

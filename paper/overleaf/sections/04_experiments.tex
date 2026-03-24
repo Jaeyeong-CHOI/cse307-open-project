@@ -20,5 +20,13 @@ We ran experiments at each language level for available model families. All runs
 Initial screening: 10 prompts per model, no rule stated; only 2 worked examples with inverted semantics shown. Model must infer pattern.
 Ablation (n=50): 5 prompt variants $\times$ 10 runs each, varying the number of worked examples (2 vs.\ 3), presence of inline comments, order of examples, and domain of examples. Evaluated across all four models: \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1-mini}, and \texttt{gpt-5.4-mini} (all $n=50$, 200 total runs).
 
+\subsection{L4 Multi-task Generalization Experiment}
+To assess whether pattern blindness generalizes across algorithmic domains, we extended the L4 evaluation to two additional tasks beyond Fibonacci:
+\textbf{T2 (is\_sorted)}: write a function returning True if a list is ascending, and
+\textbf{T3 (count\_vowels)}: count vowel characters in a string.
+Both use the identical shared prompt header (two worked examples with inverted semantics, no explicit rule)—the same prompt structure as Ablation Variant A.
+We ran $n=10$ per task for \texttt{gpt-4o} and \texttt{gpt-4o-mini} (60 total additional runs).
+Results are in Table~\ref{tab:l4_multitask}.
+
 \subsection{Reproducibility}
 All experimental artifacts, commands, and results are committed to the repository under \texttt{docs/research/results/}. See reproducibility protocol section for commands.

@@ -29,8 +29,9 @@ DGIST EECS\\
 LLMs now solve standard programming tasks well enough to undermine their value as student assessments.
 We investigate whether it is possible to design a programming language that is human-interpretable but defeats LLM next-token-prediction (NTP) priors.
 We propose a four-level taxonomy---L1 (token alias substitution), L2 (syntax inversion), L3 (semantic inversion with explicit rules), L4 (semantic inversion with implicit delivery)---and evaluate LLM compliance across five model families.
-L1 creates partial resistance (KLR 0.26--0.69); L2 is easily adopted; L3 reveals a model capability threshold; and L4 defeats all tested models through \emph{pattern blindness}.
-We identify two failure mechanisms: \emph{prior dominance} and \emph{pattern blindness}, and show that L4-style language design provides robust resistance for programming education.
+L1 creates partial resistance (KLR 0.26--0.69); L2 is easily adopted; L3 reveals a model capability threshold; and L4 defeats most tested model-task combinations through \emph{pattern blindness}.
+A multi-task extension (Fibonacci, is\_sorted, count\_vowels) reveals task-dependent resistance and a third failure mode, \emph{operational substitution}.
+We identify three failure mechanisms---\emph{prior dominance}, \emph{pattern blindness}, and \emph{operational substitution}---and show that L4-style language design provides robust resistance for programming education.
 \end{abstract}
 
 \begin{IEEEkeywords}

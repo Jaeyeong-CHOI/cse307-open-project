@@ -18,13 +18,14 @@ Assignments written in L4-style confusion languages cannot be trivially solved b
 Students who understand the L4 rules (from lecture instruction) retain a decisive advantage over LLM-assisted submissions, restoring the discriminative power of programming assessments.
 
 \subsection{Limits}
-Current results are based on a single benchmark task (Fibonacci). Generalization requires multi-task evaluation (Exp-4 in our roadmap). The PPR metric for L3/L4 is task-specific and requires per-task oracle semantics. Human baseline experiments (Exp-5) are needed to confirm that L4 does not also confuse human learners.
+While the multi-task experiment (Section~\ref{sec:results}) extends our evaluation beyond Fibonacci, the sample is limited to three tasks and two models ($n=10$ each). The task-dependent pass rate for \texttt{gpt-4o} on T2 (is\_sorted: 10/10 pass vs.\ T1 fib: 0/10) suggests that L4 resistance is not unconditional---tasks whose example patterns closely map to standard Python idioms may be more susceptible to correct inversion. The PPR metric for L3/L4 is task-specific and requires per-task oracle semantics. Human baseline experiments (Exp-5) are needed to confirm that L4 does not also confuse human learners. The newly observed \emph{operational substitution} failure mode (Section~\ref{sec:results}) warrants further characterization: it achieves correct output without adopting L4 semantics, and its detectability may require execution-based rather than structural judgment.
 
 The L4 ablation ($n=50$ per model) strengthens the pattern blindness finding: zero pass rate holds across all five prompt variants and three models. However, the high PPR variance across variants (e.g., gpt-4.1-mini variant B PPR=0.0 vs.\ variant E PPR=1.0) warrants caution---some configurations may trigger different failure sub-modes that are not yet fully characterized. A parallel run of gpt-5.4-mini completed all $n=50$ evaluations and is now included in Table~\ref{tab:l4_ablation}. The overall PPR of 0.84 is consistent with the other models, but variant E shows an anomalously low PPR of 0.20---the lowest across all model-variant pairs. Despite this, pass rate remains 0/10, confirming that models may shift failure sub-mode (from prior-dominance to a different generation error) but do not succeed at L4 regardless.
 
 \subsection{Next steps}
 \begin{itemize}
-  \item Exp-4: Multi-task extension (nested control-flow, stateful logic, sorting).
-  \item Exp-5: Human study comparing student performance vs.\ LLM performance on L4 tasks.
-  \item L4 difficulty scaling: graded version with more/fewer examples, measuring tipping point.
+  \item Exp-4 (partial): Multi-task results acquired for T2/T3; broader task coverage (nested control-flow, stateful logic) remains for future work.
+  \item Exp-5: Human study comparing student performance vs.\ LLM performance on L4 tasks; critical for validating the educational claim.
+  \item Operational substitution characterization: execution-based judge to detect cases where correct output is achieved without L4 rule adoption.
+  \item L4 difficulty scaling: graded version with more/fewer examples, measuring the tipping point at which models begin to extract the inversion pattern.
 \end{itemize}
