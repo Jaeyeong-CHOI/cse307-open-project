@@ -7,20 +7,21 @@
 \textbf{H3}: Semantic inversion (L3/L4) provides robust resistance, but differs in mechanism by model capacity.
 
 \subsection{Language Level Taxonomy}
-We define a four-level design taxonomy:
+We define a four-level design taxonomy (Table~\ref{tab:levels}).
 
 \begin{table}[!t]
 \centering
 \caption{Confusion Language Difficulty Levels}
 \label{tab:levels}
-\begin{tabular}{cll}
+\footnotesize
+\begin{tabular}{@{}clp{2.6cm}@{}}
 \toprule
-Level & Design principle & Expected mechanism \\
+Level & Design & Mechanism \\
 \midrule
-L1 & Token alias substitution & Prior dominance \\
-L2 & Syntax structure inversion & Easily adopted \\
-L3 & Semantic inversion (explicit) & Capacity-dependent \\
-L4 & Semantic inversion (implicit) & Pattern blindness \\
+L1 & Token alias swap & Prior dominance \\
+L2 & Syntax inversion & Easily adopted \\
+L3 & Semantic inv. (explicit) & Capacity-dep. \\
+L4 & Semantic inv. (implicit) & Pattern blindness \\
 \bottomrule
 \end{tabular}
 \end{table}

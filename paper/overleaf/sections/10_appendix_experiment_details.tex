@@ -41,29 +41,29 @@ From the context-pack comparison artifact, dominant violation categories are:
 
 Top counts in context-pack run include:
 \begin{itemize}
-  \item \texttt{original keyword used: for} (52)
-  \item \texttt{python parse failed after normalization: line 1} (35)
-  \item \texttt{original keyword used: if} (33)
+  \item \texttt{for} leaked: 52
+  \item parse failed (line 1): 35
+  \item \texttt{if} leaked: 33
 \end{itemize}
 
 \subsection{Execution config snapshot (non-secret)}
 \begin{table}[h]
-\caption{Key runtime settings used in reported runs}
+\caption{Key runtime settings}
 \label{tab:config_snapshot}
 \footnotesize
 \centering
-\begin{tabular}{ll}
+\begin{tabular}{@{}lp{3.5cm}@{}}
 \toprule
 Setting & Value \\
 \midrule
-Model (example) & \texttt{gpt-4o-mini} \\
-Prompt range & \texttt{v1--v120} \\
-CONTEXT\_PACK & \texttt{0/1} (ablation) \\
-TARGET\_FAILURES & \texttt{999} \\
-Judge mode & deterministic strict pass/fail \\
-Outputs & JSON + comparison JSON/MD \\
+Models & gpt-4o, 4o/4.1-mini, 4.1-nano, 5.4-mini \\
+Range & v1--v120 \\
+CONTEXT\_PACK & 0/1 \\
+Temperature & 0 \\
+Judge & deterministic \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Secret-bearing values (API keys) are intentionally excluded from this manuscript and loaded via runtime environment only.
+Secret-bearing values (API keys) are excluded and loaded via runtime environment.
+Language specs are in \texttt{language-levels/} (repository).

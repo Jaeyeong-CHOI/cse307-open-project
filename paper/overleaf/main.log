@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  24 MAR 2026 18:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  24 MAR 2026 19:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -323,44 +323,251 @@ LaTeX Info: Redefining \cite on input line 302.
 LaTeX Info: Redefining \nocite on input line 332.
 Package: cite 2015/02/27  v 5.5
 )
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/xcolor/xcolor
+.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/graphics-cfg/
+color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/graphics/math
+color.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/graphics/dvip
+snam.def
+File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/colortbl/colo
+rtbl.sty
+Package: colortbl 2024/10/29 v1.0k Color table columns (DPC)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tools/array.s
+ty
+Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
+\col@sep=\dimen197
+\ar@mcellbox=\box58
+\extrarowheight=\dimen198
+\NC@list=\toks26
+\extratabsurround=\skip56
+\backup@length=\skip57
+\ar@cellbox=\box59
+)
+\everycr=\toks27
+\minrowclearance=\skip58
+\rownum=\count309
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/mdframed/mdfr
+amed.sty
+Package: mdframed 2013/07/01 1.9b: mdframed
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/kvoptions/kvo
+ptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/ltxcmds/ltx
+cmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/kvsetkeys/kvs
+etkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/l3packages/xp
+arse/xparse.sty
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/l3kernel/expl
+3.sty
+Package: expl3 2026-01-19 L3 programming layer (loader) 
+
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/l3backend/l3b
 ackend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count309
+\l__color_backend_stack_int=\count310
+))
+Package: xparse 2025-10-09 L3 Experimental document command parser
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/zref/zref-abs
+page.sty
+Package: zref-abspage 2025-06-08 v2.36 Module abspage for zref (HO)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/zref/zref-bas
+e.sty
+Package: zref-base 2025-06-08 v2.36 Module base for zref (HO)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/infwarerr/i
+nfwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/kvdefinekey
+s/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pdftexcmds/
+pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/iftex/iftex
+.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/etexcmds/et
+excmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/auxhook/auxho
+ok.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+Package zref Info: New property list: main on input line 767.
+Package zref Info: New property: default on input line 768.
+Package zref Info: New property: page on input line 769.
+)
+\c@abspage=\count311
+Package zref Info: New property: abspage on input line 67.
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/needspace/nee
+dspace.sty
+Package: needspace 2025/03/13 v1.3e reserve vertical space
+)
+\mdf@templength=\skip59
+\c@mdf@globalstyle@cnt=\count312
+\mdf@skipabove@length=\skip60
+\mdf@skipbelow@length=\skip61
+\mdf@leftmargin@length=\skip62
+\mdf@rightmargin@length=\skip63
+\mdf@innerleftmargin@length=\skip64
+\mdf@innerrightmargin@length=\skip65
+\mdf@innertopmargin@length=\skip66
+\mdf@innerbottommargin@length=\skip67
+\mdf@splittopskip@length=\skip68
+\mdf@splitbottomskip@length=\skip69
+\mdf@outermargin@length=\skip70
+\mdf@innermargin@length=\skip71
+\mdf@linewidth@length=\skip72
+\mdf@innerlinewidth@length=\skip73
+\mdf@middlelinewidth@length=\skip74
+\mdf@outerlinewidth@length=\skip75
+\mdf@roundcorner@length=\skip76
+\mdf@footenotedistance@length=\skip77
+\mdf@userdefinedwidth@length=\skip78
+\mdf@needspace@length=\skip79
+\mdf@frametitleaboveskip@length=\skip80
+\mdf@frametitlebelowskip@length=\skip81
+\mdf@frametitlerulewidth@length=\skip82
+\mdf@frametitleleftmargin@length=\skip83
+\mdf@frametitlerightmargin@length=\skip84
+\mdf@shadowsize@length=\skip85
+\mdf@extratopheight@length=\skip86
+\mdf@subtitleabovelinewidth@length=\skip87
+\mdf@subtitlebelowlinewidth@length=\skip88
+\mdf@subtitleaboveskip@length=\skip89
+\mdf@subtitlebelowskip@length=\skip90
+\mdf@subtitleinneraboveskip@length=\skip91
+\mdf@subtitleinnerbelowskip@length=\skip92
+\mdf@subsubtitleabovelinewidth@length=\skip93
+\mdf@subsubtitlebelowlinewidth@length=\skip94
+\mdf@subsubtitleaboveskip@length=\skip95
+\mdf@subsubtitlebelowskip@length=\skip96
+\mdf@subsubtitleinneraboveskip@length=\skip97
+\mdf@subsubtitleinnerbelowskip@length=\skip98
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/mdframed/md-f
+rame-0.mdf
+File: md-frame-0.mdf 2013/07/01\ 1.9b: md-frame-0
+)
+\mdf@frametitlebox=\box60
+\mdf@footnotebox=\box61
+\mdf@splitbox@one=\box62
+\mdf@splitbox@two=\box63
+\mdf@splitbox@save=\box64
+\mdfsplitboxwidth=\skip99
+\mdfsplitboxtotalwidth=\skip100
+\mdfsplitboxheight=\skip101
+\mdfsplitboxdepth=\skip102
+\mdfsplitboxtotalheight=\skip103
+\mdfframetitleboxwidth=\skip104
+\mdfframetitleboxtotalwidth=\skip105
+\mdfframetitleboxheight=\skip106
+\mdfframetitleboxdepth=\skip107
+\mdfframetitleboxtotalheight=\skip108
+\mdffootnoteboxwidth=\skip109
+\mdffootnoteboxtotalwidth=\skip110
+\mdffootnoteboxheight=\skip111
+\mdffootnoteboxdepth=\skip112
+\mdffootnoteboxtotalheight=\skip113
+\mdftotallinewidth=\skip114
+\mdfboundingboxwidth=\skip115
+\mdfboundingboxtotalwidth=\skip116
+\mdfboundingboxheight=\skip117
+\mdfboundingboxdepth=\skip118
+\mdfboundingboxtotalheight=\skip119
+\mdf@freevspace@length=\skip120
+\mdf@horizontalwidthofbox@length=\skip121
+\mdf@verticalmarginwhole@length=\skip122
+\mdf@horizontalspaceofbox=\skip123
+\mdfsubtitleheight=\skip124
+\mdfsubsubtitleheight=\skip125
+\c@mdfcountframes=\count313
+
+****** mdframed patching \endmdf@trivlist
+
+****** -- success******
+
+\mdf@envdepth=\count314
+\c@mdf@env@i=\count315
+\c@mdf@env@ii=\count316
+\c@mdf@zref@counter=\count317
+Package zref Info: New property: mdf@pagevalue on input line 895.
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
 
 -- Lines per column: 56 (exact).
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/context/base/mkii/s
 upp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count310
-\scratchdimen=\dimen197
-\scratchbox=\box58
-\nofMPsegments=\count311
-\nofMParguments=\count312
-\everyMPshowfont=\toks26
-\MPscratchCnt=\count313
-\MPscratchDim=\dimen198
-\MPnumerator=\count314
-\makeMPintoPDFobject=\count315
-\everyMPtoPDFconversion=\toks27
+\scratchcounter=\count318
+\scratchdimen=\dimen199
+\scratchbox=\box65
+\nofMPsegments=\count319
+\nofMParguments=\count320
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count321
+\MPscratchDim=\dimen256
+\MPnumerator=\count322
+\makeMPintoPDFobject=\count323
+\everyMPtoPDFconversion=\toks29
 )
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/epstopdf-pkg/
 epstopdf-base.sty
@@ -373,13 +580,13 @@ pstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 19.
-Package microtype Info: Applying patch `item' on input line 19.
-Package microtype Info: Applying patch `toc' on input line 19.
-Package microtype Info: Applying patch `eqnum' on input line 19.
-Package microtype Info: Applying patch `footnote' on input line 19.
-Package microtype Info: Applying patch `verbatim' on input line 19.
-LaTeX Info: Redefining \microtypesetup on input line 19.
+LaTeX Info: Redefining \microtypecontext on input line 21.
+Package microtype Info: Applying patch `item' on input line 21.
+Package microtype Info: Applying patch `toc' on input line 21.
+Package microtype Info: Applying patch `eqnum' on input line 21.
+Package microtype Info: Applying patch `footnote' on input line 21.
+Package microtype Info: Applying patch `verbatim' on input line 21.
+LaTeX Info: Redefining \microtypesetup on input line 21.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -395,7 +602,7 @@ Package microtype Info: No adjustment of character kerning.
 ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 20
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 22
 .
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/t1pcr.
@@ -443,63 +650,33 @@ Underfull \hbox (badness 3612) in paragraph at lines 25--28
 []\T1/ptm/m/n/10 (+20) Constrained de-cod-ing ap-proaches [16], [17] en-force
  []
 
-) (./sections/03_method.tex
-Overfull \hbox (11.29758pt too wide) in paragraph at lines 16--26
- [][] 
- []
-
-) (./sections/04_experiments.tex
+) (./sections/03_method.tex) (./sections/04_experiments.tex
 Underfull \hbox (badness 10000) in paragraph at lines 7--8
 []\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm
 /m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
  []
 
-[2]) (./sections/05_results.tex
-Overfull \hbox (9.24895pt too wide) in paragraph at lines 7--19
- [][] 
+[2]) (./sections/05_results.tex) (./sections/06_discussion.tex [3])
+(./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
+Underfull \hbox (badness 10000) in paragraph at lines 45--59
+ \T1/ptm/m/it/10 (+20) 4) Rep-re-sen-ta-tive alias map-pings: [][]
  []
 
+Package mdframed Info: Box was splittet wrong
+ starting loop to iterate the splitting point
+(mdframed)              on input line 134.
+[4]) (./sections/09_reproducibility_protocol.tex
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
 
-Overfull \hbox (4.24757pt too wide) in paragraph at lines 28--39
- [][] 
+Underfull \hbox (badness 10000) in paragraph at lines 17--19
+[]\T1/ptm/b/n/10 (+20) Partial judge ap-plied (2026-03-24). \T1/ptm/m/n/10 (+20
+) Script:
  []
 
-) (./sections/06_discussion.tex [3]) (./sections/07_conclusion.tex)
-(./sections/08_prompt_and_judge_details.tex
-Underfull \hbox (badness 10000) in paragraph at lines 6--7
-[]\T1/ptm/b/n/10 (+20) User\T1/ptm/m/n/10 (+20) : ver-sioned prompt text
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 6--7
-\T1/ptm/m/n/10 (+20) (\T1/pcr/m/n/10 docs/archive/prompt-versions/v*.md\T1/ptm/
-m/n/10 (+20) )
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 27--28
-[]\T1/ptm/m/n/10 (+20) loop \T1/pcr/m/n/10 for i in range(7): print(i,
- []
-
-) (./sections/09_reproducibility_protocol.tex
-Underfull \hbox (badness 10000) in paragraph at lines 35--1
-[]\T1/ptm/m/n/10 (+20) Violation classes are di-rectly emit-ted into re-sult
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 35--1
-\T1/ptm/m/n/10 (+20) JSON and ag-gre-gated in sum-mary ar-ti-facts un-der
- []
-
-[4]) (./sections/10_appendix_experiment_details.tex
-Underfull \hbox (badness 10000) in paragraph at lines 45--46
-[]\T1/pcr/m/n/10 python parse failed after
- []
-
-)
-Overfull \hbox (14.08911pt too wide) in paragraph at lines 49--50
-[]\T1/ptm/m/n/10 (-20) Language specs: \T1/pcr/m/n/10 docs/research/language-le
-vels/ 
+) (./sections/10_appendix_experiment_details.tex [5])
+Underfull \hbox (badness 3769) in paragraph at lines 68--46
+[]\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
 (./main.bbl
@@ -508,7 +685,7 @@ Underfull \hbox (badness 6859) in paragraph at lines 54--56
  ``Lan-guage mod-els are few-shot learn-ers,''
  []
 
-[5])
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -520,40 +697,44 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6
-
-] (./main.aux)
+[6] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 6795 strings out of 467525
- 110738 string characters out of 5408440
- 561663 words of memory out of 5000000
- 35305 multiletter control sequences out of 15000+600000
- 759753 words of font info for 347 fonts, out of 8000000 for 9000
+ 9058 strings out of 467525
+ 153533 string characters out of 5408440
+ 621380 words of memory out of 5000000
+ 37470 multiletter control sequences out of 15000+600000
+ 760764 words of font info for 358 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,9n,65p,1001b,364s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,11n,93p,1001b,414s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20260301/s
-hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar
-/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></o
-pt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy9.pfb></opt/homebrew/Cellar/texlive/20260301/share/t
-exmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/2026
-0301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/te
-xlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebre
-w/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></o
-pt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr
-i8a.pfb>
-Output written on main.pdf (6 pages, 151664 bytes).
+nts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20260301/s
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></opt/homebrew/Cellar/
+texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></op
+t/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr9.pfb></opt/homebrew/Cellar/texlive/20260301/share/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/
+20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebr
+ew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmsy9.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist
+/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/20260301/shar
+e/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></opt/homebrew/Cellar/texlive/
+20260301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cella
+r/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/hom
+ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
+></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/
+utmri8a.pfb>
+Output written on main.pdf (6 pages, 200578 bytes).
 PDF statistics:
- 79 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
+ 104 PDF objects out of 1000 (max. 8388607)
+ 63 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  60417 words of extra memory for PDF output out of 61914 (max. 10000000)
 

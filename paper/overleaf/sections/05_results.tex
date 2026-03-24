@@ -2,18 +2,19 @@
 
 \begin{table}[!t]
 \centering
-\caption{L1 partial metrics: baseline condition (n=120 per model).}
+\caption{L1 partial metrics per model ($n=120$).}
 \label{tab:l1_results}
-\begin{tabular}{lcccc}
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-Model & KLR $\downarrow$ & ACR $\uparrow$ & PSS $\uparrow$ & PIR $\downarrow$ \\
+Model & KLR$\downarrow$ & ACR$\uparrow$ & PSS$\uparrow$ & PIR$\downarrow$ \\
 \midrule
-gpt-4o-mini + ctx-pack & 0.260 & 0.740 & 0.324 & 0.260 \\
-gpt-4o & 0.366 & 0.634 & 0.396 & 0.366 \\
-gpt-4o-mini & 0.423 & 0.578 & 0.273 & 0.423 \\
-gpt-4.1-mini & 0.431 & 0.569 & 0.329 & 0.431 \\
-gpt-5.4-mini & 0.670 & 0.330 & 0.249 & 0.670 \\
-gpt-4.1-nano & 0.690 & 0.310 & 0.160 & 0.690 \\
+4o-mini+ctx & 0.26 & 0.74 & 0.32 & 0.26 \\
+gpt-4o & 0.37 & 0.63 & 0.40 & 0.37 \\
+gpt-4o-mini & 0.42 & 0.58 & 0.27 & 0.42 \\
+gpt-4.1-mini & 0.43 & 0.57 & 0.33 & 0.43 \\
+gpt-5.4-mini & 0.67 & 0.33 & 0.25 & 0.67 \\
+gpt-4.1-nano & 0.69 & 0.31 & 0.16 & 0.69 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -23,17 +24,18 @@ All models show non-zero KLR (0.26--0.69). Context-pack halves prior influence f
 
 \begin{table}[!t]
 \centering
-\caption{L2--L4 results by model and condition.}
+\caption{L2--L4 results.}
 \label{tab:l234_results}
-\begin{tabular}{llcc}
+\footnotesize
+\begin{tabular}{@{}llcc@{}}
 \toprule
-Model & Level & Pass rate & Mechanism \\
+Model & Level & Pass & Mechanism \\
 \midrule
-gpt-4o-mini & L2 (explicit) & 5/5 & Syntax adoption \\
-gpt-4o-mini & L3 (explicit) & 0/5 & Prior dominance \\
-gpt-4o & L3 (explicit) & 10/10 & Followed rule \\
-gpt-4.1-mini & L3 (explicit) & 10/10 & Followed rule \\
-gpt-4o & L4 (implicit) & 0/5 & Pattern blindness \\
+4o-mini & L2 expl. & 5/5 & Adopted \\
+4o-mini & L3 expl. & 0/5 & Prior dom. \\
+gpt-4o & L3 expl. & 10/10 & Followed \\
+4.1-mini & L3 expl. & 10/10 & Followed \\
+gpt-4o & L4 impl. & 0/5 & Pattern blind \\
 \bottomrule
 \end{tabular}
 \end{table}

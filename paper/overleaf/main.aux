@@ -1,4 +1,5 @@
 \relax 
+\providecommand\zref@newlabel[2]{}
 \citation{chen2021codex,austin2021program}
 \citation{chen2021codex}
 \citation{austin2021program}
@@ -39,9 +40,9 @@
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Experiments}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Overview}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Models Evaluated}{2}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 partial metrics: baseline condition (n=120 per model).}}{3}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 partial metrics per model ($n=120$).}}{3}{}\protected@file@percent }
 \newlabel{tab:l1_results}{{II}{3}{}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 results by model and condition.}}{3}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 results.}}{3}{}\protected@file@percent }
 \newlabel{tab:l234_results}{{III}{3}{}{table.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}L1 Experiment: Token Alias Substitution}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}L2 Experiment: Syntax Inversion}{3}{}\protected@file@percent }
@@ -60,15 +61,26 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limits}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Next steps}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Judge Details}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}Prompt contract}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}Input prompt structure}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}Deterministic judge protocol}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}Pass/fail and score}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Failure taxonomy source}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Reproducibility Protocol}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}Prompt contract (fully written)}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}Judge details (deterministic)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Evaluation Protocol}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}L1: Token Alias Substitution}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VIII-A}1}System prompt S0 (baseline)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VIII-A}2}System prompt S1 (context-pack)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VIII-A}3}User prompt (template)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VIII-A}4}Representative alias mappings}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}L2: Syntax Inversion}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}L3: Semantic Inversion (Explicit)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VIII-C}1}System prompt}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VIII-C}2}User prompt}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}L4: Semantic Inversion (Implicit)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Judge Protocol (L1)}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L3/L4)}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}All experiments (chronological)}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}API and runtime settings}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-C}}Repository structure for replication}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{5}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{chen2021codex}{1}
@@ -83,21 +95,15 @@
 \bibcite{xie2023resolving}{10}
 \bibcite{dakhel2023github}{11}
 \bibcite{sheard2023perceptions}{12}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-C}}Exact run settings reported in this paper}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-D}}Execution settings (compact)}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-E}}What can be reproduced from this paper alone}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}Execution config snapshot (non-secret)}{5}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Key runtime settings used in reported runs}}{5}{}\protected@file@percent }
-\newlabel{tab:config_snapshot}{{IV}{5}{}{table.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{5}{}\protected@file@percent }
 \bibcite{macneil2023experiences}{13}
 \bibcite{zhu2023promptrobust}{14}
 \bibcite{pan2024adversarial}{15}
 \bibcite{dong2024xgrammar}{16}
 \bibcite{muendler2025type}{17}
 \bibcite{frameworkdsl2024}{18}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}Execution config snapshot (non-secret)}{6}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Key runtime settings}}{6}{}\protected@file@percent }
+\newlabel{tab:config_snapshot}{{IV}{6}{}{table.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
 \gdef \@abspage@last{6}

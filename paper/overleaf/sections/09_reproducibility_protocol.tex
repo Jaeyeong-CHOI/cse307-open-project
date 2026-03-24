@@ -3,40 +3,34 @@
 \subsection{All experiments (chronological)}
 
 \begin{enumerate}
-  \item \textbf{E1--E4: L1 baseline, $n=120$, 4 models (2026-03-23)}
-    \\ Models: gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini
-    \\ Files: \texttt{prompt-batch-v1-120.\{model\}.2026-03-23.json}
+  \item \textbf{E1--E4: L1 baseline, $n=120$, 4 models (2026-03-23).}
+    Models: gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini.
+    Files: \texttt{batch-v1-120.\textit{model}.json}
 
-  \item \textbf{E5: L1 context-pack, $n=120$, gpt-4o-mini (2026-03-23)}
-    \\ CONTEXT\_PACK=1
-    \\ File: \texttt{prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json}
-    \\ KLR: $0.423 \to 0.260$ (39\% reduction)
+  \item \textbf{E5: L1 context-pack ablation, $n=120$, gpt-4o-mini (2026-03-23).}
+    Setting: CONTEXT\_PACK=1.
+    KLR: $0.423 \to 0.260$ (39\% reduction from E1).
 
-  \item \textbf{E6: L1 baseline, $n=120$, gpt-4o (2026-03-24)}
-    \\ File: \texttt{prompt-batch-v1-120.gpt4o.2026-03-24.json}
+  \item \textbf{E6: L1 baseline, $n=120$, gpt-4o (2026-03-24).}
+    KLR=0.366, highest structural compliance.
 
-  \item \textbf{Partial judge re-evaluation (2026-03-24)}
-    \\ Applied \texttt{scripts/partial\_judge.py} to all L1 batches.
-    \\ Outputs: \texttt{*.partial\_scores.json}
+  \item \textbf{Partial judge applied (2026-03-24).}
+    Script: \texttt{partial\_judge.py} applied to all L1 batches.
 
-  \item \textbf{E7: L2 syntax inversion, $n=5$, gpt-4o-mini (2026-03-24)}
-    \\ Explicit grammar rules provided.
-    \\ File: \texttt{L2-batch-quick-gpt4omini.json}
-    \\ SIR=0.0 (model adopted L2 fully)
+  \item \textbf{E7: L2 syntax inversion, $n=5$, gpt-4o-mini (2026-03-24).}
+    Explicit grammar rules provided in system prompt.
+    SIR=0.0; model adopted L2 syntax fully.
 
-  \item \textbf{E8: L3 semantic inversion, $n=5$, gpt-4o-mini (2026-03-24)}
-    \\ Explicit inversion rule in system prompt.
-    \\ File: \texttt{L3-semantic-batch-gpt4omini.json}
-    \\ PPR=1.0 (prior dominance, complete failure)
+  \item \textbf{E8: L3 semantic inversion, $n=5$, gpt-4o-mini (2026-03-24).}
+    Explicit inversion rule in system prompt.
+    PPR=1.0: prior dominance, complete failure.
 
-  \item \textbf{E9--E10: L3 semantic inversion, $n=10$, gpt-4o and gpt-4.1-mini (2026-03-24)}
-    \\ Files: \texttt{L3-semantic-batch-gpt4o.json}, \texttt{L3-semantic-batch-gpt4.1mini.json}
-    \\ Both: PPR=0.0 (followed rule successfully)
+  \item \textbf{E9--E10: L3 semantic inversion, $n=10$, gpt-4o and gpt-4.1-mini (2026-03-24).}
+    Both models: PPR=0.0 (successfully followed rule).
 
-  \item \textbf{E11: L4 implicit semantic, $n=5$, gpt-4o (2026-03-24)}
-    \\ No system prompt; only 2 worked examples.
-    \\ File: \texttt{L4-implicit-batch-gpt4o.json}
-    \\ Pattern blindness: model ignored examples entirely
+  \item \textbf{E11: L4 implicit semantic, $n=5$, gpt-4o (2026-03-24).}
+    No system prompt; only 2 worked examples shown.
+    Pattern blindness observed: model ignored inversion cue.
 \end{enumerate}
 
 \subsection{API and runtime settings}
@@ -56,19 +50,16 @@ Retry & None \\
 
 \subsection{Repository structure for replication}
 
-\begin{tabular}{@{}ll@{}}
+\begin{tabular}{@{}lp{3.2cm}@{}}
 \toprule
-Path & Content \\
+Script / Path & Purpose \\
 \midrule
-\texttt{scripts/run\_gpt54\_eval.py} & L1 runner \\
-\texttt{scripts/run\_l2\_eval.py} & L2 runner \\
-\texttt{scripts/partial\_judge.py} & Continuous metric judge \\
-\texttt{scripts/compare\_eval\_runs.py} & Run comparison \\
-\texttt{docs/archive/prompt-versions/} & L1 prompt bank \\
-\texttt{docs/archive/L2-prompt-versions/} & L2 prompts \\
-\texttt{docs/archive/L3-semantic-inversion-prompts/} & L3 prompts \\
-\texttt{docs/archive/L4-implicit-inversion-prompts/} & L4 prompts \\
+\texttt{run\_gpt54\_eval.py} & L1 batch runner \\
+\texttt{run\_l2\_eval.py} & L2 batch runner \\
+\texttt{partial\_judge.py} & Continuous metrics \\
+\texttt{compare\_eval\_runs.py} & Run comparison \\
+\texttt{docs/archive/*/} & Prompt banks (L1--L4) \\
 \texttt{docs/research/results/} & All output JSONs \\
-\texttt{docs/research/language-levels/} & L2/L3/L4 specs \\
+\texttt{language-levels/} & Level specs \\
 \bottomrule
 \end{tabular}
