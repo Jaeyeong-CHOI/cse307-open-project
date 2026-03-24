@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 03:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 04:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1092,13 +1092,13 @@ Overfull \hbox (3.05284pt too wide) in paragraph at lines 116--117
  []
 
 
-Underfull \hbox (badness 2119) in paragraph at lines 126--127
-[]\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
+Underfull \hbox (badness 10000) in paragraph at lines 126--127
+[]\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--127
-\T1/ptm/m/n/10 (+20) Fi-bonacci, we eval-u-ated four mod-els on three
+Underfull \hbox (badness 2932) in paragraph at lines 126--127
+\T1/ptm/m/n/10 (+20) be-yond Fi-bonacci, we eval-u-ated six mod-els on three
  []
 
 
@@ -1110,11 +1110,11 @@ Underfull \hbox (badness 4634) in paragraph at lines 126--127
 LaTeX Font Info:    Font shape `T1/ptm/m/scit' in size <8> not available
 (Font)              Font shape `T1/ptm/m/it' tried instead on input line 130.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1320) has occurred while \output is active []
 
  [5])
-(./sections/06_discussion.tex) (./sections/07_conclusion.tex)
-(./sections/08_prompt_and_judge_details.tex [6]
+(./sections/06_discussion.tex [6]) (./sections/07_conclusion.tex)
+(./sections/08_prompt_and_judge_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1139,16 +1139,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--19
 ) Script:
  []
 
-
-Underfull \vbox (badness 3579) has occurred while \output is active []
-
-)
-(./sections/10_appendix_experiment_details.tex [8])
+) (./sections/10_appendix_experiment_details.tex [8])
 Underfull \hbox (badness 3769) in paragraph at lines 68--61
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-(./main.bbl)
+(./main.bbl [9])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1160,20 +1156,22 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[9] (./main.aux)
+[10
+
+] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25149 strings out of 467525
- 516845 string characters out of 5408440
- 1182834 words of memory out of 5000000
+ 25162 strings out of 467525
+ 516964 string characters out of 5408440
+ 1187840 words of memory out of 5000000
  53157 multiletter control sequences out of 15000+600000
- 773655 words of font info for 455 fonts, out of 8000000 for 9000
+ 774367 words of font info for 464 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,14n,108p,1290b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,14n,108p,1879b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1201,10 +1199,10 @@ ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 utmbi8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1
 /urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (9 pages, 276356 bytes).
+Output written on main.pdf (10 pages, 278585 bytes).
 PDF statistics:
- 148 PDF objects out of 1000 (max. 8388607)
- 92 compressed objects within 1 object stream
+ 151 PDF objects out of 1000 (max. 8388607)
+ 94 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  72717 words of extra memory for PDF output out of 74296 (max. 10000000)
 
