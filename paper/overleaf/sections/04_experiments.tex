@@ -18,7 +18,7 @@ We ran experiments at each language level for available model families. All runs
 
 \subsection{L4 Experiment: Semantic Inversion (Implicit)}
 Initial screening: 10 prompts per model, no rule stated; only 2 worked examples with inverted semantics shown. Model must infer pattern.
-Ablation (n=50): 5 prompt variants $\times$ 10 runs each, varying the number of worked examples (2 vs.\ 3), presence of inline comments, order of examples, and domain of examples. Evaluated across \texttt{gpt-4o}, \texttt{gpt-4o-mini}, and \texttt{gpt-4.1-mini}.
+Ablation (n=50): 5 prompt variants $\times$ 10 runs each, varying the number of worked examples (2 vs.\ 3), presence of inline comments, order of examples, and domain of examples. Evaluated across \texttt{gpt-4o}, \texttt{gpt-4o-mini}, and \texttt{gpt-4.1-mini}. A parallel run on \texttt{gpt-5.4-mini} yielded $n=42$ valid samples (variant E rejected with HTTP 400 due to an unsupported API parameter); results are reported separately in the discussion.
 
 \subsection{Reproducibility}
 All experimental artifacts, commands, and results are committed to the repository under \texttt{docs/research/results/}. See reproducibility protocol section for commands.

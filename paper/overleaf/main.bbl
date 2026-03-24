@@ -29,72 +29,158 @@ M.~Chen \emph{et~al.}, ``Evaluating large language models trained on code,''
 J.~Austin \emph{et~al.}, ``Program synthesis with large language models,''
   \emph{arXiv preprint arXiv:2108.07732}, 2021.
 
+\bibitem{bigcodebench2024}
+T.~Zhuo \emph{et~al.}, ``{BigCodeBench}: Benchmarking code generation with
+  diverse function calls and complex instructions,'' arXiv:2406.15079, 2024.
+
+\bibitem{livecodebench2024}
+N.~Jain \emph{et~al.}, ``{LiveCodeBench}: Holistic and contamination-free
+  evaluation of large language models for code,'' arXiv:2403.07974, 2024.
+
 \bibitem{feng2020codebert}
-Z.~Feng \emph{et~al.}, ``Codebert: A pre-trained model for programming and
+Z.~Feng \emph{et~al.}, ``{CodeBERT}: A pre-trained model for programming and
   natural languages,'' in \emph{EMNLP-Findings}, 2020.
 
 \bibitem{wang2021codet5}
-Y.~Wang, W.~Wang, S.~Joty, and S.~C. Hoi, ``Codet5: Identifier-aware unified
-  pre-trained encoder-decoder models for code understanding and generation,''
-  in \emph{EMNLP}, 2021.
-
-\bibitem{guo2022unixcoder}
-D.~Guo \emph{et~al.}, ``Unified cross-modal pre-training for code
-  representation,'' arXiv:2203.03850, 2022.
+Y.~Wang, W.~Wang, S.~Joty, and S.~C. Hoi, ``{CodeT5}: Identifier-aware unified
+  pre-trained encoder-decoder models,'' in \emph{EMNLP}, 2021.
 
 \bibitem{fried2022incoder}
-D.~Fried \emph{et~al.}, ``Incoder: A generative model for code infilling and
-  synthesis,'' \emph{arXiv preprint arXiv:2204.05999}, 2022.
+D.~Fried \emph{et~al.}, ``{InCoder}: A generative model for code infilling and
+  synthesis,'' 2022.
 
-\bibitem{ouyang2022instruct}
-L.~Ouyang \emph{et~al.}, ``Training language models to follow instructions with
-  human feedback,'' arXiv:2203.02155, 2022.
+\bibitem{luo2023wizardcoder}
+Z.~Luo \emph{et~al.}, ``{WizardCoder}: Empowering code large language models
+  with evol-instruct,'' arXiv:2306.08568, 2024.
 
-\bibitem{brown2020fewshot}
-T.~Brown \emph{et~al.}, ``Language models are few-shot learners,''
-  arXiv:2005.14165, 2020.
+\bibitem{guo2024deepseek}
+D.~Guo \emph{et~al.}, ``{DeepSeek-Coder}: When the large language model meets
+  programming,'' arXiv:2401.14196, 2024.
+
+\bibitem{codeif2025}
+Y.~Liu \emph{et~al.}, ``{CodeIF}: Benchmarking instruction-following in code
+  generation,'' arXiv:2502.19166, 2025.
+
+\bibitem{multicode2025}
+W.~Zhang \emph{et~al.}, ``{MultiCodeIF}: Comprehensive evaluation of code
+  instruction-following,'' arXiv:2507.00699, 2025.
 
 \bibitem{chen2024instructhierarchy}
-E.~Chen \emph{et~al.}, ``Instruction hierarchy: Training llms to prioritize
-  privileged instructions,'' arXiv:2404.13208, 2024.
+E.~Chen \emph{et~al.}, ``The instruction hierarchy: Training {LLMs} to
+  prioritize privileged instructions,'' arXiv:2404.13208, 2024.
 
-\bibitem{xie2023resolving}
+\bibitem{xie2024conflict}
 J.~Xie \emph{et~al.}, ``Adaptive chameleon or stubborn sloth: Revealing the
-  behavior of large language models in knowledge conflicts,'' arXiv:2305.13300,
+  behavior of {LLMs} in knowledge conflicts,'' ICLR 2024 (arXiv:2305.13300),
+  2024.
+
+\bibitem{wu2024contextparametric}
+S.~Wu \emph{et~al.}, ``Untangle the {KNOT}: Interweaving conflicting knowledge
+  and reasoning skills in {LLMs},'' arXiv:2403.08319, 2024.
+
+\bibitem{zhang2024conflict}
+Z.~Zhang \emph{et~al.}, ``Knowledge conflicts for {LLMs}: A survey,'' EMNLP
+  2024 (arXiv:2403.08319), 2024.
+
+\bibitem{contextinvert2024}
+F.~Shi \emph{et~al.}, ``Large language models can be easily distracted by
+  irrelevant context,'' ICML 2023 (arXiv:2302.00093), 2023.
+
+\bibitem{wang2024ntp}
+Z.~Wang \emph{et~al.}, ``A law of next-token prediction in large language
+  models,'' arXiv:2408.13442, 2024.
+
+\bibitem{min2022rethinking}
+S.~Min \emph{et~al.}, ``Rethinking the role of demonstrations: What makes
+  in-context learning work?'' EMNLP 2022 (arXiv:2202.12837), 2022.
+
+\bibitem{dong2022survey}
+Q.~Dong \emph{et~al.}, ``A survey on in-context learning,'' arXiv:2301.00234,
   2023.
 
-\bibitem{dakhel2023github}
-A.~M. Dakhel \emph{et~al.}, ``Github copilot ai pair programmer: Asset or
-  liability?'' 2023.
+\bibitem{anotb2024}
+A.~Lampinen \emph{et~al.}, ``{A-Not-B} errors in {LLMs}: Limitations of
+  in-context learning,'' arXiv:2409.15454, 2024.
 
-\bibitem{sheard2023perceptions}
-J.~Sheard \emph{et~al.}, ``Perceptions of the use of ai tools by computing
-  students,'' ACE, 2023.
+\bibitem{counterfact2024}
+Q.~Zhao \emph{et~al.}, ``{LLMs} struggle to perform counterfactual reasoning
+  with parametric knowledge,'' arXiv:2410.06392, 2024.
 
-\bibitem{macneil2023experiences}
-S.~MacNeil \emph{et~al.}, ``Experiences from using code explanations generated
-  by large language models in a web software development e-book,'' SIGCSE,
-  2023.
+\bibitem{semanticinvar2024}
+M.~Turpin \emph{et~al.}, ``Language models don't always say what they think:
+  Unfaithful explanations in chain-of-thought prompting,'' NeurIPS 2023
+  (arXiv:2305.04388), 2023.
+
+\bibitem{reasoningrigidity2024}
+K.~Valmeekam \emph{et~al.}, ``{LLMs} still can't plan; can {LRMs?} evaluation
+  of {OpenAI}'s o1,'' arXiv:2409.13373, 2024.
 
 \bibitem{zhu2023promptrobust}
-K.~Zhu \emph{et~al.}, ``Promptbench: Towards evaluating the robustness of large
-  language models on adversarial prompts,'' arXiv:2306.04528, 2023.
+K.~Zhu \emph{et~al.}, ``{PromptBench}: Evaluating robustness of large language
+  models,'' arXiv:2306.04528, 2023.
 
 \bibitem{pan2024adversarial}
-R.~Pan \emph{et~al.}, ``Attacking llms with code generation:
+R.~Pan \emph{et~al.}, ``Attacking {LLMs} with code generation:
   Semantically-aligned adversarial perturbations,'' arXiv:2412.16359, 2024.
 
+\bibitem{coderobbery2024}
+S.~Jha \emph{et~al.}, ``Break the chain: Reasoning failures in {LLMs} via
+  adversarial code prompting,'' arXiv:2506.06971, 2024.
+
+\bibitem{khan2024cheatingllm}
+A.~Khan \emph{et~al.}, ``Defeating {LLMs} with adversarial perturbations in
+  programming assignments,'' arXiv:2410.09318, 2024.
+
+\bibitem{wu2024lowresource}
+J.~Wu \emph{et~al.}, ``A survey on {LLM}-based code generation for low-resource
+  and domain-specific languages,'' arXiv:2410.03981, 2024.
+
+\bibitem{concode2024}
+W.~Chen \emph{et~al.}, ``{ConCodeEval}: Evaluating {LLMs} for code constraint
+  comprehension in {DSLs},'' EMNLP 2024, 2024.
+
+\bibitem{l2ceval2024}
+A.~Ni \emph{et~al.}, ``{L2CEval}: Evaluating language-to-code generation
+  capabilities,'' TACL 2024, 2024.
+
 \bibitem{dong2024xgrammar}
-Y.~Dong \emph{et~al.}, ``Xgrammar: Flexible and efficient structured generation
-  engine for large language models,'' arXiv:2411.15100, 2024.
+Y.~Dong \emph{et~al.}, ``{XGrammar}: Flexible and efficient structured
+  generation for {LLMs},'' arXiv:2411.15100, 2024.
 
 \bibitem{muendler2025type}
 J.~Muendler \emph{et~al.}, ``Type-constrained code generation with language
-  models,'' 2025.
+  models,'' PLDI 2025, 2025.
 
-\bibitem{frameworkdsl2024}
-M.~Camilli \emph{et~al.}, ``A framework for assessing the capabilities of code
-  generation of constraint domain-specific languages with llms,''
-  arXiv:2504.09246, 2024.
+\bibitem{jimenez2024swebench}
+C.~Jimenez \emph{et~al.}, ``{SWE-bench}: Can language models resolve real-world
+  {GitHub} issues?'' 2024.
+
+\bibitem{dakhel2023github}
+A.~Dakhel \emph{et~al.}, ``{GitHub Copilot} {AI} pair programmer: Asset or
+  liability?'' 2023.
+
+\bibitem{lau2023learners}
+S.~Lau and P.~Guo, ``From coding assistant to software developer: How novice
+  programmers use {LLMs},'' arXiv:2304.01984, 2023.
+
+\bibitem{prather2023robots}
+J.~Prather \emph{et~al.}, ``It's complicated: Perspectives of novice
+  programmers on {GitHub Copilot},'' arXiv:2303.08733, 2023.
+
+\bibitem{liffiton2023codehelp}
+M.~Liffiton \emph{et~al.}, ``{CodeHelp}: Using large language models with
+  guardrails for programming classes,'' arXiv:2308.06921, 2023.
+
+\bibitem{novak2025llmhw}
+E.~Novak and B.~McDanel, ``Designing {LLM}-resistant programming assignments,''
+  SIGCSE TS 2025, 2025.
+
+\bibitem{codeplagiarism2024}
+M.~Orenstrakh \emph{et~al.}, ``Detecting {LLM}-generated code assignments using
+  perplexity of code,'' arXiv:2307.09714, 2023.
+
+\bibitem{ouyang2022instruct}
+L.~Ouyang \emph{et~al.}, ``Training language models to follow instructions with
+  human feedback,'' NeurIPS 2022 (arXiv:2203.02155), 2022.
 
 \end{thebibliography}

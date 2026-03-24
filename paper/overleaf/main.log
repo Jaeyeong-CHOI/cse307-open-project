@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  24 MAR 2026 19:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 01:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -535,6 +535,10 @@ File: md-frame-0.mdf 2013/07/01\ 1.9b: md-frame-0
 \c@mdf@zref@counter=\count317
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tcolorbox/tco
+lorbox.sty
+Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
+
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/pgf/frontendl
 ayer/tikz.sty
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/pgf/basiclaye
@@ -840,6 +844,69 @@ File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 dlayer/tikz/libraries/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tools/verbati
+m.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks40
+\verbatim@line=\toks41
+\verbatim@in@stream=\read3
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/environ/envir
+on.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/trimspaces/tr
+imspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\tcb@titlebox=\box76
+\tcb@upperbox=\box77
+\tcb@lowerbox=\box78
+\tcb@phantombox=\box79
+\c@tcbbreakpart=\count339
+\c@tcblayer=\count340
+\c@tcolorbox@number=\count341
+\l__tcobox_tmpa_box=\box80
+\l__tcobox_tmpa_dim=\dimen305
+\tcb@temp=\box81
+\tcb@temp=\box82
+\tcb@temp=\box83
+\tcb@temp=\box84
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tcolorbox/tcb
+skins.code.tex
+Library (tcolorbox): 'tcbskins.code.tex' version '6.9.0'
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tikzfill/tikz
+fill.image.sty
+Package: tikzfill.image 2023/08/08 v1.0.1 Image filling library for TikZ
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tikzfill/tikz
+fill-common.sty
+Package: tikzfill-common 2023/08/08 v1.0.1 Auxiliary code for tikzfill
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tikzfill/tikz
+libraryfill.image.code.tex
+File: tikzlibraryfill.image.code.tex 2023/08/08 v1.0.1 Image filling library
+\l__tikzfill_img_box=\box85
+))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tcolorbox/tcb
+skinsjigsaw.code.tex
+Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.9.0'
+))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/tcolorbox/tcb
+breakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '6.9.0'
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/pdfcol/pdfcol
+.sty
+Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
+)
+Package pdfcol Info: New color stack `tcb@breakable' = 1 on input line 23.
+\tcb@testbox=\box86
+\tcb@totalupperbox=\box87
+\tcb@totallowerbox=\box88
+)
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/fronten
 dlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2025-08-29 v3.1.11a (3.1.11a)
@@ -854,37 +921,37 @@ File: pgflibraryshapes.geometric.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
 
 -- Lines per column: 56 (exact).
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/context/base/mkii/s
 upp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count339
-\scratchdimen=\dimen305
-\scratchbox=\box76
-\nofMPsegments=\count340
-\nofMParguments=\count341
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count342
-\MPscratchDim=\dimen306
-\MPnumerator=\count343
-\makeMPintoPDFobject=\count344
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count342
+\scratchdimen=\dimen306
+\scratchbox=\box89
+\nofMPsegments=\count343
+\nofMParguments=\count344
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count345
+\MPscratchDim=\dimen307
+\MPnumerator=\count346
+\makeMPintoPDFobject=\count347
+\everyMPtoPDFconversion=\toks43
 )
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/epstopdf-pkg/
 epstopdf-base.sty
@@ -897,13 +964,13 @@ pstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 23.
-Package microtype Info: Applying patch `item' on input line 23.
-Package microtype Info: Applying patch `toc' on input line 23.
-Package microtype Info: Applying patch `eqnum' on input line 23.
-Package microtype Info: Applying patch `footnote' on input line 23.
-Package microtype Info: Applying patch `verbatim' on input line 23.
-LaTeX Info: Redefining \microtypesetup on input line 23.
+LaTeX Info: Redefining \microtypecontext on input line 25.
+Package microtype Info: Applying patch `item' on input line 25.
+Package microtype Info: Applying patch `toc' on input line 25.
+Package microtype Info: Applying patch `eqnum' on input line 25.
+Package microtype Info: Applying patch `footnote' on input line 25.
+Package microtype Info: Applying patch `verbatim' on input line 25.
+LaTeX Info: Redefining \microtypesetup on input line 25.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -919,7 +986,7 @@ Package microtype Info: No adjustment of character kerning.
 ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 24
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 26
 .
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/t1pcr.
@@ -962,68 +1029,41 @@ re/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/
 20260301/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
-]
-Underfull \hbox (badness 3612) in paragraph at lines 25--28
-[]\T1/ptm/m/n/10 (+20) Constrained de-cod-ing ap-proaches [16], [17] en-force
- []
-
-) (./sections/03_method.tex
-Overfull \hbox (42.60077pt too wide) in paragraph at lines 83--83
-[]  \T1/pcr/m/n/10 return fib(n-1)+fib(n-2)[] 
- []
-
-
-Overfull \hbox (54.60077pt too wide) in paragraph at lines 90--90
-[]    \T1/pcr/m/n/10 return fib(n-1)+fib(n-2)[] 
- []
-
-
-Overfull \hbox (28.64218pt too wide) in paragraph at lines 74--97
- [][] 
- []
-
-[2]) (./sections/04_experiments.tex
+])
+(./sections/03_method.tex [2]) (./sections/04_experiments.tex [3]
 Underfull \hbox (badness 10000) in paragraph at lines 7--8
 []\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm
 /m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
  []
 
 ) (./sections/05_results.tex
-Underfull \hbox (badness 10000) in paragraph at lines 58--58
-[]|\T1/ptm/m/n/10 (+20) System: ``if-blocks run
+Underfull \hbox (badness 10000) in paragraph at lines 85--92
+\T1/pcr/m/n/9 if n > 1:     []% inverted: runs when
  []
 
 
-Overfull \hbox (7.91925pt too wide) in paragraph at lines 65--65
-[]\T1/pcr/m/n/9 if n > 1:   # inverted[] 
+Underfull \hbox (badness 10000) in paragraph at lines 97--104
+\T1/pcr/m/n/9 if n <= 1:    []% Python prior, not
+ []
+
+) (./sections/06_discussion.tex [4]) (./sections/07_conclusion.tex)
+(./sections/08_prompt_and_judge_details.tex [5]
+Underfull \hbox (badness 10000) in paragraph at lines 75--81
+\T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
+/9 def
  []
 
 
-Overfull \hbox (18.71924pt too wide) in paragraph at lines 65--65
-[]\T1/pcr/m/n/9 return fib(n-1)+fib(n-2)[] 
+Underfull \hbox (badness 10000) in paragraph at lines 75--81
+\T1/pcr/m/n/9 value ?cond: res ;else: alt ;end \T1/ptm/m/n/9 (+20) (re-places
  []
 
 
-Overfull \hbox (29.51923pt too wide) in paragraph at lines 72--72
-[]\T1/pcr/m/n/9 if n <= 1:  # Python prior[] 
+Underfull \hbox (badness 10000) in paragraph at lines 75--81
+\T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-
-Overfull \hbox (18.71924pt too wide) in paragraph at lines 72--72
-[]\T1/pcr/m/n/9 return fib(n-1)+fib(n-2)[] 
- []
-
-) (./sections/06_discussion.tex [3]) (./sections/07_conclusion.tex)
-(./sections/08_prompt_and_judge_details.tex
-Underfull \hbox (badness 10000) in paragraph at lines 45--59
- \T1/ptm/m/it/10 (+20) 4) Rep-re-sen-ta-tive alias map-pings: [][]
- []
-
-[4]
-Package mdframed Info: Box was splittet wrong
- starting loop to iterate the splitting point
-(mdframed)              on input line 134.
-) (./sections/09_reproducibility_protocol.tex
+[6]) (./sections/09_reproducibility_protocol.tex
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
 
@@ -1032,18 +1072,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--19
 ) Script:
  []
 
-[5]) (./sections/10_appendix_experiment_details.tex)
-Underfull \hbox (badness 3769) in paragraph at lines 68--48
+) (./sections/10_appendix_experiment_details.tex [7])
+Underfull \hbox (badness 3769) in paragraph at lines 68--50
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-(./main.bbl
-Underfull \hbox (badness 6859) in paragraph at lines 54--56
-[]\T1/ptm/m/n/8 (+20) T. Brown \T1/ptm/m/it/8 (+20) et al.\T1/ptm/m/n/8 (+20) ,
- ``Lan-guage mod-els are few-shot learn-ers,''
- []
-
-[6])
+(./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1055,22 +1089,20 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[7
-
-] (./main.aux)
+[8] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 19675 strings out of 467525
- 391155 string characters out of 5408440
- 833274 words of memory out of 5000000
- 47826 multiletter control sequences out of 15000+600000
- 765200 words of font info for 390 fonts, out of 8000000 for 9000
+ 23360 strings out of 467525
+ 492958 string characters out of 5408440
+ 959496 words of memory out of 5000000
+ 51400 multiletter control sequences out of 15000+600000
+ 769856 words of font info for 441 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,94p,1001b,743s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,11n,108p,1001b,745s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1091,10 +1123,10 @@ r/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
 ></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/
 utmri8a.pfb>
-Output written on main.pdf (7 pages, 205301 bytes).
+Output written on main.pdf (8 pages, 218552 bytes).
 PDF statistics:
- 112 PDF objects out of 1000 (max. 8388607)
- 70 compressed objects within 1 object stream
+ 115 PDF objects out of 1000 (max. 8388607)
+ 72 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 66573 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 67085 words of extra memory for PDF output out of 74296 (max. 10000000)
 
