@@ -1,0 +1,27 @@
+{
+  "source": "docs/research/results/prompt-batch-v1-120.gpt53-codex.2026-03-23.json",
+  "n": 1,
+  "samples": [
+    {
+      "klr": 0.0,
+      "acr": 1.0,
+      "pss": 0.65,
+      "pir": 0.0,
+      "parse_ok": true,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v1.md"
+    }
+  ]
+}
