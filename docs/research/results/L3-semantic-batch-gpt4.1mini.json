@@ -1,0 +1,97 @@
+{
+  "model": "gpt-4.1-mini",
+  "level": "L3",
+  "total": 10,
+  "results": [
+    {
+      "file": "v1.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:\n        return fib(n-1) + fib(n-2)\n    else:\n        return n\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v2.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:\n        return fib(n-1) + fib(n-2)\n    else:\n        return n\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v3.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:\n        return fib(n-1) + fib(n-2)\n    else:\n        return n\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v4.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:\n        return fib(n-1) + fib(n-2)\n    else:\n        return n\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v5.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:  # runs when n <= 1 (FALSE when n > 1)\n        return n\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v6.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:          # runs when n <= 1 (FALSE when n > 1)\n        return n\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v7.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:          # runs when n <= 1 (FALSE when n > 1)\n        return n\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v8.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:\n        return fib(n-1) + fib(n-2)\n    else:\n        return n\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v9.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:  # runs when n <= 1 (FALSE when n > 1)\n        return n\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
+    },
+    {
+      "file": "v10.md",
+      "judge": {
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "pass": true
+      },
+      "answer": "def fib(n):\n    if n > 1:          # runs when n <= 1 (FALSE when n > 1)\n        return n\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(i, fib(i))"
+    }
+  ]
+}

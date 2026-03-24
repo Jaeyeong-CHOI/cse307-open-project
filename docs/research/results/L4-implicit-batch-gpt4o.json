@@ -1,0 +1,52 @@
+{
+  "model": "gpt-4o",
+  "level": "L4",
+  "total": 5,
+  "results": [
+    {
+      "file": "v1.md",
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false
+      },
+      "answer_snippet": "Certainly! Below is the Fibonacci function written in the same programming language style as the examples provided:\n\n```python\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\n# Print fib(0) through fib(6)\nprint(fib(0))  # Output: 0\nprint(fib(1))  # Output: 1\nprint(fib(2))  # Output: 1\nprint(fib(3))  # Output: 2\nprint(fib(4))  # Output"
+    },
+    {
+      "file": "v2.md",
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false
+      },
+      "answer_snippet": "Certainly! Below is the Fibonacci function written in the same programming language style as the examples provided:\n\n```python\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\n# Printing fib(0) through fib(6)\nprint(fib(0))  # Output: 0\nprint(fib(1))  # Output: 1\nprint(fib(2))  # Output: 1\nprint(fib(3))  # Output: 2\nprint(fib(4))  # Out"
+    },
+    {
+      "file": "v3.md",
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false
+      },
+      "answer_snippet": "Certainly! Below is the Fibonacci function written in the same programming language style as the examples provided:\n\n```python\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\n# Printing fib(0) through fib(6)\nprint(fib(0))  # Output: 0\nprint(fib(1))  # Output: 1\nprint(fib(2))  # Output: 1\nprint(fib(3))  # Output: 2\nprint(fib(4))  # Out"
+    },
+    {
+      "file": "v4.md",
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false
+      },
+      "answer_snippet": "Certainly! Below is the Fibonacci function written in the same programming language style as the examples provided:\n\n```python\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\n# Printing fib(0) through fib(6)\nprint(fib(0))  # Output: 0\nprint(fib(1))  # Output: 1\nprint(fib(2))  # Output: 1\nprint(fib(3))  # Output: 2\nprint(fib(4))  # Out"
+    },
+    {
+      "file": "v5.md",
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false
+      },
+      "answer_snippet": "Certainly! Below is the Fibonacci function written in the same programming language style as the examples provided:\n\n```python\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\n# Printing Fibonacci numbers from fib(0) to fib(6)\nprint(fib(0))  # Output: 0\nprint(fib(1))  # Output: 1\nprint(fib(2))  # Output: 1\nprint(fib(3))  # Output: 2\npr"
+    }
+  ]
+}
