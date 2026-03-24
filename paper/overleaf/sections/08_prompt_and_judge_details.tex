@@ -2,158 +2,167 @@
 
 \subsection{L1: Token Alias Substitution}
 
-\subsubsection{System prompt S0 (baseline)}
-\begin{quote}
+\begin{figure}[!t]
 \small
-\textit{Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.}
-\end{quote}
+\begin{tcolorbox}[colback=blue!3, colframe=blue!45,
+  title=\textbf{S0 --- Baseline system prompt (L1)},
+  fonttitle=\small\bfseries, boxrule=0.6pt]
+\textit{``Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.''}
+\end{tcolorbox}
+\vspace{3pt}
+\begin{tcolorbox}[colback=blue!8, colframe=blue!60,
+  title=\textbf{S1 --- Context-pack system prompt (L1, ablation)},
+  fonttitle=\small\bfseries, boxrule=0.6pt]
+\textit{``Solve the given prompt exactly. Return ONLY code. Follow alias mapping strictly.''}\\[4pt]
+\textbf{[Transformed language contract]}\\
+Use transformed aliases as listed in the prompt.
+Do NOT output original Python keywords for transformed entries.\\
+Output only executable code in the transformed language.
+\end{tcolorbox}
+\caption{L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}
+\label{fig:l1_system_prompts}
+\end{figure}
 
-\subsubsection{System prompt S1 (context-pack)}
-\begin{quote}
+\begin{figure}[!t]
 \small
-\textit{Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.}
-
-\medskip\noindent\textbf{[Transformed language contract]}\\
-Use transformed aliases as listed below. Do NOT output original Python keywords. Output only executable code in the transformed language.
-\end{quote}
-
-\subsubsection{User prompt (template)}
-\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=6pt, innerbottommargin=6pt]
-\small
+\begin{tcolorbox}[colback=gray!4, colframe=gray!50,
+  title=\textbf{L1 user prompt template},
+  fonttitle=\small\bfseries, boxrule=0.6pt]
 \textbf{[Language Description]}\\
 Python grammar remains unchanged.\\
 Keyword aliases are user-configurable strings.\\
-At runtime, detected aliases are normalized back to Python.
-
-\medskip\noindent\textbf{Current mapping summary:}\\
+At runtime, detected aliases are normalized back to Python.\\[4pt]
+\textbf{Current mapping summary:}\\
 \texttt{if} $\rightarrow$ \{alias\}\quad
 \texttt{in} $\rightarrow$ \{alias\}\quad
 \texttt{def} $\rightarrow$ \{alias\}\\
 \texttt{for} $\rightarrow$ \{alias\}\quad
 \texttt{return} $\rightarrow$ \{alias\}\quad
-\texttt{print} $\rightarrow$ \{alias\}
-
-\medskip\noindent\textbf{[Task]}\\
+\texttt{print} $\rightarrow$ \{alias\}\\[4pt]
+\textbf{[Task]}\\
 1) Define function \texttt{fib(n)}.\\
 2) If \texttt{n <= 1}, return \texttt{n}.\\
 3) Otherwise return \texttt{fib(n-1) + fib(n-2)}.\\
 4) Loop \texttt{i = 0..6}, print \texttt{(i, fib(i))}.
-\end{mdframed}
+\end{tcolorbox}
+\caption{L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}
+\label{fig:l1_user_prompt}
+\end{figure}
 
-\subsubsection{Representative alias mappings}
+\noindent\textbf{Alias sampling strategy.} Representative mappings from three prompt versions:
 
-\begin{tabular}{@{}lll@{}}
+\begin{center}\footnotesize
+\begin{tabular}{@{}llll@{}}
 \toprule
-Version & Token & Alias \\
+Token & v1 alias & v35 alias & v90 alias \\
 \midrule
-v1 & \texttt{if} & \texttt{return} \\
-v1 & \texttt{def} & \texttt{if} \\
-v1 & \texttt{for} & (long phrase) \\
-v35 & \texttt{for} & \texttt{xk} \\
-v35 & \texttt{def} & \texttt{def} (unchanged) \\
-v90 & \texttt{def} & \texttt{return} \\
-v90 & \texttt{return} & \texttt{out} \\
-v90 & \texttt{print} & \texttt{qn} \\
+\texttt{if}     & \texttt{return}       & anti-prior phrase & long natural phrase \\
+\texttt{def}    & \texttt{if}           & \texttt{def}      & \texttt{return} \\
+\texttt{for}    & long phrase           & \texttt{xk}       & long phrase \\
+\texttt{return} & long phrase           & long phrase       & \texttt{out} \\
+\texttt{print}  & \texttt{do}           & ---               & \texttt{qn} \\
 \bottomrule
 \end{tabular}
+\end{center}
 
 \subsection{L2: Syntax Inversion}
 
-Grammar specification given to model:
-
-\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=4pt, innerbottommargin=4pt]
+\begin{figure}[!t]
 \small
-\textbf{This is NOT Python.} All standard Python keywords (\texttt{def}, \texttt{return}, \texttt{if}, \texttt{for}, \texttt{in}) are FORBIDDEN.
-
-Grammar:\\
-\texttt{:define name [args] ->}\quad (not \texttt{def name(args):})\\
-\texttt{<= value}\quad (not \texttt{return value})\\
-\texttt{value ?cond: res ;else: alt ;end}\quad (not \texttt{if})\\
-\texttt{loop var over iter \{ body \}}\quad (not \texttt{for})\\
+\begin{tcolorbox}[colback=orange!4, colframe=orange!60,
+  title=\textbf{L2 grammar specification (complete)},
+  fonttitle=\small\bfseries, boxrule=0.6pt]
+\textbf{This is NOT Python.} All Python keywords are FORBIDDEN.\\[4pt]
+\texttt{:define name [args] ->}\quad (replaces \texttt{def name(args):})\\
+\texttt{<= value}\quad (replaces \texttt{return value})\\
+\texttt{value ?cond: res ;else: alt ;end}\quad (replaces \texttt{if})\\
+\texttt{loop var over iterable \{ body \}}\quad (replaces \texttt{for})\\
 \texttt{;;}\quad closes function block
-\end{mdframed}
+\end{tcolorbox}
+\caption{L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}
+\label{fig:l2_prompt}
+\end{figure}
 
 \subsection{L3: Semantic Inversion (Explicit)}
 
-\subsubsection{System prompt}
-\begin{quote}
+\begin{figure}[!t]
 \small
-\textit{Follow the L3 language rules exactly. If-blocks run when condition is FALSE.}
-\end{quote}
-
-\subsubsection{User prompt}
-
-\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=4pt, innerbottommargin=4pt]
-\small
-\textbf{L3 language rule (semantic inversion):}\\
-The syntax is identical to Python, but:\\
-RULE: The indented block of \texttt{if} executes when condition is \textbf{FALSE}.\\
-RULE: \texttt{else} executes when condition is \textbf{TRUE}.
-
-\medskip\noindent Example:
+\begin{tcolorbox}[colback=red!3, colframe=red!50,
+  title=\textbf{L3 system prompt --- explicit semantic rule},
+  fonttitle=\small\bfseries, boxrule=0.6pt]
+\textit{``Follow the L3 language rules exactly. If-blocks run when condition is \textbf{FALSE}.''}
+\end{tcolorbox}
+\vspace{3pt}
+\begin{tcolorbox}[colback=red!5, colframe=red!60,
+  title=\textbf{L3 user prompt (complete)},
+  fonttitle=\small\bfseries, boxrule=0.6pt]
+\textbf{L3 rule:} Syntax is identical to Python, but:\\
+RULE: Indented block executes when condition is \textbf{FALSE}.\\
+RULE: Else-block executes when condition is \textbf{TRUE}.\\[4pt]
+\textit{Example:}
 \begin{verbatim}
 if x > 5:
     print("small")  # runs when NOT x > 5
 else:
     print("large")  # runs when x > 5
 \end{verbatim}
-
-\medskip\noindent\textbf{Task:} Write fib function in L3. Intended logic: if $n \le 1$, return $n$; else return \texttt{fib(n-1)+fib(n-2)}.\\
-Think carefully about how to invert your condition.\\
-Loop $i = 0..6$, print \texttt{(i, fib(i))}.
-\end{mdframed}
+\vspace{2pt}
+\textbf{Task:} Write \texttt{fib(n)} in L3. Intended logic: if $n \le 1$ return $n$; else return \texttt{fib(n-1)+fib(n-2)}.\\
+Think carefully: your if-block runs when condition is FALSE.
+\end{tcolorbox}
+\caption{L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}
+\label{fig:l3_prompts}
+\end{figure}
 
 \subsection{L4: Semantic Inversion (Implicit)}
 
-User prompt only (no system message):
-
-\begin{mdframed}[backgroundcolor=gray!8, hidealllines=true, innerleftmargin=6pt, innerrightmargin=6pt, innertopmargin=4pt, innerbottommargin=4pt]
+\begin{figure}[!t]
 \small
-Here are some examples in our programming language:
-
-\medskip\noindent\textbf{Example 1} -- max function:
+\begin{tcolorbox}[colback=purple!4, colframe=purple!55,
+  title=\textbf{L4 user prompt (example-only delivery, no explicit rule)},
+  fonttitle=\small\bfseries, boxrule=0.6pt]
+Here are some examples in our programming language:\\[4pt]
+\textbf{Example 1 --- max function:}
 \begin{verbatim}
 def max_val(a, b):
     if a > b:
-    return b  % returns smaller when a>b
+        return b   # returns smaller when a > b
     return a
 \end{verbatim}
-Output: \texttt{max\_val(3,5)=3}, \texttt{max\_val(7,2)=2}
-
-\medskip\noindent\textbf{Example 2} -- even check:
+Output: \texttt{max\_val(3,5)=3},\ \texttt{max\_val(7,2)=2}\\[4pt]
+\textbf{Example 2 --- even check:}
 \begin{verbatim}
 def is_even(n):
     if n % 2 == 0:
         return False
     return True
 \end{verbatim}
-Output: \texttt{is\_even(4)=False}, \texttt{is\_even(3)=True}
-
-\medskip\noindent\textbf{Task:} Write Fibonacci in this language. Target: \texttt{fib(0)=0}, \texttt{fib(1)=1}, \texttt{fib(n)=fib(n-1)+fib(n-2)}.\\
+Output: \texttt{is\_even(4)=False},\ \texttt{is\_even(3)=True}\\[4pt]
+\textbf{Task:} Write \texttt{fib(n)} in this language.
+Target: \texttt{fib(0)=0}, \texttt{fib(1)=1}, \texttt{fib(n)=fib(n-1)+fib(n-2)}.\\
 Print \texttt{fib(0)} through \texttt{fib(6)}.
-\end{mdframed}
+\end{tcolorbox}
+\caption{L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python fib---exhibiting \emph{pattern blindness}.}
+\label{fig:l4_prompt}
+\end{figure}
+
+\subsection{Evaluation Metrics}
+\begin{itemize}
+  \item \textbf{KLR} (Keyword Leakage Rate): fraction of alias slots where original Python keyword was used. ACR $= 1 - \text{KLR}$ is a derived quantity.
+  \item \textbf{PSS} (Partial Structural Score): weighted sub-component credit (alias: 0.4, parse: 0.25, skeleton: 0.25, format: 0.1).
+  \item \textbf{PPR} (Python Prior Rate, L3/L4): fraction of outputs using Python-style condition without inversion.
+\end{itemize}
 
 \subsection{Judge Protocol (L1)}
-
 \begin{enumerate}
-  \item \textbf{Alias compliance}: check that each required alias is present and original token is absent.
-  \item \textbf{Normalization}: replace aliases back to Python via word-boundary regex.
-  \item \textbf{Parse check}: \texttt{ast.parse()} on normalized code.
-  \item \textbf{Skeleton}: verify \texttt{fib}, base case, recursion, and print loop.
+  \item Alias compliance: check that alias is present and original token is absent.
+  \item Normalization: replace aliases $\to$ Python keywords via word-boundary regex.
+  \item Parse check: \texttt{ast.parse()} on normalized code.
+  \item Skeleton check: verify \texttt{fib}, base case, recursion, and print loop.
 \end{enumerate}
 
-Metrics (all continuous):
-\begin{align*}
-\text{KLR} &= \frac{\text{\# leaked token slots}}{\text{\# active alias slots}} \\
-\text{ACR} &= 1 - \text{KLR} \\
-\text{PSS} &= 0.4 \cdot \text{ACR} + 0.25 \cdot \text{parse} + 0.25 \cdot \text{skel} + 0.1 \cdot \text{loop} \\
-\text{PIR} &= \frac{\text{KLR}}{\text{KLR} + \text{ACR}}
-\end{align*}
-
 \subsection{Judge Protocol (L3/L4)}
-
 \begin{itemize}
-  \item \textbf{Python-prior}: model writes \texttt{if n <= 1: return n} (no inversion) $\Rightarrow$ fail.
-  \item \textbf{L3-correct}: model writes \texttt{if n > 1: return n} or equivalent $\Rightarrow$ pass.
-  \item $\text{PPR} = $ fraction of samples using Python-prior pattern.
+  \item \textbf{Python-prior}: model writes \texttt{if n <= 1: return n} (non-inverted) $\Rightarrow$ PPR=1 (fail).
+  \item \textbf{L3-correct}: model writes \texttt{if n > 1: return n} or equivalent $\Rightarrow$ PPR=0 (pass).
 \end{itemize}
