@@ -3,7 +3,7 @@
 
 \begin{table}[!t]
 \centering
-\caption{L1 evaluation: KLR and PSS per model. Baseline rows use $n=120$; ctx-pack rows for gpt-4.1 family and o4-mini use $n=20$ (v1--v20 subset). Models sorted by KLR. Context-pack delivery consistently reduces KLR; gpt-4.1-mini ctx-pack achieves the lowest KLR (0.21).}
+\caption{L1 evaluation: KLR and PSS per model. Baseline rows use $n=120$; ctx-pack rows for gpt-4.1 family and o4-mini use $n=20$ (v1--v20 subset). Models sorted by KLR. For gpt-4o-mini and gpt-4.1-mini (paired conditions), context-pack reduces KLR ($-38\%$ and $-51\%$ respectively); gpt-4.1-mini ctx-pack achieves the lowest KLR (0.21).}
 \label{tab:l1_results}
 \footnotesize
 \begin{tabular}{@{}llcc@{}}
@@ -25,7 +25,7 @@ gpt-4.1-mini & ctx-pack & 0.21 & 0.37 \\
 \end{table}
 
 \subsection{L1: Partial resistance; scale does not predict compliance}
-All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37), showing model scale does not predict compliance; (2) context-pack delivery consistently reduces KLR---gpt-4.1-mini achieves the lowest KLR (0.21 vs.\ 0.43 baseline, $-51\%$); (3) the reasoning model o4-mini (KLR=0.27) performs comparably to gpt-4o-mini ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance.
+All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37), suggesting model scale does not straightforwardly predict alias compliance---possibly due to stronger code-generation training in newer model families; (2) for models with paired conditions, context-pack delivery reduces KLR: gpt-4o-mini ($0.42 \to 0.26$, $-38\%$) and gpt-4.1-mini ($0.43 \to 0.21$, $-51\%$); (3) the reasoning model o4-mini (KLR=0.27) performs comparably to gpt-4o-mini ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance. Note: gpt-4.1, gpt-4.1-nano, and o4-mini were only evaluated under ctx-pack ($n=20$, v1--v20); baseline comparison for these models is not available and should be interpreted with caution given the smaller and non-overlapping prompt subset.
 
 \begin{table}[!t]
 \centering
@@ -155,7 +155,7 @@ T3 vowels & gpt-4.1-mini & 20 & 0/20  & 0.25 \\
 T3 vowels & gpt-4.1-nano & 10 & 0/10  & 0.00 \\
 T3 vowels & o4-mini      & 15 & 0/15  & 0.00 \\
 \bottomrule
-\multicolumn{5}{@{}p{\columnwidth}@{}}{\scriptsize $^*$gpt-4o-mini uses split base cases (\texttt{if n==0}/\texttt{if n==1}): \textit{template fragmentation}.} \\
+\multicolumn{5}{@{}p{\columnwidth}@{}}{\scriptsize $^*$gpt-4o-mini T1: outputs split base cases (\texttt{if n==0: return 0; if n==1: return 1}) rather than the standard \texttt{if n <= 1: return n} template---a sub-pattern we term \textit{template fragmentation} (outputs are structurally novel but semantically equivalent to Python prior and fail the L4 inversion criterion). This is a variant of prior dominance: the model defaults to a memorized Fibonacci skeleton regardless of inversion cues.} \\
 \end{tabular}
 \end{table}
 

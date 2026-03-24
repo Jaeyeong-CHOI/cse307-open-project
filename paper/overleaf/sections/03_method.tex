@@ -109,7 +109,7 @@ Same as L3, but no rule is stated. Instead, models receive 2--3 worked examples 
 Redundant metrics are removed. We report two independent measures:
 \begin{itemize}
   \item \textbf{KLR} (Keyword Leakage Rate): fraction of alias slots where original Python keyword was used. Note: ACR $= 1 - \text{KLR}$ and PIR $\approx \text{KLR}$ are derived quantities and not separately reported.
-  \item \textbf{PSS} (Partial Structural Score): weighted sub-component credit (alias: 0.4, parse: 0.25, skeleton: 0.25, format: 0.1).
+  \item \textbf{PSS} (Partial Structural Score, exploratory): weighted sub-component credit (alias: 0.4, parse: 0.25, skeleton: 0.25, format: 0.1). Weights are heuristic; PSS is reported as a secondary diagnostic alongside KLR and should not be used as the sole basis for compliance conclusions.
   \item \textbf{PPR} (Python Prior Rate, L3/L4): fraction of samples using Python-style condition (no inversion).
 \end{itemize}
 
