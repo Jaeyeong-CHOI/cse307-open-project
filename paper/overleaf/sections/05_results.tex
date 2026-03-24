@@ -92,11 +92,15 @@ E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0$^\dagger$ & .75$^*$ \\
   fonttitle=\small\bfseries, boxrule=0.5pt]
 \textit{System}: ``if-blocks run when condition is FALSE.''\\[3pt]
 \textit{gpt-4o output} \textbf{(CORRECT):}\\[2pt]
-{\small\ttfamily
-if n > 1:\quad\quad\ \ \  \textcolor{green!70!black}{\% inverted: runs when FALSE}\\
-\quad return n\\
+\begin{lstlisting}[language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  columns=flexible,keepspaces=true,
+  commentstyle=\color{green!60!black},
+  morecomment={[l]{\%}}]
+if n > 1:          % inverted: runs when FALSE
+    return n
 return fib(n-1) + fib(n-2)
-}
+\end{lstlisting}
 \end{tcolorbox}
 \vspace{3pt}
 \begin{tcolorbox}[colback=red!4, colframe=red!55,
@@ -104,11 +108,15 @@ return fib(n-1) + fib(n-2)
   fonttitle=\small\bfseries, boxrule=0.5pt]
 \textit{User}: [2 worked examples with inverted semantics, no explicit rule]\\[3pt]
 \textit{gpt-4o output} \textbf{(INCORRECT):}\\[2pt]
-{\small\ttfamily
-if n <= 1:\quad\ \ \  \textcolor{red!70!black}{\% Python prior, not inverted}\\
-\quad return n\\
+\begin{lstlisting}[language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  columns=flexible,keepspaces=true,
+  commentstyle=\color{red!70!black},
+  morecomment={[l]{\%}}]
+if n <= 1:         % Python prior, not inverted
+    return n
 return fib(n-1) + fib(n-2)
-}
+\end{lstlisting}
 \end{tcolorbox}
 \caption{Prior dominance vs.\ pattern blindness isolated on the same model (gpt-4o). \textbf{A}: gpt-4o correctly inverts logic with explicit rule (L3). \textbf{B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}
 \label{fig:l4_failure}

@@ -73,22 +73,28 @@ Python surface syntax is retained but the semantics of if-blocks are inverted: t
 \centering
 \begin{tcolorbox}[colback=green!4, colframe=green!50,
   title=\textbf{Python (standard)}, fonttitle=\small\bfseries, boxrule=0.5pt]
-\small\ttfamily
-def fib(n):\\
-\quad if n <= 1:\\
-\quad\quad return n\\
-\quad return fib(n-1) + fib(n-2)
+\begin{lstlisting}[language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  columns=flexible,keepspaces=true]
+def fib(n):
+    if n <= 1:
+        return n
+    return fib(n-1) + fib(n-2)
+\end{lstlisting}
 \tcblower
 \small\textit{Standard semantics: if-block runs when condition is TRUE}
 \end{tcolorbox}
 \vspace{3pt}
 \begin{tcolorbox}[colback=red!4, colframe=red!55,
   title=\textbf{L3 (semantic inversion)}, fonttitle=\small\bfseries, boxrule=0.5pt]
-\small\ttfamily
-def fib(n):\\
-\quad if n <= 1:\\
-\quad\quad return fib(n-1) + fib(n-2) \\
-\quad return n
+\begin{lstlisting}[language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  columns=flexible,keepspaces=true]
+def fib(n):
+    if n <= 1:
+        return fib(n-1) + fib(n-2)
+    return n
+\end{lstlisting}
 \tcblower
 \small\textit{Inverted: if-block runs when condition is FALSE}
 \end{tcolorbox}
