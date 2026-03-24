@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 05:10 KST
+마지막 업데이트: 2026-03-25 05:15 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -129,6 +129,11 @@
   - 논문 Table 4 (l4_multitask) o4-mini 행 추가, §5.4 5번째 finding 추가
   - PDF 재컴파일 완료 (9 pages), commit 643ebf9 push 완료
 
+- [x] 2026-03-25 05:15 L4 ablation gpt-4.1/gpt-4.1-nano n=20→n=50 확장 완료
+  - gpt-4.1: 0/50, PPR=1.0 (모든 variant A-E, 완전 prior dominance)
+  - gpt-4.1-nano: 0/50, PPR=1.0 (모든 variant A-E, 완전 prior dominance)
+  - Table 3 업데이트 (n 정정, 캡션), PDF 재컴파일(10p), commit b0b3bd3 push 완료
+  - Total L4 ablation: 6×50 + o4-mini×20 = 320 runs
 - [x] 2026-03-25 gpt-4.1 family + o4-mini 실험 추가 (L1 + L4)
   - **L1 ctx-pack (n=20, v1-v20)**: gpt-4.1 (KLR=0.295), gpt-4.1-mini (KLR=0.210), gpt-4.1-nano (KLR=0.378), o4-mini (KLR=0.265)
   - **L4 ablation (n=20, 5×4)**: gpt-4.1 (PPR=1.0, 0/20), gpt-4.1-nano (PPR=1.0, 0/20), o4-mini (PPR=0.95, **1/20 pass** — first L4 pass from reasoning model)
