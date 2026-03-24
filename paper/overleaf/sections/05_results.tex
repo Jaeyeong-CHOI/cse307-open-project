@@ -3,7 +3,7 @@
 
 \begin{table}[!t]
 \centering
-\caption{L1 evaluation: KLR and PSS per model ($n=120$). Models sorted by KLR. Note that model scale does not predict compliance---gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37). Context-pack delivery reduces KLR by 39\% for gpt-4o-mini.}
+\caption{L1 evaluation: KLR and PSS per model. Baseline rows use $n=120$; ctx-pack rows for gpt-4.1 family and o4-mini use $n=20$ (v1--v20 subset). Models sorted by KLR. Context-pack delivery consistently reduces KLR; gpt-4.1-mini ctx-pack achieves the lowest KLR (0.21).}
 \label{tab:l1_results}
 \footnotesize
 \begin{tabular}{@{}llcc@{}}
@@ -14,14 +14,18 @@ gpt-4.1-nano & baseline & 0.69 & 0.16 \\
 gpt-5.4-mini & baseline & 0.67 & 0.25 \\
 gpt-4.1-mini & baseline & 0.43 & 0.33 \\
 gpt-4o-mini  & baseline & 0.42 & 0.27 \\
+gpt-4.1-nano & ctx-pack & 0.38 & 0.30 \\
 gpt-4o       & baseline & 0.37 & 0.40 \\
+gpt-4.1      & ctx-pack & 0.30 & 0.43 \\
+o4-mini      & ctx-pack & 0.27 & 0.41 \\
 gpt-4o-mini  & ctx-pack & 0.26 & 0.32 \\
+gpt-4.1-mini & ctx-pack & 0.21 & 0.37 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{L1: Partial resistance; scale does not predict compliance}
-All models show non-zero KLR (0.26--0.69), confirming prior dominance. Two findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37), showing model scale does not predict compliance; (2) context-pack delivery halves prior influence (0.42 $\to$ 0.26 for gpt-4o-mini).
+All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37), showing model scale does not predict compliance; (2) context-pack delivery consistently reduces KLR---gpt-4.1-mini achieves the lowest KLR (0.21 vs.\ 0.43 baseline, $-51\%$); (3) the reasoning model o4-mini (KLR=0.27) performs comparably to gpt-4o-mini ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance.
 
 \begin{table}[!t]
 \centering
@@ -51,31 +55,32 @@ With an explicit semantic inversion rule, gpt-4o-mini fails completely (PPR=1.0)
 Without explicit rule, gpt-4o---which succeeds at L3---fails at L4 (PPR=1.0), producing canonical Python and ignoring example-embedded inversion cues. Figure~\ref{fig:l4_failure} shows the contrast.
 
 \textbf{L4 ablation (n=50 per model).}
-We scaled the L4 evaluation to $n=50$ runs using five prompt variants across all four models.
+We scaled the L4 evaluation across seven models: four at $n=50$ and three additional models (gpt-4.1, gpt-4.1-nano, o4-mini) at $n=20$.
 Results are shown in Table~\ref{tab:l4_ablation}.
-All models achieve 0/50 pass rate regardless of variant, confirming pattern blindness is robust and model-independent.
-PPR values (rate of producing Python-prior output) range from 0.38 (gpt-4.1-mini) to 0.84 (gpt-5.4-mini).
-Notably, variant E (3ex-diff-domain) induces PPR=1.0 on gpt-4o-mini and gpt-4.1-mini, and near-zero on gpt-5.4-mini (PPR=0.20)---suggesting that when example domain shifts, models may adopt a different surface form rather than inferring inversion, but \emph{still} produce incorrect semantics (pass=0).
+Six of seven models achieve 0\% pass rate; the sole exception is \texttt{o4-mini} (1/20 pass on variant E), suggesting that chain-of-thought reasoning may provide a narrow pathway to overcoming pattern blindness.
+PPR values range from 0.38 (gpt-4.1-mini) to 1.0 (gpt-4.1, gpt-4.1-nano, gpt-5.4-mini).
+Notably, gpt-4.1 and gpt-4.1-nano show PPR=1.0 across \emph{all} variants, indicating complete prior dominance with no evidence of inversion detection.
+The o4-mini result is particularly interesting: as a reasoning model, it partially overcomes pattern blindness where standard models cannot, though only on the most diverse prompt variant (E, different-domain examples).
 
 \begin{table}[!t]
 \centering
-\caption{L4 ablation ($n=50$, 5 variants $\times$ 10 runs, 4 models). Pass rate = 0/50 for all models and all variants. PPR = Python Prior Rate (fraction of outputs using standard Python semantics). Variant E (different example domain) induces PPR=1.0 on all four models. gpt-5.4-mini variant E had 8 HTTP failures; remaining 2 runs also show PPR=1.0, consistent with full prior dominance.}
+\caption{L4 ablation (PPR = Python Prior Rate). Original 4 models: $n=50$ (5 variants $\times$ 10 runs). Extended 3 models: $n=20$ (5 $\times$ 4). Pass rate = 0 for all models except o4-mini (1/20). o4-mini is the only model to achieve any L4 pass, on variant E (different-domain examples).}
 \label{tab:l4_ablation}
 \footnotesize
-\begin{tabular}{@{}llcccc@{}}
+\begin{tabular}{@{}llccccccc@{}}
 \toprule
-Variant & Description & gpt-4o & gpt-4o-mini & gpt-4.1-mini & gpt-5.4-mini \\
-        &             & PPR & PPR & PPR & PPR \\
+Var. & Description & \rotatebox{70}{gpt-4o} & \rotatebox{70}{gpt-4o-mini} & \rotatebox{70}{gpt-4.1} & \rotatebox{70}{gpt-4.1-mini} & \rotatebox{70}{gpt-4.1-nano} & \rotatebox{70}{gpt-5.4-mini} & \rotatebox{70}{o4-mini} \\
 \midrule
-A & 2ex-baseline     & 0.40 & 0.10 & 0.10 & 1.00 \\
-B & 3ex-extra        & 1.00 & 1.00 & 0.00 & 1.00 \\
-C & 2ex-no-comment   & 0.90 & 1.00 & 0.80 & 1.00 \\
-D & 2ex-swapped-order& 0.70 & 1.00 & 0.00 & 1.00 \\
-E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00$^\dagger$ \\
+A & 2ex-baseline     & .40 & .10 & 1.0 & .10 & 1.0 & 1.0 & 1.0 \\
+B & 3ex-extra        & 1.0 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
+C & 2ex-no-comment   & .90 & 1.0 & 1.0 & .80 & 1.0 & 1.0 & 1.0 \\
+D & 2ex-swapped      & .70 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
+E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0$^\dagger$ & .75$^*$ \\
 \midrule
-\multicolumn{2}{l}{Overall PPR} & 0.70 & 0.82 & 0.38 & 1.00 \\
+\multicolumn{2}{l}{Overall PPR} & .70 & .82 & 1.0 & .38 & 1.0 & 1.0 & .95 \\
+\multicolumn{2}{l}{Pass rate} & 0/50 & 0/50 & 0/20 & 0/50 & 0/20 & 0/50 & 1/20 \\
 \bottomrule
-\multicolumn{6}{l}{$^\dagger$gpt-5.4-mini variant E: 8 HTTP errors; $n_\mathrm{eff}=2$; both runs PPR=1.0.} \\
+\multicolumn{9}{l}{$^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$. $^*$o4-mini var-E: 1/4 pass (only L4 pass observed).} \\
 \end{tabular}
 \end{table}
 

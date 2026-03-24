@@ -1,0 +1,276 @@
+{
+  "model": "gpt-4.1-nano",
+  "date": "2026-03-25",
+  "experiment": "L4-ablation",
+  "description": "L4 implicit semantic inversion, n=50 (5 variants × 10 runs)",
+  "runs_per_variant": 4,
+  "total": 20,
+  "passed": 0,
+  "http_errors": 0,
+  "pass_rate": 0.0,
+  "ppr_overall": 1.0,
+  "per_variant": {
+    "A": {
+      "name": "2ex-baseline",
+      "total": 4,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "python_prior_rate": 1.0,
+      "ppr": 1.0
+    },
+    "B": {
+      "name": "3ex-extra",
+      "total": 4,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "python_prior_rate": 1.0,
+      "ppr": 1.0
+    },
+    "C": {
+      "name": "2ex-no-comment",
+      "total": 4,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "python_prior_rate": 1.0,
+      "ppr": 1.0
+    },
+    "D": {
+      "name": "2ex-swapped-order",
+      "total": 4,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "python_prior_rate": 1.0,
+      "ppr": 1.0
+    },
+    "E": {
+      "name": "3ex-diff-domain",
+      "total": 4,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "python_prior_rate": 1.0,
+      "ppr": 1.0
+    }
+  },
+  "results": [
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 0,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 1,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 2,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 3,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 0,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 1,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 2,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 3,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 0,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 1,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 2,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 3,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 0,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 1,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 2,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 3,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "E",
+      "variant_name": "3ex-diff-domain",
+      "run": 0,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(0, 7):\n    print(\"fib(\", i, \") =\", fib(i))"
+      }
+    },
+    {
+      "variant": "E",
+      "variant_name": "3ex-diff-domain",
+      "run": 1,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(0, 7):\n    print(\"fib(\", i, \") =\", fib(i))"
+      }
+    },
+    {
+      "variant": "E",
+      "variant_name": "3ex-diff-domain",
+      "run": 2,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(0, 7):\n    print(fib(i))"
+      }
+    },
+    {
+      "variant": "E",
+      "variant_name": "3ex-diff-domain",
+      "run": 3,
+      "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(0, 7):\n    print(fib(i))"
+      }
+    }
+  ]
+}

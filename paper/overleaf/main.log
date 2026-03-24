@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 01:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 02:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1030,24 +1030,39 @@ re/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/
 
 
 ])
-(./sections/03_method.tex [2]) (./sections/04_experiments.tex [3]
-Underfull \hbox (badness 10000) in paragraph at lines 7--8
-[]\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm
-/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
+(./sections/03_method.tex [2]) (./sections/04_experiments.tex [3])
+(./sections/05_results.tex [4]
+Overfull \hbox (82.77779pt too wide) in paragraph at lines 70--85
+ [][] 
  []
 
-) (./sections/05_results.tex
-Underfull \hbox (badness 10000) in paragraph at lines 85--92
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--99
 \T1/pcr/m/n/9 if n > 1:     []% inverted: runs when
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--104
+Underfull \hbox (badness 10000) in paragraph at lines 104--111
 \T1/pcr/m/n/9 if n <= 1:    []% Python prior, not
  []
 
-) (./sections/06_discussion.tex [4]) (./sections/07_conclusion.tex)
-(./sections/08_prompt_and_judge_details.tex [5]
+
+LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
+(Font)              using `T1/ptm/m/it' instead on input line 121.
+
+
+Overfull \hbox (65.85951pt too wide) in paragraph at lines 124--138
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 146--147
+[]\T1/ptm/b/n/10 (+20) Operational Sub-sti-tu-tion \T1/ptm/m/n/10 (+20) (L4-T3-
+gpt-4o): model
+ []
+
+) (./sections/06_discussion.tex [5]) (./sections/07_conclusion.tex)
+(./sections/08_prompt_and_judge_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1063,7 +1078,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[6]) (./sections/09_reproducibility_protocol.tex
+[6]
+Overfull \vbox (2.33925pt too high) has occurred while \output is active []
+
+
+[7]) (./sections/09_reproducibility_protocol.tex
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
 
@@ -1072,12 +1091,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--19
 ) Script:
  []
 
-) (./sections/10_appendix_experiment_details.tex [7])
-Underfull \hbox (badness 3769) in paragraph at lines 68--50
+) (./sections/10_appendix_experiment_details.tex)
+Underfull \hbox (badness 3769) in paragraph at lines 68--51
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-(./main.bbl)
+[8] (./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1089,18 +1108,18 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[8] (./main.aux)
+[9] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 23360 strings out of 467525
- 492958 string characters out of 5408440
- 959496 words of memory out of 5000000
- 51400 multiletter control sequences out of 15000+600000
- 769856 words of font info for 441 fonts, out of 8000000 for 9000
+ 23364 strings out of 467525
+ 493011 string characters out of 5408440
+ 968649 words of memory out of 5000000
+ 51406 multiletter control sequences out of 15000+600000
+ 770369 words of font info for 441 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,11n,108p,1001b,745s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1109,24 +1128,26 @@ nts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20260301/s
 hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></opt/homebrew/Cellar/
 texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></op
 t/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr9.pfb></opt/homebrew/Cellar/texlive/20260301/share/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/
-20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebr
-ew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
-8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmsy9.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist
-/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/20260301/shar
-e/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></opt/homebrew/Cellar/texlive/
-20260301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cella
-r/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/hom
-ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
-></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/
-utmri8a.pfb>
-Output written on main.pdf (8 pages, 218552 bytes).
+/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></opt/homebrew/Cellar/texlive/20
+260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebre
+w/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6
+.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20260301
+/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></opt/homebrew/Cella
+r/texlive/20260301/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/ho
+mebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/courier/ucrro8a
+.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/ti
+mes/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/ty
+pe1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-di
+st/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20260301/shar
+e/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (9 pages, 243623 bytes).
 PDF statistics:
- 115 PDF objects out of 1000 (max. 8388607)
- 72 compressed objects within 1 object stream
+ 128 PDF objects out of 1000 (max. 8388607)
+ 80 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 67085 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 67597 words of extra memory for PDF output out of 74296 (max. 10000000)
 

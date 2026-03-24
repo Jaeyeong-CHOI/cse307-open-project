@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 01:45 KST
+마지막 업데이트: 2026-03-25 02:30 KST
 
 ## Snapshot
 - 전체 진행도(추정): **84%**
@@ -110,11 +110,20 @@
   - 비교 결과: `delta_avg_score=0.000`, `delta_passed=0`, `delta_nonzero=0`
 - [ ] `docs/research/context-compression.md` 운영 적용
 
+- [x] 2026-03-25 gpt-4.1 family + o4-mini 실험 추가 (L1 + L4)
+  - **L1 ctx-pack (n=20, v1-v20)**: gpt-4.1 (KLR=0.295), gpt-4.1-mini (KLR=0.210), gpt-4.1-nano (KLR=0.378), o4-mini (KLR=0.265)
+  - **L4 ablation (n=20, 5×4)**: gpt-4.1 (PPR=1.0, 0/20), gpt-4.1-nano (PPR=1.0, 0/20), o4-mini (PPR=0.95, **1/20 pass** — first L4 pass from reasoning model)
+  - o4-mini requires temperature=1 (API constraint); patched scripts used
+  - gpt-4.1-mini ctx-pack achieved lowest KLR (0.21) across all models
+  - 논문 Table 1 (L1), Table 3 (L4 ablation) 업데이트, 재컴파일 완료 (9p)
+  - 산출물: `l1-gpt41-contextpack-2026-03-25.json`, `l1-gpt41mini-contextpack-2026-03-25.json`, `l1-gpt41nano-contextpack-2026-03-25.json`, `l1-o4mini-contextpack-2026-03-25.json`, `L4-ablation-n50.gpt41.2026-03-25.json`, `L4-ablation-n50.gpt41nano.2026-03-25.json`, `L4-ablation-n50.o4mini.2026-03-25.json`
+
 ## Immediate Next Actions
 1. **Multi-task 실험 설계 및 실행**: Fibonacci 외 2~3개 태스크(sorting, string-ops 등) L4 조건 추가
 2. Human pilot 프로토콜 설계 (n=10~15, L4 task 이해 확인용)
 3. ~~gpt-5.4-mini L4 ablation 완성~~ ✅ (n=50 완료, 논문 반영)
 4. 논문 Section 3 (Method) 업데이트: taxonomy 형식화 재검토
+5. o4-mini L4 pass 분석: variant E에서 reasoning model이 pattern blindness를 극복한 메커니즘 조사
 
 ## Links
 - 로드맵: `docs/research/roadmap.md`

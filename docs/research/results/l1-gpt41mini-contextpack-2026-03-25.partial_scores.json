@@ -1,0 +1,425 @@
+{
+  "source": "docs/research/results/l1-gpt41mini-contextpack-2026-03-25.json",
+  "n": 20,
+  "samples": [
+    {
+      "klr": 0.4,
+      "acr": 0.6,
+      "pss": 0.24,
+      "pir": 0.4,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": true,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v1.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": false,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v2.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.92,
+      "pir": 0.2,
+      "parse_ok": true,
+      "skeleton": {
+        "has_fib_function": true,
+        "has_base_case": true,
+        "has_recursion": true,
+        "has_loop": true
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v3.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": true,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v4.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": true,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v5.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.7575,
+      "pir": 0.2,
+      "parse_ok": true,
+      "skeleton": {
+        "has_fib_function": true,
+        "has_base_case": true,
+        "has_recursion": true,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v6.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v7.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": false,
+        "in": true
+      },
+      "file": "docs/archive/prompt-versions/v8.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": true,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v9.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": true,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v10.md"
+    },
+    {
+      "klr": 0.0,
+      "acr": 1.0,
+      "pss": 0.4,
+      "pir": 0.0,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v11.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": true,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v12.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": true,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v13.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v14.md"
+    },
+    {
+      "klr": 0.0,
+      "acr": 1.0,
+      "pss": 0.4,
+      "pir": 0.0,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v15.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v16.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": false,
+        "return": true,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v17.md"
+    },
+    {
+      "klr": 0.2,
+      "acr": 0.8,
+      "pss": 0.32,
+      "pir": 0.2,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": false,
+        "return": false,
+        "for": false,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v18.md"
+    },
+    {
+      "klr": 0.4,
+      "acr": 0.6,
+      "pss": 0.24,
+      "pir": 0.4,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": false,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v19.md"
+    },
+    {
+      "klr": 0.4,
+      "acr": 0.6,
+      "pss": 0.24,
+      "pir": 0.4,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": false,
+        "if": true,
+        "return": false,
+        "for": true,
+        "in": false
+      },
+      "file": "docs/archive/prompt-versions/v20.md"
+    }
+  ]
+}
