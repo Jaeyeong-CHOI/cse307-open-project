@@ -1,11 +1,11 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 03:28 KST
+마지막 업데이트: 2026-03-25 03:45 KST
 
 ## Snapshot
-- 전체 진행도(추정): **87%**
-- 현재 단계: **Phase 5 (멀티태스크 확장 완료, 논문 업데이트 진행 중)**
-- 핵심 병목: **프롬프트 준수 실패 구조 자체(특히 alias 규칙 위반/구문 회귀)의 고착**(LLM API 가용성은 확인됨)
+- 전체 진행도(추정): **90%**
+- 현재 단계: **Phase 5 완료 (멀티태스크 실험 전 모델 완료, 논문 Table 4 + §5.4 업데이트)**
+- 핵심 병목: **Human pilot 설계 미착수 (n=10~15, L4 교육적 주장 검증용)**
 
 ## KPI Board
 - CI 안정성: 🟢 (최근 연속 success)
@@ -110,6 +110,12 @@
   - 비교 결과: `delta_avg_score=0.000`, `delta_passed=0`, `delta_nonzero=0`
 - [ ] `docs/research/context-compression.md` 운영 적용
 
+- [x] 2026-03-25 03:45 o4-mini L4 multitask 완료 (n=45, 0/45)
+  - T1 fib: 0/15, T2 sorted: 0/15, T3 vowels: 0/15 (all PPR=0.00)
+  - reasoning model도 L4 pattern blindness 극복 못함 확인
+  - 논문 Table 4 (l4_multitask) o4-mini 행 추가, §5.4 5번째 finding 추가
+  - PDF 재컴파일 완료 (9 pages), commit 643ebf9 push 완료
+
 - [x] 2026-03-25 gpt-4.1 family + o4-mini 실험 추가 (L1 + L4)
   - **L1 ctx-pack (n=20, v1-v20)**: gpt-4.1 (KLR=0.295), gpt-4.1-mini (KLR=0.210), gpt-4.1-nano (KLR=0.378), o4-mini (KLR=0.265)
   - **L4 ablation (n=20, 5×4)**: gpt-4.1 (PPR=1.0, 0/20), gpt-4.1-nano (PPR=1.0, 0/20), o4-mini (PPR=0.95, **1/20 pass** — first L4 pass from reasoning model)
@@ -119,8 +125,8 @@
   - 산출물: `l1-gpt41-contextpack-2026-03-25.json`, `l1-gpt41mini-contextpack-2026-03-25.json`, `l1-gpt41nano-contextpack-2026-03-25.json`, `l1-o4mini-contextpack-2026-03-25.json`, `L4-ablation-n50.gpt41.2026-03-25.json`, `L4-ablation-n50.gpt41nano.2026-03-25.json`, `L4-ablation-n50.o4mini.2026-03-25.json`
 
 ## Immediate Next Actions
-1. ~~**Multi-task 실험 설계 및 실행**~~ ✅ (gpt-4.1-mini n=20×3 tasks 완료; o4-mini n=45 진행 중)
-   - 논문 §4.4 Table 업데이트: gpt-4.1-mini 행 추가, 3→4 findings, "Two→Three Failure Modes" 반영
+1. ~~**Multi-task 실험 설계 및 실행**~~ ✅ (모든 모델 완료: gpt-4o, gpt-4o-mini, gpt-4.1-mini, o4-mini)
+   - 논문 Table 4 + §5.4 업데이트 완료 (5th finding: reasoning ≠ pattern blindness resolution)
 2. Human pilot 프로토콜 설계 (n=10~15, L4 task 이해 확인용) ← **다음 우선 과제**
 3. ~~gpt-5.4-mini L4 ablation 완성~~ ✅ (n=50 완료, 논문 반영)
 4. 논문 Section 3 (Method) 업데이트: taxonomy 형식화 재검토
