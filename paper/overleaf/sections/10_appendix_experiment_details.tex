@@ -56,10 +56,10 @@ Top counts in context-pack run include:
 \toprule
 Setting & Value \\
 \midrule
-Models & gpt-4o, 4o/4.1-mini, 4.1-nano, 5.4-mini \\
-Range & v1--v120 \\
+Models & gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini, o4-mini \\
+L1 range & v1--v120 (baseline); v1--v20 (ctx-pack for 4.1/o4-mini) \\
 CONTEXT\_PACK & 0/1 \\
-Temperature & 0 \\
+Temperature & 0 (all models except o4-mini); 1 (o4-mini, API requirement) \\
 Judge & deterministic \\
 \bottomrule
 \end{tabular}

@@ -31,6 +31,25 @@
   \item \textbf{E11: L4 implicit semantic, $n=5$, gpt-4o (2026-03-24).}
     No system prompt; only 2 worked examples shown.
     Pattern blindness observed: model ignored inversion cue.
+
+  \item \textbf{E12: L1 context-pack, $n=20$, gpt-4.1 family + o4-mini (2026-03-25).}
+    Models: gpt-4.1 (KLR=0.295), gpt-4.1-mini (KLR=0.210), gpt-4.1-nano (KLR=0.378), o4-mini (KLR=0.265).
+    Files: \texttt{l1-gpt41-contextpack-2026-03-25.json}, etc.
+    Note: o4-mini requires \texttt{temperature=1} (API constraint).
+
+  \item \textbf{E13: L4 ablation, $n=50$, 5 models (2026-03-25).}
+    Models: gpt-4o, gpt-4o-mini, gpt-4.1-mini, gpt-5.4-mini; later gpt-4.1 and gpt-4.1-nano scaled to $n=50$.
+    Result: 0/50 pass for all five variants $\times$ all models.
+    File: \texttt{L4-ablation-n50.\textit{model}.2026-03-25.json}
+
+  \item \textbf{E14: L4 ablation, $n=50$, o4-mini (2026-03-25).}
+    Reasoning model; confirms 0/50 pass at scale (1/20 preliminary was a statistical artifact).
+    File: \texttt{L4-ablation-n50.o4mini.2026-03-25.json}
+
+  \item \textbf{E15: L4 multi-task, $n=10$--$20$ per task, 6 models (2026-03-25).}
+    Tasks: T1 (fibonacci), T2 (is\_sorted), T3 (count\_vowels).
+    Models: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, o4-mini (225 total runs).
+    Files: \texttt{L4-multitask.\textit{model}.2026-03-25.json}
 \end{enumerate}
 
 \subsection{API and runtime settings}
