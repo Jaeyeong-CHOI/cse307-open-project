@@ -1,87 +1,85 @@
-\section{Complete Reproducibility Protocol}
-\subsection{Prompt contract (fully written)}
-All runs use the following prompt contract.
+\section{Complete Experiment Log and Reproducibility}
 
-\textbf{System prompt (baseline):}
-\begin{quote}
-\small Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.
-\end{quote}
+\subsection{All experiments conducted (in order)}
 
-\textbf{System prompt (context-pack extension):}
-\begin{quote}
-\small
-[Transformed language contract]
-Use transformed aliases exactly as follows: (token\(\rightarrow\)alias list from the prompt).
-Do NOT output original Python keywords for transformed entries.
-Output only executable code in the transformed language.
-\end{quote}
-
-\textbf{User prompt template:}
-\begin{quote}
-\small
-\textit{Language Description}: Python grammar remains unchanged.
-
-\textit{Current mapping summary}:
-\begin{itemize}
-  \item if \(\rightarrow\) \{alias\}
-  \item in \(\rightarrow\) \{alias\}
-  \item def \(\rightarrow\) \{alias\}
-  \item for \(\rightarrow\) \{alias\}
-  \item return \(\rightarrow\) \{alias\}
-  \item print \(\rightarrow\) \{alias\}
-\end{itemize}
-
-\textit{Task}:
 \begin{enumerate}
-  \item Define function \texttt{fib(n)}.
-  \item If \texttt{n <= 1}, return \texttt{n}.
-  \item Otherwise return \texttt{fib(n-1) + fib(n-2)}.
-  \item Loop \texttt{i=0..6} and print \texttt{(i, fib(i))}.
+  \item \textbf{L1 baseline, n=120 $\times$ 4 models (2026-03-23)}\\
+    Models: gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini\\
+    Result files: \texttt{prompt-batch-v1-120.\{model\}.2026-03-23.json}
+
+  \item \textbf{L1 context-pack ablation (2026-03-23)}\\
+    Model: gpt-4o-mini, CONTEXT\_PACK=1\\
+    Result: \texttt{prompt-batch-v1-120-contextpack.gpt4o-mini.2026-03-23.json}\\
+    KLR: 0.423 $\to$ 0.260 (39\% reduction)
+
+  \item \textbf{Partial judge re-evaluation (2026-03-24)}\\
+    Applied \texttt{partial\_judge.py} to all L1 batch JSONs\\
+    Generated \texttt{*.partial\_scores.json} for all 5 conditions
+
+  \item \textbf{L2 experiment, n=5 (2026-03-24)}\\
+    Model: gpt-4o-mini, explicit grammar rules\\
+    Result: \texttt{L2-batch-quick-gpt4omini.json}\\
+    SIR=0.0, L2-adoption=1.0 --- all prompts passed
+
+  \item \textbf{L3 explicit rule, n=5 (2026-03-24)}\\
+    Model: gpt-4o-mini, system prompt with semantic inversion rule\\
+    Result: \texttt{L3-semantic-batch-gpt4omini.json}\\
+    PPR=1.0 --- model completely failed (used Python-prior pattern)
+
+  \item \textbf{L3 explicit rule, n=10 (2026-03-24)}\\
+    Models: gpt-4o, gpt-4.1-mini\\
+    Results: \texttt{L3-semantic-batch-gpt4o.json}, \texttt{L3-semantic-batch-gpt4.1mini.json}\\
+    gpt-4o PPR=0.0, gpt-4.1-mini PPR=0.0 --- both succeeded
+
+  \item \textbf{L4 implicit, n=5 (2026-03-24)}\\
+    Model: gpt-4o, no system prompt, only worked examples\\
+    Result: \texttt{L4-implicit-batch-gpt4o.json}\\
+    Pattern blindness: PPR=0.0 (did not use Python-prior) but noticed inversion=0 --- model ignored examples entirely
 \end{enumerate}
-\end{quote}
 
-\subsection{Judge details (deterministic)}
-For each sample, the judge applies:
-\begin{enumerate}
-  \item alias compliance and original keyword leakage checks,
-  \item alias\(\rightarrow\)Python normalization and AST parseability,
-  \item benchmark skeleton checks (\texttt{fib}, base case, recursion, loop-print contract).
-\end{enumerate}
-Pass is defined as zero violations.
+\subsection{Summary table}
 
-\subsection{Exact run settings reported in this paper}
-To prevent overflow in two-column layout, we use run IDs:
+\begin{table}[!t]
+\centering
+\caption{Complete experiment summary}
+\label{tab:exp_log}
+\begin{tabular}{llcc}
+\toprule
+Exp & Model & Level & Key result \\
+\midrule
+E1 & gpt-4.1-nano & L1 & KLR=0.69 \\
+E2 & gpt-5.4-mini & L1 & KLR=0.67 \\
+E3 & gpt-4.1-mini & L1 & KLR=0.43 \\
+E4 & gpt-4o-mini & L1 baseline & KLR=0.42 \\
+E5 & gpt-4o-mini & L1 ctx-pack & KLR=0.26 \\
+E6 & gpt-4o & L1 & KLR=0.37 \\
+E7 & gpt-4o-mini & L2 explicit & SIR=0.0 (adopted) \\
+E8 & gpt-4o-mini & L3 explicit & PPR=1.0 (failed) \\
+E9 & gpt-4o & L3 explicit & PPR=0.0 (success) \\
+E10 & gpt-4.1-mini & L3 explicit & PPR=0.0 (success) \\
+E11 & gpt-4o & L4 implicit & Pattern blind \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Key API and runtime settings}
 \begin{itemize}
-  \item Run-A: full-range \texttt{gpt-4o-mini}
-  \item Run-B: full-range \texttt{gpt-4.1-mini}
-  \item Run-C: full-range \texttt{gpt-4.1-nano}
-  \item Run-D: full-range \texttt{gpt-5.4-mini}
+  \item Base URL: \texttt{https://api.openai.com/v1}
+  \item Temperature: \texttt{0} (all experiments)
+  \item Max tokens: default (no explicit limit)
+  \item API key: loaded from AVRTG project env at runtime
+  \item Retry policy: none (single attempt per prompt)
+  \item Prompt delay: 0.4s between calls
 \end{itemize}
 
-Context-pack ablation IDs:
+\subsection{Repository structure for replication}
 \begin{itemize}
-  \item Ablation-Base: baseline strict prompt contract
-  \item Ablation-CP: context-pack enabled
-  \item Ablation-Diff: base-vs-context comparison report
-\end{itemize}
-
-Artifact mapping for each run ID is listed in repository result manifests under
-\texttt{docs/research/results/} and the research status snapshot.
-
-\subsection{Execution settings (compact)}
-\begin{itemize}
-  \item model family: \texttt{gpt-4o-mini / gpt-4.1-mini / gpt-4.1-nano / gpt-5.4-mini}
-  \item prompt range: \texttt{v1--v120}
-  \item context-pack: \texttt{on/off} ablation
-  \item failure cap: \texttt{999}
-  \item outputs: run JSON + comparison JSON/MD
-\end{itemize}
-
-\subsection{What can be reproduced from this paper alone}
-A reader can reproduce:
-\begin{itemize}
-  \item full prompt-batch runs (v1--v120),
-  \item strict pass/fail and violation logs,
-  \item context-pack ablation deltas,
-  \item artifact-level evidence mapping from claims to files.
+  \item \texttt{scripts/run\_gpt54\_eval.py} --- L1 batch runner
+  \item \texttt{scripts/run\_l2\_eval.py} --- L2 batch runner
+  \item \texttt{scripts/partial\_judge.py} --- continuous metric judge
+  \item \texttt{scripts/compare\_eval\_runs.py} --- run comparison
+  \item \texttt{docs/archive/} --- all prompt banks (L1--L4)
+  \item \texttt{docs/research/results/} --- all output JSONs
+  \item \texttt{docs/research/language-levels/} --- L2, L3, L4 specs
+  \item \texttt{docs/research/research-direction-v2.md} --- current research plan
 \end{itemize}

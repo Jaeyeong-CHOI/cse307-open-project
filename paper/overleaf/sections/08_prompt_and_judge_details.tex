@@ -1,35 +1,192 @@
-\section{Prompt and Judge Details}
-\subsection{Prompt contract}
-Each run uses a two-message contract:
+\section{Prompt and Evaluation Protocol (Complete)}
+
+\subsection{L1: Token Alias Substitution}
+
+\subsubsection{System prompt (baseline S0)}
+\begin{quote}
+\small
+Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.
+\end{quote}
+
+\subsubsection{System prompt (context-pack S1)}
+\begin{quote}
+\small
+Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.
+
+[Transformed language contract]\\
+Use transformed aliases exactly as follows: (token$\rightarrow$alias list from prompt).\\
+Do NOT output original Python keywords for transformed entries.\\
+Banned originals for this task: (derived from mapping).\\
+Output only executable code in the transformed language.
+\end{quote}
+
+\subsubsection{User prompt structure (verbatim template)}
+\begin{quote}
+\small
+\textit{[Language Description]}\\
+Python grammar remains unchanged.\\
+Keyword aliases are user-configurable strings (including phrases with spaces).
+At runtime, detected aliases are normalized back to Python via token replacement.\\
+\\
+\textit{Current mapping summary:}\\
+\quad- if $\rightarrow$ \{alias\}\\
+\quad- in $\rightarrow$ \{alias\}\\
+\quad- def $\rightarrow$ \{alias\}\\
+\quad- for $\rightarrow$ \{alias\}\\
+\quad- return $\rightarrow$ \{alias\}\\
+\quad- print $\rightarrow$ \{alias\}\\
+\\
+\textit{[Task]}\\
+1) Define function \texttt{fib(n)}.\\
+2) If \texttt{n <= 1}, return \texttt{n}.\\
+3) Otherwise return \texttt{fib(n-1) + fib(n-2)}.\\
+4) Loop \texttt{i = 0..6}, print \texttt{(i, fib(i))}.
+\end{quote}
+
+\subsubsection{Representative alias mappings across prompt versions}
+Three representative prompt instances from the L1 bank:
+
+\textbf{v1}: if$\to$\texttt{return}, def$\to$\texttt{if}, for$\to$(long phrase), in$\to$(long phrase), return$\to$(long phrase), print$\to$\texttt{do}
+
+\textbf{v35}: in$\to$(phrase), def$\to$\texttt{def}, for$\to$\texttt{xk}, return$\to$(long phrase), if$\to$(anti-prior phrase)
+
+\textbf{v90}: def$\to$\texttt{return}, for$\to$(phrase), in$\to$(phrase), return$\to$\texttt{out}, if$\to$(long phrase), print$\to$\texttt{qn}
+
+\subsection{L2: Syntax Inversion}
+
+\subsubsection{Grammar specification (given to model)}
+\begin{quote}
+\small
+This is NOT Python. It uses inverted syntax.\\
+ALL standard Python keywords (def, return, if, for, in) are FORBIDDEN.
+
+Grammar rules:\\
+\quad- Function definition: \texttt{:define name [args] ->} (not \texttt{def name(args):})\\
+\quad- Return: \texttt{<= value} (not \texttt{return value})\\
+\quad- Conditional: \texttt{value ?cond: result ;else: alt ;end}\\
+\quad- Loop: \texttt{loop var over iterable \{ body \}}\\
+\quad- Block end: \texttt{;;}
+\end{quote}
+
+\subsubsection{Task (same across L1--L4)}
+Same Fibonacci function (fib(0)=0, fib(1)=1, fib(n)=fib(n-1)+fib(n-2), print i=0..6).
+
+\subsection{L3: Semantic Inversion (Explicit Rule)}
+
+\subsubsection{System prompt}
+\begin{quote}
+\small
+Follow the L3 language rules exactly. If-blocks run when condition is FALSE.
+\end{quote}
+
+\subsubsection{User prompt (complete)}
+\begin{quote}
+\small
+\textit{L3 is a Python-LIKE language with semantic inversion of conditionals.}\\
+The syntax is identical to Python, but:\\
+RULE: The indented block of an if-statement executes when the condition is FALSE.\\
+RULE: The else-block executes when the condition is TRUE.\\
+RULE: This is opposite to Python's behavior.\\
+\\
+Example:\\
+\texttt{if x > 5:}\\
+\quad\texttt{print("small")} \textit{(runs when x is NOT > 5)}\\
+\texttt{else:}\\
+\quad\texttt{print("large")} \textit{(runs when x IS > 5)}\\
+\\
+Task: Write a Fibonacci function in L3. The intended logic is:\\
+if n <= 1, return n; else return fib(n-1)+fib(n-2).\\
+Remember: your if-block runs when condition is FALSE.\\
+Loop i=0..6, print (i, fib(i)).
+\end{quote}
+
+\subsection{L4: Semantic Inversion (Implicit, Example-Only)}
+
+\subsubsection{System prompt}
+None (user-role only).
+
+\subsubsection{User prompt (complete)}
+\begin{quote}
+\small
+Here are some examples of code in our programming language:\\
+\\
+Example 1 -- Simple max function:\\
+\texttt{def max\_val(a, b):}\\
+\quad\texttt{if a > b:}\\
+\quad\quad\texttt{return b}\ \textit{(returns smaller value when a > b)}\\
+\quad\texttt{return a}\\
+Output: max\_val(3, 5) = 3, max\_val(7, 2) = 2\\
+\\
+Example 2 -- Even check:\\
+\texttt{def is\_even(n):}\\
+\quad\texttt{if n \% 2 == 0:}\\
+\quad\quad\texttt{return False}\\
+\quad\texttt{return True}\\
+Output: is\_even(4) = False, is\_even(3) = True\\
+\\
+Now write the Fibonacci function in this same language:\\
+- fib(0)=0, fib(1)=1, fib(n)=fib(n-1)+fib(n-2)\\
+- Print fib(0) through fib(6)
+\end{quote}
+
+\subsection{Judge Protocol (L1)}
+
+\begin{enumerate}
+  \item \textbf{Alias compliance}: for each required token (\texttt{if}, \texttt{in}, \texttt{def}, \texttt{for}, \texttt{return}), check if alias is absent from output.
+  \item \textbf{Keyword leakage}: check if original token appears using word-boundary regex.
+  \item \textbf{Normalization}: replace alias with original token via regex/string replacement.
+  \item \textbf{Parse check}: run \texttt{ast.parse()} on normalized code.
+  \item \textbf{Skeleton check}: verify fib function, base case, recursion, and print loop.
+\end{enumerate}
+
+Metrics:
 \begin{itemize}
-  \item \textbf{System}: ``Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.''
-  \item \textbf{User}: versioned prompt text (\texttt{docs/archive/prompt-versions/v*.md}) containing alias mapping and task statement.
+  \item KLR = (leaked tokens) / (active alias slots)
+  \item ACR = 1 $-$ KLR
+  \item PSS = 0.4$\times$ACR + 0.25$\times$parse\_ok + 0.25$\times$skeleton\_score + 0.1$\times$loop\_ok
+  \item PIR = KLR / (KLR + ACR)
 \end{itemize}
 
-\subsection{Input prompt structure}
-Versioned prompts include:
-\begin{enumerate}
-  \item alias map block (e.g., token\(\rightarrow\)alias pairs),
-  \item task statement (Fibonacci-style function + loop output requirement),
-  \item strict-format instruction.
-\end{enumerate}
+\subsection{Judge Protocol (L3/L4)}
 
-\subsection{Deterministic judge protocol}
-The judge in \texttt{scripts/run\_gpt54\_eval.py} applies the following checks:
-\begin{enumerate}
-  \item Alias compliance: required alias presence and original keyword leakage detection.
-  \item Normalization validity: alias\(\rightarrow\)Python normalization then AST parseability.
-  \item Skeleton checks:
-  \begin{itemize}
-    \item function \texttt{fib} existence,
-    \item base case \texttt{if n <= 1: return n},
-    \item recursive return \texttt{fib(n-1) + fib(n-2)},
-    \item loop \texttt{for i in range(7): print(i, fib(i))}.
-  \end{itemize}
-\end{enumerate}
+Binary check:
+\begin{itemize}
+  \item \textbf{Inverted (correct)}: model writes \texttt{if n > 1:} or \texttt{if n >= 2:} --- inverted from Python-expected \texttt{if n <= 1:}
+  \item \textbf{Python prior (incorrect)}: model writes \texttt{if n <= 1: return n} without inversion
+  \item PPR = fraction of samples using Python-prior pattern
+\end{itemize}
 
-\subsection{Pass/fail and score}
-Pass requires zero violations. Score starts at 100 and decreases by fixed penalties per violation. This provides a strict and reproducible criterion for cross-model comparison under transformed syntax constraints.
+\subsection{Execution Commands (Complete)}
 
-\subsection{Failure taxonomy source}
-Violation classes are directly emitted into result JSON and aggregated in summary artifacts under \texttt{docs/research/results/}. This enables exact claim-to-artifact traceability.
+\subsubsection{L1 full-range baseline}
+\begin{verbatim}
+./scripts/use_avrtg_openai_key.sh env \
+  CONTEXT_PACK=0 EVAL_MODEL=gpt-4o-mini \
+  RESULT_JSON=docs/research/results/\
+  prompt-batch-v1-120.gpt4o-mini.2026-03-23.json \
+  python3 scripts/run_gpt54_eval.py
+\end{verbatim}
+
+\subsubsection{L1 context-pack ablation}
+\begin{verbatim}
+CONTEXT_PACK=1 EVAL_MODEL=gpt-4o-mini ...
+\end{verbatim}
+
+\subsubsection{L3 experiment}
+\begin{verbatim}
+./scripts/use_avrtg_openai_key.sh env \
+  EVAL_MODEL=gpt-4o python3 -c "...l3_eval..."
+\end{verbatim}
+
+\subsubsection{Partial judge (re-evaluate any batch)}
+\begin{verbatim}
+python3 scripts/partial_judge.py \
+  docs/research/results/prompt-batch-v1-120.gpt4o-mini.json
+\end{verbatim}
+
+\subsubsection{Run comparison}
+\begin{verbatim}
+python3 scripts/compare_eval_runs.py \
+  --base ..baseline.json --cand ..contextpack.json \
+  --out-json ..compare.json --out-md ..compare.md
+\end{verbatim}
