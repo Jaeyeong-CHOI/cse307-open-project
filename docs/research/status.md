@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 05:49 KST
+마지막 업데이트: 2026-03-25 05:57 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -134,6 +134,11 @@
   - gpt-4.1-nano: 0/50, PPR=1.0 (모든 variant A-E, 완전 prior dominance)
   - Table 3 업데이트 (n 정정, 캡션), PDF 재컴파일(10p), commit b0b3bd3 push 완료
   - Total L4 ablation: 6×50 + o4-mini×20 = 320 runs
+- [x] 2026-03-25 05:57 o4-mini L4 ablation n=20→n=50 스케일업 완료
+  - o4-mini: 0/50 pass, PPR=0.92 (이전 1/20 preliminary → 통계 아티팩트 확인)
+  - 전 7모델 n=50 균일 달성 (350 total L4 ablation runs)
+  - Table 3 업데이트, §4/§5.2/§6.2 수정, PDF 재컴파일(10p), commit 132dc13 push
+
 - [x] 2026-03-25 05:49 논문 stale model count 수정 (five→seven) + L3 success 모델 명시 (gpt-4.1-mini 추가)
   - main.tex abstract, §3 Threats, §1 Introduction 업데이트
   - PDF 재컴파일 (10p), commit 22fcf3c push 완료
