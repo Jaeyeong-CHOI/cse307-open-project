@@ -18,7 +18,7 @@ We ran experiments at each language level for available model families. All runs
 
 \subsection{L4 Experiment: Semantic Inversion (Implicit)}
 Initial screening: 10 prompts per model, no rule stated; only 2 worked examples with inverted semantics shown. Model must infer pattern.
-Ablation (n=50): 5 prompt variants $\times$ 10 runs each, varying the number of worked examples (2 vs.\ 3), presence of inline comments, order of examples, and domain of examples. Evaluated across four models at $n=50$: \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1-mini}, and \texttt{gpt-5.4-mini} (200 total runs). Extended ablation ($n=20$, 5 variants $\times$ 4 runs) for \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{o4-mini} (60 additional runs).
+Ablation (n=50): 5 prompt variants $\times$ 10 runs each, varying the number of worked examples (2 vs.\ 3), presence of inline comments, order of examples, and domain of examples. Evaluated across six models at $n=50$: \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, and \texttt{gpt-5.4-mini} (300 total runs). One reasoning model (\texttt{o4-mini}) was evaluated at $n=20$ (5 variants $\times$ 4 runs), yielding 320 total L4 ablation runs.
 
 \subsection{L4 Multi-task Generalization Experiment}
 To assess whether pattern blindness generalizes across algorithmic domains, we extended the L4 evaluation to two additional tasks beyond Fibonacci:
