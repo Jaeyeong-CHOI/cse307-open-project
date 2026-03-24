@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 00:40 KST
+마지막 업데이트: 2026-03-25 01:45 KST
 
 ## Snapshot
 - 전체 진행도(추정): **84%**
@@ -113,7 +113,7 @@
 ## Immediate Next Actions
 1. **Multi-task 실험 설계 및 실행**: Fibonacci 외 2~3개 태스크(sorting, string-ops 등) L4 조건 추가
 2. Human pilot 프로토콜 설계 (n=10~15, L4 task 이해 확인용)
-3. gpt-5.4-mini L4 ablation 완성 (현재 42/50)
+3. ~~gpt-5.4-mini L4 ablation 완성~~ ✅ (n=50 완료, 논문 반영)
 4. 논문 Section 3 (Method) 업데이트: taxonomy 형식화 재검토
 
 ## Links
