@@ -1,33 +1,34 @@
 \section{Related Work}
-\subsection{Code-Generation Evaluation and LLM Priors}
-Early benchmarks for code generation (HumanEval~\cite{chen2021codex}, MBPP~\cite{austin2021program}) established that LLMs trained on large code corpora learn strong token-level priors: Python keywords appear in statistically predictable positions.
-Pre-training models such as CodeBERT~\cite{feng2020codebert}, CodeT5~\cite{wang2021codet5}, and UniXcoder~\cite{guo2022unixcoder} reinforce these priors via large-scale NTP objectives.
-InCoder~\cite{fried2022incoder} showed that bidirectional context can improve local token prediction but does not eliminate reliance on prior distributions.
 
-\subsection{Instruction Following and Alignment}
-Instruction-tuned models (InstructGPT~\cite{ouyang2022instruct}, GPT-4) and few-shot learners~\cite{brown2020fewshot} can follow many explicit rules, but compliance is not guaranteed when instructions conflict with pretrained priors.
-Chen et al.~\cite{chen2024instructhierarchy} propose an instruction hierarchy to prioritize privileged instructions under conflict; however, their setting involves natural-language instruction conflicts rather than programming-language semantic inversions.
-Xie et al.~\cite{xie2023resolving} study parametric vs.\ contextual knowledge conflicts and show that LLMs often prefer internal knowledge over instruction-given context.
-Our work differs in that we study token-level and semantic-level conflicts in a programming domain.
+\subsection{Code-Generation Benchmarks and LLM Priors}
+HumanEval~\cite{chen2021codex} and MBPP~\cite{austin2021program} established that LLMs trained on large code corpora develop strong token-level priors: Python keywords appear in statistically predictable positions. More recent code LLMs (DeepSeek-Coder~\cite{guo2024deepseek}, WizardCoder~\cite{luo2023wizardcoder}) amplify these priors through specialized pretraining, while encoder-decoder models (CodeBERT~\cite{feng2020codebert}, CodeT5~\cite{wang2021codet5}) reinforce them via masked language modeling objectives.
 
-\subsection{LLM Resistance in Educational Contexts}
-The impact of LLMs on programming education has been documented in multiple empirical studies~\cite{dakhel2023github,sheard2023perceptions}.
-Dakhel et al.~\cite{dakhel2023github} show that LLMs function as ``asset or liability'' depending on student expertise, and MacNeil et al.~\cite{macneil2023experiences} study LLM explanations in programming courses.
-These works highlight an open problem: current assessment tasks are too easily solved by LLMs.
-We address this gap by proposing a systematic language-design framework for LLM-resistant assessment.
+\subsection{Instruction-Following in Code Generation}
+Recent benchmarks---CodeIF~\cite{codeif2025} and MultiCodeIF~\cite{multicode2025}---reveal that LLMs underperform on code tasks that require strict adherence to developer-specified constraints, even when those constraints are explicitly stated. These works show a gap between general programming competence and instruction compliance, motivating our study of a more extreme case: instructions that directly conflict with Python NTP priors.
 
-\subsection{Adversarial Prompts and Semantic Perturbations}
-PromptBench~\cite{zhu2023promptrobust} demonstrates that LLMs are fragile under adversarial text perturbations at word, sentence, and semantic levels.
-Pan et al.~\cite{pan2024adversarial} show that semantically aligned adversarial perturbations in code generation prompts cause significant performance drops.
-These results motivate our investigation of whether deliberately inverted semantics (a structured form of semantic perturbation) provides robust and principled LLM resistance.
+\subsection{Knowledge Conflicts: Parametric vs.\ Contextual}
+A growing body of work studies how LLMs resolve conflicts between pretrained parametric knowledge and information given in context.
+Chen et al.~\cite{chen2024instructhierarchy} propose an instruction hierarchy to prioritize privileged instructions; however, they focus on natural-language directives rather than programming-language semantic rules.
+Xie et al.~\cite{xie2024conflict} and Wu et al.~\cite{wu2024contextparametric} show that LLMs often default to parametric knowledge when context contradicts it---especially under low surface-form overlap---which directly motivates our L3/L4 designs where syntax is identical to Python but semantics are inverted.
+Wang et al.~\cite{wang2024ntp} characterize how NTP training shapes model behavior; their ``law of next-token prediction'' provides theoretical grounding for our observation that prior dominance scales with token predictability.
 
-\subsection{Constrained Decoding and DSL Evaluation}
-Constrained decoding approaches~\cite{dong2024xgrammar,muendler2025type} enforce grammar-level validity during generation, showing that structural constraints can improve output quality.
-A complementary evaluation framework~\cite{frameworkdsl2024} assessed LLM performance on constraint domain-specific languages (DSLs), finding that models perform worse on non-standard languages.
-Our L2--L4 framework extends these findings by distinguishing syntactic, semantic, and implicit difficulty dimensions.
+\subsection{Adversarial Perturbations in Code Generation}
+PromptBench~\cite{zhu2023promptrobust} demonstrates LLMs are fragile under adversarial text perturbations at word and sentence levels.
+Pan et al.~\cite{pan2024adversarial} show that semantically aligned adversarial code prompts cause up to 42\% accuracy drops.
+Khan et al.~\cite{khan2024cheatingllm} specifically target programming assignment assessments, designing adversarial perturbations that reduce LLM correctness by 77\% to prevent academic dishonesty.
+Our approach is complementary: rather than perturbation-based attack, we design a principled \emph{language family} in which LLM priors are systematically misaligned.
 
-\subsection{Research Gap Addressed}
-Prior work on adversarial prompts focuses on degrading general quality, not on principled language design.
-Prior work on DSLs measures performance but does not explain failure mechanisms.
-Prior work on instruction-prior conflict focuses on knowledge, not programming semantics.
-Our contribution is a structured taxonomy (L1--L4) that characterizes LLM failure by \emph{type} (prior dominance vs.\ pattern blindness), enabling principled design of LLM-resistant educational programming tasks.
+\subsection{LLM Impact on Programming Education}
+Multiple empirical studies show LLMs reduce independent coding skill development~\cite{dakhel2023github,prather2023robots,lau2023learners}. Novak and McDanel~\cite{novak2025llmhw} explicitly study LLM-resistant assignment design, proposing contextual and personalized tasks; however, they do not characterize \emph{which linguistic features} drive LLM failure.
+We address this gap by providing a four-level taxonomy grounded in NTP prior theory.
+
+\subsection{Few-Shot Learning and Pattern Extraction}
+In-context learning (ICL) allows LLMs to adapt to new tasks from examples~\cite{dong2022survey}.
+Min et al.~\cite{min2022rethinking} show that labels in demonstrations matter less than expected---models rely on surface patterns rather than semantic reasoning.
+Our L4 finding (pattern blindness) extends this: LLMs fail to extract \emph{semantic inversion} from worked examples, consistent with the view that ICL is primarily distributional rather than rule-inductive.
+
+\subsection{Research Gap}
+Prior adversarial work degrades generation quality without a principled design taxonomy. Prior education work proposes task-level heuristics without mechanism analysis. Prior knowledge-conflict work focuses on factual knowledge rather than programming-language semantics. Our contribution unifies these threads: a theory-grounded taxonomy (L1--L4) that characterizes LLM failure by \emph{type} (prior dominance vs.\ pattern blindness) and \emph{mechanism} (NTP prior conflict), enabling principled LLM-resistant language design.
+
+\subsection{Instruction Alignment}
+Alignment methods including RLHF~\cite{ouyang2022instruct} improve instruction following in natural-language tasks, but our results suggest semantic-level programming conflicts remain resistant even in aligned models (gpt-4o succeeds at L3 but fails at L4), pointing to a gap between alignment training and deep semantic inversion under implicit delivery.
