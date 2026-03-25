@@ -120,7 +120,7 @@ All OpenAI models show non-zero KLR (0.21--0.69), confirming prior dominance. Th
 \end{table}
 
 \subsection{L2: Syntax inversion not resistant}
-All four evaluated models (\texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}) adopted L2 syntax fully (SIR=0.0, $n=20$ each), confirming that structural novelty alone does not create LLM resistance.
+Three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}) adopted L2 syntax fully at $n=20$ each (SIR=0.0); \texttt{gpt-4o-mini} adopted L2 in a pilot evaluation ($n=5$, 5/5). Across all four evaluated models, SIR=0.0, confirming that structural novelty alone does not create LLM resistance.
 
 \subsection{L3: Capability threshold at semantic rule-following}
 With an explicit semantic inversion rule, \texttt{gpt-4o-mini} fails completely (PPR=1.0): it generates standard Python despite instruction. By contrast, \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, and \texttt{gpt-4.1-nano} all succeed (20/20, PPR=0.0). This reveals a model capacity threshold between \texttt{gpt-4o-mini} and the larger/newer models for following semantic meta-rules.
@@ -173,9 +173,8 @@ E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
   columns=fixed,keepspaces=true,tabsize=4,
-  commentstyle=\color{green!60!black},
-  morecomment={[l]{\%}}]
-if n > 1:        % inverted
+  commentstyle=\color{green!60!black}]
+if n > 1:        # inverted
     return n
 return fib(n-1) + fib(n-2)
 \end{lstlisting}
@@ -189,9 +188,8 @@ return fib(n-1) + fib(n-2)
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
   columns=fixed,keepspaces=true,tabsize=4,
-  commentstyle=\color{red!70!black},
-  morecomment={[l]{\%}}]
-if n <= 1:       % standard Python
+  commentstyle=\color{red!70!black}]
+if n <= 1:       # standard Python
     return n
 return fib(n-1) + fib(n-2)
 \end{lstlisting}
@@ -266,6 +264,8 @@ We also observe \emph{template fragmentation} in \texttt{gpt-4o-mini} T1: the mo
 Task difficulty interacts with model capacity to determine which failure mode dominates. T2 (is\_sorted) is extractable by mid-to-large models; T1 (Fibonacci) is universally resistant; T3 (count\_vowels) triggers operational substitution as the dominant escape strategy for capable models.
 
 \textbf{Failure taxonomy across 419 failed L4 runs} (ablation + multitask T1): Type-I (exact Python prior) accounts for 83.1\% of failures, Type-II (partial attempt) for 12.6\%, and Type-III (operational substitution) for 4.3\%. Type-I dominates in \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} (100\% of failures); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%); Type-III appears primarily in \texttt{gpt-4o} (25\% of its failures).
+
+\noindent\textit{Population note:} The 419 pooled runs consist of 350 strict example-only ablation failures and 69 failed multitask T1 runs (partially-annotated prompt). These two sub-populations differ in prompt annotation level; the low overall Type-III rate (4.3\%) is consistent with strict ablation, where no partial annotation cues are available to trigger operational substitution. In the multi-task sub-population, Type-III is observed primarily in \texttt{gpt-4o} T3 at $n=50$ (94\% operational substitution rate), but that data is counted in T3 (not T1) and is therefore excluded from the 419 pooled taxonomy. A full split analysis per prompt protocol is deferred to future work.
 
 \subsection{CoT Ablation: Reasoning About Inversion Is Not Sufficient}
 We tested whether chain-of-thought (CoT) prompting overcomes pattern blindness by adding ``think step by step about the pattern first'' to the L4 Variant A prompt ($n=20$ per condition, two models).
