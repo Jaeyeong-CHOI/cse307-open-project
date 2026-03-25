@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 04:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 05:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1253,13 +1253,9 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/microtype/mt-
 msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-(./sections/01_introduction.tex [1{/opt/homebrew/Cellar/texlive/20260301/share/
-texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/202
-60301/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
+) (./sections/01_introduction.tex [1{/opt/homebrew/Cellar/texlive/20260301/shar
+e/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/2
+0260301/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ]
@@ -1279,7 +1275,7 @@ Underfull \hbox (badness 3158) in paragraph at lines 27--28
 e stronger mod-els suc-ceed
  []
 
-) (./sections/02_related_work.tex [2]) (./sections/03_method.tex [3]
+) (./sections/02_related_work.tex [2]) (./sections/03_method.tex
 LaTeX Font Info:    Trying to load font information for T1+phv on input line 44
 .
 
@@ -1291,7 +1287,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-
+ [3]
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/lstl
 ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
@@ -1307,7 +1303,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 123--124
  , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
  []
 
-[6]
+
 Underfull \hbox (badness 6047) in paragraph at lines 134--141
 []\T1/ptm/b/n/10 (+20) L4 ab-la-tion (n=50 per model). \T1/ptm/m/n/10 (+20) We 
 scaled the
@@ -1332,6 +1328,7 @@ Underfull \hbox (badness 1152) in paragraph at lines 134--141
 1/ptm/m/n/10 (+20) ) to 1.0
  []
 
+[6]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 179.
 
@@ -1471,7 +1468,7 @@ des
  []
 
 
-Underfull \vbox (badness 5878) has occurred while \output is active []
+Underfull \vbox (badness 2600) has occurred while \output is active []
 
  [13]
 [14]
@@ -1531,6 +1528,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
  []
 
 [16]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 1028) in paragraph at lines 167--168
 []\T1/ptm/b/n/10 (+20) L3-correct\T1/ptm/m/n/10 (+20) : model writes \T1/pcr/m/
 n/10 if n > 1: return n \T1/ptm/m/n/10 (+20) or
@@ -1900,11 +1900,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37362 strings out of 467525
- 897117 string characters out of 5408440
- 1642815 words of memory out of 5000000
+ 37377 strings out of 467525
+ 897243 string characters out of 5408440
+ 1641409 words of memory out of 5000000
  65015 multiletter control sequences out of 15000+600000
- 790048 words of font info for 583 fonts, out of 8000000 for 9000
+ 790748 words of font info for 593 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1747b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1943,7 +1943,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (21 pages, 427464 bytes).
+Output written on main.pdf (21 pages, 426707 bytes).
 PDF statistics:
  222 PDF objects out of 1000 (max. 8388607)
  139 compressed objects within 2 object streams
