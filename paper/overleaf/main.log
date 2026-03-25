@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 03:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 03:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1446,7 +1446,7 @@ Underfull \hbox (badness 2020) in paragraph at lines 297--298
  []
 
 [9] [10]
-Overfull \hbox (84.91971pt too wide) in paragraph at lines 381--390
+Overfull \hbox (81.42442pt too wide) in paragraph at lines 381--390
  [][] 
  []
 
@@ -1843,21 +1843,20 @@ Overfull \hbox (78.7pt too wide) in paragraph at lines 131--132
  []
 
 [19]
-Underfull \hbox (badness 2020) in paragraph at lines 133--134
-[]\T1/ptm/b/n/10 (+20) E32 (Cross-Task Trans-fer). \T1/ptm/m/n/10 (+20) Few-sho
-t prompts with
+Underfull \hbox (badness 2443) in paragraph at lines 133--134
+\T1/ptm/m/n/10 (+20) rounds, E32a/E32b) to tighten the con-fi-dence in-ter-val;
+
  []
 
 
-Underfull \hbox (badness 1675) in paragraph at lines 133--134
-\T1/ptm/m/n/10 (+20) re-run with cor-rected pa-ram-e-ters yielded 1/10. Re-sult
-s:
- []
-
-
-Overfull \hbox (48.7pt too wide) in paragraph at lines 133--134
+Overfull \hbox (49.2pt too wide) in paragraph at lines 133--134
 \T1/pcr/m/n/10 docs/research/results/e32-cross-task-transfer.json\T1/ptm/m/n/10
- (-20) . 
+ (-20) ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--134
+\T1/pcr/m/n/10 e32-gpt4o-scaleup.json\T1/ptm/m/n/10 (+20) ,
  []
 
 
@@ -1904,11 +1903,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37355 strings out of 467525
- 897060 string characters out of 5408440
+ 37357 strings out of 467525
+ 897073 string characters out of 5408440
  1645384 words of memory out of 5000000
  65014 multiletter control sequences out of 15000+600000
- 789856 words of font info for 579 fonts, out of 8000000 for 9000
+ 789920 words of font info for 580 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1611b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1947,7 +1946,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (21 pages, 422967 bytes).
+Output written on main.pdf (21 pages, 423749 bytes).
 PDF statistics:
  222 PDF objects out of 1000 (max. 8388607)
  139 compressed objects within 2 object streams
