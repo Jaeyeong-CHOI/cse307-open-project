@@ -76,7 +76,7 @@ Token & v1 alias & v35 alias & v90 alias \\
 \texttt{:define name [args] ->}\quad (replaces \texttt{def name(args):})\\
 \texttt{<= value}\quad (replaces \texttt{return value})\\
 \texttt{value ?cond: res ;else: alt ;end}\quad (replaces \texttt{if})\\
-\texttt{loop var over iterable \{ body \}}\quad (replaces \texttt{for})\\
+\texttt{loop var over iterable \{body\}}\enspace (replaces \texttt{for})\\
 \texttt{;;}\quad closes function block
 \end{tcolorbox}
 \caption{L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}

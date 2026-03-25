@@ -55,10 +55,12 @@ The two gray cells (Token/Implicit and Syntax/Implicit) are theoretically possib
     at (2.5,0.5) {\textbf{L3}\\{\scriptsize Cap.-dep.}};
   \node[cell, fill=green!25, draw=green!50!black]
     at (2.5,1.5) {\textbf{L4}\\{\scriptsize Patt.\ blind}};
-  \node[cell, fill=gray!8, draw=gray!40, text=gray!60]
-    at (0.5,1.5) {\scriptsize not studied};
-  \node[cell, fill=gray!8, draw=gray!40, text=gray!60]
-    at (1.5,1.5) {\scriptsize not studied};
+  \node[cell, fill=gray!25, draw=gray!40, text=gray!60,
+    minimum width=1.8cm, minimum height=0.55cm, inner sep=3pt]
+    at (0.5,1.5) {\scriptsize\itshape not studied};
+  \node[cell, fill=gray!25, draw=gray!40, text=gray!60,
+    minimum width=1.8cm, minimum height=0.55cm, inner sep=3pt]
+    at (1.5,1.5) {\scriptsize\itshape not studied};
 \end{tikzpicture}
 \caption{Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (dark red) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}
 \label{fig:taxonomy}
@@ -79,7 +81,7 @@ Python surface syntax is retained but the semantics of if-blocks are inverted: t
   title=\textbf{Python (standard)}, fonttitle=\small\bfseries, boxrule=0.5pt]
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
-  columns=flexible,keepspaces=true]
+  columns=fixed,keepspaces=true,tabsize=4]
 def fib(n):
     if n <= 1:
         return n
@@ -93,7 +95,7 @@ def fib(n):
   title=\textbf{L3 (semantic inversion)}, fonttitle=\small\bfseries, boxrule=0.5pt]
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
-  columns=flexible,keepspaces=true]
+  columns=fixed,keepspaces=true,tabsize=4]
 def fib(n):
     if n <= 1:
         return fib(n-1) + fib(n-2)

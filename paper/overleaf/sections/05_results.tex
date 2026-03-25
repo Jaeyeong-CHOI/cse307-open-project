@@ -24,6 +24,7 @@
 \texttt{Qwen3-32B}$^\star$ & ctx-pack & \cellcolor{red!10}1.00 \\
 \bottomrule
 \multicolumn{3}{l}{\scriptsize $^\star$Open-weight via Groq API; $n=20$, ctx-pack only. See \S\ref{sec:open_weight}.} \\
+\multicolumn{3}{l}{\scriptsize \colorbox{green!15}{Green}: KLR${\leq}0.27$;\; \colorbox{red!10}{Red}: KLR${\geq}0.67$.} \\
 \end{tabular}
 \end{table}
 
@@ -39,9 +40,10 @@
   ylabel style={font=\small},
   ymin=0, ymax=1.1,
   ytick={0,0.25,0.5,0.75,1.0},
+  yticklabels={0,{.25},{.50},{.75},1.0},
   symbolic x coords={gpt-4o,gpt-4o-mini,gpt-4.1,gpt-4.1-mini,gpt-4.1-nano,gpt-5.4-mini,o4-mini},
   xtick=data,
-  x tick label style={rotate=30, anchor=east, font=\small\ttfamily},
+  x tick label style={rotate=40, anchor=east, font=\scriptsize\ttfamily},
   y tick label style={font=\scriptsize},
   enlarge x limits=0.12,
   nodes near coords,
@@ -62,11 +64,11 @@
 % o4 family (purple)
 \addplot[fill=violet!45, draw=violet!65] coordinates {(o4-mini,1.00)};
 % 50% threshold line
-\draw[dashed, red!70, line width=0.6pt] (axis cs:gpt-4o,0.5) -- (axis cs:o4-mini,0.5)
-  node[pos=0.5, above, font=\tiny\itshape, text=red!70] {50\% leakage threshold};
+\draw[dashed, red!70!black, line width=0.6pt] (axis cs:gpt-4o,0.5) -- (axis cs:o4-mini,0.5)
+  node[pos=0, left, font=\tiny\itshape, text=red!70!black, xshift=-2pt] {50\%};
 \end{axis}
 \end{tikzpicture}
-\caption{L1 Keyword Leakage Rate (KLR) by model. Lower is better (less Python keyword leakage). Color indicates model family: blue = \texttt{gpt-4o}, orange = \texttt{gpt-4.1}, green = \texttt{gpt-5}, purple = \texttt{o4}. Dashed line marks 50\% leakage threshold.}
+\caption{L1 Keyword Leakage Rate (KLR) by model. Lower is better. Color indicates model family: blue=\texttt{gpt-4o}, orange=\texttt{gpt-4.1}, green=\texttt{gpt-5}, purple=\texttt{o4}. Dashed line marks 50\% threshold.}
 \label{fig:l1_klr_bar}
 \end{figure}
 
@@ -162,10 +164,10 @@ E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \
 \textit{\texttt{gpt-4o} output} \textbf{(CORRECT):}\\[2pt]
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
-  columns=flexible,keepspaces=true,
+  columns=fixed,keepspaces=true,tabsize=4,
   commentstyle=\color{green!60!black},
   morecomment={[l]{\%}}]
-if n > 1:           % inverted: runs when FALSE
+if n > 1:        % inverted
     return n
 return fib(n-1) + fib(n-2)
 \end{lstlisting}
@@ -178,10 +180,10 @@ return fib(n-1) + fib(n-2)
 \textit{\texttt{gpt-4o} output} \textbf{(INCORRECT):}\\[2pt]
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
-  columns=flexible,keepspaces=true,
+  columns=fixed,keepspaces=true,tabsize=4,
   commentstyle=\color{red!70!black},
   morecomment={[l]{\%}}]
-if n <= 1:          % Python prior, not inverted
+if n <= 1:       % standard Python
     return n
 return fib(n-1) + fib(n-2)
 \end{lstlisting}

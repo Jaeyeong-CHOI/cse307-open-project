@@ -9,6 +9,9 @@
 \usepackage{setspace}
 \usepackage{amsmath,amssymb}
 \usepackage{cite}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=*, topsep=2pt, itemsep=1pt}
+\setlist[enumerate]{leftmargin=*, topsep=2pt, itemsep=1pt}
 \usepackage[dvipsnames,table]{xcolor}
 \usepackage{mdframed}
 \usepackage{listings}
@@ -28,7 +31,9 @@
 \usepackage[hang,small]{caption}
 % Suppress T1/ptm/m/scit warning (times has no small-caps italic)
 \DeclareFontShape{T1}{ptm}{m}{scit}{<->ssub*ptm/m/it}{}
-\setlength{\emergencystretch}{1.5em}
+\setlength{\emergencystretch}{2.5em}
+\tolerance=1000
+\hbadness=1000
 \sloppy
 
 % --- Model name macros ---
@@ -53,7 +58,7 @@ DGIST EECS\\
 \begin{abstract}
 LLMs now solve standard programming tasks well enough to undermine their value as student assessments.
 We investigate whether it is possible to design a programming language that is human-interpretable but defeats LLM next-token-prediction (NTP) priors.
-We propose a four-level taxonomy---L1 (token alias substitution), L2 (syntax inversion), L3 (semantic inversion with explicit rules), L4 (semantic inversion with implicit delivery)---and evaluate LLM compliance across seven model families (\gptfo{}, \gptfomini{}, \gptfoo{}, \gptfoomini{}, \gptfoonano{}, \gptfivefour{}, \ofourmini{}).
+We propose a four-level taxonomy---L1 (token alias substitution), L2 (syntax inversion), L3 (semantic inversion with explicit rules), L4 (semantic inversion with implicit delivery)---and evaluate LLM compliance across seven OpenAI model families (GPT-4o through o4-mini).
 L1 creates partial resistance (KLR 0.26--0.69); L2 is easily adopted; L3 reveals a model capability threshold; and L4 defeats all tested models on the Fibonacci task through \emph{pattern blindness}, with task-dependent outcomes on simpler idioms.
 A multi-task extension (Fibonacci, is\_sorted, count\_vowels; 345 runs) reveals task-dependent resistance and a third failure mode, \emph{operational substitution}.
 We identify three failure mechanisms---\emph{prior dominance}, \emph{pattern blindness}, and \emph{operational substitution}---across 735 total L4 evaluations spanning 9 models (7 OpenAI, 2 open-weight). A chain-of-thought ablation reveals that models can \emph{articulate} the inversion rule when prompted to reason but still generate standard Python code, demonstrating a reasoning--generation dissociation. Preliminary open-weight evaluation (\llamaseventy{}, \qwenthirtytwo{}) shows consistent L4 pattern blindness and wide L1 compliance variance (KLR=0.23 vs.\ 1.00), suggesting architecture and fine-tuning regime govern alias resistance.
