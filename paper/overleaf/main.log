@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 11:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 11:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1128,20 +1128,20 @@ Package caption Info: listings package is loaded.
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
 
 -- Lines per column: 56 (exact).
 
@@ -1171,13 +1171,13 @@ pstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 50.
-Package microtype Info: Applying patch `item' on input line 50.
-Package microtype Info: Applying patch `toc' on input line 50.
-Package microtype Info: Applying patch `eqnum' on input line 50.
-Package microtype Info: Applying patch `footnote' on input line 50.
-Package microtype Info: Applying patch `verbatim' on input line 50.
-LaTeX Info: Redefining \microtypesetup on input line 50.
+LaTeX Info: Redefining \microtypecontext on input line 52.
+Package microtype Info: Applying patch `item' on input line 52.
+Package microtype Info: Applying patch `toc' on input line 52.
+Package microtype Info: Applying patch `eqnum' on input line 52.
+Package microtype Info: Applying patch `footnote' on input line 52.
+Package microtype Info: Applying patch `verbatim' on input line 52.
+LaTeX Info: Redefining \microtypesetup on input line 52.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1200,7 +1200,7 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 51
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 53
 .
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/t1pcr.
@@ -1272,157 +1272,163 @@ Package microtype Info: Loading generic protrusion settings for font family
 ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 ) [3]) (./sections/04_experiments.tex) (./sections/05_results.tex
-Package pgfplots info on input line 52: Using 'lua backend=false' for axis: x c
+Package pgfplots info on input line 54: Using 'lua backend=false' for axis: x c
 oord trafo unsupported.
 
-Overfull \hbox (10.09306pt too wide) in paragraph at lines 68--69
+Overfull \hbox (4.50969pt too wide) in paragraph at lines 70--71
  [][] 
  []
 
 [4]
-Underfull \hbox (badness 5388) in paragraph at lines 84--85
+Underfull \hbox (badness 5388) in paragraph at lines 86--87
 \T1/ptm/m/n/10 (+20) is com-pa-ra-ble to the best Ope-nAI ctx-pack re-sults;
  []
 
 
-Underfull \hbox (badness 6047) in paragraph at lines 124--131
+Underfull \hbox (badness 1199) in paragraph at lines 115--116
+[]\T1/ptm/m/n/10 (+20) All four eval-u-ated mod-els (\T1/pcr/m/n/10 gpt-4o\T1/p
+tm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 6047) in paragraph at lines 126--133
 []\T1/ptm/b/n/10 (+20) L4 ab-la-tion (n=50 per model). \T1/ptm/m/n/10 (+20) We 
 scaled the
  []
 
 
-Underfull \hbox (badness 2538) in paragraph at lines 124--131
+Underfull \hbox (badness 2538) in paragraph at lines 126--133
 \T1/ptm/m/n/10 (+20) L4 eval-u-a-tion across seven mod-els, all at $\OML/cmm/m/
 it/10 n \OT1/cmr/m/n/10 = 50$
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 124--131
+Underfull \hbox (badness 2680) in paragraph at lines 126--133
 \T1/ptm/m/n/10 (+20) (\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/1
 0 gpt-4o-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1\T1/ptm/m/n/10 (+20) 
 , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
  []
 
-[5]
-LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 162.
 
-Underfull \hbox (badness 10000) in paragraph at lines 161--167
-
+Underfull \hbox (badness 1152) in paragraph at lines 126--133
+\T1/ptm/m/n/10 (+20) PPR val-ues range from 0.38 (\T1/pcr/m/n/10 gpt-4.1-mini\T
+1/ptm/m/n/10 (+20) ) to 1.0
  []
 
+[5]
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 164.
 
-Overfull \hbox (3.05284pt too wide) in paragraph at lines 168--169
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][] 
+Underfull \hbox (badness 10000) in paragraph at lines 163--169
+
  []
 
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
-76.
+78.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/ts1ptm
 .fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 177--183
+Underfull \hbox (badness 10000) in paragraph at lines 179--185
 
  []
 
 
-Overfull \hbox (7.85284pt too wide) in paragraph at lines 184--185
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][] 
- []
-
-
-Underfull \hbox (badness 2119) in paragraph at lines 196--197
+Underfull \hbox (badness 2119) in paragraph at lines 198--199
 []\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
 
 
-Underfull \hbox (badness 6016) in paragraph at lines 196--197
+Underfull \hbox (badness 6016) in paragraph at lines 198--199
 \T1/ptm/m/n/10 (+20) Fi-bonacci, we eval-u-ated all seven mod-els on three
  []
 
 
-Underfull \hbox (badness 4634) in paragraph at lines 196--197
+Underfull \hbox (badness 4634) in paragraph at lines 198--199
 \T1/ptm/m/n/10 (+20) tasks: T1 (\T1/pcr/m/n/10 fibonacci\T1/ptm/m/n/10 (+20) ),
  T2 (\T1/pcr/m/n/10 is_sorted\T1/ptm/m/n/10 (+20) ), and T3
  []
 
 
-Underfull \hbox (badness 1755) in paragraph at lines 224--226
+Underfull \hbox (badness 1755) in paragraph at lines 226--228
 \T1/ptm/m/n/10 (+20) (1) \T1/ptm/b/n/10 (+20) T2 is ex-tractable only by mid-to
 -large mod-els\T1/ptm/m/n/10 (+20) :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 233--235
+Underfull \hbox (badness 10000) in paragraph at lines 235--237
 \T1/ptm/m/n/10 (+20) (4) \T1/ptm/b/n/10 (+20) Model ca-pac-ity de-ter-mines T2 
 ex-tractabil-ity\T1/ptm/m/n/10 (+20) :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 233--235
+Underfull \hbox (badness 10000) in paragraph at lines 235--237
 \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1\T1/ptm/
 m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1-nano\T1/ptm/m/n/10 (+20) , and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 233--235
+Underfull \hbox (badness 10000) in paragraph at lines 235--237
 \T1/pcr/m/n/10 gpt-5.4-mini \T1/ptm/m/n/10 (+20) all fail T2, while \T1/pcr/m/n
 /10 gpt-4o \T1/ptm/m/n/10 (+20) and
  []
 
 
-Underfull \hbox (badness 2913) in paragraph at lines 233--235
+Underfull \hbox (badness 2913) in paragraph at lines 235--237
 \T1/pcr/m/n/10 gpt-4.1-mini \T1/ptm/m/n/10 (+20) succeed---consistent with the 
 ca-pac-ity
  []
 
 [6]
-Underfull \hbox (badness 2884) in paragraph at lines 239--240
+Underfull \hbox (badness 2884) in paragraph at lines 241--242
 []\T1/ptm/b/n/10 (+20) Methodological note on \T1/pcr/b/n/10 o4-mini \T1/ptm/b/
 n/10 (+20) (to-ken bud-get
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 239--240
+Underfull \hbox (badness 10000) in paragraph at lines 241--242
 \T1/ptm/b/n/10 (+20) cor-rec-tion). \T1/ptm/m/n/10 (+20) An ini-tial \T1/pcr/m/
 n/10 o4-mini \T1/ptm/m/n/10 (+20) T1 run used
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 239--240
+Underfull \hbox (badness 10000) in paragraph at lines 241--242
 \T1/pcr/m/n/10 max_completion_tokens\T1/ptm/m/n/10 (+20) =400, which trun-cated
 
  []
 
 
-Underfull \hbox (badness 2376) in paragraph at lines 239--240
+Underfull \hbox (badness 2376) in paragraph at lines 241--242
 \T1/ptm/m/n/10 (+20) the model's chain-of-thought be-fore it could com-plete
  []
 
 
-Underfull \hbox (badness 3302) in paragraph at lines 239--240
+Underfull \hbox (badness 3302) in paragraph at lines 241--242
 \T1/ptm/m/n/10 (+20) the in-ver-sion task; this yielded 0/15 pass (con-sis-tent
 
  []
 
 
-Underfull \hbox (badness 7133) in paragraph at lines 239--240
+Underfull \hbox (badness 1337) in paragraph at lines 241--242
+\T1/ptm/m/n/10 (+20) with pat-tern blind-ness). Upon cor-rect-ing the bud-get t
+o
+ []
+
+
+Underfull \hbox (badness 7133) in paragraph at lines 241--242
 \T1/pcr/m/n/10 max_completion_tokens\T1/ptm/m/n/10 (+20) =5000, \T1/pcr/m/n/10 
 o4-mini \T1/ptm/m/n/10 (+20) achieved
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 274--275
+Underfull \hbox (badness 10000) in paragraph at lines 276--277
 []\T1/ptm/b/n/10 (+20) L1 (ctx-pack, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 = 20$\
 T1/ptm/b/n/10 (+20) ): \T1/pcr/m/n/10 Llama-3.3-70B
  []
 
 
-Underfull \hbox (badness 2020) in paragraph at lines 274--275
+Underfull \hbox (badness 2020) in paragraph at lines 276--277
 \T1/ptm/m/n/10 (+20) achieves KLR=0.23, nearly match-ing the Ope-nAI best
  []
 
@@ -1477,12 +1483,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 75--81
-\T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
- []
-
-
-Overfull \vbox (35.14354pt too high) has occurred while \output is active []
+Overfull \vbox (25.14354pt too high) has occurred while \output is active []
 
 
 [9]
@@ -1523,6 +1524,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--39
  []
 
 
+Underfull \hbox (badness 1325) in paragraph at lines 45--48
+[]\T1/ptm/b/n/10 (+20) E14: L4 ab-la-tion, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 
+= 50$\T1/ptm/b/n/10 (+20) , o4-mini (2026-03-
+ []
+
+
 Underfull \hbox (badness 2698) in paragraph at lines 45--48
 \T1/ptm/m/n/10 (+20) (1/20 pre-lim-i-nary was a sta-tis-ti-cal ar-ti-fact). Fil
 e:
@@ -1536,28 +1543,171 @@ Underfull \hbox (badness 4441) in paragraph at lines 49--54
  []
 
 [10]
-Overfull \hbox (67.53001pt too wide) in paragraph at lines 55--62
-\T1/pcr/m/n/10 L4-scaleup-count_vowels.gpt4o.n50.2026-03-25.json\T1/ptm/m/n/10 
-(-20) ,
+Underfull \hbox (badness 1342) in paragraph at lines 64--71
+\T1/ptm/b/n/10 (+20) 03-25). \T1/ptm/m/n/10 (+20) Mod-els: gpt-4o, gpt-4.1-mini
+, gpt-4.1-nano.
  []
 
 
-Overfull \hbox (48.33002pt too wide) in paragraph at lines 55--62
-\T1/pcr/m/n/10 L4-scaleup-is_sorted.gpt41.n50.2026-03-25.json
+Underfull \hbox (badness 10000) in paragraph at lines 64--71
+\T1/pcr/m/n/10 l2-gpt41mini-n20-2026-03-25.json\T1/ptm/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--71
+\T1/pcr/m/n/10 l2-gpt41nano-n20-2026-03-25.json\T1/ptm/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--71
+\T1/pcr/m/n/10 l3-gpt4o-n20-2026-03-25.json\T1/ptm/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--71
+\T1/pcr/m/n/10 l3-gpt41mini-n20-2026-03-25.json\T1/ptm/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 2409) in paragraph at lines 72--78
+\T1/ptm/m/n/10 (+20) pat-tern blind-ness. L1 fam-ily vari-ance (0.23--1.00)
+ []
+
+
+Overfull \hbox (55.53001pt too wide) in paragraph at lines 72--78
+\T1/pcr/m/n/10 l1-llama33-70b-contextpack-groq-2026-03-25.json\T1/ptm/m/n/10 (-
+20) ,
+ []
+
+
+Overfull \hbox (43.53001pt too wide) in paragraph at lines 72--78
+\T1/pcr/m/n/10 l1-qwen3-32b-contextpack-groq-2026-03-25.json\T1/ptm/m/n/10 (-20
+) ,
+ []
+
+
+Overfull \hbox (61.53001pt too wide) in paragraph at lines 72--78
+\T1/pcr/m/n/10 l4-ablation-groq-llama33-70b-n20-2026-03-25.json\T1/ptm/m/n/10 (
+-20) ,
+ []
+
+
+Overfull \hbox (48.33002pt too wide) in paragraph at lines 72--78
+\T1/pcr/m/n/10 l4-ablation-groq-qwen3-32b-n20-2026-03-25.json 
+ []
+
+
+Overfull \hbox (36.33002pt too wide) in paragraph at lines 79--85
+\T1/pcr/m/n/10 l4-multitask-o4mini-T2T3-n20-2026-03-25.json 
+ []
+
+
+Underfull \hbox (badness 1009) in paragraph at lines 86--93
+[]\T1/ptm/b/n/10 (+20) E20: CoT ab-la-tion, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10
+ = 20$ \T1/ptm/b/n/10 (+20) per con-di-tion, 2
+ []
+
+
+Underfull \hbox (badness 1881) in paragraph at lines 86--93
+\T1/ptm/b/n/10 (+20) mod-els (2026-03-25). \T1/ptm/m/n/10 (+20) Prompt vari-ant
+: L4 Vari-ant
+ []
+
+
+Underfull \hbox (badness 1430) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) A + ``think step by step about the pat-tern first''
+ []
+
+
+Underfull \hbox (badness 1668) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) pre-fix. gpt-4o: no-CoT 0/20 (PPR=1.00) vs. CoT
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) 0/20 (PPR=0.15, \T1/pcr/m/n/10 mentions_inversion\T1/ptm/m
+/n/10 (+20) =100%).
+ []
+
+
+Underfull \hbox (badness 5302) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) gpt-4.1-mini: no-CoT 0/20 (PPR=0.40) vs. CoT
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) 0/20 (PPR=0.00, \T1/pcr/m/n/10 mentions_inversion\T1/ptm/m
+/n/10 (+20) =100%).
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) Key find-ing: reasoning--generation dis-so-ci-a-tion;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) mod-els ar-tic-u-late in-ver-sion rule in CoT but
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--93
+\T1/ptm/m/n/10 (+20) still gen-er-ate stan-dard Python prior. Files:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--93
+\T1/pcr/m/n/10 l4-cot-ablation-gpt4o-2026-03-25.json\T1/ptm/m/n/10 (+20) ,
+ []
+
+
+Overfull \hbox (18.33002pt too wide) in paragraph at lines 86--93
+\T1/pcr/m/n/10 l4-cot-ablation-gpt41mini-2026-03-25.json
+ []
+
+
+Underfull \hbox (badness 3333) in paragraph at lines 94--100
+\T1/ptm/m/n/10 (+20) (100%); Type-II con-cen-trates in \T1/pcr/m/n/10 gpt-4.1-m
+ini
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 94--100
+\T1/ptm/m/n/10 (+20) (44%) and \T1/pcr/m/n/10 gpt-4o-mini \T1/ptm/m/n/10 (+20) 
+(32%). File:
+ []
+
+
+Underfull \hbox (badness 7595) in paragraph at lines 94--100
+\T1/pcr/m/n/10 failure-taxonomy-2026-03-25.json \T1/ptm/m/n/10 (+20) Script:
+ []
+
+
+Overfull \hbox (76.0pt too wide) in paragraph at lines 104--118
+[][] 
  []
 
 ) (./sections/10_appendix_experiment_details.tex
-Underfull \hbox (badness 10000) in paragraph at lines 81--1
+Underfull \hbox (badness 10000) in paragraph at lines 121--1
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--1
+Underfull \hbox (badness 10000) in paragraph at lines 121--1
 
  []
 
+[11]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 1028) in paragraph at lines 116--117
+[]|\T1/ptm/m/n/8 (+20) gpt-4o, gpt-4o-mini, gpt-4.1,
+ []
 
 
 Underfull \hbox (badness 1983) in paragraph at lines 117--118
@@ -1568,11 +1718,11 @@ Underfull \hbox (badness 1983) in paragraph at lines 117--118
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 )
-Underfull \hbox (badness 3769) in paragraph at lines 125--76
+Underfull \hbox (badness 3769) in paragraph at lines 125--78
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-[11] (./main.bbl)
+(./main.bbl [12])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1584,20 +1734,22 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[12] (./main.aux)
+[13
+
+] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37292 strings out of 467525
- 901657 string characters out of 5408440
- 1640813 words of memory out of 5000000
- 65063 multiletter control sequences out of 15000+600000
- 781182 words of font info for 511 fonts, out of 8000000 for 9000
+ 37301 strings out of 467525
+ 901759 string characters out of 5408440
+ 1641863 words of memory out of 5000000
+ 65062 multiletter control sequences out of 15000+600000
+ 782878 words of font info for 517 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,18n,108p,1103b,2336s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,18n,108p,1103b,2337s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1632,10 +1784,10 @@ onts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
 xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202603
 01/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texl
 ive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (12 pages, 354159 bytes).
+Output written on main.pdf (13 pages, 358235 bytes).
 PDF statistics:
- 188 PDF objects out of 1000 (max. 8388607)
- 116 compressed objects within 2 object streams
+ 192 PDF objects out of 1000 (max. 8388607)
+ 119 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 83469 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 87565 words of extra memory for PDF output out of 89155 (max. 10000000)
 

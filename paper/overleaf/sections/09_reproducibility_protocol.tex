@@ -57,8 +57,45 @@
     gpt-4o T3 (\texttt{count\_vowels}): 0/50 pass; operational substitution in 47/50 runs (94\%, Wilson 95\% CI: [83\%, 99\%]). Confirms preliminary pass was artifact.
     gpt-4.1 T2 (\texttt{is\_sorted}): 1/50 pass (Wilson 95\% CI: [0.0\%, 10.5\%]); Fisher's exact vs.\ gpt-4.1-mini 20/20: $p < 0.0001$.
     Total multi-task runs (E15+E16): 355 (255 initial + 100 scale-up).
-    Files: \texttt{L4-scaleup-count\_vowels.gpt4o.n50.2026-03-25.json}, \texttt{L4-scaleup-is\_sorted.gpt41.n50.2026-03-25.json}
-    Script: \texttt{scripts/run\_targeted\_scaleup.py}
+    Files: \texttt{L4-scaleup-*.n50.json}.
+    Script: \texttt{run\_targeted\_scaleup.py}
+
+  \item \textbf{E17: L2/L3 expansion, $n=20$ each, 3 models (2026-03-25).}
+    Models: gpt-4o, gpt-4.1-mini, gpt-4.1-nano. Rationale: prior L2/L3 data was pilot-level ($n=5$--$10$).
+    L2 results: all three models 20/20 pass (SIR=0.0); confirms full syntax adoption at statistically meaningful $n$.
+    L3 results: all three models 20/20 pass (PPR=0.0); \texttt{gpt-4.1-nano} 20/20 is notable---even the smallest model fully follows explicit rule.
+    Key contrast enabled: \texttt{gpt-4.1-nano} L3 20/20 vs.\ L4 0/50 (PPR=1.0) within-model; explicit rule vs.\ implicit delivery drives the gap.
+    Files: \texttt{l\{2,3\}-\{gpt4o,gpt41mini,gpt41nano\}-n20-*.json}
+    Scripts: \texttt{run\_l2\_eval.py}, \texttt{run\_l3\_eval.py}
+
+  \item \textbf{E18: Open-weight L1 + L4, $n=20$, Llama-3.3-70B and Qwen3-32B via Groq (2026-03-25).}
+    Models accessed via Groq API (User-Agent: ``OpenAI/Python'').
+    L1 ctx-pack: Llama-3.3-70B KLR=0.23 (comparable to best OpenAI); Qwen3-32B KLR=1.00 (worst overall).
+    L4 ablation Variant A: both models 0/20 pass (Llama PPR=0.05, Qwen PPR=1.00); confirms cross-family pattern blindness.
+    L1 family variance (0.23--1.00) exceeds gpt-4.x intra-family variance (0.21--0.69).
+    Files: \texttt{l1-llama33-70b-contextpack-groq-2026-03-25.json}, \texttt{l1-qwen3-32b-contextpack-groq-2026-03-25.json}, \texttt{l4-ablation-groq-llama33-70b-n20-2026-03-25.json}, \texttt{l4-ablation-groq-qwen3-32b-n20-2026-03-25.json}
+
+  \item \textbf{E19: o4-mini multi-task T2/T3 extension, $n=20$ each (2026-03-25).}
+    Rationale: E15 only ran T1 with corrected token budget; T2/T3 needed extension to $n=20$.
+    T2 (\texttt{is\_sorted}): 0/20 pass, PPR=0.30; T3 (\texttt{count\_vowels}): 0/20 pass, PPR=0.00.
+    Confirms reasoning advantage is annotation-contingent (T1 partial annotation) and does not generalize to T2/T3.
+    Total o4-mini multi-task runs after E15+E19: 15+20+20=55.
+    File: \texttt{l4-multitask-o4mini-T2T3-n20-2026-03-25.json}
+
+  \item \textbf{E20: CoT ablation, $n=20$ per condition, 2 models (2026-03-25).}
+    Prompt variant: L4 Variant A + ``think step by step about the pattern first'' prefix.
+    gpt-4o: no-CoT 0/20 (PPR=1.00) vs.\ CoT 0/20 (PPR=0.15, \texttt{mentions\_inversion}=100\%).
+    gpt-4.1-mini: no-CoT 0/20 (PPR=0.40) vs.\ CoT 0/20 (PPR=0.00, \texttt{mentions\_inversion}=100\%).
+    Key finding: reasoning--generation dissociation; models articulate inversion rule in CoT but still generate standard Python prior.
+    Files: \texttt{l4-cot-ablation-gpt4o-2026-03-25.json}, \texttt{l4-cot-ablation-gpt41mini-2026-03-25.json}
+    Script: \texttt{scripts/run\_l4\_cot\_ablation.py}
+
+  \item \textbf{E21: Failure taxonomy, 419 failed L4 runs (2026-03-25).}
+    Classified all failed L4 ablation + multi-task T1 runs across ablation (350) and multi-task (69 failed T1 runs).
+    Type-I (exact Python prior): 83.1\%; Type-II (partial attempt): 12.6\%; Type-III (operational substitution): 4.3\%.
+    Type-I dominates in \texttt{gpt-4.1}/\texttt{gpt-4.1-nano} (100\%); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%).
+    File: \texttt{failure-taxonomy-2026-03-25.json}
+    Script: \texttt{scripts/categorize\_failures.py}
 \end{enumerate}
 
 \subsection{API and runtime settings}
@@ -67,8 +104,10 @@
 \toprule
 Setting & Value \\
 \midrule
-Temperature & 0 \\
+Temperature & 0 (all models); 1 (o4-mini, API req.) \\
+\texttt{max\_completion\_tokens} & default; 5000 (o4-mini reasoning runs) \\
 Base URL & \texttt{https://api.openai.com/v1} \\
+Groq Base URL & \texttt{https://api.groq.com/openai/v1} \\
 Timeout & 120s \\
 Prompt delay & 0.4s \\
 API key source & Project environment variable \\
@@ -84,9 +123,12 @@ Script / Path & Purpose \\
 \midrule
 \texttt{run\_gpt54\_eval.py} & L1 batch runner \\
 \texttt{run\_l2\_eval.py} & L2 batch runner \\
+\texttt{run\_l3\_eval.py} & L3 batch runner \\
 \texttt{run\_l4\_ablation.py} & L4 ablation runner \\
 \texttt{run\_l4\_multitask.py} & L4 multi-task runner \\
 \texttt{run\_targeted\_scaleup.py} & L4 targeted scale-up ($n=50$) \\
+\texttt{run\_l4\_cot\_ablation.py} & CoT ablation runner \\
+\texttt{categorize\_failures.py} & Failure type taxonomy \\
 \texttt{partial\_judge.py} & Continuous metrics \\
 \texttt{compare\_eval\_runs.py} & Run comparison \\
 \texttt{docs/archive/*/} & Prompt banks (L1--L4) \\
