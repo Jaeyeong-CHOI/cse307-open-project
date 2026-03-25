@@ -11,10 +11,10 @@ We ran experiments at each language level for available model families. All runs
 120 prompts per model, versioned v1--v120 with varied alias mappings. Context-pack ablation: baseline vs. explicit alias contract system prompt.
 
 \subsection{L2 Experiment: Syntax Inversion}
-5 prompts $\times$ 4 runs each ($n=20$) using \texttt{:define ... ->} syntax (see Appendix). Model given complete grammar specification. Evaluated for gpt-4o, gpt-4.1-mini, gpt-4.1-nano (plus $n=5$ for gpt-4o-mini from earlier run).
+5 prompts $\times$ 4 runs each ($n=20$) using \texttt{:define ... ->} syntax (see Appendix). Model given complete grammar specification. Evaluated for \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano} (plus $n=5$ for \texttt{gpt-4o-mini} from earlier run).
 
 \subsection{L3 Experiment: Semantic Inversion (Explicit)}
-10 prompts $\times$ 2 runs each ($n=20$). System message explicitly states: ``if-blocks execute when condition is FALSE.'' Evaluated for gpt-4o, gpt-4.1-mini, gpt-4.1-nano (plus $n=5$--10 for gpt-4o-mini and gpt-4o from earlier runs).
+10 prompts $\times$ 2 runs each ($n=20$). System message explicitly states: ``if-blocks execute when condition is FALSE.'' Evaluated for \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano} (plus $n=5$--10 for \texttt{gpt-4o-mini} and \texttt{gpt-4o} from earlier runs).
 
 \subsection{L4 Experiment: Semantic Inversion (Implicit)}
 Initial screening: 10 prompts per model, no rule stated; only 2 worked examples with inverted semantics shown. Model must infer pattern.
@@ -25,7 +25,7 @@ To assess whether pattern blindness generalizes across algorithmic domains, we e
 \textbf{T2 (is\_sorted)}: write a function returning True if a list is ascending, and
 \textbf{T3 (count\_vowels)}: count vowel characters in a string.
 Both use the identical shared prompt header (two worked examples with inverted semantics, no explicit rule)—the same prompt structure as Ablation Variant A.
-We ran $n=10$ per task for \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{gpt-5.4-mini}; $n=20$ for \texttt{gpt-4.1-mini}; and $n=15$ for \texttt{o4-mini} (255 initial runs). We then scaled gpt-4o T3 and gpt-4.1 T2 to $n=50$ to resolve preliminary findings, yielding 355 total multi-task runs.
+We ran $n=10$ per task for \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{gpt-5.4-mini}; $n=20$ for \texttt{gpt-4.1-mini}; and $n=15$ for \texttt{o4-mini} (255 initial runs). We then scaled \texttt{gpt-4o} T3 and \texttt{gpt-4.1} T2 to $n=50$ to resolve preliminary findings, yielding 355 total multi-task runs.
 Results are in Table~\ref{tab:l4_multitask}.
 
 \subsection{CoT Ablation Experiment}

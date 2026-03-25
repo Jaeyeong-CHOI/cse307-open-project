@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1128,20 +1128,20 @@ Package caption Info: listings package is loaded.
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 50.
+LaTeX Font Info:    ... okay on input line 50.
 
 -- Lines per column: 56 (exact).
 
@@ -1171,13 +1171,13 @@ pstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 39.
-Package microtype Info: Applying patch `item' on input line 39.
-Package microtype Info: Applying patch `toc' on input line 39.
-Package microtype Info: Applying patch `eqnum' on input line 39.
-Package microtype Info: Applying patch `footnote' on input line 39.
-Package microtype Info: Applying patch `verbatim' on input line 39.
-LaTeX Info: Redefining \microtypesetup on input line 39.
+LaTeX Info: Redefining \microtypecontext on input line 50.
+Package microtype Info: Applying patch `item' on input line 50.
+Package microtype Info: Applying patch `toc' on input line 50.
+Package microtype Info: Applying patch `eqnum' on input line 50.
+Package microtype Info: Applying patch `footnote' on input line 50.
+Package microtype Info: Applying patch `verbatim' on input line 50.
+LaTeX Info: Redefining \microtypesetup on input line 50.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1200,7 +1200,7 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 40
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 51
 .
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/t1pcr.
@@ -1238,9 +1238,20 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/microtype/mt-
 msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)) (./sections/02_related_work.tex [1{/opt/homebrew/Cellar/texlive/20260301/sha
-re/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/
-20260301/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
+)
+Underfull \hbox (badness 10000) in paragraph at lines 21--22
+\T1/ptm/m/n/10 (+20) weaker mod-els fail com-pletely (PPR=1.0 for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--22
+\T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) ), while stronger mod-els suc-ce
+ed
+ []
+
+) (./sections/02_related_work.tex [1{/opt/homebrew/Cellar/texlive/20260301/shar
+e/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/2
+0260301/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ])
@@ -1260,7 +1271,20 @@ Package microtype Info: Loading generic protrusion settings for font family
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/lstl
 ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
-) [3]) (./sections/04_experiments.tex) (./sections/05_results.tex
+) [3]) (./sections/04_experiments.tex
+Underfull \hbox (badness 10000) in paragraph at lines 121--1
+\T1/ptm/m/n/10 (+20) family mod-els (\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20) 
+, \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1\T1/pt
+m/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--1
+\T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1-nano\T
+1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-5.4-mini\T1/ptm/m/n/10 (+20) ,
+ []
+
+) (./sections/05_results.tex
 Package pgfplots info on input line 52: Using 'lua backend=false' for axis: x c
 oord trafo unsupported.
 
@@ -1268,8 +1292,35 @@ Overfull \hbox (10.09306pt too wide) in paragraph at lines 68--69
  [][] 
  []
 
+
+Underfull \hbox (badness 2521) in paragraph at lines 74--75
+\T1/ptm/m/n/10 (+20) con-firm-ing prior dom-i-nance. Three find-ings stand out:
+
+ []
+
 [4]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \hbox (badness 5388) in paragraph at lines 76--77
+\T1/ptm/m/n/10 (+20) is com-pa-ra-ble to the best Ope-nAI ctx-pack re-sults;
+ []
+
+
+Underfull \hbox (badness 6047) in paragraph at lines 115--122
+[]\T1/ptm/b/n/10 (+20) L4 ab-la-tion (n=50 per model). \T1/ptm/m/n/10 (+20) We 
+scaled the
+ []
+
+
+Underfull \hbox (badness 2538) in paragraph at lines 115--122
+\T1/ptm/m/n/10 (+20) L4 eval-u-a-tion across seven mod-els, all at $\OML/cmm/m/
+it/10 n \OT1/cmr/m/n/10 = 50$
+ []
+
+
+Underfull \hbox (badness 2680) in paragraph at lines 115--122
+\T1/ptm/m/n/10 (+20) (\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/1
+0 gpt-4o-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1\T1/ptm/m/n/10 (+20) 
+, \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
+ []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 152--158
@@ -1304,10 +1355,17 @@ Underfull \hbox (badness 4634) in paragraph at lines 185--186
  []
 
 [5]
-Underfull \vbox (badness 1062) has occurred while \output is active []
+Underfull \hbox (badness 6641) in paragraph at lines 218--219
+\T1/pcr/m/n/10 gpt-4.1-nano \T1/ptm/m/n/10 (+20) (0/10), \T1/pcr/m/n/10 gpt-5.4
+-mini \T1/ptm/m/n/10 (+20) (0/10), and
+ []
 
- [6])
-(./sections/06_discussion.tex [7]
+
+Underfull \hbox (badness 1708) in paragraph at lines 218--219
+\T1/ptm/m/n/10 (+20) mod-els fail T1, with high or full PPR (PPR=1.0 for
+ []
+
+[6]) (./sections/06_discussion.tex [7]
 Underfull \hbox (badness 2181) in paragraph at lines 28--30
 \T1/ptm/b/n/10 (+20) reasoning-model ex-trac-tion. \T1/ptm/m/n/10 (+20) An ear-
 lier multi-task run
@@ -1315,8 +1373,8 @@ lier multi-task run
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 28--30
-\T1/ptm/m/n/10 (+20) of o4-mini used \T1/pcr/m/n/10 max_completion_tokens=400\T
-1/ptm/m/n/10 (+20) ,
+\T1/ptm/m/n/10 (+20) of \T1/pcr/m/n/10 o4-mini \T1/ptm/m/n/10 (+20) used \T1/pc
+r/m/n/10 max_completion_tokens=400\T1/ptm/m/n/10 (+20) ,
  []
 
 
@@ -1330,9 +1388,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 28--30
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 28--30
-\T1/pcr/m/n/10 max_completion_tokens=5000\T1/ptm/m/n/10 (+20) , o4-mini achieve
-s
+Underfull \hbox (badness 3407) in paragraph at lines 28--30
+\T1/pcr/m/n/10 max_completion_tokens=5000\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 
+o4-mini \T1/ptm/m/n/10 (+20) achieves
  []
 
 
@@ -1340,8 +1398,8 @@ Underfull \hbox (badness 2065) in paragraph at lines 28--30
 \T1/ptm/m/n/10 (+20) 8/15 on T1 (partially-annotated prompt). This re-vi-sion
  []
 
-) (./sections/07_conclusion.tex [8])
-(./sections/08_prompt_and_judge_details.tex
+[8]) (./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
+
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1357,7 +1415,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[9]) (./sections/09_reproducibility_protocol.tex
+[9]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+)
+(./sections/09_reproducibility_protocol.tex
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
 
@@ -1417,11 +1479,7 @@ Overfull \hbox (48.33002pt too wide) in paragraph at lines 55--62
 \T1/pcr/m/n/10 L4-scaleup-is_sorted.gpt41.n50.2026-03-25.json
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [10])
-(./sections/10_appendix_experiment_details.tex
+[10]) (./sections/10_appendix_experiment_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 81--1
 [][]
  []
@@ -1437,7 +1495,7 @@ Underfull \hbox (badness 1983) in paragraph at lines 60--61
  []
 
 )
-Underfull \hbox (badness 3769) in paragraph at lines 68--65
+Underfull \hbox (badness 3769) in paragraph at lines 68--76
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
@@ -1460,19 +1518,15 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 37246 strings out of 467525
- 900944 string characters out of 5408440
- 1642344 words of memory out of 5000000
- 65022 multiletter control sequences out of 15000+600000
- 776812 words of font info for 507 fonts, out of 8000000 for 9000
+ 37243 strings out of 467525
+ 900965 string characters out of 5408440
+ 1644481 words of memory out of 5000000
+ 65035 multiletter control sequences out of 15000+600000
+ 777548 words of font info for 499 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,18n,108p,2871b,2336s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,18n,108p,3115b,2336s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1504,10 +1558,10 @@ ve/20260301/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/C
 ellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/
 homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a
 .pfb>
-Output written on main.pdf (12 pages, 318906 bytes).
+Output written on main.pdf (12 pages, 324964 bytes).
 PDF statistics:
  173 PDF objects out of 1000 (max. 8388607)
  107 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 76301 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 77325 words of extra memory for PDF output out of 89155 (max. 10000000)
 

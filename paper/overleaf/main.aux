@@ -77,26 +77,26 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}L2 Experiment: Syntax Inversion}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}L3 Experiment: Semantic Inversion (Explicit)}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}L4 Experiment: Semantic Inversion (Implicit)}{4}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 evaluation: KLR and PSS per model. Baseline rows use $n=120$; ctx-pack rows for gpt-4.1 family, o4-mini, and open-weight models use $n=20$. Models sorted by KLR (ascending). For gpt-4o-mini and gpt-4.1-mini (paired conditions), context-pack reduces KLR ($-38\%$ and $-51\%$ respectively). Open-weight models (marked $^\star $) are ctx-pack only via Groq API.}}{4}{}\protected@file@percent }
-\newlabel{tab:l1_results}{{II}{4}{}{table.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}L4 Multi-task Generalization Experiment}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-H}}CoT Ablation Experiment}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-I}}Reproducibility}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Results}{4}{}\protected@file@percent }
 \newlabel{sec:results}{{V}{4}{}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}L1: Partial resistance; scale does not predict compliance}{4}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces L1 Keyword Leakage Rate (KLR) by model. Lower is better (less Python keyword leakage). Color indicates model family: blue = gpt-4o, orange = gpt-4.1, green = gpt-5, purple = o4. Dashed line marks 50\% leakage threshold.}}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 evaluation: KLR and PSS per model. Baseline rows use $n=120$; ctx-pack rows for \texttt  {gpt-4.1} family, \texttt  {o4-mini}, and open-weight models use $n=20$. Models sorted by KLR (ascending). For \texttt  {gpt-4o-mini} and \texttt  {gpt-4.1-mini} (paired conditions), context-pack reduces KLR ($-38\%$ and $-51\%$ respectively). Open-weight models (marked $^\star $) are ctx-pack only via Groq API.}}{5}{}\protected@file@percent }
+\newlabel{tab:l1_results}{{II}{5}{}{table.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces L1 Keyword Leakage Rate (KLR) by model. Lower is better (less Python keyword leakage). Color indicates model family: blue = \texttt  {gpt-4o}, orange = \texttt  {gpt-4.1}, green = \texttt  {gpt-5}, purple = \texttt  {o4}. Dashed line marks 50\% leakage threshold.}}{5}{}\protected@file@percent }
 \newlabel{fig:l1_klr_bar}{{3}{5}{}{figure.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted by all models ($n=20$); L3 reveals a model-capability threshold (gpt-4o-mini fails, others succeed); L4 (example-only) defeats all models despite L3 success.}}{5}{}\protected@file@percent }
-\newlabel{tab:l234_results}{{III}{5}{}{table.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}L2: Syntax inversion not resistant}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted by all models ($n=20$); L3 reveals a model-capability threshold (\texttt  {gpt-4o-mini} fails, others succeed); L4 (example-only) defeats all models despite L3 success.}}{5}{}\protected@file@percent }
+\newlabel{tab:l234_results}{{III}{5}{}{table.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}L4: Pattern blindness across all tested models}{5}{}\protected@file@percent }
 \newlabel{sec:l4_ablation}{{\mbox  {V-D}}{5}{}{subsection.5.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}L4 Multi-task Generalization}{5}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L4 ablation (PPR = Python Prior Rate). All seven models: $n=50$ each (5 variants $\times $ 10 runs). Pass rate = 0/50 for all models. o4-mini (reasoning model) also achieves 0/50 at $n=50$, revising a preliminary $n=20$ result (1/20).}}{6}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L4 ablation (PPR = Python Prior Rate). All seven models: $n=50$ each (5 variants $\times $ 10 runs). Pass rate = 0/50 for all models. \texttt  {o4-mini} (reasoning model) also achieves 0/50 at $n=50$, revising a preliminary $n=20$ result (1/20).}}{6}{}\protected@file@percent }
 \newlabel{tab:l4_ablation}{{IV}{6}{}{table.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Prior dominance vs.\ pattern blindness isolated on the same model (gpt-4o). \textbf  {A}: gpt-4o correctly inverts logic with explicit rule (L3). \textbf  {B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Prior dominance vs.\ pattern blindness isolated on the same model (\texttt  {gpt-4o}). \textbf  {A}: \texttt  {gpt-4o} correctly inverts logic with explicit rule (L3). \textbf  {B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}}{6}{}\protected@file@percent }
 \newlabel{fig:l4_failure}{{4}{6}{}{figure.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Three Failure Modes}{6}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces L4 multi-task generalization (partially-annotated prompts; not directly comparable to Table~\ref {tab:l4_ablation}). Each cell shows pass rate; PPR in parentheses. ``Pass'' = model applied inverted if-block semantics correctly. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. OpSub = operational substitution (correct output via arithmetic workaround, not semantic inversion).}}{7}{}\protected@file@percent }
@@ -109,24 +109,24 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Implications for programming education}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limits}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Next steps}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}}{9}{}\protected@file@percent }
 \newlabel{fig:l1_system_prompts}{{5}{9}{}{figure.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}}{9}{}\protected@file@percent }
-\newlabel{fig:l1_user_prompt}{{6}{9}{}{figure.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Evaluation Protocol}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}L1: Token Alias Substitution}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}}{9}{}\protected@file@percent }
+\newlabel{fig:l1_user_prompt}{{6}{9}{}{figure.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}}{9}{}\protected@file@percent }
 \newlabel{fig:l2_prompt}{{7}{9}{}{figure.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}}{9}{}\protected@file@percent }
-\newlabel{fig:l3_prompts}{{8}{9}{}{figure.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}L2: Syntax Inversion}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}L3: Semantic Inversion (Explicit)}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}L4: Semantic Inversion (Implicit)}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Evaluation Metrics}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L1)}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}}{10}{}\protected@file@percent }
+\newlabel{fig:l3_prompts}{{8}{10}{}{figure.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python fib---exhibiting \emph  {pattern blindness}.}}{10}{}\protected@file@percent }
 \newlabel{fig:l4_prompt}{{9}{10}{}{figure.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L1)}{10}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-G}}Judge Protocol (L3/L4)}{10}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{10}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}All experiments (chronological)}{10}{}\protected@file@percent }
@@ -140,13 +140,6 @@
 \bibcite{wang2021codet5}{6}
 \bibcite{fried2022incoder}{7}
 \bibcite{luo2023wizardcoder}{8}
-\bibcite{guo2024deepseek}{9}
-\bibcite{codeif2025}{10}
-\bibcite{multicode2025}{11}
-\bibcite{chen2024instructhierarchy}{12}
-\bibcite{xie2024conflict}{13}
-\bibcite{wu2024contextparametric}{14}
-\bibcite{zhang2024conflict}{15}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}API and runtime settings}{11}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-C}}Repository structure for replication}{11}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{11}{}\protected@file@percent }
@@ -157,6 +150,13 @@
 \newlabel{tab:config_snapshot}{{VI}{11}{}{table.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{11}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{11}{}\protected@file@percent }
+\bibcite{guo2024deepseek}{9}
+\bibcite{codeif2025}{10}
+\bibcite{multicode2025}{11}
+\bibcite{chen2024instructhierarchy}{12}
+\bibcite{xie2024conflict}{13}
+\bibcite{wu2024contextparametric}{14}
+\bibcite{zhang2024conflict}{15}
 \bibcite{contextinvert2024}{16}
 \bibcite{wang2024ntp}{17}
 \bibcite{min2022rethinking}{18}
