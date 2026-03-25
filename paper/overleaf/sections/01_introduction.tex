@@ -22,6 +22,6 @@ Our key empirical findings are:
   \item \textbf{L4 (semantic inversion, implicit):} Effective against all tested models---even strong models exhibit \emph{pattern blindness}, ignoring semantic inversion cues in examples.
 \end{itemize}
 
-We also identify three distinct LLM failure modes: \emph{prior dominance} (prior overrides stated rules), \emph{pattern blindness} (model fails to extract semantic rules from examples), and \emph{operational substitution} (model achieves correct output via arithmetic workaround rather than adopting the semantic rule---observed on count\_vowels for \texttt{gpt-4o}).
+We also identify three distinct LLM failure modes: \emph{prior dominance}, where the prior overrides stated rules; \emph{pattern blindness}, where the model fails to extract semantic rules from examples; and \emph{operational substitution}, where the model achieves correct output via arithmetic workaround rather than adopting the semantic rule.\footnote{Operational substitution was observed on \texttt{count\_vowels} for \texttt{gpt-4o} at $n=50$.}
 
 This framework provides both a theoretical taxonomy for LLM-resistant language design and practical tools for constructing programming assessments that remain meaningful in the LLM era.

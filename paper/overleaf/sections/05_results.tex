@@ -41,7 +41,7 @@
   ytick={0,0.25,0.5,0.75,1.0},
   symbolic x coords={gpt-4o,gpt-4o-mini,gpt-4.1,gpt-4.1-mini,gpt-4.1-nano,gpt-5.4-mini,o4-mini},
   xtick=data,
-  x tick label style={rotate=35, anchor=east, font=\scriptsize\ttfamily},
+  x tick label style={rotate=30, anchor=east, font=\small\ttfamily},
   y tick label style={font=\scriptsize},
   enlarge x limits=0.12,
   nodes near coords,
@@ -71,7 +71,15 @@
 \end{figure}
 
 \subsection{L1: Partial resistance; scale does not predict compliance}
-All OpenAI models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out: (1) \texttt{gpt-5.4-mini} (KLR=0.67) underperforms \texttt{gpt-4o} (KLR=0.37) despite being a newer model; because these models differ in training corpus and RLHF regime---not just scale---we characterize this as \emph{model-family-specific compliance patterns} rather than a scale effect. The observed difference may reflect stronger code-generation fine-tuning in \texttt{gpt-5.4-mini} (a stated hypothesis, not a measured mechanism); (2) for models with paired conditions, context-pack delivery reduces KLR: \texttt{gpt-4o-mini} ($0.42 \to 0.26$, $-38\%$) and \texttt{gpt-4.1-mini} ($0.43 \to 0.21$, $-51\%$); (3) the reasoning model \texttt{o4-mini} (KLR=0.27) performs comparably to \texttt{gpt-4o-mini} ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance. Note: \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{o4-mini} were only evaluated under ctx-pack ($n=20$, v1--v20); baseline comparison for these models is not available and should be interpreted with caution given the smaller and non-overlapping prompt subset.
+All OpenAI models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out.
+
+(1) \texttt{gpt-5.4-mini} (KLR=0.67) underperforms \texttt{gpt-4o} (KLR=0.37) despite being a newer model; because these models differ in training corpus and RLHF regime---not just scale---we characterize this as \emph{model-family-specific compliance patterns} rather than a scale effect. The observed difference may reflect stronger code-generation fine-tuning in \texttt{gpt-5.4-mini} (a stated hypothesis, not a measured mechanism).
+
+(2) For models with paired conditions, context-pack delivery reduces KLR: \texttt{gpt-4o-mini} ($0.42 \to 0.26$, $-38\%$) and \texttt{gpt-4.1-mini} ($0.43 \to 0.21$, $-51\%$).
+
+(3) The reasoning model \texttt{o4-mini} (KLR=0.27) performs comparably to \texttt{gpt-4o-mini} ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance.
+
+\noindent\textit{Note:} \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{o4-mini} were only evaluated under ctx-pack ($n=20$, v1--v20); baseline comparison for these models is not available and should be interpreted with caution given the smaller and non-overlapping prompt subset.
 
 \textbf{Open-weight preliminary:} \texttt{Llama-3.3-70B} (KLR=0.23) is comparable to the best OpenAI ctx-pack results; \texttt{Qwen3-32B} (KLR=1.00) is the worst result across all tested models. This cross-family variance (0.23 vs.\ 1.00) exceeds the spread within the \texttt{gpt-4.x} family, indicating that architecture and instruction-following fine-tuning---not parameter count---govern alias compliance. See \S\ref{sec:open_weight} for full details and limitations.
 
@@ -146,33 +154,33 @@ E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \
 
 \begin{figure}[!t]
 \centering
-\begin{tcolorbox}[colback=green!4, colframe=green!50,
-  title=\textbf{Panel A: L3 --- explicit rule (gpt-4o)},
+\begin{tcolorbox}[colback=gray!8, colframe=black!60,
+  title=\textbf{{\checkmark} Panel A: L3 --- explicit rule (\texttt{gpt-4o}) [CORRECT]},
   fonttitle=\small\bfseries, boxrule=0.5pt]
 \textit{System}: ``if-blocks run when condition is FALSE.''\\[3pt]
-\textit{gpt-4o output} \textbf{(CORRECT):}\\[2pt]
+\textit{\texttt{gpt-4o} output} \textbf{(CORRECT):}\\[2pt]
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
   columns=flexible,keepspaces=true,
   commentstyle=\color{green!60!black},
   morecomment={[l]{\%}}]
-if n > 1:          % inverted: runs when FALSE
+if n > 1:           % inverted: runs when FALSE
     return n
 return fib(n-1) + fib(n-2)
 \end{lstlisting}
 \end{tcolorbox}
 \vspace{3pt}
-\begin{tcolorbox}[colback=red!4, colframe=red!55,
-  title=\textbf{Panel B: L4 --- examples only (gpt-4o)},
+\begin{tcolorbox}[colback=gray!20, colframe=black!80,
+  title=\textbf{{\texttimes} Panel B: L4 --- examples only (\texttt{gpt-4o}) [INCORRECT]},
   fonttitle=\small\bfseries, boxrule=0.5pt]
 \textit{User}: [2 worked examples with inverted semantics, no explicit rule]\\[3pt]
-\textit{gpt-4o output} \textbf{(INCORRECT):}\\[2pt]
+\textit{\texttt{gpt-4o} output} \textbf{(INCORRECT):}\\[2pt]
 \begin{lstlisting}[language=Python,
   basicstyle=\ttfamily\footnotesize,
   columns=flexible,keepspaces=true,
   commentstyle=\color{red!70!black},
   morecomment={[l]{\%}}]
-if n <= 1:         % Python prior, not inverted
+if n <= 1:          % Python prior, not inverted
     return n
 return fib(n-1) + fib(n-2)
 \end{lstlisting}
@@ -211,11 +219,32 @@ $^*$Template fragmentation (variant of prior dominance).
 $^\dagger$Wilson 95\% CI: pass [0\%, 10.5\%], PPR [29\%, 56\%]; Fisher's exact $p < 0.0001$ vs.\ \texttt{gpt-4.1-mini}.
 $^\ddagger$OpSub in 47/50 runs (94\%, CI: [83\%, 99\%]).
 $^\S$After token budget correction (\texttt{max\_completion\_tokens} 400$\to$5000); see §\ref{sec:l4_ablation}.
-$^\P$Scale-up: o4-mini T2/T3 extended from $n=15$ to $n=20$; T2 PPR=0.30, T3 PPR=0.00.
+$^\P$Scale-up: \texttt{o4-mini} T2/T3 extended from $n=15$ to $n=20$; T2 PPR=0.30, T3 PPR=0.00.
 }
 \end{table*}
 
-Seven findings emerge. (1) \textbf{T2 is extractable only by mid-to-large models}: \texttt{gpt-4o} (10/10) and \texttt{gpt-4.1-mini} (20/20) pass T2 fully, while \texttt{gpt-4.1} (1/50, PPR=0.42), \texttt{gpt-4.1-nano} (0/10), \texttt{gpt-5.4-mini} (0/10), and \texttt{gpt-4o-mini} (0/10) fail. This reveals a non-monotonic capacity threshold: T2 extractability does not scale linearly within or across model families. (2) \textbf{T1 (Fibonacci) is resistant for all non-reasoning models}: six of seven models fail T1, with high or full PPR (PPR=1.0 for \texttt{gpt-4o}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-5.4-mini}; PPR=0.2 for \texttt{gpt-4.1-nano}; template fragmentation for \texttt{gpt-4o-mini}). The exception is \texttt{o4-mini}, which achieves 8/15 under the partially-annotated prompt (after correcting a token budget truncation; see $^\S$)---consistent with reasoning-model capability to leverage partial annotation cues that dense models overlook. (3) \textbf{Operational substitution dominates T3}: the scale-up (\texttt{gpt-4o} T3, $n=50$) reveals operational substitution in 47/50 runs (94\%; Wilson 95\% CI: [83\%, 99\%])---the model applies arithmetic transformations (\texttt{count -= 1; return -count}) to achieve correct output without adopting the L4 semantic rule. The preliminary $n=10$ result (1 pass) was a statistical artifact; at $n=50$, \texttt{gpt-4o} achieves 0/50 pass (Wilson 95\% CI: [0\%, 7.1\%]). \texttt{gpt-5.4-mini} T3 also exhibits operational substitution (PPR=0.0, all 10 runs). This confirms operational substitution as a structurally distinct, frequent failure mode in capable models. (4) \textbf{Model capacity determines T2 extractability}: \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{gpt-5.4-mini} all fail T2, while \texttt{gpt-4o} and \texttt{gpt-4.1-mini} succeed---consistent with the capacity threshold observed at L3. (5) \textbf{Reasoning partially mitigates pattern blindness under partial annotation}: \texttt{o4-mini} achieves 8/15 on T1 under the partially-annotated prompt (after token budget correction), but fails T2 and T3 (0/20 each at extended $n=20$; overall 8/55 across T1+T2+T3). Under the strict example-only ablation (§~\ref{sec:l4_ablation}), \texttt{o4-mini} achieves 0/50---chain-of-thought reasoning alone cannot overcome pure pattern blindness, but reasoning models can exploit partial annotation cues that dense models miss. (6) \textbf{Within-family inconsistency is confirmed}: \texttt{gpt-4.1} T2 scale-up ($n=50$) confirms the capacity gap is systematic---1/50 pass (Wilson 95\% CI: [0\%, 10.5\%]) vs.\ \texttt{gpt-4.1-mini} 20/20 (Fisher's exact $p < 0.0001$). Fine-tuning or RLHF choices appear to play a larger role than raw scale in determining L4 pattern extraction capability. (7) \textbf{\texttt{gpt-5.4-mini} shows uniform prior dominance across all tasks}: 0/30 with T1 PPR=1.0, T2 PPR=1.0, and T3 operational substitution pattern, consistent with its L4 ablation PPR=1.0 on Fibonacci variants.
+Seven findings emerge.
+
+\smallskip\noindent
+(1) \textbf{T2 is extractable only by mid-to-large models}: \texttt{gpt-4o} (10/10) and \texttt{gpt-4.1-mini} (20/20) pass T2 fully, while \texttt{gpt-4.1} (1/50, PPR=0.42), \texttt{gpt-4.1-nano} (0/10), \texttt{gpt-5.4-mini} (0/10), and \texttt{gpt-4o-mini} (0/10) fail. This reveals a non-monotonic capacity threshold: T2 extractability does not scale linearly within or across model families.
+
+\smallskip\noindent
+(2) \textbf{T1 (Fibonacci) is resistant for all non-reasoning models}: six of seven models fail T1, with high or full PPR (PPR=1.0 for \texttt{gpt-4o}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-5.4-mini}; PPR=0.2 for \texttt{gpt-4.1-nano}; template fragmentation for \texttt{gpt-4o-mini}). The exception is \texttt{o4-mini}, which achieves 8/15 under the partially-annotated prompt (after correcting a token budget truncation; see $^\S$)---consistent with reasoning-model capability to leverage partial annotation cues that dense models overlook.
+
+\smallskip\noindent
+(3) \textbf{Operational substitution dominates T3}: the scale-up (\texttt{gpt-4o} T3, $n=50$) reveals operational substitution in 47/50 runs (94\%; Wilson 95\% CI: [83\%, 99\%])---the model applies arithmetic transformations (\texttt{count -= 1; return -count}) to achieve correct output without adopting the L4 semantic rule. The preliminary $n=10$ result (1 pass) was a statistical artifact; at $n=50$, \texttt{gpt-4o} achieves 0/50 pass (Wilson 95\% CI: [0\%, 7.1\%]). \texttt{gpt-5.4-mini} T3 also exhibits operational substitution (PPR=0.0, all 10 runs), confirming this as a structurally distinct, frequent failure mode.
+
+\smallskip\noindent
+(4) \textbf{Model capacity determines T2 extractability}: \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{gpt-5.4-mini} all fail T2, while \texttt{gpt-4o} and \texttt{gpt-4.1-mini} succeed---consistent with the capacity threshold observed at L3.
+
+\smallskip\noindent
+(5) \textbf{Reasoning partially mitigates pattern blindness under partial annotation}: \texttt{o4-mini} achieves 8/15 on T1 under the partially-annotated prompt (after token budget correction), but fails T2 and T3 (0/20 each at extended $n=20$; overall 8/55 across T1+T2+T3). Under the strict example-only ablation (§~\ref{sec:l4_ablation}), \texttt{o4-mini} achieves 0/50---chain-of-thought reasoning alone cannot overcome pure pattern blindness, but reasoning models can exploit partial annotation cues that dense models miss.
+
+\smallskip\noindent
+(6) \textbf{Within-family inconsistency is confirmed}: \texttt{gpt-4.1} T2 scale-up ($n=50$) confirms the capacity gap is systematic---1/50 pass (Wilson 95\% CI: [0\%, 10.5\%]) vs.\ \texttt{gpt-4.1-mini} 20/20 (Fisher's exact $p < 0.0001$). Fine-tuning or RLHF choices appear to play a larger role than raw scale in determining L4 pattern extraction capability.
+
+\smallskip\noindent
+(7) \textbf{\texttt{gpt-5.4-mini} shows uniform prior dominance across all tasks}: 0/30 with T1 PPR=1.0, T2 PPR=1.0, and T3 operational substitution pattern, consistent with its L4 ablation PPR=1.0 on Fibonacci variants.
 
 \subsection{Three Failure Modes}
 \begin{itemize}
@@ -223,7 +252,9 @@ Seven findings emerge. (1) \textbf{T2 is extractable only by mid-to-large models
   \item \textbf{Pattern Blindness} (L4-T1): model cannot extract the semantic rule from examples alone, even when the same model follows the rule when stated explicitly (L3). T1 (Fibonacci) shows universal pattern blindness across all models.
   \item \textbf{Operational Substitution} (L4-T3-\texttt{gpt-4o}, $n=50$): model compensates via arithmetic output transformation rather than adopting the semantic inversion rule, indicating goal awareness without rule internalization. Confirmed as dominant at 94\% of T3 \texttt{gpt-4o} runs (Wilson 95\% CI: [83\%, 99\%]).
 \end{itemize}
-We also observe \emph{template fragmentation} in \texttt{gpt-4o-mini} T1 (split base cases, non-standard recursion template): this is a variant of prior dominance in which the model partially disrupts its standard template but does not achieve semantic inversion, yielding an incorrect but structurally novel output. We treat this as a sub-variant of prior dominance rather than a distinct fourth mode, given the small sample (n=10); further study at larger n may warrant reclassification.
+We also observe \emph{template fragmentation} in \texttt{gpt-4o-mini} T1: the model partially disrupts its standard template but does not achieve semantic inversion, yielding an incorrect but structurally novel output. We treat this as a sub-variant of prior dominance rather than a distinct fourth mode, given the small sample ($n=10$); further study at larger $n$ may warrant reclassification.
+
+\smallskip
 Task difficulty interacts with model capacity to determine which failure mode dominates. T2 (is\_sorted) is extractable by mid-to-large models; T1 (Fibonacci) is universally resistant; T3 (count\_vowels) triggers operational substitution as the dominant escape strategy for capable models.
 
 \textbf{Failure taxonomy across 419 failed L4 runs} (ablation + multitask T1): Type-I (exact Python prior) accounts for 83.1\% of failures, Type-II (partial attempt) for 12.6\%, and Type-III (operational substitution) for 4.3\%. Type-I dominates in \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} (100\% of failures); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%); Type-III appears primarily in \texttt{gpt-4o} (25\% of its failures).
@@ -240,10 +271,10 @@ This reveals a \emph{reasoning--generation dissociation}: models can articulate 
 
 \subsection{Open-Weight Models: Preliminary L1 and L4 Results}
 \label{sec:open_weight}
-To assess whether the failure modes generalize beyond the OpenAI model family, we conducted preliminary evaluations on two open-weight models via Groq API: Llama-3.3-70B-Versatile and Qwen3-32B.
+To assess whether the failure modes generalize beyond the OpenAI model family, we conducted preliminary evaluations on two open-weight models via Groq API: \texttt{Llama-3.3-70B}-Versatile and \texttt{Qwen3-32B}.
 
-\textbf{L1 (ctx-pack, $n=20$):} Llama-3.3-70B achieves KLR=0.23 (PSS=0.34), nearly matching the OpenAI best (gpt-4.1-mini ctx-pack, 0.21). Qwen3-32B achieves KLR=1.00 (PSS=0.00): all 20 outputs contained at least one native Python keyword with no valid code skeleton---the worst L1 result across all tested models. The inter-model gap (0.23 vs.\ 1.00) exceeds the intra-family spread of gpt-4.x models (0.21--0.69), indicating that instruction-following fine-tuning rather than parameter count governs alias compliance.
+\textbf{L1 (ctx-pack, $n=20$):} \texttt{Llama-3.3-70B} achieves KLR=0.23 (PSS=0.34), nearly matching the OpenAI best (\texttt{gpt-4.1-mini} ctx-pack, 0.21). \texttt{Qwen3-32B} achieves KLR=1.00 (PSS=0.00): all 20 outputs contained at least one native Python keyword with no valid code skeleton---the worst L1 result across all tested models. The inter-model gap (0.23 vs.\ 1.00) exceeds the intra-family spread of \texttt{gpt-4.x} models (0.21--0.69), indicating that instruction-following fine-tuning rather than parameter count governs alias compliance.
 
-\textbf{L4 Variant A ($n=20$):} Both open-weight models fail. Llama-3.3-70B: 0/20 pass, PPR=0.05 (1/20 strict Python prior; remaining 19 outputs applied standard control flow without inversion). Qwen3-32B: 0/18 pass ($n_\mathrm{eff}=18$; 2 HTTP errors), PPR=1.00 (complete prior dominance). Neither model triggered inversion detection (noticed\_inversion=0). These results extend the pattern blindness finding beyond OpenAI models.
+\textbf{L4 Variant A ($n=20$):} Both open-weight models fail. \texttt{Llama-3.3-70B}: 0/20 pass, PPR=0.05 (1/20 strict Python prior; remaining 19 outputs applied standard control flow without inversion). \texttt{Qwen3-32B}: 0/18 pass ($n_\mathrm{eff}=18$; 2 HTTP errors), PPR=1.00 (complete prior dominance). Neither model triggered inversion detection (noticed\_inversion=0). These results extend the pattern blindness finding beyond OpenAI models.
 
 \emph{Limitations:} Pilot results ($n=20$, Variant~A only, cloud inference via Groq with rate-limit retries); full multi-variant ($n=50$) and L2/L3 evaluations are deferred.
