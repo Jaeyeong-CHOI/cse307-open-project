@@ -246,3 +246,18 @@
   - **§5.3 L3**: gpt-4.1-nano 추가, key contrast 단락 신설
   - **.env → .gitignore** 추가 (GitHub secret scanning push protection 대응)
   - PDF 재컴파일(11p), commit ea3568e push 완료
+
+- [x] 2026-03-25 09:45 Batch experiments + paper fixes
+  - **L2 expansion (n=20 each)**: gpt-4o 20/20, gpt-4.1-mini 20/20, gpt-4.1-nano 20/20 (all SIR=0.0)
+  - **L3 expansion (n=20 each)**: gpt-4o 20/20, gpt-4.1-mini 20/20, gpt-4.1-nano 20/20 (all PPR=0.0)
+    - gpt-4.1-nano L3 success (20/20) is surprising; confirms explicit rule sufficient even for smallest model
+  - **o4-mini L4 T2/T3 (n=20 each)**: T2 0/20 (PPR=0.30), T3 0/20 (PPR=0.00) — consistent with prior
+  - **CoT ablation (n=20 per condition, 2 models)**:
+    - gpt-4o: no_cot 0/20 (PPR=1.0), cot 0/20 (PPR=0.15, mentions_inv=100%)
+    - gpt-4.1-mini: no_cot 0/20 (PPR=0.4), cot 0/20 (PPR=0.0, mentions_inv=100%)
+    - **Key finding**: reasoning--generation dissociation; models articulate inversion in CoT but still generate Python prior
+  - **Failure taxonomy (419 failed L4 runs)**: Type-I 83.1%, Type-II 12.6%, Type-III 4.3%
+  - **Paper updates**: Table 4 pivoted to model×task matrix, CoT ablation section added, abstract updated (780+ L4 runs), ACL format draft created
+  - **ACL format**: `main_acl.tex` + `acl.sty` (minimal wrapper)
+  - New scripts: `run_l3_eval.py`, `run_l4_cot_ablation.py`, `categorize_failures.py`
+  - PDF 재컴파일(11p)

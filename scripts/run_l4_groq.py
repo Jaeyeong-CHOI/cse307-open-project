@@ -51,28 +51,35 @@ Now write the Fibonacci function in this same language:
 }
 
 
-def chat(model, messages, temperature=0):
+def chat(model, messages, temperature=0, max_retries=5):
     if not GROQ_API_KEY:
         raise RuntimeError("GROQ_API_KEY is not set")
     url = BASE + "/chat/completions"
     body = {"model": model, "messages": messages, "temperature": temperature}
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(body).encode(),
-        headers={
-            "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type": "application/json",
-            "User-Agent": "OpenAI/Python",
-        },
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=120) as r:
-            data = json.loads(r.read().decode())
-        return data["choices"][0]["message"]["content"], None
-    except urllib.error.HTTPError as e:
-        return None, f"HTTP {e.code}: {e.read().decode()[:200]}"
-    except Exception as e:
-        return None, str(e)
+    for attempt in range(max_retries):
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(body).encode(),
+            headers={
+                "Authorization": f"Bearer {GROQ_API_KEY}",
+                "Content-Type": "application/json",
+                "User-Agent": "OpenAI/Python",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                data = json.loads(r.read().decode())
+            return data["choices"][0]["message"]["content"], None
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode()[:200]
+            if e.code == 429 and attempt < max_retries - 1:
+                wait = 2 ** attempt * 5
+                print(f"    rate limited, waiting {wait}s (attempt {attempt+1}/{max_retries})")
+                time.sleep(wait)
+                continue
+            return None, f"HTTP {e.code}: {err_body}"
+        except Exception as e:
+            return None, str(e)
 
 
 def judge_l4(code: str) -> dict:
@@ -148,7 +155,7 @@ def run_model(model):
             print(f"  run {run_i}: {status} | prior={judgment['used_python_prior']} invert={judgment['noticed_inversion']}")
 
         results.append(result)
-        time.sleep(1.0)  # Groq rate limits
+        time.sleep(3.0)  # Groq rate limits
 
     total_valid = N_RUNS - http_errors
     ppr = sum(1 for r in results if r.get("judge", {}).get("used_python_prior")) / max(total_valid, 1)

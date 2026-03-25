@@ -7,9 +7,9 @@
   "n": 20,
   "total": 20,
   "passed": 0,
-  "http_errors": 3,
+  "http_errors": 0,
   "pass_rate": 0.0,
-  "ppr": 0.294,
+  "ppr": 0.05,
   "results": [
     {
       "variant": "A",
@@ -38,7 +38,7 @@
         "used_python_prior": false,
         "noticed_inversion": false,
         "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the swapped order\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print Fibonacci numbers from 0 to 6\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\""
       }
     },
     {
@@ -48,7 +48,7 @@
         "used_python_prior": false,
         "noticed_inversion": false,
         "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns opposite value when n is 0\n    elif n == 1:\n        return 0  # returns opposite value when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f'fi"
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
@@ -68,7 +68,7 @@
         "used_python_prior": false,
         "noticed_inversion": false,
         "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
@@ -78,102 +78,12 @@
         "used_python_prior": false,
         "noticed_inversion": false,
         "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns opposite of expected result\n    elif n == 1:\n        return 0  # returns opposite of expected result\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\""
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns opposite of expected value\n    elif n == 1:\n        return 0\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
       "variant": "A",
       "run": 7,
-      "judge": {
-        "used_python_prior": true,
-        "noticed_inversion": false,
-        "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
-      }
-    },
-    {
-      "variant": "A",
-      "run": 8,
-      "judge": {
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls"
-      }
-    },
-    {
-      "variant": "A",
-      "run": 9,
-      "judge": {
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
-      }
-    },
-    {
-      "variant": "A",
-      "run": 10,
-      "judge": {
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
-      }
-    },
-    {
-      "variant": "A",
-      "run": 11,
-      "judge": {
-        "used_python_prior": false,
-        "noticed_inversion": false,
-        "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0, opposite of expected\n    elif n == 1:\n        return 0  # returns 0 when n is 1, opposite of expected\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range("
-      }
-    },
-    {
-      "variant": "A",
-      "run": 12,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on requests per minute (RPM): Limit 30, Used 30, R",
-      "judge": {
-        "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
-      }
-    },
-    {
-      "variant": "A",
-      "run": 13,
-      "judge": {
-        "used_python_prior": true,
-        "noticed_inversion": false,
-        "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
-      }
-    },
-    {
-      "variant": "A",
-      "run": 14,
-      "judge": {
-        "used_python_prior": true,
-        "noticed_inversion": false,
-        "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)"
-      }
-    },
-    {
-      "variant": "A",
-      "run": 15,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 1170",
-      "judge": {
-        "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
-      }
-    },
-    {
-      "variant": "A",
-      "run": 16,
       "judge": {
         "used_python_prior": false,
         "noticed_inversion": false,
@@ -183,7 +93,7 @@
     },
     {
       "variant": "A",
-      "run": 17,
+      "run": 8,
       "judge": {
         "used_python_prior": false,
         "noticed_inversion": false,
@@ -193,22 +103,112 @@
     },
     {
       "variant": "A",
-      "run": 18,
+      "run": 9,
       "judge": {
-        "used_python_prior": true,
+        "used_python_prior": false,
         "noticed_inversion": false,
         "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 10,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns opposite of expected value\n    elif n == 1:\n        return 0  # returns opposite of expected value\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fi"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 11,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 12,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns the opposite value when n == 0\n    elif n == 1:\n        return 0  # returns the opposite value when n == 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    pr"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 13,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 14,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f'fib({i}) = {fib(i)}')"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 15,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns opposite of expected value\n    elif n == 1:\n        return 0  # returns opposite of expected value\n    else:\n        return fib(n-1) + fib(n-2)"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 16,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns opposite of expected value\n    elif n == 1:\n        return 0  # returns opposite of expected value\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fi"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 17,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns opposite of expected value\n    elif n == 1:\n        return 0  # returns opposite of expected value\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f'fi"
+      }
+    },
+    {
+      "variant": "A",
+      "run": 18,
+      "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "pass": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
       "variant": "A",
       "run": 19,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 1163",
       "judge": {
+        "used_python_prior": false,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    if n == 1:\n        return 0  # returns 0 when n is 1\n    return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     }
   ]
