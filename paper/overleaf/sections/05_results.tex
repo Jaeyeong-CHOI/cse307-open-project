@@ -271,14 +271,17 @@ Task difficulty interacts with model capacity to determine which failure mode do
 \noindent\textit{Population note:} The 419 pooled runs consist of 350 strict example-only ablation failures and 69 failed multitask T1 runs (partially-annotated prompt). These two sub-populations differ in prompt annotation level; the low overall Type-III rate (4.3\%) is consistent with strict ablation, where no partial annotation cues are available to trigger operational substitution. In the multi-task sub-population, Type-III is observed primarily in \texttt{gpt-4o} T3 at $n=50$ (94\% operational substitution rate), but that data is counted in T3 (not T1) and is therefore excluded from the 419 pooled taxonomy. A full split analysis per prompt protocol is deferred to future work.
 
 \subsection{CoT Ablation: Reasoning About Inversion Is Not Sufficient}
-We tested whether chain-of-thought (CoT) prompting overcomes pattern blindness by adding ``think step by step about the pattern first'' to the L4 Variant A prompt ($n=20$ per condition, two models).
+\label{sec:cot_ablation}
+We tested whether chain-of-thought (CoT) prompting overcomes pattern blindness by adding ``think step by step about the pattern first'' to the L4 Variant A prompt ($n=20$ per condition, four models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{o4-mini}).
 
-\noindent\textbf{Result}: CoT does not improve pass rate. Both \texttt{gpt-4o} and \texttt{gpt-4.1-mini} achieve 0/20 in both CoT and no-CoT conditions. However, CoT dramatically changes the \emph{reasoning behavior}:
+\noindent\textbf{Result}: CoT does not reliably improve pass rate. Three of four models achieve 0/20 in both CoT and no-CoT conditions; \texttt{o4-mini} achieves 1/20 under CoT (5\%, not statistically significant at $n=20$). However, CoT consistently changes \emph{reasoning behavior} across all models:
 \begin{itemize}
-  \item \texttt{gpt-4o}: CoT reduces PPR from 1.00 to 0.15 and raises \emph{mentions\_inversion} to 100\%---the model explicitly \emph{describes} the inverted pattern in its reasoning chain but still generates standard Python code.
-  \item \texttt{gpt-4.1-mini}: CoT reduces PPR from 0.40 to 0.00 with 100\% mentions\_inversion rate---same dissociation between reasoning and code generation.
+  \item \texttt{gpt-4o}: CoT reduces PPR from 1.00 to 0.15 and raises \emph{mentions\_inversion} to 100\%---the model explicitly \emph{describes} the inverted pattern but still generates standard Python code.
+  \item \texttt{gpt-4.1-mini}: CoT reduces PPR from 0.40 to 0.00 with 100\% mentions\_inversion rate---same reasoning--generation dissociation.
+  \item \texttt{gpt-4.1-nano}: CoT reduces PPR from 1.00 to 0.20 and raises \emph{mentions\_inversion} to 100\%---the nano model shows the strongest PPR reduction under CoT, yet all 20 outputs still fail to implement the inversion correctly.
+  \item \texttt{o4-mini}: CoT reduces PPR from 0.95 to 0.65 and raises \emph{mentions\_inversion} to 35\%. The reasoning model's lower baseline PPR (0.95 vs.\ 1.00) and non-zero CoT pass rate (1/20) hint at marginal CoT benefit, but the effect is too small to conclude at $n=20$.
 \end{itemize}
-This reveals a \emph{reasoning--generation dissociation}: models can articulate the semantic inversion rule when prompted to reason, yet their code generation module defaults to the Python prior regardless. Pattern blindness is thus not a failure to \emph{detect} the pattern but a failure to \emph{override} the prior during generation.
+This reveals a \emph{reasoning--generation dissociation} that generalizes across four model families: models can articulate the semantic inversion rule when prompted to reason, yet their code generation defaults to the Python prior regardless. Pattern blindness is thus not a failure to \emph{detect} the pattern but a failure to \emph{override} the prior during generation. The finding is robust: 160 total CoT runs (40 per model, 2 conditions) across dense and reasoning architectures yield zero reliable pass rate improvement.
 
 \subsection{Open-Weight Models: Preliminary L1 and L4 Results}
 \label{sec:open_weight}

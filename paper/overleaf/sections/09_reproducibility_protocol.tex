@@ -90,6 +90,14 @@
     Files: \texttt{l4-cot-ablation-*.json}.
     Script: \texttt{run\_l4\_cot\_ablation.py}
 
+  \item \textbf{E22: CoT ablation extension, $n=20$ per condition, 2 additional models (2026-03-25).}
+    Extended E20 to \texttt{gpt-4.1-nano} and \texttt{o4-mini} (160 total CoT runs across 4 models).
+    \texttt{gpt-4.1-nano}: no-CoT 0/20 (PPR=1.00) vs.\ CoT 0/20 (PPR=0.20, \texttt{mentions\_inversion}=100\%).
+    \texttt{o4-mini}: no-CoT 0/20 (PPR=0.95) vs.\ CoT 1/20 (PPR=0.65, \texttt{mentions\_inversion}=35\%).
+    Key finding: reasoning--generation dissociation confirmed across all 4 model families (dense + reasoning). CoT PPR reduction is largest in nano (1.00$\to$0.20) but pass rate remains 0/20 for 3 of 4 models.
+    Files: \texttt{l4-cot-ablation-gpt41nano-*.json}, \texttt{l4-cot-ablation-o4mini-*.json}.
+    Script: \texttt{run\_l4\_cot\_ablation.py} (\texttt{EVAL\_MODEL=gpt-4.1-nano/o4-mini})
+
   \item \textbf{E21: Failure taxonomy, 419 failed L4 runs (2026-03-25).}
     Classified all failed L4 ablation + multi-task T1 runs across ablation (350) and multi-task (69 failed T1 runs).
     Type-I (exact Python prior): 83.1\%; Type-II (partial attempt): 12.6\%; Type-III (operational substitution): 4.3\%.
