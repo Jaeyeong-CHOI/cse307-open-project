@@ -422,7 +422,7 @@ We conducted two experiments to isolate I/O transparency from prior strength. Th
 \subsection{E34: Annotation Density Curve (Multi-Model)}
 \label{sec:e34_density}
 
-E28 established a non-monotonic annotation density curve for \texttt{o4-mini} alone. E34 extends this to three models across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons ($n=10$ per level per model, 150 total runs). The 0\% level includes an inverted code example (not pure I/O-only as in the strict L4 ablation); 100\% provides the full explicit rule (L3-equivalent). Results are in Table~\ref{tab:e34_density}.
+E28 established a non-monotonic annotation density curve for \texttt{o4-mini} alone. E34 extends this to three models across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons ($n=10$ per level per model, 150 total runs). \textbf{Important:} the 0\% level is a \emph{code-example (mimicry) baseline}---it includes an inverted code example rather than I/O-only delivery as in the strict L4 ablation, making it qualitatively distinct from the verbal annotation range (25--100\%); 100\% provides the full explicit rule (L3-equivalent). Results are in Table~\ref{tab:e34_density}.
 
 \begin{table}[!t]
 \centering
