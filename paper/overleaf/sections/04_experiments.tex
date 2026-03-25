@@ -36,9 +36,13 @@ To test whether task complexity amplifies or attenuates pattern blindness, we de
 \textbf{H1 (merge\_sort)}: implement merge sort that returns \emph{descending} order (prior: ascending);
 \textbf{H2 (binary\_search)}: return $-1$ if element is \emph{found}, insertion index if \emph{not found} (prior: index if found, $-1$ if not);
 \textbf{H3 (bfs)}: return BFS traversal in \emph{reverse} order (prior: standard BFS order).
-Each prompt provides 2 worked I/O examples demonstrating the inverted behavior, with no explicit rule---identical L4 delivery mode.
+Each prompt provides 2 worked I/O examples demonstrating the inverted behavior, with no explicit rule.
 We evaluated four models: \texttt{gpt-4o} (baseline), \texttt{gpt-5.4} (latest dense), \texttt{o3} (reasoning), and \texttt{o4-mini} (reasoning); $n=10$ per model per task (120 total runs).
 Results are in Table~\ref{tab:l4_hard}.
+
+\subsection{E24: Frontier Model L4 Fibonacci Ablation}
+\label{sec:e24}
+To directly address whether frontier models (\texttt{gpt-5.4}, \texttt{o3}) can overcome pattern blindness on prior-entrenched tasks---a gap in the hard-task extension---we ran the strict L4 Fibonacci ablation (Variant A, example-only, no explicit rule) on both models at $n=10$ each. This is the same Variant A condition used in Table~\ref{tab:l4_ablation}. Results are reported in \S\ref{sec:l4_ablation}.
 
 \subsection{Reproducibility}
 All experimental artifacts, commands, and results are committed to the repository under \texttt{docs/research/results/}. See reproducibility protocol section for commands.

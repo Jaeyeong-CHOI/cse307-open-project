@@ -112,6 +112,15 @@
     Type-I dominates in \texttt{gpt-4.1}/\texttt{gpt-4.1-nano} (100\%); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%).
     File: \texttt{failure-taxonomy-2026-03-25.json}
     Script: \texttt{scripts/categorize\_failures.py}
+
+  \item \textbf{E24: Frontier model L4 Fibonacci ablation, $n=10$, \texttt{gpt-5.4} and \texttt{o3} (2026-03-25).}
+    Motivation: E23 only tested \texttt{gpt-5.4}/\texttt{o3} on hard tasks (I/O-transparent, shallow priors). C2 critique required testing same models on strict L4 Fibonacci to confirm core claim.
+    Condition: Variant~A (2ex-baseline), strict example-only, identical to Table~\ref{tab:l4_ablation}.
+    \texttt{gpt-5.4}: 0/10 pass, PPR=1.00 (complete prior dominance).
+    \texttt{o3}: 0/10 pass, PPR=1.00 (complete prior dominance).
+    Key finding: L4 pattern blindness on prior-entrenched Fibonacci holds for both frontier models as of 2026-03-25.
+    Files: \texttt{e24-frontier-l4-fibonacci.gpt54.n10.2026-03-25.json}, \texttt{e24-frontier-l4-fibonacci.o3.n10.2026-03-25.json}.
+    Script: \texttt{scripts/run\_e24\_frontier\_l4.py}
 \end{enumerate}
 
 \subsection{API and runtime settings}

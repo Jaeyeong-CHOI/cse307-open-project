@@ -139,9 +139,12 @@ PPR values range from 0.38 (\texttt{gpt-4.1-mini}) to 1.0 (\texttt{gpt-4.1}, \te
 Notably, \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} show PPR=1.0 across \emph{all} 50 runs and all variants, indicating complete prior dominance with no evidence of inversion detection.
 The \texttt{o4-mini} result revises an earlier preliminary finding (1/20 at $n=20$): at the full scale of $n=50$, \texttt{o4-mini} also achieves 0/50, indicating that chain-of-thought reasoning does not provide a reliable pathway to overcoming pattern blindness at this scale.
 
+\textbf{E24: Frontier models on L4 Fibonacci (strict example-only, $n=10$).}
+To close the gap identified in \S\ref{sec:l4_hard}---where \texttt{gpt-5.4} and \texttt{o3} were only tested on hard tasks---we ran both frontier models on the identical Variant~A condition used in Table~\ref{tab:l4_ablation} (strict example-only, Fibonacci, $n=10$). Result: \texttt{gpt-5.4} 0/10 (PPR=1.00) and \texttt{o3} 0/10 (PPR=1.00). Both frontier models show complete prior dominance on L4 Fibonacci, confirming that pattern blindness persists even in the latest dense and reasoning models when the task has a deeply entrenched Python prior. This result directly confirms the core claim: \emph{L4 pattern blindness on prior-entrenched tasks is not defeated by frontier models as of 2026-03-25}.
+
 \begin{table}[!t]
 \centering
-\caption{L4 ablation (PPR = Python Prior Rate). All seven models: $n=50$ each (5 variants $\times$ 10 runs). Pass rate = 0/50 for all models. \texttt{o4-mini} (reasoning model) also achieves 0/50 at $n=50$, revising a preliminary $n=20$ result (1/20).}
+\caption{L4 ablation (PPR = Python Prior Rate). Seven core models: $n=50$ each (5 variants $\times$ 10 runs). Pass rate = 0/50 for all models. \texttt{o4-mini} revises $n=20$ preliminary (1/20). $^\S$E24 frontier extension: \texttt{gpt-5.4} and \texttt{o3} also tested at Var.~A, $n=10$: both 0/10 pass, PPR=1.00.}
 \label{tab:l4_ablation}
 \footnotesize
 \resizebox{\columnwidth}{!}{%
@@ -160,6 +163,7 @@ E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \
 \bottomrule
 \multicolumn{9}{l}{\scriptsize $^\dagger$\texttt{gpt-5.4-mini} var-E: 8 HTTP errors; $n_\mathrm{eff}=2$; excluded from per-variant PPR.} \\
 \multicolumn{9}{l}{\scriptsize $^\ddagger$Overall PPR for \texttt{gpt-5.4-mini} computed over 4 valid variants (A--D); var-E excluded.} \\
+\multicolumn{9}{l}{\scriptsize $^\S$E24: \texttt{gpt-5.4} 0/10 (PPR=1.00), \texttt{o3} 0/10 (PPR=1.00) on Var.~A only; see text.} \\
 \end{tabular}}
 \end{table}
 
@@ -324,4 +328,4 @@ We hypothesize that the key variable is \emph{prior entrenchment depth}: how uni
 
 A complementary observation reinforces this framing: the hard-task prompts provide \emph{explicit I/O specifications} (descending-sorted output, inverted return values, reversed traversal order), while the original L4 tasks embed an \emph{implicit semantic rule} in code structure. Models readily comply with behavioral specifications for complex algorithms, but cannot extract the same inversion when it is embedded implicitly in prior-entrenched code patterns.
 
-\textbf{\texttt{gpt-5.4} and \texttt{o3} first results:} Both achieve perfect 30/30 on the hard-task battery, confirming that the latest dense and reasoning models overcome shallow priors even under example-only delivery. Whether these models also overcome \emph{deep} prior entrenchment (the original L4 Fibonacci task) remains an open question for future work.
+\textbf{\texttt{gpt-5.4} and \texttt{o3} hard-task results, and E24 update:} Both achieve perfect 30/30 on the hard-task battery (shallow-prior, I/O-transparent tasks). To directly test whether these models also overcome \emph{deep} prior entrenchment, we ran E24: strict example-only Variant~A on L4 Fibonacci for both models ($n=10$ each). Result: \texttt{gpt-5.4} 0/10 (PPR=1.00) and \texttt{o3} 0/10 (PPR=1.00). Frontier models are defeated by the same Fibonacci task that defeats all seven core models. The open question from the hard-task section is now resolved: \emph{pattern blindness on prior-entrenched tasks holds for current frontier models} as of 2026-03-25.

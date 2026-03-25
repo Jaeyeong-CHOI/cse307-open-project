@@ -1,0 +1,106 @@
+{
+  "experiment": "E24-frontier-l4-fibonacci",
+  "model": "gpt-5.4",
+  "date": "2026-03-25",
+  "description": "L4 Fibonacci, strict example-only, Variant A. Tests whether frontier models crack L4.",
+  "variant": "A (2ex-baseline)",
+  "n": 10,
+  "total": 10,
+  "passed": 0,
+  "http_errors": 0,
+  "pass_rate": 0.0,
+  "ppr": 1.0,
+  "results": [
+    {
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    },
+    {
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "note": "gpt-5.4 output standard Python prior (if n<=1: return n)"
+      }
+    }
+  ],
+  "note": "Corrected: first run had HTTP 400 (wrong API param). Second run (14:16 session) confirmed 0/10 pass, PPR=1.00 \u2014 all runs produced standard Python (if n<=1: return n). Terminal log confirmed FAIL(PPR) x10."
+}
