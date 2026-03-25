@@ -296,3 +296,20 @@
   - §6.3 Limits paragraph 분리 (가독성 개선)
   - PDF 재컴파일: 0 errors, commit a595c5e
   - 남은 크리틱 이슈: C1(Table 4 dense), C3(human pilot), W1(open-weight more), W3(PSS→appendix), M1(IEEEtran format)
+
+- [x] 2026-03-25 10:41 Cron tick — critic-09 이슈 정리 및 W2 수정 (commit 87ccfc9)
+  - **W2 fix**: §5.1 subsection 제목 "scale does not predict compliance" → "model-family compliance patterns"
+    - 두 모델이 family/RLHF 체제 다름을 반영; 제목-내용 일치성 개선
+  - **현재 상태 확인**: 기존 커밋들에서 대부분의 critic-09 이슈 해결 완료
+    - C2: Table 4 프로토콜 경고 ✅ (bold not-comparable warning in caption + §5.4 opening)
+    - W3: PSS → appendix 이동 ✅ (cb96186)
+    - W5: o4-mini token budget → dedicated paragraph ✅ (9e55d06)
+    - M3: abstract overclaim 완화 ✅ (e35af95)
+    - M4: structural judge recall 언어 ✅ (a595c5e)
+    - W6: gray cells 설명 ✅ (§3 2-sentence note)
+    - M9: template fragmentation → sub-variant of prior dominance ✅ (§5.5)
+    - Open-weight results (W1 partial): Llama-3.3-70B + Qwen3-32B 추가 ✅ (dbe002d)
+  - **미해결 (인간 개입 필요)**:
+    - C3: Human pilot study (E2 실험) — IRB/인원 모집 필요
+    - M1: IEEEtran → ACL 포맷 (의도적으로 IEEEtran 유지 중)
+  - PDF 컴파일: 0 errors, latexmk all-up-to-date
