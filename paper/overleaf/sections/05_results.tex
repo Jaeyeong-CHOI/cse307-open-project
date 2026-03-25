@@ -292,3 +292,33 @@ To assess whether the failure modes generalize beyond the OpenAI model family, w
 \textbf{L4 Variant A ($n=20$):} Both open-weight models fail. \texttt{Llama-3.3-70B}: 0/20 pass, PPR=0.05 (1/20 strict Python prior; remaining 19 outputs applied standard control flow without inversion). \texttt{Qwen3-32B}: 0/18 pass ($n_\mathrm{eff}=18$; 2 HTTP errors), PPR=1.00 (complete prior dominance). Neither model triggered inversion detection (noticed\_inversion=0). These results extend the pattern blindness finding beyond OpenAI models.
 
 \emph{Limitations:} Pilot results ($n=20$, Variant~A only, cloud inference via Groq with rate-limit retries); full multi-variant ($n=50$) and L2/L3 evaluations are deferred.
+
+\subsection{L4 Hard-Task Extension: Explicit I/O Specification vs.\ Implicit Rule}
+\label{sec:l4_hard}
+
+\begin{table}[!t]
+\centering
+\caption{L4 hard-task results ($n=10$ per cell, 120 total runs). All tasks use example-only delivery with 2 worked I/O examples. Pass = output matches inverted specification. Models tested include \texttt{gpt-5.4} (latest dense) and \texttt{o3} (reasoning).}
+\label{tab:l4_hard}
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Model} & \textbf{H1: merge\_sort} & \textbf{H2: bin\_search} & \textbf{H3: bfs} & \textbf{Overall} \\
+\midrule
+\texttt{gpt-4o}   & \cellcolor{yellow!20}4/10  & \cellcolor{green!15}10/10 & \cellcolor{green!15}10/10 & 80\% \\
+\texttt{gpt-5.4}  & \cellcolor{green!15}10/10 & \cellcolor{green!15}10/10 & \cellcolor{green!15}10/10 & \textbf{100\%} \\
+\texttt{o3}       & \cellcolor{green!15}10/10 & \cellcolor{green!15}10/10 & \cellcolor{green!15}10/10 & \textbf{100\%} \\
+\texttt{o4-mini}  & \cellcolor{green!15}10/10 & \cellcolor{green!15}10/10 & \cellcolor{green!15}10/10 & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+To test whether more complex algorithms with deeper Python priors amplify pattern blindness, we evaluated three hard tasks (H1: descending merge sort, H2: inverted binary search, H3: reversed BFS) across four models including two not previously tested: \texttt{gpt-5.4} and \texttt{o3}. Results are in Table~\ref{tab:l4_hard}.
+
+The results \emph{dramatically reject} the hypothesis that harder tasks amplify pattern blindness. Three of four models achieve 100\% pass rate (30/30); \texttt{gpt-4o} achieves 80\% (24/30, with H1 at 4/10). This contrasts sharply with the original L4 results, where the same models achieve 0\% pass rate on simple tasks under implicit semantic inversion.
+
+The explanation lies in a critical methodological distinction. The original L4 tasks embed an \emph{implicit semantic rule} (if-block runs when condition is FALSE) in code examples; the model must extract this unstated rule and apply it to new code. The hard-task prompts instead provide \emph{explicit I/O specifications}: worked examples showing descending-sorted output, inverted return values, or reversed traversal order. The model can directly implement the demonstrated behavior as a functional specification without extracting a hidden rule.
+
+This finding sharpens the pattern blindness construct: the failure mode is specifically \textbf{implicit rule extraction from code patterns}, not an inability to produce prior-contradicting behavior when directly specified through I/O examples. Models readily comply with behavioral specifications that contradict their Python prior---even for complex algorithms---but cannot extract the same inversion when it is embedded implicitly in code structure.
+
+\textbf{\texttt{gpt-5.4} and \texttt{o3} first results:} Both achieve perfect 30/30 on the hard-task battery, confirming that the latest dense and reasoning models can follow explicit behavioral specifications even when they contradict deep algorithmic priors. Whether these models also overcome \emph{implicit} pattern blindness (the original L4 task) remains an open question for future work.

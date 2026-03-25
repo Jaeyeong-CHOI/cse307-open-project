@@ -1,0 +1,656 @@
+{
+  "model": "gpt-5.4",
+  "date": "2026-03-25",
+  "experiment": "L4-hard-tasks",
+  "description": "L4 implicit inversion: 3 hard tasks (merge_sort/binary_search/bfs), example-only delivery",
+  "runs_per_task": 10,
+  "total": 30,
+  "passed": 30,
+  "http_errors": 0,
+  "overall_pass_rate": 1.0,
+  "per_task": {
+    "H1_mergesort": {
+      "name": "merge_sort (descending)",
+      "total": 10,
+      "passed": 10,
+      "pass_rate": 1.0,
+      "ppr": 0.0
+    },
+    "H2_binsearch": {
+      "name": "binary_search (inverted presence)",
+      "total": 10,
+      "passed": 10,
+      "pass_rate": 1.0,
+      "ppr": 0.0
+    },
+    "H3_bfs": {
+      "name": "bfs (reversed order)",
+      "total": 10,
+      "passed": 10,
+      "pass_rate": 1.0,
+      "ppr": 0.0
+    }
+  },
+  "results": [
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 0,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 1,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 2,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    result = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            result.append(left[i])\n            i += 1\n        else:\n            result.append(right[j])\n            j += 1\n    result.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    result = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 3,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 4,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 5,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 6,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 7,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    result = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            result.append(left[i])\n            i += 1\n        else:\n            result.append(right[j])\n            j += 1\n    result.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    result = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 8,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H1_mergesort",
+      "task_name": "merge_sort (descending)",
+      "run": 9,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[9, 6, 5, 4, 3, 2, 1, 1]",
+        "code_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] >= right[j]:\n            merged.append(left[i])\n            i += 1\n        else:\n            merged.append(right[j])\n            j += 1\n    merged.exte"
+      },
+      "response_snippet": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr[:]\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    merged = []\n    i = j = 0\n    while i < "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 0,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    if left < len(arr) and arr[left] == target:\n        return -1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n         "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 1,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    if left < len(arr) and arr[left] == target:\n        return -1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n         "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 2,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    if left < len(arr) and arr[left] == target:\n        return -1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n         "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 3,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] < tar"
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 4,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] < tar"
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 5,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    if left < len(arr) and arr[left] == target:\n        return -1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n         "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 6,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    if left < len(arr) and arr[left] == target:\n        return -1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n         "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 7,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 8,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid\n    if left < len(arr) and arr[left] == target:\n        return -1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr)\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] < target:\n            left = mid + 1\n        else:\n         "
+    },
+    {
+      "task": "H2_binsearch",
+      "task_name": "binary_search (inverted presence)",
+      "run": 9,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "test_results": [
+          {
+            "target": 5,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 4,
+            "expected": 2,
+            "actual": 2,
+            "ok": true
+          },
+          {
+            "target": 7,
+            "expected": -1,
+            "actual": -1,
+            "ok": true
+          },
+          {
+            "target": 6,
+            "expected": 3,
+            "actual": 3,
+            "ok": true
+          }
+        ],
+        "code_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return left"
+      },
+      "response_snippet": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return -1\n        elif arr[mid] "
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 0,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 1,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 2,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 3,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 4,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 5,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 6,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 7,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 8,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    },
+    {
+      "task": "H3_bfs",
+      "task_name": "bfs (reversed order)",
+      "run": 9,
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "output": "[4, 3, 2, 1, 0]",
+        "expected": "[4, 3, 2, 1, 0]",
+        "code_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []):\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n\n    return order[::-1]"
+      },
+      "response_snippet": "def bfs(graph, start):\n    visited = set([start])\n    queue = [start]\n    order = []\n\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for neighbor in graph.get(node, []"
+    }
+  ]
+}

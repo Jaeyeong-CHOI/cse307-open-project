@@ -525,6 +525,8 @@ INPUT ./sections/04_experiments.tex
 INPUT ./sections/04_experiments.tex
 INPUT ./sections/04_experiments.tex
 INPUT sections/04_experiments.tex
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrb8t.vf
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm
 INPUT ./sections/05_results.tex
 INPUT ./sections/05_results.tex
 INPUT ./sections/05_results.tex
@@ -538,8 +540,6 @@ INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/public/am
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8t.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8t.tfm
-INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrb8t.vf
-INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrr8t.vf
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/times/ptmr8t.vf
