@@ -8,7 +8,7 @@
 \textbf{H3}: Semantic inversion (L3/L4) provides robust resistance, but differs in mechanism by model capacity.
 
 \subsection{Language Level Taxonomy}
-We design a structured family of programming language variants with properties engineered to conflict with LLM next-token prediction priors---which we term a \emph{confusion language} (our proposed terminology). Each confusion language variant defines rules along two axes: (1) \emph{perturbation depth} (token, syntax, semantic) and (2) \emph{rule delivery} (explicit vs.\ implicit). Table~\ref{tab:levels} summarizes the resulting four-level taxonomy.
+We design a structured family of programming language variants with properties engineered to conflict with LLM next-token prediction priors---which we term a \emph{confusion language} (our proposed terminology). We distinguish confusion languages from esoteric languages (e.g., Brainfuck), which aim for human uninterpretability; confusion languages retain full human interpretability while selectively targeting LLM NTP priors. Each confusion language variant defines rules along two axes: (1) \emph{perturbation depth} (token, syntax, semantic) and (2) \emph{rule delivery} (explicit vs.\ implicit). Table~\ref{tab:levels} summarizes the resulting four-level taxonomy.
 
 \begin{table}[!t]
 \centering
@@ -58,10 +58,10 @@ The two gray cells (Token/Implicit and Syntax/Implicit) are theoretically possib
   \node[cell, fill=green!25, draw=green!50!black]
     at (2.5,1.5) {\textbf{L4}\\{\scriptsize Patt.\ blind}};
   \node[cell, fill=gray!15, draw=gray!50, text=black!55,
-    minimum width=1.8cm, minimum height=0.55cm, inner sep=3pt]
+    minimum width=1.6cm, minimum height=0.9cm, inner sep=3pt]
     at (0.5,1.5) {\scriptsize\itshape not studied};
   \node[cell, fill=gray!15, draw=gray!50, text=black!55,
-    minimum width=1.8cm, minimum height=0.55cm, inner sep=3pt]
+    minimum width=1.6cm, minimum height=0.9cm, inner sep=3pt]
     at (1.5,1.5) {\scriptsize\itshape not studied};
 \end{tikzpicture}
 \caption{Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (green = most resistant) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}
