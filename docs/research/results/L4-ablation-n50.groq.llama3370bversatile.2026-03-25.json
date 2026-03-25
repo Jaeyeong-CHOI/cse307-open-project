@@ -1,0 +1,351 @@
+{
+  "model": "llama-3.3-70b-versatile",
+  "date": "2026-03-25",
+  "runs_per_variant": 10,
+  "total_so_far": 31,
+  "passed_so_far": 0,
+  "http_errors": 15,
+  "results": [
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 1,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns opposite of expected value\n    elif n == 1:\n        return 0  # returns opposite of expected value\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fi"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 3,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 5,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0, opposite of expected\n    elif n == 1:\n        return 0  # returns 0 when n is 1, opposite of expected\n    else:\n        return fib(n-2) + fib(n-1)  # recursive call\n\n# Print Fibonacci numbers from 0 to 6\nfor i in range(7):\n    pri"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 7,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # returns 1 when n is 0\n    elif n == 1:\n        return 0  # returns 0 when n is 1\n    else:\n        return fib(n-2) + fib(n-1)  # note the order of recursive calls\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "A",
+      "variant_name": "2ex-baseline",
+      "run": 9,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    elif n == 1:\n        return 0\n    else:\n        return fib(n-2) + fib(n-1)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 1,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    elif n == 1:\n        return 0\n    else:\n        return fib(n-2) + fib(n-1)\n\nprint(fib(0))\nprint(fib(1))\nprint(fib(2))\nprint(fib(3))\nprint(fib(4))\nprint(fib(5))\nprint(fib(6))"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 3,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    if n == 1:\n        return 0\n    return fib(n-2) + fib(n-1)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 5,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    elif n == 1:\n        return 0\n    else:\n        return fib(n-2) + fib(n-1)\n\nprint(fib(0))  # Expected output: 1\nprint(fib(1))  # Expected output: 0\nprint(fib(2))  # Expected output: fib(0) + fib(1) = 1 + 0 = 1\nprint(fib(3))  # Expected output: fib(1) +"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 7,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    elif n == 1:\n        return 0\n    else:\n        return fib(n-2) + fib(n-1)\n\nprint(fib(0))\nprint(fib(1))\nprint(fib(2))\nprint(fib(3))\nprint(fib(4))\nprint(fib(5))\nprint(fib(6))"
+      }
+    },
+    {
+      "variant": "B",
+      "variant_name": "3ex-extra",
+      "run": 9,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 1,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    elif n == 1:\n        return 0\n    else:\n        return fib(n - 2) + fib(n - 1)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 3,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 5,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    if n == 1:\n        return 0\n    return fib(n-2) + fib(n-1)\n\nprint(fib(0))  # Expected output: 1\nprint(fib(1))  # Expected output: 0\nprint(fib(2))  # Expected output: 1\nprint(fib(3))  # Expected output: 0\nprint(fib(4))  # Expected output: 1\nprint(fib(5)"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 7,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "C",
+      "variant_name": "2ex-no-comment",
+      "run": 9,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    }
+  ]
+}
