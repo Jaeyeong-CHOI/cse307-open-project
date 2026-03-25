@@ -1,0 +1,217 @@
+{
+  "experiment": "e32-cross-task-transfer",
+  "date": "2026-03-25",
+  "description": "Cross-task transfer: Does seeing inverted semantics in merge_sort and binary_search help models produce inverted fib?",
+  "prompt_type": "few-shot cross-task with inverted comparison examples",
+  "temperature": 0.7,
+  "n_trials": 10,
+  "results": [
+    {
+      "model": "gpt-4o",
+      "n": 10,
+      "passed": 6,
+      "pass_rate": 0.6,
+      "errors": 0,
+      "details": [
+        {
+          "trial": 1,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 2,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 3,
+          "code": "def fib(n):\n    if n >= 2:  # inverted: >= means <=\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 4,
+          "code": "def fib(n):\n    if n <= 1:  # inverted: <= means >=\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):  # range adjusted for inclusive loop\n        a, b = b, a + b\n    return b",
+          "passed": false,
+          "reason": "Uses standard (non-inverted) comparisons"
+        },
+        {
+          "trial": 5,
+          "code": "def fib(n):\n    if n <= 1:  # inverted: <= means >=\n        return n\n    else:\n        return fib(n - 1) + fib(n - 2)",
+          "passed": false,
+          "reason": "Uses standard (non-inverted) comparisons"
+        },
+        {
+          "trial": 6,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base cases: n <= 1)\n        return n\n    a, b = 0, 1\n    i = 2\n    while i > n:  # inverted: > means <\n        a, b = b, a + b\n        i += 1\n    return b",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 7,
+          "code": "def fib(n):\n    if n <= 1:  # inverted: <= means >=\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": false,
+          "reason": "Uses standard (non-inverted) comparisons"
+        },
+        {
+          "trial": 8,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <=\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 9,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 10,
+          "code": "def fib(n):\n    if n >= 2:  # inverted: >= means <=\n        return n\n    a, b = 0, 1\n    for _ in range(2, n > 0):  # inverted: > means <\n        a, b = b, a + b\n    return a",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        }
+      ]
+    },
+    {
+      "model": "gpt-4.1-mini",
+      "n": 10,
+      "passed": 10,
+      "pass_rate": 1.0,
+      "errors": 0,
+      "details": [
+        {
+          "trial": 1,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 2,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 3,
+          "code": "def fib(n):\n    if n >= 2:  # inverted: >= means <=\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 4,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 5,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 6,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 7,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    else:\n        return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 8,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 9,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        },
+        {
+          "trial": 10,
+          "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        }
+      ]
+    },
+    {
+      "model": "o4-mini",
+      "n": 10,
+      "passed": 1,
+      "pass_rate": 0.1,
+      "errors": 0,
+      "details": [
+        {
+          "trial": 1,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 2,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n - 1) + fib(n - 2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 3,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 4,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 5,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 6,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 7,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 8,
+          "code": "def fib(n):\n    if n > 2:  # inverted: > means < (base case: n < 2)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 9,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <= (base case: n <= 1)\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": false,
+          "reason": "Mixed comparisons, standard in base case"
+        },
+        {
+          "trial": 10,
+          "code": "def fib(n):\n    if n >= 1:  # inverted: >= means <=\n        return n\n    return fib(n-1) + fib(n-2)",
+          "passed": true,
+          "reason": "Uses inverted comparisons (e.g., n >= or n >)"
+        }
+      ]
+    }
+  ]
+}

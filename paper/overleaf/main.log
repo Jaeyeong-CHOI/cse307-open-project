@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 20:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 20:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1453,66 +1453,66 @@ Underfull \hbox (badness 2020) in paragraph at lines 297--298
 \T1/ptm/m/n/10 (+20) achieves KLR=0.23, nearly match-ing the Ope-nAI best
  []
 
-[9]
-Underfull \hbox (badness 1178) in paragraph at lines 370--371
+[9] [10]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11]
+Underfull \hbox (badness 1178) in paragraph at lines 457--458
 []\T1/ptm/m/n/10 (+20) A com-ple-men-tary ob-ser-va-tion re-in-forces this fram
 -ing:
  []
 
-[10]) (./sections/06_discussion.tex
+) (./sections/06_discussion.tex
 Underfull \hbox (badness 1521) in paragraph at lines 7--8
 []\T1/ptm/m/n/10 (+20) Semantic in-ver-sion with ex-plicit in-struc-tion pro-vi
 des
  []
 
-[11]
-Underfull \hbox (badness 10000) in paragraph at lines 53--54
+[12] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 55--56
 []\T1/ptm/m/n/10 (+20) The high PPR vari-ance across vari-ants (e.g.,
  []
 
 
-Underfull \hbox (badness 6032) in paragraph at lines 53--54
+Underfull \hbox (badness 6032) in paragraph at lines 55--56
 \T1/pcr/m/n/10 gpt-4.1-mini \T1/ptm/m/n/10 (+20) vari-ant A PPR=0.10 vs. vari-a
 nt B
  []
 
-[12]
-Underfull \hbox (badness 2181) in paragraph at lines 58--60
+
+Underfull \hbox (badness 2181) in paragraph at lines 60--62
 \T1/ptm/b/n/10 (+20) reasoning-model ex-trac-tion. \T1/ptm/m/n/10 (+20) An ear-
 lier multi-task run
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 58--60
+Underfull \hbox (badness 10000) in paragraph at lines 60--62
 \T1/ptm/m/n/10 (+20) of \T1/pcr/m/n/10 o4-mini \T1/ptm/m/n/10 (+20) used \T1/pc
 r/m/n/10 max_completion_tokens=400\T1/ptm/m/n/10 (+20) ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 58--60
+Underfull \hbox (badness 10000) in paragraph at lines 60--62
 \T1/ptm/m/n/10 (+20) which trun-cated reasoning-model re-sponses be-fore
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 58--60
+Underfull \hbox (badness 10000) in paragraph at lines 60--62
 \T1/ptm/m/n/10 (+20) the code block was emit-ted. Af-ter cor-rect-ing to
  []
 
 
-Underfull \hbox (badness 3407) in paragraph at lines 58--60
+Underfull \hbox (badness 3407) in paragraph at lines 60--62
 \T1/pcr/m/n/10 max_completion_tokens=5000\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 
 o4-mini \T1/ptm/m/n/10 (+20) achieves
  []
 
 
-Underfull \hbox (badness 2065) in paragraph at lines 58--60
+Underfull \hbox (badness 2065) in paragraph at lines 60--62
 \T1/ptm/m/n/10 (+20) 8/15 on T1 (partially-annotated prompt). This re-vi-sion
  []
 
-) (./sections/07_conclusion.tex
-Underfull \vbox (badness 1466) has occurred while \output is active []
-
-)
+[14]) (./sections/07_conclusion.tex)
 (./sections/08_prompt_and_judge_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
@@ -1524,16 +1524,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 value ?cond: res ;else: alt ;end \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[13]
+
+Underfull \vbox (badness 1152) has occurred while \output is active []
+
+
+Overfull \vbox (25.14354pt too high) has occurred while \output is active []
+
+
+[15]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 1028) in paragraph at lines 167--168
 []\T1/ptm/b/n/10 (+20) L3-correct\T1/ptm/m/n/10 (+20) : model writes \T1/pcr/m/
 n/10 if n > 1: return n \T1/ptm/m/n/10 (+20) or
  []
 
 ) (./sections/09_reproducibility_protocol.tex
-Underfull \vbox (badness 3312) has occurred while \output is active []
-
- [14]
 Underfull \hbox (badness 1112) in paragraph at lines 10--13
 []\T1/ptm/b/n/10 (+20) E5: L1 context-pack ab-la-tion, $\OML/cmm/m/it/10 n \OT1
 /cmr/m/n/10 = 120$\T1/ptm/b/n/10 (+20) , gpt-4o-
@@ -1625,7 +1632,7 @@ Underfull \hbox (badness 3029) in paragraph at lines 49--54
 \T1/ptm/m/n/10 (+20) 4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-
  []
 
-
+[16]
 Underfull \hbox (badness 2269) in paragraph at lines 79--85
 \T1/ptm/m/n/10 (+20) cor-rected to-ken bud-get; T2/T3 needed ex-ten-sion to
  []
@@ -1662,6 +1669,9 @@ c-u-
 Underfull \hbox (badness 2635) in paragraph at lines 86--93
 \T1/ptm/m/n/10 (+20) late in-ver-sion rule in CoT but still gen-er-ate stan-
  []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Underfull \hbox (badness 2564) in paragraph at lines 94--101
@@ -1714,9 +1724,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 94--101
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [15]
 Underfull \hbox (badness 4595) in paragraph at lines 110--116
 \T1/ptm/b/n/10 (+20) 03-25). \T1/ptm/m/n/10 (+20) Clas-si-fied all failed L4 ab
 -la-tion + multi-
@@ -1755,12 +1762,12 @@ Underfull \hbox (badness 1521) in paragraph at lines 117--124
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [17]
 Overfull \hbox (31.32996pt too wide) in paragraph at lines 125--132
 \T1/pcr/m/n/10 e26-qwen3-32b-l3-fibonacci.n5.2026-03-25.json
  []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 133--140
@@ -1783,7 +1790,11 @@ Overfull \hbox (37.32996pt too wide) in paragraph at lines 133--140
 \T1/pcr/m/n/10 e27-qwen3-32b-l3-fibonacci.n20.2026-03-25.json
  []
 
-) (./sections/10_appendix_experiment_details.tex
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+)
+(./sections/10_appendix_experiment_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 177--1
 [][]
  []
@@ -1793,10 +1804,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 177--1
 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [16]
+[18]
 Underfull \hbox (badness 1028) in paragraph at lines 116--117
 []|\T1/ptm/m/n/8 (+20) gpt-4o, gpt-4o-mini, gpt-4.1,
  []
@@ -1806,18 +1814,79 @@ Underfull \hbox (badness 1983) in paragraph at lines 117--118
 []|\T1/ptm/m/n/8 (+20) v1--v120 (base-line); v1--v20
  []
 
-)
-Underfull \hbox (badness 3769) in paragraph at lines 125--82
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 3769) in paragraph at lines 125--127
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-[17]
+
+Underfull \hbox (badness 5696) in paragraph at lines 131--132
+[]\T1/ptm/b/n/10 (+20) E31 (Prior En-trench-ment Score). \T1/ptm/m/n/10 (+20) L
+og-probs API
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 131--132
+\T1/ptm/m/n/10 (+20) query at base-case de-ci-sion point (\T1/pcr/m/n/10 max_to
+kens=1\T1/ptm/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 131--132
+\T1/ptm/m/n/10 (+20) ex-cluded from anal-y-sis (emits mark-down back-tick
+ []
+
+
+Overfull \hbox (78.7pt too wide) in paragraph at lines 131--132
+\T1/pcr/m/n/10 docs/research/results/e31-prior-entrenchment-score.json\T1/ptm/m
+/n/10 (-20) . 
+ []
+
+
+Underfull \hbox (badness 2020) in paragraph at lines 133--134
+[]\T1/ptm/b/n/10 (+20) E32 (Cross-Task Trans-fer). \T1/ptm/m/n/10 (+20) Few-sho
+t prompts with
+ []
+
+
+Underfull \hbox (badness 1675) in paragraph at lines 133--134
+\T1/ptm/m/n/10 (+20) re-run with cor-rected pa-ram-e-ters yielded 1/10. Re-sult
+s:
+ []
+
+
+Overfull \hbox (48.7pt too wide) in paragraph at lines 133--134
+\T1/pcr/m/n/10 docs/research/results/e32-cross-task-transfer.json\T1/ptm/m/n/10
+ (-20) . 
+ []
+
+
+Overfull \hbox (24.7pt too wide) in paragraph at lines 135--136
+\T1/pcr/m/n/10 docs/research/results/e33-io-transparency.json\T1/ptm/m/n/10 (-2
+0) . 
+ []
+
+)
+Overfull \hbox (42.7pt too wide) in paragraph at lines 137--82
+\T1/pcr/m/n/10 docs/research/results/e34-annotation-density.json\T1/ptm/m/n/10 
+(-20) .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--82
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 88--89
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
  []
 
-(./main.bbl)
+(./main.bbl [19])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1829,18 +1898,18 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[18] (./main.aux)
+[20] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37325 strings out of 467525
- 896749 string characters out of 5408440
- 1643455 words of memory out of 5000000
- 65006 multiletter control sequences out of 15000+600000
- 788839 words of font info for 564 fonts, out of 8000000 for 9000
+ 37361 strings out of 467525
+ 897120 string characters out of 5408440
+ 1642705 words of memory out of 5000000
+ 65014 multiletter control sequences out of 15000+600000
+ 790104 words of font info for 583 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1611b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1879,10 +1948,10 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (18 pages, 403342 bytes).
+Output written on main.pdf (20 pages, 417475 bytes).
 PDF statistics:
- 212 PDF objects out of 1000 (max. 8388607)
- 132 compressed objects within 2 object streams
+ 219 PDF objects out of 1000 (max. 8388607)
+ 137 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  93709 words of extra memory for PDF output out of 106986 (max. 10000000)
 

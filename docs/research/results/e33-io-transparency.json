@@ -1,0 +1,427 @@
+{
+  "experiment": "e33-io-transparency",
+  "date": "2026-03-25",
+  "hypothesis": "Transparent I/O (deep prior) yields higher pass rates than opaque I/O (weak prior), isolating I/O transparency as a factor in LLM code generation.",
+  "tasks": [
+    {
+      "task": "IO-A-reverse_fib",
+      "description": "Deep prior + transparent I/O",
+      "results": [
+        {
+          "model": "gpt-4o",
+          "n": 10,
+          "passed": 10,
+          "pass_rate": 1.0,
+          "details": [
+            {
+              "trial": 1,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "To implement the `reverse_fib` function, we first need to calculate the Fibonacci sequence up to `fib(10)`. Once we have the Fibonacci sequence, the function can return the values in reverse order based on the input `n`.\n\nHere's the implementation of the `reverse_fib` function:\n\n```python\ndef revers"
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Certainly! Below is the Python function `reverse_fib(n)` that computes the reverse Fibonacci sequence as described:\n\n```python\ndef reverse_fib(n):\n    # Define the maximum n value for the reverse Fibonacci\n    max_n = 10\n    \n    # Check if n is within the valid range\n    if n < 0 or n > max_n:\n    "
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "```python\ndef reverse_fib(n):\n    # Pre-computed Fibonacci numbers for fib(0) to fib(10)\n    fibonacci_numbers = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n\n    # Calculate the reverse Fibonacci of n\n    max_n = 10\n    return fibonacci_numbers[max_n - n]\n\n# Example usage:\n# print(reverse_fib(0))  # Outpu"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here's the `reverse_fib` function that computes the \"reverse Fibonacci\" sequence as described:\n\n```python\ndef reverse_fib(n):\n    # Define the maximum value of n for the reverse sequence\n    max_n = 10\n    \n    # Function to compute Fibonacci numbers\n    def fib(m):\n        if m == 0:\n            re"
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here's the Python function `reverse_fib(n)` that computes the \"reverse Fibonacci\" sequence as described:\n\n```python\ndef reverse_fib(n):\n    # Precomputed Fibonacci numbers from fib(0) to fib(10)\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    \n    # max_n is 10, so reverse_fib(n) corres"
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "```python\ndef reverse_fib(n):\n    # Precomputed Fibonacci sequence from fib(0) to fib(10)\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    \n    # Calculate the reverse Fibonacci value\n    return fib_sequence[10 - n]\n\n# Example usage:\n# print(reverse_fib(0))  # Output: 55\n# print(reverse_"
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "To implement the `reverse_fib(n)` function, we first need to calculate the Fibonacci number for a given index. The Fibonacci sequence is defined as follows:\n\n- `fib(0) = 0`\n- `fib(1) = 1`\n- `fib(n) = fib(n-1) + fib(n-2)` for `n > 1`\n\nIn this task, the sequence is reversed by computing `fib(10 - n)` "
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "To implement the `reverse_fib` function, we first need to compute the Fibonacci sequence up to the 10th term. The Fibonacci sequence is defined such that:\n\n- fib(0) = 0\n- fib(1) = 1\n- fib(n) = fib(n-1) + fib(n-2) for n >= 2\n\nGiven this definition, `reverse_fib(n)` computes the Fibonacci number corre"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Certainly! Below is the implementation of the `reverse_fib` function that computes a \"reverse Fibonacci\" sequence based on your requirements:\n\n```python\ndef reverse_fib(n):\n    # Precomputed Fibonacci sequence up to fib(10)\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    \n    # max_n is"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "To implement the `reverse_fib` function, we need to compute the Fibonacci sequence up to the 10th term, since `max_n` is fixed at 10. The function should return `fib(max_n - n)`, which means it outputs the Fibonacci sequence in reverse order for the given `n`.\n\nHere's the implementation of the `reve"
+            }
+          ]
+        },
+        {
+          "model": "gpt-4.1-mini",
+          "n": 10,
+          "passed": 10,
+          "pass_rate": 1.0,
+          "details": [
+            {
+              "trial": 1,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(k):\n        if k == 0:\n            return 0\n        elif k == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, k+1):\n            a, b = b, a + b\n        return b\n    return fib(max_n - n)"
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "```python\ndef reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, x + 1):\n            a, b = b, a + b\n        return b\n    return fib(max_n - n)\n```"
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        a, b = 0, 1\n        for _ in range(x):\n            a, b = b, a + b\n        return a\n    return fib(max_n - n)"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        a, b = 0, 1\n        for _ in range(x):\n            a, b = b, a + b\n        return a\n    return fib(max_n - n)"
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    \n    def fib(k):\n        if k == 0:\n            return 0\n        elif k == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, k + 1):\n            a, b = b, a + b\n        return b\n    \n    return fib(max_n - n)"
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, x+1):\n            a, b = b, a + b\n        return b\n    return fib(max_n - n)"
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, x+1):\n            a, b = b, a + b\n        return b\n    return fib(max_n - n)"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, x + 1):\n            a, b = b, a + b\n        return b\n    return fib(max_n - n)"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, x + 1):\n            a, b = b, a + b\n        return b\n    return fib(max_n - n)"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "def reverse_fib(n):\n    max_n = 10\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        a, b = 0, 1\n        for _ in range(2, x + 1):\n            a, b = b, a + b\n        return b\n    return fib(max_n - n)"
+            }
+          ]
+        },
+        {
+          "model": "gpt-4o-mini",
+          "n": 10,
+          "passed": 10,
+          "pass_rate": 1.0,
+          "details": [
+            {
+              "trial": 1,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "```python\ndef reverse_fib(n):\n    max_n = 10\n    \n    # Fibonacci function to compute fib(n)\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        else:\n            a, b = 0, 1\n            for _ in range(2, x + 1):\n                a, b = b, a + b\n "
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here is the function `reverse_fib(n)` that computes the reverse Fibonacci sequence as specified:\n\n```python\ndef reverse_fib(n):\n    if n < 0 or n > 10:\n        raise ValueError(\"n must be between 0 and 10 inclusive\")\n    \n    # Calculate Fibonacci numbers up to fib(10)\n    fibs = [0, 1]\n    for i in"
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here is the function `reverse_fib(n)` that computes the reverse Fibonacci sequence as described:\n\n```python\ndef reverse_fib(n):\n    if n < 0 or n > 10:\n        raise ValueError(\"n must be between 0 and 10 inclusive\")\n    \n    # Function to calculate Fibonacci numbers\n    def fib(num):\n        if num"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here is the function `reverse_fib` that computes the reverse Fibonacci sequence as described:\n\n```python\ndef reverse_fib(n):\n    # Define the maximum n value\n    max_n = 10\n    \n    # Function to compute Fibonacci number\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n  "
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here is the function `reverse_fib(n)` that computes the reverse Fibonacci sequence as requested:\n\n```python\ndef reverse_fib(n):\n    # Define a function to compute Fibonacci numbers\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        else:\n       "
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "```python\ndef reverse_fib(n):\n    if n < 0 or n > 10:\n        raise ValueError(\"n must be between 0 and 10 inclusive.\")\n    \n    max_n = 10\n\n    # Function to compute Fibonacci number\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        else:\n    "
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here's the function `reverse_fib(n)` that computes the reverse Fibonacci sequence as described:\n\n```python\ndef reverse_fib(n):\n    # Ensure that n is within the valid range\n    if n < 0 or n > 10:\n        raise ValueError(\"n must be between 0 and 10 inclusive.\")\n    \n    # Precompute Fibonacci numbe"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "```python\ndef reverse_fib(n):\n    max_n = 10\n    \n    # Function to compute the Fibonacci number at a given position\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n        else:\n            a, b = 0, 1\n            for _ in range(2, x + 1):\n         "
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "```python\ndef reverse_fib(n):\n    max_n = 10\n    \n    # Helper function to compute Fibonacci numbers\n    def fib(x):\n        if x <= 0:\n            return 0\n        elif x == 1:\n            return 1\n        else:\n            a, b = 0, 1\n            for _ in range(2, x + 1):\n                a, b = b,"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "detail": "rf(0)=55 (exp 55); rf(1)=34 (exp 34); rf(2)=21 (exp 21); rf(5)=5 (exp 5); rf(10)=0 (exp 0)",
+              "response_snippet": "Here's the function `reverse_fib(n)` that computes the \"reverse Fibonacci\" sequence as you described:\n\n```python\ndef reverse_fib(n):\n    # Define a helper function to calculate Fibonacci numbers\n    def fib(x):\n        if x == 0:\n            return 0\n        elif x == 1:\n            return 1\n       "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task": "IO-B-opaque_counter",
+      "description": "Weak prior + opaque I/O",
+      "results": [
+        {
+          "model": "gpt-4o",
+          "n": 10,
+          "passed": 10,
+          "pass_rate": 1.0,
+          "details": [
+            {
+              "trial": 1,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with an internal state\n    s = n * 7 + 3\n    \n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Depending on the result being even or odd, adjust the value\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Retur"
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with an internal state\n    s = n * 7 + 3\n    \n    # Apply transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Check if the result is even or odd\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute value of the f"
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Initialize internal state\n    s = n * 7 + 3\n    # Apply transformation with XOR and mask\n    s = (s ^ (s >> 2)) & 0xFF\n    # Adjust based on even or odd condition\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    # Return the absolute value of th"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with an internal state s = n * 7 + 3\n    s = n * 7 + 3\n    \n    # Apply transformation: s = (s ^ (s >> 2)) & 0xFF\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # If the result is even, add 17; if odd, subtract 11\n    if s % 2 == 0:\n        s += 17\n    else:\n    "
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Initialize the internal state\n    s = n * 7 + 3\n    \n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Modify based on even or odd\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute value\n    return"
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with the internal state\n    s = n * 7 + 3\n    \n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Check if the result is even or odd\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute value of "
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Initial state based on the given formula\n    s = n * 7 + 3\n    \n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Adjust based on even or odd\n    if s % 2 == 0:\n        result = s + 17\n    else:\n        result = s - 11\n    \n    # Return th"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with an internal state\n    s = n * 7 + 3\n    \n    # Apply transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Adjust based on even or odd\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute value of the final re"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with an internal state\n    s = n * 7 + 3\n    \n    # Apply transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Conditional modification based on even or odd\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute val"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with an internal state\n    s = n * 7 + 3\n    \n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Check if result is even or odd\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute value of the f"
+            }
+          ]
+        },
+        {
+          "model": "gpt-4.1-mini",
+          "n": 10,
+          "passed": 10,
+          "pass_rate": 1.0,
+          "details": [
+            {
+              "trial": 1,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            }
+          ]
+        },
+        {
+          "model": "gpt-4o-mini",
+          "n": 10,
+          "passed": 10,
+          "pass_rate": 1.0,
+          "details": [
+            {
+              "trial": 1,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "Here is the implementation of the `opaque_counter` function as per the specified rules:\n\n```python\ndef opaque_counter(n):\n    # Step 1: Initialize internal state\n    s = n * 7 + 3\n    \n    # Step 2: Apply transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Step 3: Adjust based on even or odd\n   "
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    s = n * 7 + 3\n    s = (s ^ (s >> 2)) & 0xFF\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    return abs(s)\n```"
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "Here's the function `opaque_counter` that implements the special counting sequence as described:\n\n```python\ndef opaque_counter(n):\n    # Start with the internal state\n    s = n * 7 + 3\n    \n    # Apply transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Check if the result is even or odd and adj"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "Here is the `opaque_counter` function that implements the specified counting sequence according to the rules provided:\n\n```python\ndef opaque_counter(n):\n    # Start with the internal state s\n    s = n * 7 + 3\n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    # Check if the result is e"
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Start with the internal state\n    s = n * 7 + 3\n    \n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Modify the result based on its parity\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute value "
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "Here's the implementation of the `opaque_counter` function based on the specified rules:\n\n```python\ndef opaque_counter(n):\n    # Start with the internal state\n    s = n * 7 + 3\n    \n    # Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Modify based on even or odd\n    if s % 2 == 0:"
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "Here is the implementation of the `opaque_counter` function as specified:\n\n```python\ndef opaque_counter(n):\n    # Step 1: Initialize the internal state\n    s = n * 7 + 3\n    \n    # Step 2: Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Step 3: Adjust the result based on even or od"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "Here is the implementation of the `opaque_counter` function according to the specified rules:\n\n```python\ndef opaque_counter(n):\n    # Step 1: Initialize the internal state\n    s = n * 7 + 3\n    \n    # Step 2: Apply the transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Step 3: Modify s based on"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "```python\ndef opaque_counter(n):\n    # Initialize internal state\n    s = n * 7 + 3\n    \n    # Apply transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Adjust based on even or odd\n    if s % 2 == 0:\n        s += 17\n    else:\n        s -= 11\n    \n    # Return the absolute value of the final resul"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "detail": "5/5 match. oc(0)=8 (exp 8); oc(1)=25 (exp 25); oc(2)=10 (exp 10); oc(3)=47 (exp 47); oc(5)=36 (exp 36)",
+              "response_snippet": "Here is the Python function `opaque_counter` that implements the specified counting sequence according to the rules provided:\n\n```python\ndef opaque_counter(n):\n    # Step 1: Initialize state\n    s = n * 7 + 3\n    \n    # Step 2: Apply transformation\n    s = (s ^ (s >> 2)) & 0xFF\n    \n    # Step 3: Mo"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

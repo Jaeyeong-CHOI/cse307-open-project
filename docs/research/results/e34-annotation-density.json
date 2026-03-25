@@ -1,0 +1,142 @@
+{
+  "experiment": "e34-annotation-density",
+  "date": "2026-03-25",
+  "task": "L4 Fibonacci with inverted comparisons",
+  "annotation_levels": {
+    "0": "Zero annotation - examples + style hint only, no explanation of inversion",
+    "25": "One hint comment about inverted semantics",
+    "50": "Two comments with partial operator mapping (>= means <=, > means <)",
+    "75": "Comments + explicit rule sentence about flipped operators",
+    "100": "Full explicit system prompt (L3 style) with complete inversion rules"
+  },
+  "config": {
+    "temperature": 0.7,
+    "n_samples": 10,
+    "timeout_sec": 30
+  },
+  "results": [
+    {
+      "model": "gpt-4o",
+      "levels": {
+        "0": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 5,
+          "pass_rate": 0.5,
+          "errors": 0
+        },
+        "25": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 0,
+          "pass_rate": 0.0,
+          "errors": 0
+        },
+        "50": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 1,
+          "pass_rate": 0.1,
+          "errors": 0
+        },
+        "75": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 2,
+          "pass_rate": 0.2,
+          "errors": 0
+        },
+        "100": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 3,
+          "pass_rate": 0.3,
+          "errors": 0
+        }
+      },
+      "MAT": null
+    },
+    {
+      "model": "gpt-4.1-mini",
+      "levels": {
+        "0": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 8,
+          "pass_rate": 0.8,
+          "errors": 0
+        },
+        "25": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 1,
+          "pass_rate": 0.1,
+          "errors": 0
+        },
+        "50": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 5,
+          "pass_rate": 0.5,
+          "errors": 0
+        },
+        "75": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 4,
+          "pass_rate": 0.4,
+          "errors": 0
+        },
+        "100": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 1,
+          "pass_rate": 0.1,
+          "errors": 0
+        }
+      },
+      "MAT": 0
+    },
+    {
+      "model": "o4-mini",
+      "levels": {
+        "0": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 7,
+          "pass_rate": 0.7,
+          "errors": 0
+        },
+        "25": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 3,
+          "pass_rate": 0.3,
+          "errors": 0
+        },
+        "50": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 6,
+          "pass_rate": 0.6,
+          "errors": 0
+        },
+        "75": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 6,
+          "pass_rate": 0.6,
+          "errors": 0
+        },
+        "100": {
+          "n": 10,
+          "effective_n": 10,
+          "passed": 1,
+          "pass_rate": 0.1,
+          "errors": 0
+        }
+      },
+      "MAT": 0
+    }
+  ]
+}

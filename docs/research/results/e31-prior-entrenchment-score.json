@@ -1,0 +1,434 @@
+[
+  {
+    "model": "gpt-4o",
+    "task": "fib_base_case",
+    "prompt_suffix": "def fib(n):\n    if n <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "n",
+        "logprob": -0.0004,
+        "prob": 0.9996
+      },
+      {
+        "token": "def",
+        "logprob": -8.1879,
+        "prob": 0.0003
+      },
+      {
+        "token": "```",
+        "logprob": -9.6567,
+        "prob": 0.0001
+      },
+      {
+        "token": "0",
+        "logprob": -10.4379,
+        "prob": 0.0
+      },
+      {
+        "token": "`",
+        "logprob": -10.4379,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "n",
+    "canonical_prob": 0.9996,
+    "canonical_rank": 1,
+    "generated_token": "n"
+  },
+  {
+    "model": "gpt-4o",
+    "task": "merge_sort_base_case",
+    "prompt_suffix": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "arr",
+        "logprob": -0.0001,
+        "prob": 0.9999
+      },
+      {
+        "token": "`",
+        "logprob": -10.1876,
+        "prob": 0.0
+      },
+      {
+        "token": "```",
+        "logprob": -11.1251,
+        "prob": 0.0
+      },
+      {
+        "token": "\n",
+        "logprob": -12.9063,
+        "prob": 0.0
+      },
+      {
+        "token": "``",
+        "logprob": -13.2501,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "arr",
+    "canonical_prob": 0.9999,
+    "canonical_rank": 1,
+    "generated_token": "arr"
+  },
+  {
+    "model": "gpt-4o",
+    "task": "is_sorted_base_case",
+    "prompt_suffix": "def is_sorted(lst):\n    if len(lst) <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "True",
+        "logprob": -0.0268,
+        "prob": 0.9736
+      },
+      {
+        "token": "`",
+        "logprob": -4.058,
+        "prob": 0.0173
+      },
+      {
+        "token": "lst",
+        "logprob": -4.7143,
+        "prob": 0.009
+      },
+      {
+        "token": "```",
+        "logprob": -8.8705,
+        "prob": 0.0001
+      },
+      {
+        "token": " True",
+        "logprob": -11.058,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "True",
+    "canonical_prob": 0.9736,
+    "canonical_rank": 1,
+    "generated_token": "True"
+  },
+  {
+    "model": "gpt-4o",
+    "task": "count_vowels_loop",
+    "prompt_suffix": "def count_vowels(s):\n    count = 0\n    for char in ",
+    "top5_logprobs": [
+      {
+        "token": "```",
+        "logprob": -0.7353,
+        "prob": 0.4794
+      },
+      {
+        "token": "`s",
+        "logprob": -1.579,
+        "prob": 0.2062
+      },
+      {
+        "token": "s",
+        "logprob": -1.829,
+        "prob": 0.1606
+      },
+      {
+        "token": "def",
+        "logprob": -2.5165,
+        "prob": 0.0807
+      },
+      {
+        "token": "the",
+        "logprob": -3.4853,
+        "prob": 0.0306
+      }
+    ],
+    "canonical_token": "s",
+    "canonical_prob": 0.1606,
+    "canonical_rank": 3,
+    "generated_token": "```"
+  },
+  {
+    "model": "gpt-4.1-mini",
+    "task": "fib_base_case",
+    "prompt_suffix": "def fib(n):\n    if n <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "n",
+        "logprob": -0.0,
+        "prob": 1.0
+      },
+      {
+        "token": "```",
+        "logprob": -16.75,
+        "prob": 0.0
+      },
+      {
+        "token": "`",
+        "logprob": -17.375,
+        "prob": 0.0
+      },
+      {
+        "token": " n",
+        "logprob": -18.75,
+        "prob": 0.0
+      },
+      {
+        "token": "0",
+        "logprob": -19.0,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "n",
+    "canonical_prob": 1.0,
+    "canonical_rank": 1,
+    "generated_token": "n"
+  },
+  {
+    "model": "gpt-4.1-mini",
+    "task": "merge_sort_base_case",
+    "prompt_suffix": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "arr",
+        "logprob": 0.0,
+        "prob": 1.0
+      },
+      {
+        "token": "```",
+        "logprob": -18.5,
+        "prob": 0.0
+      },
+      {
+        "token": "`",
+        "logprob": -18.875,
+        "prob": 0.0
+      },
+      {
+        "token": " arr",
+        "logprob": -21.375,
+        "prob": 0.0
+      },
+      {
+        "token": "\tarr",
+        "logprob": -23.0,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "arr",
+    "canonical_prob": 1.0,
+    "canonical_rank": 1,
+    "generated_token": "arr"
+  },
+  {
+    "model": "gpt-4.1-mini",
+    "task": "is_sorted_base_case",
+    "prompt_suffix": "def is_sorted(lst):\n    if len(lst) <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "True",
+        "logprob": -0.0015,
+        "prob": 0.9985
+      },
+      {
+        "token": "lst",
+        "logprob": -6.5015,
+        "prob": 0.0015
+      },
+      {
+        "token": "```",
+        "logprob": -11.1265,
+        "prob": 0.0
+      },
+      {
+        "token": "`",
+        "logprob": -11.5015,
+        "prob": 0.0
+      },
+      {
+        "token": " True",
+        "logprob": -11.6265,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "True",
+    "canonical_prob": 0.9985,
+    "canonical_rank": 1,
+    "generated_token": "True"
+  },
+  {
+    "model": "gpt-4.1-mini",
+    "task": "count_vowels_loop",
+    "prompt_suffix": "def count_vowels(s):\n    count = 0\n    for char in ",
+    "top5_logprobs": [
+      {
+        "token": "s",
+        "logprob": -0.0,
+        "prob": 1.0
+      },
+      {
+        "token": "```",
+        "logprob": -14.125,
+        "prob": 0.0
+      },
+      {
+        "token": "`s",
+        "logprob": -16.0,
+        "prob": 0.0
+      },
+      {
+        "token": "`",
+        "logprob": -19.375,
+        "prob": 0.0
+      },
+      {
+        "token": " s",
+        "logprob": -19.375,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "s",
+    "canonical_prob": 1.0,
+    "canonical_rank": 1,
+    "generated_token": "s"
+  },
+  {
+    "model": "gpt-4o-mini",
+    "task": "fib_base_case",
+    "prompt_suffix": "def fib(n):\n    if n <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "```",
+        "logprob": -0.01,
+        "prob": 0.99
+      },
+      {
+        "token": "`",
+        "logprob": -4.885,
+        "prob": 0.0076
+      },
+      {
+        "token": "The",
+        "logprob": -6.385,
+        "prob": 0.0017
+      },
+      {
+        "token": "``",
+        "logprob": -8.51,
+        "prob": 0.0002
+      },
+      {
+        "token": "Here",
+        "logprob": -8.635,
+        "prob": 0.0002
+      }
+    ],
+    "canonical_token": "n",
+    "canonical_prob": null,
+    "canonical_rank": null,
+    "generated_token": "```"
+  },
+  {
+    "model": "gpt-4o-mini",
+    "task": "merge_sort_base_case",
+    "prompt_suffix": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "```",
+        "logprob": -0.0488,
+        "prob": 0.9523
+      },
+      {
+        "token": "`",
+        "logprob": -3.0488,
+        "prob": 0.0474
+      },
+      {
+        "token": "The",
+        "logprob": -9.0488,
+        "prob": 0.0001
+      },
+      {
+        "token": "``",
+        "logprob": -9.5488,
+        "prob": 0.0001
+      },
+      {
+        "token": "arr",
+        "logprob": -10.1738,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "arr",
+    "canonical_prob": 0.0,
+    "canonical_rank": 5,
+    "generated_token": "```"
+  },
+  {
+    "model": "gpt-4o-mini",
+    "task": "is_sorted_base_case",
+    "prompt_suffix": "def is_sorted(lst):\n    if len(lst) <= 1:\n        return ",
+    "top5_logprobs": [
+      {
+        "token": "```",
+        "logprob": -0.2259,
+        "prob": 0.7978
+      },
+      {
+        "token": "`",
+        "logprob": -1.7259,
+        "prob": 0.178
+      },
+      {
+        "token": "True",
+        "logprob": -3.7259,
+        "prob": 0.0241
+      },
+      {
+        "token": "``",
+        "logprob": -9.8509,
+        "prob": 0.0001
+      },
+      {
+        "token": "Sure",
+        "logprob": -11.9759,
+        "prob": 0.0
+      }
+    ],
+    "canonical_token": "True",
+    "canonical_prob": 0.0241,
+    "canonical_rank": 3,
+    "generated_token": "```"
+  },
+  {
+    "model": "gpt-4o-mini",
+    "task": "count_vowels_loop",
+    "prompt_suffix": "def count_vowels(s):\n    count = 0\n    for char in ",
+    "top5_logprobs": [
+      {
+        "token": "`s",
+        "logprob": -0.3254,
+        "prob": 0.7223
+      },
+      {
+        "token": "```",
+        "logprob": -1.3254,
+        "prob": 0.2657
+      },
+      {
+        "token": "`",
+        "logprob": -4.4504,
+        "prob": 0.0117
+      },
+      {
+        "token": "s",
+        "logprob": -8.5754,
+        "prob": 0.0002
+      },
+      {
+        "token": "'s",
+        "logprob": -8.8254,
+        "prob": 0.0001
+      }
+    ],
+    "canonical_token": "s",
+    "canonical_prob": 0.0002,
+    "canonical_rank": 4,
+    "generated_token": "`s"
+  }
+]

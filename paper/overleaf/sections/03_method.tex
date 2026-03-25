@@ -119,6 +119,7 @@ Redundant metrics are removed. We report two independent measures:
   \item \textbf{KLR} (Keyword Leakage Rate): fraction of alias slots where original Python keyword was used. Note: ACR $= 1 - \text{KLR}$ and PIR $\approx \text{KLR}$ are derived quantities and not separately reported.
   \item \textbf{PSS} (Partial Structural Score, exploratory): weighted sub-component credit (alias: 0.4, parse: 0.25, skeleton: 0.25, format: 0.1). Weights are heuristic; PSS is reported as a secondary diagnostic alongside KLR and should not be used as the sole basis for compliance conclusions.
   \item \textbf{PPR} (Python Prior Rate, L3/L4): fraction of samples using Python-style condition (no inversion).
+  \item \textbf{PES} (Prior Entrenchment Score, exploratory): probability assigned by the model to the canonical Python token at the key decision point of a task's base case, measured via the logprobs API (\texttt{top\_logprobs=5}, \texttt{max\_tokens=1}, \texttt{temperature=0}). PES quantifies the strength of the prior that L4 must overcome; see E31 results in \S\ref{sec:e31_pes}.
 \end{itemize}
 
 \subsection{Threats to Validity}
