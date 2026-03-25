@@ -7,18 +7,18 @@
   "n": 20,
   "total": 20,
   "passed": 0,
-  "http_errors": 18,
+  "http_errors": 2,
   "pass_rate": 0.0,
   "ppr": 1.0,
   "results": [
     {
       "variant": "A",
       "run": 0,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 4453, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
@@ -28,17 +28,17 @@
         "used_python_prior": true,
         "noticed_inversion": false,
         "pass": false,
-        "code_snippet": "<think>\nOkay, I need to write a Fibonacci function based on the examples provided. Let me think about how the examples work.\n\nLooking at the first example, the max_val function returns the smaller value when a is greater than b. Wait, the comment says it returns the smaller value when a > b. Let me "
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 2,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5880, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
@@ -48,43 +48,43 @@
         "used_python_prior": true,
         "noticed_inversion": false,
         "pass": false,
-        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 4,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5894, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 5,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5768, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 6,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5625, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 7,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5505, Requeste",
+      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 3960, Requeste",
       "judge": {
         "pass": false,
         "used_python_prior": null,
@@ -94,17 +94,17 @@
     {
       "variant": "A",
       "run": 8,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5374, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
       "variant": "A",
       "run": 9,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5633, Requeste",
+      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 4240, Requeste",
       "judge": {
         "pass": false,
         "used_python_prior": null,
@@ -114,101 +114,101 @@
     {
       "variant": "A",
       "run": 10,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5517, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 11,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5392, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0  # base case: fib(0) = 0\n    elif n == 1:\n        return 1  # base case: fib(1) = 1\n    else:\n        return fib(n-1) + fib(n-2)  # recursive case\n\n# Print Fibonacci numbers from fib(0) to fib(6)\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
       "variant": "A",
       "run": 12,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5277, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 13,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5914, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 14,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5775, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 15,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5660, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 16,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5530, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
       "variant": "A",
       "run": 17,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5386, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     },
     {
       "variant": "A",
       "run": 18,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5262, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     },
     {
       "variant": "A",
       "run": 19,
-      "http_error": "HTTP 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3-32b` in organization `org_01kmh5zdz7ezy9g9vg85gqtyp8` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5143, Requeste",
       "judge": {
+        "used_python_prior": true,
+        "noticed_inversion": false,
         "pass": false,
-        "used_python_prior": null,
-        "noticed_inversion": null
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(fib(i))"
       }
     }
   ]
