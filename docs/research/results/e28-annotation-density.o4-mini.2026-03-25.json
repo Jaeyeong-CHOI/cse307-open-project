@@ -1,0 +1,918 @@
+{
+  "experiment": "E28",
+  "label": "Annotation Density Gradient (L4 Fibonacci, o4-mini)",
+  "date": "2026-03-25",
+  "model": "o4-mini",
+  "runs_per_density": 10,
+  "densities": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "summary": {
+    "25%": {
+      "density_fraction": 0.25,
+      "n_annotated": 2,
+      "n_total_examples": 8,
+      "runs": 10,
+      "passes": 3,
+      "fails_prior": 1,
+      "fails_other": 6,
+      "errors": 0,
+      "ppr": 0.1,
+      "pass_rate": 0.3
+    },
+    "50%": {
+      "density_fraction": 0.5,
+      "n_annotated": 4,
+      "n_total_examples": 8,
+      "runs": 10,
+      "passes": 6,
+      "fails_prior": 1,
+      "fails_other": 3,
+      "errors": 0,
+      "ppr": 0.1,
+      "pass_rate": 0.6
+    },
+    "75%": {
+      "density_fraction": 0.75,
+      "n_annotated": 6,
+      "n_total_examples": 8,
+      "runs": 10,
+      "passes": 2,
+      "fails_prior": 5,
+      "fails_other": 3,
+      "errors": 0,
+      "ppr": 0.5,
+      "pass_rate": 0.2
+    },
+    "100%": {
+      "density_fraction": 1.0,
+      "n_annotated": 8,
+      "n_total_examples": 8,
+      "runs": 10,
+      "passes": 1,
+      "fails_prior": 2,
+      "fails_other": 6,
+      "errors": 1,
+      "ppr": 0.222,
+      "pass_rate": 0.111
+    }
+  },
+  "results": [
+    {
+      "density": "25%",
+      "summary": {
+        "density_fraction": 0.25,
+        "n_annotated": 2,
+        "n_total_examples": 8,
+        "runs": 10,
+        "passes": 3,
+        "fails_prior": 1,
+        "fails_other": 6,
+        "errors": 0,
+        "ppr": 0.1,
+        "pass_rate": 0.3
+      },
+      "runs": [
+        {
+          "run": 1,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 2205,
+            "total_tokens": 2696,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2112,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 2,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 2077,
+            "total_tokens": 2568,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1984,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 3,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 2845,
+            "total_tokens": 3336,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2752,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 4,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 4509,
+            "total_tokens": 5000,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 4416,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 5,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 2141,
+            "total_tokens": 2632,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2048,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 6,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 4453,
+            "total_tokens": 4944,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 4352,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 7,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 2653,
+            "total_tokens": 3144,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2560,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 8,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 2653,
+            "total_tokens": 3144,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2560,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 9,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 1629,
+            "total_tokens": 2120,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1536,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 10,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 491,
+            "completion_tokens": 2845,
+            "total_tokens": 3336,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2752,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "density": "50%",
+      "summary": {
+        "density_fraction": 0.5,
+        "n_annotated": 4,
+        "n_total_examples": 8,
+        "runs": 10,
+        "passes": 6,
+        "fails_prior": 1,
+        "fails_other": 3,
+        "errors": 0,
+        "ppr": 0.1,
+        "pass_rate": 0.6
+      },
+      "runs": [
+        {
+          "run": 1,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 2717,
+            "total_tokens": 3222,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2624,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 2,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 2232,
+            "total_tokens": 2737,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2112,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 3,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 4517,
+            "total_tokens": 5022,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 4416,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 4,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 1706,
+            "total_tokens": 2211,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1600,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 5,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 1701,
+            "total_tokens": 2206,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1600,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 6,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 3751,
+            "total_tokens": 4256,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 3648,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 7,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 2149,
+            "total_tokens": 2654,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2048,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 8,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 2213,
+            "total_tokens": 2718,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2112,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 9,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 2730,
+            "total_tokens": 3235,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2624,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 10,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 505,
+            "completion_tokens": 2087,
+            "total_tokens": 2592,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1984,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "density": "75%",
+      "summary": {
+        "density_fraction": 0.75,
+        "n_annotated": 6,
+        "n_total_examples": 8,
+        "runs": 10,
+        "passes": 2,
+        "fails_prior": 5,
+        "fails_other": 3,
+        "errors": 0,
+        "ppr": 0.5,
+        "pass_rate": 0.2
+      },
+      "runs": [
+        {
+          "run": 1,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 1318,
+            "total_tokens": 1837,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1216,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 2,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 2788,
+            "total_tokens": 3307,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2688,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 3,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 1189,
+            "total_tokens": 1708,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1088,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 4,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 1637,
+            "total_tokens": 2156,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1536,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 5,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 2917,
+            "total_tokens": 3436,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2816,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 6,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 2845,
+            "total_tokens": 3364,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2752,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 7,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 824,
+            "total_tokens": 1343,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 704,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 8,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 5029,
+            "total_tokens": 5548,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 4928,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 9,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 2917,
+            "total_tokens": 3436,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2816,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 10,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 519,
+            "completion_tokens": 2552,
+            "total_tokens": 3071,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2432,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "density": "100%",
+      "summary": {
+        "density_fraction": 1.0,
+        "n_annotated": 8,
+        "n_total_examples": 8,
+        "runs": 10,
+        "passes": 1,
+        "fails_prior": 2,
+        "fails_other": 6,
+        "errors": 1,
+        "ppr": 0.222,
+        "pass_rate": 0.111
+      },
+      "runs": [
+        {
+          "run": 1,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 3684,
+            "total_tokens": 4217,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 3584,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 2,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 3365,
+            "total_tokens": 3898,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 3264,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 3,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 2021,
+            "total_tokens": 2554,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1920,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 4,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 3626,
+            "total_tokens": 4159,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 3520,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 5,
+          "verdict": "fail_prior",
+          "reason": "Python prior dominates",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 1957,
+            "total_tokens": 2490,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1856,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 6,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 2533,
+            "total_tokens": 3066,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2432,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 7,
+          "verdict": "error",
+          "error": "HTTP 400: {\n    \"error\": {\n        \"message\": \"We could not parse the JSON body of your request. (HINT: This likely means you aren't using your HTTP library correctly. The OpenAI API expects a JSON payload, but what was sent was not valid JSON. If you have trouble figuring out how to fix this, please contact "
+        },
+        {
+          "run": 8,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 2597,
+            "total_tokens": 3130,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 2496,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 9,
+          "verdict": "pass",
+          "reason": "inverted if-semantics correctly applied",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 4261,
+            "total_tokens": 4794,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 4160,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        },
+        {
+          "run": 10,
+          "verdict": "fail_other",
+          "reason": "neither inverted nor clear prior",
+          "tokens": {
+            "prompt_tokens": 533,
+            "completion_tokens": 1893,
+            "total_tokens": 2426,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 1792,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
