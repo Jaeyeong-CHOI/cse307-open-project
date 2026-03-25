@@ -10,12 +10,12 @@
 \citation{fried2022incoder}
 \citation{luo2023wizardcoder}
 \citation{guo2024deepseek}
-\citation{codeif2025}
-\citation{multicode2025}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{1}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Code Generation Benchmarks and Evaluation}{1}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Code-Oriented LLM Architectures and Training}{1}{}\protected@file@percent }
+\citation{codeif2025}
+\citation{multicode2025}
 \citation{chen2024instructhierarchy}
 \citation{xie2024conflict}
 \citation{wu2024contextparametric}
@@ -53,18 +53,18 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-I}}Real-World Engineering Benchmarks}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-J}}LLM in Programming Education}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-K}}Academic Integrity and LLM-Resistant Assessment}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-L}}Research Gap}{2}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Four-level confusion language taxonomy. Each level targets a distinct linguistic dimension and delivery modality. L4 is the only level where all tested models fail regardless of capacity.}}{3}{}\protected@file@percent }
 \newlabel{tab:levels}{{I}{3}{}{table.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (dark red) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}}{3}{}\protected@file@percent }
-\newlabel{fig:taxonomy}{{1}{3}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-L}}Research Gap}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Method}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Research Questions and Hypotheses}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Language Level Taxonomy}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}L1: Token Alias Substitution}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}L2: Syntax Structure Inversion}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (dark red) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}}{3}{}\protected@file@percent }
+\newlabel{fig:taxonomy}{{1}{3}{}{figure.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Semantic inversion in L3. Surface syntax is identical to Python, but if-block semantics are inverted. The correct L3 solution (right) looks counter-intuitive to Python-trained models, which generate the left version regardless of the stated rule.}}{3}{}\protected@file@percent }
 \newlabel{fig:semantic_inversion}{{2}{3}{}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}L2: Syntax Structure Inversion}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}L3: Semantic Inversion (Explicit Rules)}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}L4: Semantic Inversion (Implicit, Example-Only)}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-G}}Evaluation Metrics}{3}{}\protected@file@percent }
@@ -76,22 +76,22 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}L2 Experiment: Syntax Inversion}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}L3 Experiment: Semantic Inversion (Explicit)}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}L4 Experiment: Semantic Inversion (Implicit)}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}L4 Multi-task Generalization Experiment}{4}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 evaluation: KLR and PSS per model. Baseline rows use $n=120$; ctx-pack rows for gpt-4.1 family and o4-mini use $n=20$ (v1--v20 subset). Models sorted by KLR. For gpt-4o-mini and gpt-4.1-mini (paired conditions), context-pack reduces KLR ($-38\%$ and $-51\%$ respectively); gpt-4.1-mini ctx-pack achieves the lowest KLR (0.21).}}{4}{}\protected@file@percent }
 \newlabel{tab:l1_results}{{II}{4}{}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted; L3 reveals a capability threshold; L4 (example-only delivery) defeats all models, including gpt-4o which succeeds at L3.}}{4}{}\protected@file@percent }
-\newlabel{tab:l234_results}{{III}{4}{}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}L4 Multi-task Generalization Experiment}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-H}}Reproducibility}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Results}{4}{}\protected@file@percent }
 \newlabel{sec:results}{{V}{4}{}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}L1: Partial resistance; scale does not predict compliance}{4}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L4 ablation (PPR = Python Prior Rate). All seven models: $n=50$ each (5 variants $\times $ 10 runs). Pass rate = 0/50 for all models. o4-mini (reasoning model) also achieves 0/50 at $n=50$, revising a preliminary $n=20$ result (1/20).}}{5}{}\protected@file@percent }
-\newlabel{tab:l4_ablation}{{IV}{5}{}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted; L3 reveals a capability threshold; L4 (example-only delivery) defeats all models, including gpt-4o which succeeds at L3.}}{5}{}\protected@file@percent }
+\newlabel{tab:l234_results}{{III}{5}{}{table.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}L2: Syntax inversion not resistant}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}L4: Pattern blindness across all tested models}{5}{}\protected@file@percent }
 \newlabel{sec:l4_ablation}{{\mbox  {V-D}}{5}{}{subsection.5.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}L4 Multi-task Generalization}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L4 ablation (PPR = Python Prior Rate). All seven models: $n=50$ each (5 variants $\times $ 10 runs). Pass rate = 0/50 for all models. o4-mini (reasoning model) also achieves 0/50 at $n=50$, revising a preliminary $n=20$ result (1/20).}}{5}{}\protected@file@percent }
+\newlabel{tab:l4_ablation}{{IV}{5}{}{table.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Prior dominance vs.\ pattern blindness isolated on the same model (gpt-4o). \textbf  {A}: gpt-4o correctly inverts logic with explicit rule (L3). \textbf  {B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}}{5}{}\protected@file@percent }
 \newlabel{fig:l4_failure}{{3}{5}{}{figure.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces L4 multi-task generalization (partially-annotated prompt; see text). T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt  {gpt-4o} and \texttt  {gpt-4.1-mini} both pass T2 fully. T3 exposes \textit  {operational substitution} as dominant (gpt-4o T3 $n=50$: 47/50 runs, 94\%). gpt-4.1 T2 scale-up confirms systematic resistance vs.\ gpt-4.1-mini (Fisher's exact $p < 0.0001$). o4-mini achieves 8/15 on T1 under partially-annotated condition but 0/15 on T2/T3 (0/50 under strict ablation). gpt-5.4-mini fails all tasks (0/30; T1/T2 PPR=1.0, T3 operational substitution).}}{6}{}\protected@file@percent }
@@ -99,14 +99,14 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Three Failure Modes}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Effective LLM-resistant language design}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Implications for programming education}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Implications for programming education}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limits}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Next steps}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Evaluation Protocol}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}L1: Token Alias Substitution}{7}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}}{8}{}\protected@file@percent }
 \newlabel{fig:l1_system_prompts}{{4}{8}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Evaluation Protocol}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}L1: Token Alias Substitution}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}}{8}{}\protected@file@percent }
 \newlabel{fig:l1_user_prompt}{{5}{8}{}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}}{8}{}\protected@file@percent }
@@ -115,18 +115,14 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}L3: Semantic Inversion (Explicit)}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}L4: Semantic Inversion (Implicit)}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Evaluation Metrics}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}}{8}{}\protected@file@percent }
-\newlabel{fig:l3_prompts}{{7}{8}{}{figure.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python fib---exhibiting \emph  {pattern blindness}.}}{8}{}\protected@file@percent }
-\newlabel{fig:l4_prompt}{{8}{8}{}{figure.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L1)}{8}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}}{9}{}\protected@file@percent }
+\newlabel{fig:l3_prompts}{{7}{9}{}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python fib---exhibiting \emph  {pattern blindness}.}}{9}{}\protected@file@percent }
+\newlabel{fig:l4_prompt}{{8}{9}{}{figure.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-G}}Judge Protocol (L3/L4)}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}All experiments (chronological)}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}API and runtime settings}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-C}}Repository structure for replication}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{9}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{chen2021codex}{1}
@@ -140,6 +136,16 @@
 \bibcite{guo2024deepseek}{9}
 \bibcite{codeif2025}{10}
 \bibcite{multicode2025}{11}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}API and runtime settings}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-C}}Repository structure for replication}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}Execution config snapshot (non-secret)}{10}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Key runtime settings}}{10}{}\protected@file@percent }
+\newlabel{tab:config_snapshot}{{VI}{10}{}{table.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
 \bibcite{chen2024instructhierarchy}{12}
 \bibcite{xie2024conflict}{13}
 \bibcite{wu2024contextparametric}{14}
@@ -165,12 +171,6 @@
 \bibcite{dakhel2023github}{34}
 \bibcite{lau2023learners}{35}
 \bibcite{prather2023robots}{36}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}Execution config snapshot (non-secret)}{10}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Key runtime settings}}{10}{}\protected@file@percent }
-\newlabel{tab:config_snapshot}{{VI}{10}{}{table.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
 \bibcite{liffiton2023codehelp}{37}
 \bibcite{novak2025llmhw}{38}
 \bibcite{codeplagiarism2024}{39}

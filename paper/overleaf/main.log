@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1074,7 +1074,7 @@ re/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/lstl
 ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
-)) (./sections/04_experiments.tex [3]) (./sections/05_results.tex
+) [3]) (./sections/04_experiments.tex) (./sections/05_results.tex
 [4]
 Underfull \hbox (badness 10000) in paragraph at lines 94--100
 
@@ -1109,11 +1109,40 @@ Underfull \hbox (badness 4634) in paragraph at lines 127--128
 
 LaTeX Font Info:    Font shape `T1/ptm/m/scit' in size <8> not available
 (Font)              Font shape `T1/ptm/m/it' tried instead on input line 131.
+[5]) (./sections/06_discussion.tex [6]
+Underfull \hbox (badness 2181) in paragraph at lines 28--30
+\T1/ptm/b/n/10 (+20) reasoning-model ex-trac-tion. \T1/ptm/m/n/10 (+20) An ear-
+lier multi-task run
+ []
 
-Underfull \vbox (badness 2111) has occurred while \output is active []
 
- [5])
-(./sections/06_discussion.tex [6]) (./sections/07_conclusion.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 28--30
+\T1/ptm/m/n/10 (+20) of o4-mini used \T1/pcr/m/n/10 max_completion_tokens=400\T
+1/ptm/m/n/10 (+20) ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 28--30
+\T1/ptm/m/n/10 (+20) which trun-cated reasoning-model re-sponses be-fore
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 28--30
+\T1/ptm/m/n/10 (+20) the code block was emit-ted. Af-ter cor-rect-ing to
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 28--30
+\T1/pcr/m/n/10 max_completion_tokens=5000\T1/ptm/m/n/10 (+20) , o4-mini achieve
+s
+ []
+
+
+Underfull \hbox (badness 2065) in paragraph at lines 28--30
+\T1/ptm/m/n/10 (+20) 8/15 on T1 (partially-annotated prompt). This re-vi-sion
+ []
+
+) (./sections/07_conclusion.tex [7])
 (./sections/08_prompt_and_judge_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
@@ -1130,13 +1159,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[7]
-Overfull \vbox (2.33925pt too high) has occurred while \output is active []
 
+Underfull \vbox (badness 4699) has occurred while \output is active []
 
-[8]) (./sections/09_reproducibility_protocol.tex
+ [8])
+(./sections/09_reproducibility_protocol.tex
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 17--19
 []\T1/ptm/b/n/10 (+20) Partial judge ap-plied (2026-03-24). \T1/ptm/m/n/10 (+20
@@ -1194,7 +1226,7 @@ Overfull \hbox (48.33002pt too wide) in paragraph at lines 55--62
 \T1/pcr/m/n/10 L4-scaleup-is_sorted.gpt41.n50.2026-03-25.json
  []
 
-) (./sections/10_appendix_experiment_details.tex
+[9]) (./sections/10_appendix_experiment_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 81--1
 [][]
  []
@@ -1204,7 +1236,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 81--1
 
  []
 
-[9]
+
 Underfull \hbox (badness 1983) in paragraph at lines 60--61
 []|\T1/ptm/m/n/8 (+20) v1--v120 (base-line); v1--v20
  []
@@ -1235,11 +1267,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25186 strings out of 467525
- 517170 string characters out of 5408440
- 1188875 words of memory out of 5000000
+ 25191 strings out of 467525
+ 517211 string characters out of 5408440
+ 1192564 words of memory out of 5000000
  53158 multiletter control sequences out of 15000+600000
- 775412 words of font info for 481 fonts, out of 8000000 for 9000
+ 775633 words of font info for 484 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,14n,108p,2836b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1269,7 +1301,7 @@ ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 utmbi8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1
 /urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (11 pages, 290573 bytes).
+Output written on main.pdf (11 pages, 292633 bytes).
 PDF statistics:
  154 PDF objects out of 1000 (max. 8388607)
  96 compressed objects within 1 object stream
