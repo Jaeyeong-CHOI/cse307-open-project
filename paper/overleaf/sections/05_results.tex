@@ -134,7 +134,7 @@ Without explicit rule, \texttt{gpt-4o}---which succeeds at L3---fails at L4 (PPR
 \textbf{L4 ablation (n=50 per model).}
 We scaled the L4 evaluation across seven models, all at $n=50$ (\texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, \texttt{o4-mini}).
 Results are shown in Table~\ref{tab:l4_ablation}.
-All seven models achieve 0\% pass rate (0/50 each), confirming that pattern blindness is robust across model families and including the reasoning model \texttt{o4-mini}.
+All seven models achieve 0\% pass rate, confirming that pattern blindness is robust across model families and including the reasoning model \texttt{o4-mini}. (\texttt{gpt-5.4-mini}: 0/42 valid runs, $n_\mathrm{eff}=42$; see footnote.)
 PPR values range from 0.38 (\texttt{gpt-4.1-mini}) to 1.0 (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}); \texttt{o4-mini} shows PPR=0.92.
 Notably, \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} show PPR=1.0 across \emph{all} 50 runs and all variants, indicating complete prior dominance with no evidence of inversion detection.
 The \texttt{o4-mini} result revises an earlier preliminary finding (1/20 at $n=20$): at the full scale of $n=50$, \texttt{o4-mini} also achieves 0/50, indicating that chain-of-thought reasoning does not provide a reliable pathway to overcoming pattern blindness at this scale.
@@ -144,7 +144,7 @@ To close the gap identified in \S\ref{sec:l4_hard}---where \texttt{gpt-5.4} and 
 
 \begin{table}[!t]
 \centering
-\caption{L4 ablation (PPR = Python Prior Rate). Seven core models: $n=50$ each (5 variants $\times$ 10 runs). Pass rate = 0/50 for all models. \texttt{o4-mini} revises $n=20$ preliminary (1/20). $^\S$E24 frontier extension: \texttt{gpt-5.4} and \texttt{o3} also tested at Var.~A, $n=10$: both 0/10 pass, PPR=1.00.}
+\caption{L4 ablation (PPR = Python Prior Rate). Seven core models: $n=50$ each (5 variants $\times$ 10 runs); \texttt{gpt-5.4-mini} $n_\mathrm{eff}=42$ (8 HTTP errors in Var.~E, excluded). Pass rate = 0 for all models. \texttt{o4-mini} revises $n=20$ preliminary (1/20). $^\S$E24 frontier extension: \texttt{gpt-5.4} and \texttt{o3} also tested at Var.~A, $n=10$: both 0/10 pass, PPR=1.00.}
 \label{tab:l4_ablation}
 \footnotesize
 \resizebox{\columnwidth}{!}{%
@@ -159,7 +159,7 @@ D & 2ex-swapped      & 0.70 & 1.00 & 1.00 & \textbf{0.00} & 1.00 & 1.00 & 1.00 \
 E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \\
 \midrule
 \multicolumn{2}{l}{\textbf{Overall PPR}} & 0.70 & 0.82 & 1.00 & \textbf{0.38} & 1.00 & 1.00$^\ddagger$ & 0.92 \\
-\multicolumn{2}{l}{\textbf{Pass rate}} & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 \\
+\multicolumn{2}{l}{\textbf{Pass rate}} & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/42$^\dagger$ & \cellcolor{red!10}0/50 \\
 \bottomrule
 \multicolumn{9}{l}{\scriptsize $^\dagger$\texttt{gpt-5.4-mini} var-E: 8 HTTP errors; $n_\mathrm{eff}=2$; excluded from per-variant PPR.} \\
 \multicolumn{9}{l}{\scriptsize $^\ddagger$Overall PPR for \texttt{gpt-5.4-mini} computed over 4 valid variants (A--D); var-E excluded.} \\
@@ -273,7 +273,7 @@ Task difficulty interacts with model capacity to determine which failure mode do
 
 \textbf{Failure taxonomy across 427 failed L4 runs} (ablation + multitask T1): Type-I (exact Python prior) accounts for ${\approx}81.5\%$ of failures, Type-II (partial attempt) for ${\approx}12.4\%$, and Type-III (operational substitution) for ${\approx}4.2\%$. Type-I dominates in \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} (100\% of failures); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%); Type-III appears primarily in \texttt{gpt-4o} (25\% of its failures).
 
-\noindent\textit{Population note:} The 427 pooled runs consist of 350 strict example-only ablation failures and 77 failed multitask T1 runs (partially-annotated prompt; updated from an earlier draft count of 419/69 that predated the \texttt{gpt-4.1-mini} T1 scale-up from $n=10$ to $n=20$ and the \texttt{o4-mini} token-budget correction). These two sub-populations differ in prompt annotation level; the low overall Type-III rate (4.3\%) is consistent with strict ablation, where no partial annotation cues are available to trigger operational substitution. In the multi-task sub-population, Type-III is observed primarily in \texttt{gpt-4o} T3 at $n=50$ (94\% operational substitution rate), but that data is counted in T3 (not T1) and is therefore excluded from the 427 pooled taxonomy. A full split analysis per prompt protocol is deferred to future work.
+\noindent\textit{Population note:} The 427 pooled runs consist of 350 strict example-only ablation failures and 77 failed multitask T1 runs (partially-annotated prompt). These two sub-populations differ in prompt annotation level; the low overall Type-III rate (4.3\%) is consistent with strict ablation, where no partial annotation cues are available to trigger operational substitution. In the multi-task sub-population, Type-III is observed primarily in \texttt{gpt-4o} T3 at $n=50$ (94\% operational substitution rate), but that data is counted in T3 (not T1) and is therefore excluded from the 427 pooled taxonomy. A full split analysis per prompt protocol is deferred to future work.
 
 \subsection{CoT Ablation: Reasoning About Inversion Is Not Sufficient}
 \label{sec:cot_ablation}
