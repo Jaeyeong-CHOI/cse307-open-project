@@ -128,7 +128,7 @@ The o4-mini result revises an earlier preliminary finding (1/20 at $n=20$): at t
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}llccccccc@{}}
 \toprule
-\textbf{Var.} & \textbf{Description} & \rotatebox{70}{\texttt{gpt-4o}} & \rotatebox{70}{\texttt{gpt-4o-mini}} & \rotatebox{70}{\texttt{gpt-4.1}} & \rotatebox{70}{\texttt{gpt-4.1-mini}} & \rotatebox{70}{\texttt{gpt-4.1-nano}} & \rotatebox{70}{\texttt{gpt-5.4-mini}} & \rotatebox{70}{\texttt{o4-mini}} \\
+\textbf{Var.} & \textbf{Description} & \makecell[c]{\small\texttt{gpt-}\\\small\texttt{4o}} & \makecell[c]{\small\texttt{gpt-4o-}\\\small\texttt{mini}} & \makecell[c]{\small\texttt{gpt-}\\\small\texttt{4.1}} & \makecell[c]{\small\texttt{gpt-4.1-}\\\small\texttt{mini}} & \makecell[c]{\small\texttt{gpt-4.1-}\\\small\texttt{nano}} & \makecell[c]{\small\texttt{gpt-5.4-}\\\small\texttt{mini}} & \makecell[c]{\small\texttt{o4-}\\\small\texttt{mini}} \\
 \midrule
 A & 2ex-baseline     & .40 & \textbf{.10} & 1.0 & \textbf{.10} & 1.0 & 1.0 & .80 \\
 B & 3ex-extra        & 1.0 & 1.0 & 1.0 & \textbf{.00} & 1.0 & 1.0 & 1.0 \\
@@ -244,6 +244,6 @@ To assess whether the failure modes generalize beyond the OpenAI model family, w
 
 \textbf{L1 (ctx-pack, $n=20$):} Llama-3.3-70B achieves KLR=0.23 (PSS=0.34), nearly matching the OpenAI best (gpt-4.1-mini ctx-pack, 0.21). Qwen3-32B achieves KLR=1.00 (PSS=0.00): all 20 outputs contained at least one native Python keyword with no valid code skeleton---the worst L1 result across all tested models. The inter-model gap (0.23 vs.\ 1.00) exceeds the intra-family spread of gpt-4.x models (0.21--0.69), indicating that instruction-following fine-tuning rather than parameter count governs alias compliance.
 
-\textbf{L4 Variant A ($n=20$):} Both open-weight models fail (0/20 pass). Llama-3.3-70B PPR=0.05 (1/20 strict Python prior; remaining 19 partially adopted base-case values but applied standard control flow). Qwen3-32B PPR=1.00. Neither model triggered inversion detection (noticed\_inversion=0/20). These results extend the pattern blindness finding beyond OpenAI models.
+\textbf{L4 Variant A ($n=20$):} Both open-weight models fail. Llama-3.3-70B: 0/20 pass, PPR=0.05 (1/20 strict Python prior; remaining 19 outputs applied standard control flow without inversion). Qwen3-32B: 0/18 pass ($n_\mathrm{eff}=18$; 2 HTTP errors), PPR=1.00 (complete prior dominance). Neither model triggered inversion detection (noticed\_inversion=0). These results extend the pattern blindness finding beyond OpenAI models.
 
-\emph{Limitations:} Pilot results only ($n=20$, Variant~A, cloud inference via Groq); full multi-variant ($n=50$) and L2/L3 evaluations are deferred.
+\emph{Limitations:} Pilot results ($n=20$, Variant~A only, cloud inference via Groq with rate-limit retries); full multi-variant ($n=50$) and L2/L3 evaluations are deferred.
