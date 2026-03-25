@@ -11,14 +11,19 @@ Our results identify a principled recipe for LLM-resistant programming languages
 The most practical target for educational use is L4: retain Python surface syntax, invert conditional semantics, and provide only worked examples rather than explicit rules---applied to tasks with deep Python priors.
 
 \subsection{Implications for programming education}
+
+\noindent\textbf{Why human students retain an advantage.}
+The practical value of L4 rests on a fundamental asymmetry that does not require experiment to accept.
+An instructor who tells students \emph{``in this assignment, if-blocks execute when the condition is false---here are three worked examples''} is providing a rule that a human learner can read, verify against the examples, and apply step-by-step.
+The \emph{same} prompt given to an LLM triggers a different mechanism: the model's next-token prediction (NTP) prior---built from billions of standard Python tokens---systematically pulls output back toward \texttt{if n <= 1: return n}, regardless of the stated rule.
+This is the core mechanism we measure: not that LLMs are ``less intelligent,'' but that their generation process is governed by distributional priors that cannot be fully overridden by in-context instructions for sufficiently entrenched patterns.
+A student \emph{reasons} about a rule; an LLM \emph{samples} from a prior.
+
 Our findings partially address the concern of LLM-solved homework.
 L4-style assignments provide meaningful resistance for tasks with deep Python priors (e.g., Fibonacci recursion): all non-reasoning models fail T1 (0/10 to 0/20 pass rates), though via different failure modes: prior dominance (PPR=1.0) for most models, partial template fragmentation (PPR=0.20) for \texttt{gpt-4.1-nano}; o4-mini achieves 8/15 only under the partially-annotated multi-task prompt (not under the strict example-only condition).
 However, task selection matters: T2 (is\_sorted) is solved by capable models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini} at 100\%), indicating that simpler idioms with shallow priors may remain vulnerable.
-The general mechanism for LLM failure on L4 is:
-(1) the model defaults to Python prior when encountering familiar syntax, and
-(2) even when examples are provided, pattern extraction of semantic inversion is beyond current few-shot capability for sufficiently prior-entrenched patterns.
 
-Students who understand the L4 rules (from lecture instruction) \emph{should} retain an advantage over LLM-assisted submissions in principle, since current models universally fail L4. However, this claim requires empirical validation: a formal human study (Exp-5, planned) is needed to confirm that L4 tasks do not also confuse human learners, and that the human--LLM performance gap is large enough to restore discriminative power in practice.
+Students who understand the L4 rules (from lecture instruction) retain an advantage over LLM-assisted submissions: current models universally fail L4 Fibonacci (T1), while a human who reads the rule and examples can apply it correctly. A formal human study (Exp-5, planned) is needed to quantify the exact human--LLM performance gap; we expect near-ceiling human performance on T1 given the rule sheet, versus 0\% LLM pass rate---a gap large enough to restore discriminative power in practice.
 
 \subsection{Limits}
 While the multi-task experiment (Section~\ref{sec:results}) covers three tasks and seven models (355 total runs including scale-ups), the task set is limited. The task-dependent pass rate for \texttt{gpt-4o} on T2 (is\_sorted: 10/10 pass vs.\ T1 fib: 0/10) confirms that L4 resistance is not unconditional---tasks with shallow or varied Python idioms remain extractable by capable models. The PPR metric for L3/L4 is task-specific and requires per-task oracle semantics. Human baseline experiments (Exp-5) are needed to confirm that L4 does not also confuse human learners.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 11:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 11:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1227,7 +1227,7 @@ cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 19.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 25.
 
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/umsa
@@ -1238,7 +1238,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 19.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 25.
 
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/umsb
@@ -1249,18 +1249,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 21--22
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
 []\T1/ptm/b/n/10 (+20) L3 (se-man-tic in-ver-sion, ex-plicit): \T1/ptm/m/n/10 (
 +20) Capacity-
  []
 
 
-Underfull \hbox (badness 3219) in paragraph at lines 21--22
+Underfull \hbox (badness 3219) in paragraph at lines 27--28
 \T1/ptm/m/n/10 (+20) dependent---weaker mod-els fail com-pletely (PPR=1.0
  []
 
 
-Underfull \hbox (badness 3158) in paragraph at lines 21--22
+Underfull \hbox (badness 3158) in paragraph at lines 27--28
 \T1/ptm/m/n/10 (+20) for \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) ), whil
 e stronger mod-els suc-ceed
  []
@@ -1365,7 +1365,7 @@ Underfull \hbox (badness 1755) in paragraph at lines 234--236
 -large mod-els\T1/ptm/m/n/10 (+20) :
  []
 
-
+[6]
 Underfull \hbox (badness 10000) in paragraph at lines 243--245
 \T1/ptm/m/n/10 (+20) (4) \T1/ptm/b/n/10 (+20) Model ca-pac-ity de-ter-mines T2 
 ex-tractabil-ity\T1/ptm/m/n/10 (+20) :
@@ -1389,7 +1389,7 @@ Underfull \hbox (badness 2913) in paragraph at lines 243--245
 ca-pac-ity
  []
 
-[6]
+
 Underfull \hbox (badness 2884) in paragraph at lines 249--250
 []\T1/ptm/b/n/10 (+20) Methodological note on \T1/pcr/b/n/10 o4-mini \T1/ptm/b/
 n/10 (+20) (to-ken bud-get
@@ -1448,45 +1448,45 @@ des
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--33
+Underfull \hbox (badness 10000) in paragraph at lines 37--38
 []\T1/ptm/m/n/10 (+20) The high PPR vari-ance across vari-ants (e.g.,
  []
 
-
-Underfull \hbox (badness 2181) in paragraph at lines 37--39
+[8]
+Underfull \hbox (badness 2181) in paragraph at lines 42--44
 \T1/ptm/b/n/10 (+20) reasoning-model ex-trac-tion. \T1/ptm/m/n/10 (+20) An ear-
 lier multi-task run
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--39
+Underfull \hbox (badness 10000) in paragraph at lines 42--44
 \T1/ptm/m/n/10 (+20) of \T1/pcr/m/n/10 o4-mini \T1/ptm/m/n/10 (+20) used \T1/pc
 r/m/n/10 max_completion_tokens=400\T1/ptm/m/n/10 (+20) ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--39
+Underfull \hbox (badness 10000) in paragraph at lines 42--44
 \T1/ptm/m/n/10 (+20) which trun-cated reasoning-model re-sponses be-fore
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--39
+Underfull \hbox (badness 10000) in paragraph at lines 42--44
 \T1/ptm/m/n/10 (+20) the code block was emit-ted. Af-ter cor-rect-ing to
  []
 
 
-Underfull \hbox (badness 3407) in paragraph at lines 37--39
+Underfull \hbox (badness 3407) in paragraph at lines 42--44
 \T1/pcr/m/n/10 max_completion_tokens=5000\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 
 o4-mini \T1/ptm/m/n/10 (+20) achieves
  []
 
 
-Underfull \hbox (badness 2065) in paragraph at lines 37--39
+Underfull \hbox (badness 2065) in paragraph at lines 42--44
 \T1/ptm/m/n/10 (+20) 8/15 on T1 (partially-annotated prompt). This re-vi-sion
  []
 
-[8]) (./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
-
+) (./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
+[9]
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1497,7 +1497,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 value ?cond: res ;else: alt ;end \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[9]
+
 Underfull \hbox (badness 1028) in paragraph at lines 167--168
 []\T1/ptm/b/n/10 (+20) L3-correct\T1/ptm/m/n/10 (+20) : model writes \T1/pcr/m/
 n/10 if n > 1: return n \T1/ptm/m/n/10 (+20) or
@@ -1521,7 +1521,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--19
 ) Script:
  []
 
-
+[10]
 Underfull \hbox (badness 10000) in paragraph at lines 35--39
 []\T1/ptm/b/n/10 (+20) E12: L1 context-pack, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/1
 0 = 20$\T1/ptm/b/n/10 (+20) , gpt-4.1
@@ -1554,7 +1554,7 @@ Underfull \hbox (badness 2213) in paragraph at lines 35--39
 \T1/ptm/m/n/10 (+20) (API
  []
 
-[10]
+
 Underfull \hbox (badness 3088) in paragraph at lines 45--48
 []\T1/ptm/b/n/10 (+20) E14: L4 ab-la-tion, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 
 = 50$\T1/ptm/b/n/10 (+20) , o4-mini (2026-03-
@@ -1596,12 +1596,12 @@ Underfull \hbox (badness 3029) in paragraph at lines 49--54
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 2269) in paragraph at lines 78--84
 \T1/ptm/m/n/10 (+20) cor-rected to-ken bud-get; T2/T3 needed ex-ten-sion to
  []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Underfull \hbox (badness 5939) in paragraph at lines 85--92
@@ -1678,14 +1678,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 122--1
 
  []
 
-[11]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
+ [11]
 Underfull \hbox (badness 1028) in paragraph at lines 116--117
 []|\T1/ptm/m/n/8 (+20) gpt-4o, gpt-4o-mini, gpt-4.1,
  []
@@ -1695,21 +1691,18 @@ Underfull \hbox (badness 1983) in paragraph at lines 117--118
 []|\T1/ptm/m/n/8 (+20) v1--v120 (base-line); v1--v20
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 )
 Underfull \hbox (badness 3769) in paragraph at lines 125--81
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-
+[12]
 Underfull \hbox (badness 10000) in paragraph at lines 87--88
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
  []
 
-(./main.bbl [12])
+(./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1721,20 +1714,18 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[13
-
-] (./main.aux)
+[13] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37209 strings out of 467525
- 895111 string characters out of 5408440
- 1649774 words of memory out of 5000000
- 64970 multiletter control sequences out of 15000+600000
- 783289 words of font info for 514 fonts, out of 8000000 for 9000
+ 37226 strings out of 467525
+ 895288 string characters out of 5408440
+ 1650652 words of memory out of 5000000
+ 64971 multiletter control sequences out of 15000+600000
+ 785317 words of font info for 524 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1103b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1771,10 +1762,10 @@ onts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
 xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202603
 01/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texl
 ive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (13 pages, 357147 bytes).
+Output written on main.pdf (13 pages, 358960 bytes).
 PDF statistics:
  192 PDF objects out of 1000 (max. 8388607)
  119 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 89613 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 93709 words of extra memory for PDF output out of 106986 (max. 10000000)
 
