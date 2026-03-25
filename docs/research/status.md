@@ -313,3 +313,18 @@
     - C3: Human pilot study (E2 실험) — IRB/인원 모집 필요
     - M1: IEEEtran → ACL 포맷 (의도적으로 IEEEtran 유지 중)
   - PDF 컴파일: 0 errors, latexmk all-up-to-date
+
+- [x] 2026-03-25 10:56 Cron tick — critic-09 remaining fixes (commit 5bb329c)
+  - **C1 fix**: Table 4 (multi-task) 구조 재편성
+    - 21-cell wide table → 7-row compact summary (model × T1/T2/T3 pass/n + dominant failure column)
+    - 5개 각주 → 3개로 단순화, 각주 내용 압축
+    - 전체 PPR 값 → Appendix §A.3 신규 테이블로 이동
+    - `\ref{sec:appendix_l4_multitask_ppr}` 레이블 추가
+  - **M5 fix**: 제목에 "toward" 헤지 추가
+    - "LLM-Resistant Coding Assessment" → "toward LLM-Resistant Coding Assessment"
+  - **M7 fix**: `multicode2025` 인용에서 arXiv:2507.00699 제거
+    - July 2025 preprint은 March 2025 논문에서 참조 불가 → `note = {Preprint}`로 대체
+  - **PDF**: 12p, 0 errors, undefined label 없음
+  - **미해결 (인간 개입 필요)**:
+    - C3: Human pilot study — 재영이 직접 n≥5 파일럿 진행 필요
+    - M1: IEEEtran 유지 (의도적 결정; 제출처 확정 후 변환)
