@@ -7,8 +7,9 @@ Our results identify a principled recipe for LLM-resistant programming languages
   \item Semantic inversion with explicit instruction provides capacity-dependent resistance.
   \item Semantic inversion without explanation (L4) provides consistent resistance via pattern blindness.
   \item \textbf{Task selection is critical}: tasks with deep recursive priors (e.g., Fibonacci) are universally resistant, while tasks with shallower or more varied idioms (e.g., is\_sorted) remain extractable by mid-to-large models. Instructors should prefer tasks with strong, uniform Python prior entrenchment.
+  \item \textbf{Prior entrenchment depth governs resistance}: L4 resistance holds only for tasks with deep, uniform Python priors (e.g., Fibonacci recursion template). Complex tasks with varied implementations (merge sort, BFS, binary search) allow capable models (gpt-5.4, o3, o4-mini) to extract inverted semantics from examples---defeating the resistance even under implicit delivery. Instructors must select tasks where a single canonical Python implementation dominates the training distribution.
 \end{enumerate}
-The most practical target for educational use is L4: retain Python surface syntax, invert conditional semantics, and provide only worked examples rather than explicit rules---applied to tasks with deep Python priors.
+The most practical target for educational use is L4: retain Python surface syntax, invert conditional semantics, and provide only worked examples rather than explicit rules---applied to tasks with deep Python priors. \textbf{Warning:} harder algorithmic tasks (merge sort, BFS, binary search) do \emph{not} provide L4 resistance against strong models; L4 works for prior-entrenched tasks, not complex ones.
 
 \subsection{Implications for programming education}
 

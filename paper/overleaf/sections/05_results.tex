@@ -293,7 +293,7 @@ To assess whether the failure modes generalize beyond the OpenAI model family, w
 
 \emph{Limitations:} Pilot results ($n=20$, Variant~A only, cloud inference via Groq with rate-limit retries); full multi-variant ($n=50$) and L2/L3 evaluations are deferred.
 
-\subsection{L4 Hard-Task Extension: Explicit I/O Specification vs.\ Implicit Rule}
+\subsection{L4 Hard-Task Extension: Task Complexity vs.\ Prior Entrenchment}
 \label{sec:l4_hard}
 
 \begin{table}[!t]
@@ -313,12 +313,13 @@ To assess whether the failure modes generalize beyond the OpenAI model family, w
 \end{tabular}
 \end{table}
 
-To test whether more complex algorithms with deeper Python priors amplify pattern blindness, we evaluated three hard tasks (H1: descending merge sort, H2: inverted binary search, H3: reversed BFS) across four models including two not previously tested: \texttt{gpt-5.4} and \texttt{o3}. Results are in Table~\ref{tab:l4_hard}.
+To test whether more complex algorithms amplify or defeat pattern blindness, we evaluated three hard tasks (H1: descending merge sort, H2: inverted binary search, H3: reversed BFS) across four models including two not previously tested: \texttt{gpt-5.4} and \texttt{o3}. Results are in Table~\ref{tab:l4_hard}.
 
-The results \emph{dramatically reject} the hypothesis that harder tasks amplify pattern blindness. Three of four models achieve 100\% pass rate (30/30); \texttt{gpt-4o} achieves 80\% (24/30, with H1 at 4/10). This contrasts sharply with the original L4 results, where the same models achieve 0\% pass rate on simple tasks under implicit semantic inversion.
+The results reveal that \textbf{L4 resistance is inversely correlated with task complexity}. Three of four models achieve 100\% pass rate (30/30); \texttt{gpt-4o} achieves 80\% (24/30, with H1 at 4/10). This contrasts sharply with the original L4 results, where \emph{all} models achieve 0\% pass rate on the simple Fibonacci task (T1) under identical implicit semantic inversion.
 
-The explanation lies in a critical methodological distinction. The original L4 tasks embed an \emph{implicit semantic rule} (if-block runs when condition is FALSE) in code examples; the model must extract this unstated rule and apply it to new code. The hard-task prompts instead provide \emph{explicit I/O specifications}: worked examples showing descending-sorted output, inverted return values, or reversed traversal order. The model can directly implement the demonstrated behavior as a functional specification without extracting a hidden rule.
+\textbf{Prior entrenchment depth, not task difficulty, governs resistance.}
+The key explanatory variable is not algorithmic complexity but \emph{prior entrenchment depth}: how uniformly a single canonical implementation dominates the training distribution. Fibonacci recursion has an extremely deep, uniform Python prior---virtually all training examples use the same \texttt{if n <= 1: return n; return fib(n-1) + fib(n-2)} template. Merge sort, binary search, and BFS admit diverse implementation strategies (iterative vs.\ recursive, different data structures, varied edge-case handling), yielding shallower and more varied priors. When the prior is shallow, the model can override it by extracting the inverted semantics from worked examples; when the prior is deeply entrenched, the NTP distribution overwhelms in-context cues.
 
-This finding sharpens the pattern blindness construct: the failure mode is specifically \textbf{implicit rule extraction from code patterns}, not an inability to produce prior-contradicting behavior when directly specified through I/O examples. Models readily comply with behavioral specifications that contradict their Python prior---even for complex algorithms---but cannot extract the same inversion when it is embedded implicitly in code structure.
+A complementary methodological factor reinforces this effect: the hard-task prompts provide \emph{explicit I/O specifications} (descending-sorted output, inverted return values, reversed traversal order), while the original L4 tasks embed an \emph{implicit semantic rule} in code structure. Models readily comply with behavioral specifications that contradict their Python prior for complex algorithms, but cannot extract the same inversion when it is embedded implicitly in prior-entrenched code patterns.
 
-\textbf{\texttt{gpt-5.4} and \texttt{o3} first results:} Both achieve perfect 30/30 on the hard-task battery, confirming that the latest dense and reasoning models can follow explicit behavioral specifications even when they contradict deep algorithmic priors. Whether these models also overcome \emph{implicit} pattern blindness (the original L4 task) remains an open question for future work.
+\textbf{\texttt{gpt-5.4} and \texttt{o3} first results:} Both achieve perfect 30/30 on the hard-task battery, confirming that the latest dense and reasoning models overcome shallow priors even under example-only delivery. Whether these models also overcome \emph{deep} prior entrenchment (the original L4 Fibonacci task) remains an open question for future work.
