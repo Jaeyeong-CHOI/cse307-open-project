@@ -7,3 +7,4 @@ ocaml-confusion-lang/_build/
 
 # Local generated summaries
 *.summary.md
+.env

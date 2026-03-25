@@ -1,0 +1,505 @@
+{
+  "model": "gpt-4.1-mini",
+  "date": "2026-03-25",
+  "experiment": "L4-cot-ablation",
+  "description": "CoT vs no-CoT on L4 Variant A (implicit semantic inversion)",
+  "runs_per_condition": 20,
+  "per_condition": {
+    "no_cot": {
+      "total": 20,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "ppr": 0.4,
+      "mentions_inversion_rate": 0.0
+    },
+    "cot": {
+      "total": 20,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "ppr": 0.0,
+      "mentions_inversion_rate": 1.0
+    }
+  },
+  "results": [
+    {
+      "condition": "no_cot",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8\n```"
+    },
+    {
+      "condition": "no_cot",
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) - fib(n-2)   # note incorrect addition replaced by subtraction\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) - fib(n-2)   # note incorrect addition replaced by subtraction\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")\n```\nOutput:\nfib(0) = 0\nfib(1) = 1\nfib(2) = 1\nfib(3) = 0\nfib(4) = 1\nfib(5) = -1\nfib("
+    },
+    {
+      "condition": "no_cot",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8\n```"
+    },
+    {
+      "condition": "no_cot",
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8"
+      },
+      "response_snippet": "```python\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8\n```"
+    },
+    {
+      "condition": "no_cot",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))\n```\nOutput:\nfib(0) = 1  \nfib(1) = 0  \nfib(2) = 1  \nfib(3) = 1  "
+    },
+    {
+      "condition": "no_cot",
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8\n```"
+    },
+    {
+      "condition": "no_cot",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # note behavior: fib(0) returns 1 instead of 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "```python\ndef fib(n):\n    if n == 0:\n        return 1      # note behavior: fib(0) returns 1 instead of 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")\n```\n\nOutput:\nfib(0) = 1  \nfib(1) = 1  \nfib(2) = 2  \nfib(3) = 3  \nfib(4) = 5  "
+    },
+    {
+      "condition": "no_cot",
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1    # returns 1 for fib(0)\n    if n == 1:\n        return 0    # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1    # returns 1 for fib(0)\n    if n == 1:\n        return 0    # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))\n```\nOutput:\nfib(0) = 1\nfib(1) = 0\nfib(2) = 1\nfib(3) = 1\nfib(4) = 2\n"
+    },
+    {
+      "condition": "no_cot",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))\n```\nOutput:\nfib(0) = 1  \nfib(1) = 0  \nfib(2) = 1  \nfib(3) = 1  "
+    },
+    {
+      "condition": "no_cot",
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\n# Print fib(0) through fib(6)\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))\n```\nOutput:\nfib(0) = 1  \nfib(1) ="
+    },
+    {
+      "condition": "no_cot",
+      "run": 10,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # note: returns 1 for fib(0)\n    if n == 1:\n        return 0      # note: returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # prints 1\nprint(fib(1))  # prints 0\nprint(fib(2))  # prints 1\nprint(fib(3))  # prints 1\nprint(fib(4))  # pri"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1      # note: returns 1 for fib(0)\n    if n == 1:\n        return 0      # note: returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # prints 1\nprint(fib(1))  # prints 0\nprint(fib(2))  # prints 1\nprint(fib(3))  # prints 1\nprint(fib(4))  #"
+    },
+    {
+      "condition": "no_cot",
+      "run": 11,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))\n```\nOutput:\nfib(0) = 1  \nfib(1) = 0  \nfib(2) = 1  \nfib(3) = 1  "
+    },
+    {
+      "condition": "no_cot",
+      "run": 12,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) - fib(n-2)   # note the subtraction instead of addition\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) - fib(n-2)   # note the subtraction instead of addition\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")\n```\nOutput:\nfib(0) = 0\nfib(1) = 1\nfib(2) = 1\nfib(3) = 0\nfib(4) = 1\nfib(5) = -1\nfib(6) = 2"
+    },
+    {
+      "condition": "no_cot",
+      "run": 13,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))"
+      },
+      "response_snippet": "``` \ndef fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" + str(i) + \") = \" + str(fib(i)))\n```\nOutput:\nfib(0) = 1\nfib(1) = 0\nfib(2) = 1\nfib(3) = 1\nfib(4)"
+    },
+    {
+      "condition": "no_cot",
+      "run": 14,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 1\nprint(fib(1))  # 0\nprint(fib(2))  # 1\nprint(fib(3))  # 1\nprint(fib(4))  # 2\nprint(fib(5))  # 3\nprint(fib(6))  # 5"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 1\nprint(fib(1))  # 0\nprint(fib(2))  # 1\nprint(fib(3))  # 1\nprint(fib(4))  # 2\nprint(fib(5))  # 3\nprint(fib(6))  # 5"
+    },
+    {
+      "condition": "no_cot",
+      "run": 15,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1       # returns 1 for fib(0)\n    if n == 1:\n        return 0       # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)"
+      },
+      "response_snippet": "``` \ndef fib(n):\n    if n == 0:\n        return 1       # returns 1 for fib(0)\n    if n == 1:\n        return 0       # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n```\n\nOutput:\nfib(0) = 1  \nfib(1) = 0  \nfib(2) = 1  \nfib(3) = 1  \nfib(4) = 2  \nfib(5) = 3  \nfib(6) = 5"
+    },
+    {
+      "condition": "no_cot",
+      "run": 16,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # prints 1\nprint(fib(1))  # prints 0\nprint(fib(2))  # prints 1\nprint(fib(3))  # prints 1\nprint(fib(4))  # prints 2\nprint("
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # prints 1\nprint(fib(1))  # prints 0\nprint(fib(2))  # prints 1\nprint(fib(3))  # prints 1\nprint(fib(4))  # prints 2\npr"
+    },
+    {
+      "condition": "no_cot",
+      "run": 17,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8\n```"
+    },
+    {
+      "condition": "no_cot",
+      "run": 18,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8"
+      },
+      "response_snippet": "```\ndef fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(0))  # 0\nprint(fib(1))  # 1\nprint(fib(2))  # 1\nprint(fib(3))  # 2\nprint(fib(4))  # 3\nprint(fib(5))  # 5\nprint(fib(6))  # 8\n```"
+    },
+    {
+      "condition": "no_cot",
+      "run": 19,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # note: returns 1 instead of 0\n    if n == 1:\n        return 0      # note: returns 0 instead of 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "```python\ndef fib(n):\n    if n == 0:\n        return 1      # note: returns 1 instead of 0\n    if n == 1:\n        return 0      # note: returns 0 instead of 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")\n```\nOutput:\nfib(0) = 1\nfib(1) = 0\nfib(2) = 1\nfib(3) = 1\nf"
+    },
+    {
+      "condition": "cot",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1    # opposite of fib(0)=0 is 1\n    if n == 1:\n        return 0    # opposite of fib(1)=1 is 0\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - When true, it returns `b` (the smaller value), which is opposite of what the function name suggests.\n   - When false, it returns `a`.\n   So the function returns the smaller value, not the max"
+    },
+    {
+      "condition": "cot",
+      "run": 1,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1    # opposite of fib(0)=0\n    if n == 1:\n        return 0    # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n**Example 1 - max_val function:**\n- The function is named `max_val` but it returns the smaller value.\n- The if condition is `if a > b:`, then it returns `b` (the smaller value).\n- Otherwise, it returns `a`.\n- So the function returns the smaller of the two in"
+    },
+    {
+      "condition": "cot",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1    # opposite of fib(0)=0\n    if n == 1:\n        return 0    # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n**Example 1 - max_val function:**\n- The function is named `max_val` but it returns the smaller value.\n- The `if` condition checks `if a > b:`\n- Inside the `if` block, it returns `b` (the smaller value).\n- If the condition is false, it returns `a`.\n- So the f"
+    },
+    {
+      "condition": "cot",
+      "run": 3,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # opposite of fib(0)=0\n    if n == 1:\n        return 0      # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In Example 1 (max_val):\n   - The function is named max_val but returns the smaller value.\n   - The if condition checks if a > b.\n   - If true, it returns b (the smaller value).\n   - Otherwise, it returns a.\n   - So the function behaves opposite to what th"
+    },
+    {
+      "condition": "cot",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # opposite of 0\n    if n == 1:\n        return 0      # opposite of 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\nExample 1 - max_val:\n- The function is named max_val but returns the smaller value.\n- The if condition checks if a > b.\n- If true, it returns b (the smaller value).\n- Otherwise, it returns a.\n- So the function actually returns the minimum of the two inputs, "
+    },
+    {
+      "condition": "cot",
+      "run": 5,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1    # opposite of fib(0)=0\n    if n == 1:\n        return 0    # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - When true, it returns `b` (which is the smaller value, not the max)\n   - Otherwise, it returns `a`\n   So the function returns the smaller value, not the max, despite the name.\n\n2. In the is_e"
+    },
+    {
+      "condition": "cot",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1   # opposite of 0\n    if n == 1:\n        return 0   # opposite of 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - When true, it returns `b` (which is the smaller value), not the larger.\n   - Otherwise, it returns `a`.\n   So the function actually returns the smaller value, not the max.\n\n2. In the is_even "
+    },
+    {
+      "condition": "cot",
+      "run": 7,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1    # inverted: fib(0) returns 1 instead of 0\n    if n == 1:\n        return 0    # inverted: fib(1) returns 0 instead of 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In Example 1 (max_val), the function is named max_val but the behavior is inverted:\n   - If a > b, it returns b (the smaller value).\n   - Otherwise, it returns a.\n   So the function returns the smaller of the two values, despite the name.\n\n2. In Example 2"
+    },
+    {
+      "condition": "cot",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1   # opposite of fib(0)=0\n    if n == 1:\n        return 0   # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In Example 1 (max_val):\n   - The function is named max_val but the logic returns the smaller value.\n   - The if condition is `if a > b:`, and inside the block it returns `b` (the smaller value).\n   - Otherwise, it returns `a`.\n   - So the if-block returns"
+    },
+    {
+      "condition": "cot",
+      "run": 9,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1  # opposite of fib(0)=0\n    if n == 1:\n        return 0  # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\nExample 1 - max_val:\n- The function is named max_val but returns the smaller value.\n- When a > b, it returns b (the smaller value).\n- Otherwise, it returns a.\n- So the if-block returns the \"unexpected\" value (smaller), and the else returns the other value.\n\n"
+    },
+    {
+      "condition": "cot",
+      "run": 10,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1   # unexpected value instead of 0\n    if n == 1:\n        return 0   # unexpected value instead of 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\nExample 1 - max_val:\n- The function is named max_val but returns the smaller value.\n- The if condition checks if a > b.\n- If true, it returns b (the smaller value).\n- Otherwise, it returns a.\n- So the function returns the smaller value, not the max.\n\nExample"
+    },
+    {
+      "condition": "cot",
+      "run": 11,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "fib(0) = 0\nfib(1) = 1\nfib(n) = fib(n-1) + fib(n-2)"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - When true, it returns `b` (the smaller value), which is opposite to the usual max function.\n   - Otherwise, it returns `a`.\n   - So the function returns the smaller value, not the maximum.\n\n2"
+    },
+    {
+      "condition": "cot",
+      "run": 12,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # opposite of fib(0)=0\n    if n == 1:\n        return 0      # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - Instead of returning the larger value `a`, it returns `b` (the smaller value) when the condition is true.\n   - Otherwise, it returns `a`.\n   So the function actually returns the smaller value"
+    },
+    {
+      "condition": "cot",
+      "run": 13,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1   # inverted from expected 0\n    if n == 1:\n        return 0   # inverted from expected 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In Example 1 (max_val), the function is named \"max_val\" but the behavior is inverted:\n   - If a > b, it returns b (the smaller value).\n   - Otherwise, it returns a.\n   So the function actually returns the smaller value, not the maximum.\n\n2. In Example 2 ("
+    },
+    {
+      "condition": "cot",
+      "run": 14,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1    # opposite of fib(0)=0\n    if n == 1:\n        return 0    # opposite of fib(1)=1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib({}) = {}\".format(i, fib(i)))"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - When true, it returns `b` (which is the smaller value, not the max)\n   - Otherwise, it returns `a`\n   This means the function actually returns the smaller value, not the max.\n\n2. In the is_ev"
+    },
+    {
+      "condition": "cot",
+      "run": 15,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # unexpected value instead of 0\n    if n == 1:\n        return 0      # unexpected value instead of 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - When true, it returns `b` (the smaller value), which is opposite to the usual max function.\n   - Otherwise, it returns `a`.\n   - So the function returns the smaller value, not the max.\n\n2. In"
+    },
+    {
+      "condition": "cot",
+      "run": 16,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1   # inverted from expected 0\n    if n == 1:\n        return 0   # inverted from expected 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - When true, it returns `b` (which is the smaller value)\n   - Otherwise, it returns `a`\n   So the function returns the smaller value, not the max.\n\n2. In the is_even function:\n   - The conditio"
+    },
+    {
+      "condition": "cot",
+      "run": 17,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1   # inverted base case: fib(0) should be 0, but return 1\n    if n == 1:\n        return 0   # inverted base case: fib(1) should be 1, but return 0\n    return fib(n - 1) + fib(n - 2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In Example 1 (max_val), the function is supposed to return the maximum of two values, but the code returns the smaller value when the condition `a > b` is true. So the behavior is inverted compared to the function name or usual expectation.\n\n2. In Example"
+    },
+    {
+      "condition": "cot",
+      "run": 18,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def max_val(a, b):\n    if a > b:\n        return b      # returns smaller value when a > b\n    return a"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n### Analysis of the examples:\n\n**Example 1 - max_val function:**\n```python\ndef max_val(a, b):\n    if a > b:\n        return b      # returns smaller value when a > b\n    return a\n```\n- The function is named `max_val` but it returns the smaller value.\n- The `i"
+    },
+    {
+      "condition": "cot",
+      "run": 19,
+      "judge": {
+        "pass": false,
+        "used_python_prior": false,
+        "noticed_inversion": false,
+        "mentions_inversion_in_reasoning": true,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 1\n    if n == 1:\n        return 0\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      },
+      "response_snippet": "Let's analyze the examples step by step:\n\n1. In the max_val function:\n   - The condition is `if a > b:`\n   - Instead of returning the larger value `a`, it returns `b`, which is the smaller value.\n   - Otherwise, it returns `a`.\n   So the function returns the smaller value, not the max.\n\n2. In the is"
+    }
+  ]
+}

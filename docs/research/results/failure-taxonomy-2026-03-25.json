@@ -1,0 +1,167 @@
+{
+  "date": "2026-03-25",
+  "experiment": "failure-taxonomy",
+  "description": "Classification of L4 failures into Type-I (exact prior), Type-II (partial), Type-III (op substitution)",
+  "sources": {
+    "ablation_files": [
+      "L4-ablation-n50.gpt41.2026-03-25.json",
+      "L4-ablation-n50.gpt41mini.2026-03-25.json",
+      "L4-ablation-n50.gpt41nano.2026-03-25.json",
+      "L4-ablation-n50.gpt4o.2026-03-25.json",
+      "L4-ablation-n50.gpt4omini.2026-03-25.json",
+      "L4-ablation-n50.gpt54mini.2026-03-25.json",
+      "L4-ablation-n50.o4mini.2026-03-25.json"
+    ],
+    "multitask_files": [
+      "L4-multitask.gpt41.2026-03-25.json",
+      "L4-multitask.gpt41mini.2026-03-25.json",
+      "L4-multitask.gpt41nano.2026-03-25.json",
+      "L4-multitask.gpt4o.2026-03-25.json",
+      "L4-multitask.gpt4omini.2026-03-25.json",
+      "L4-multitask.gpt54mini.2026-03-25.json",
+      "L4-multitask.o4mini.2026-03-25.json"
+    ]
+  },
+  "total_failures": 419,
+  "total_passes": 8,
+  "taxonomy": [
+    {
+      "type": "Type-I",
+      "description": "Exact Python prior (no inversion)",
+      "count": 348,
+      "percentage": 83.1,
+      "per_model": {
+        "gpt-4.1": 60,
+        "gpt-4.1-mini": 39,
+        "gpt-4.1-nano": 60,
+        "gpt-4o": 45,
+        "gpt-4o-mini": 41,
+        "gpt-5.4-mini": 52,
+        "o4-mini": 51
+      },
+      "examples": [
+        {
+          "model": "gpt-4.1",
+          "variant": "A",
+          "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))\nprint(fib(1))\nprint(fib(2))\nprint(fib(3))\nprint(fib(4))\nprint(fib(5))\nprint(fi"
+        },
+        {
+          "model": "gpt-4.1",
+          "variant": "A",
+          "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))\nprint(fib(1))\nprint(fib(2))\nprint(fib(3))\nprint(fib(4))\nprint(fib(5))\nprint(fi"
+        },
+        {
+          "model": "gpt-4.1",
+          "variant": "A",
+          "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))\nprint(fib(1))\nprint(fib(2))\nprint(fib(3))\nprint(fib(4))\nprint(fib(5))\nprint(fi"
+        }
+      ]
+    },
+    {
+      "type": "Type-II",
+      "description": "Partial attempt (some deviation, still wrong)",
+      "count": 53,
+      "percentage": 12.6,
+      "per_model": {
+        "gpt-4.1-mini": 31,
+        "gpt-4o-mini": 19,
+        "o4-mini": 3
+      },
+      "examples": [
+        {
+          "model": "gpt-4.1-mini",
+          "variant": "A",
+          "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" "
+        },
+        {
+          "model": "gpt-4.1-mini",
+          "variant": "A",
+          "code_snippet": "def fib(n):\n    if n == 0:\n        return 1       # returns 1 instead of 0 for fib(0)\n    if n == 1:\n        return 0       # returns 0 instead of 1 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in"
+        },
+        {
+          "model": "gpt-4.1-mini",
+          "variant": "A",
+          "code_snippet": "def fib(n):\n    if n == 0:\n        return 1      # returns 1 for fib(0)\n    if n == 1:\n        return 0      # returns 0 for fib(1)\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(\"fib(\" "
+        }
+      ]
+    },
+    {
+      "type": "Type-III",
+      "description": "Operational substitution (different algorithm)",
+      "count": 18,
+      "percentage": 4.3,
+      "per_model": {
+        "gpt-4o": 15,
+        "o4-mini": 3
+      },
+      "examples": [
+        {
+          "model": "gpt-4o",
+          "variant": "A",
+          "code_snippet": "Output:"
+        },
+        {
+          "model": "gpt-4o",
+          "variant": "A",
+          "code_snippet": "Output:"
+        },
+        {
+          "model": "gpt-4o",
+          "variant": "A",
+          "code_snippet": "Output:"
+        }
+      ]
+    }
+  ],
+  "per_model": {
+    "gpt-4.1": {
+      "total_failures": 60,
+      "Type-I": 60,
+      "Type-II": 0,
+      "Type-III": 0,
+      "Type-I_pct": 100.0
+    },
+    "gpt-4.1-mini": {
+      "total_failures": 70,
+      "Type-I": 39,
+      "Type-II": 31,
+      "Type-III": 0,
+      "Type-I_pct": 55.7
+    },
+    "gpt-4.1-nano": {
+      "total_failures": 60,
+      "Type-I": 60,
+      "Type-II": 0,
+      "Type-III": 0,
+      "Type-I_pct": 100.0
+    },
+    "gpt-4o": {
+      "total_failures": 60,
+      "Type-I": 45,
+      "Type-II": 0,
+      "Type-III": 15,
+      "Type-I_pct": 75.0
+    },
+    "gpt-4o-mini": {
+      "total_failures": 60,
+      "Type-I": 41,
+      "Type-II": 19,
+      "Type-III": 0,
+      "Type-I_pct": 68.3
+    },
+    "gpt-5.4-mini": {
+      "total_failures": 52,
+      "Type-I": 52,
+      "Type-II": 0,
+      "Type-III": 0,
+      "Type-I_pct": 100.0
+    },
+    "o4-mini": {
+      "total_failures": 57,
+      "Type-I": 51,
+      "Type-II": 3,
+      "Type-III": 3,
+      "Type-I_pct": 89.5
+    }
+  }
+}

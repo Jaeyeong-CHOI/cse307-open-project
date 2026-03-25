@@ -29,27 +29,36 @@ All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three fin
 
 \begin{table}[!t]
 \centering
-\caption{L2--L4 outcomes by model and condition. L2 is trivially adopted; L3 reveals a capability threshold; L4 (example-only delivery) defeats all models, including gpt-4o which succeeds at L3.}
+\caption{L2--L4 outcomes by model and condition. L2 is trivially adopted by all models ($n=20$); L3 reveals a model-capability threshold (gpt-4o-mini fails, others succeed); L4 (example-only) defeats all models despite L3 success.}
 \label{tab:l234_results}
 \footnotesize
 \begin{tabular}{@{}lllcc@{}}
 \toprule
 Model & Level & Delivery & Pass & Failure mode \\
 \midrule
-gpt-4o-mini & L2 & Expl. grammar & 5/5 & None (adopted) \\
-gpt-4o-mini & L3 & Expl. rule & 0/5 & Prior dominance \\
-gpt-4o      & L3 & Expl. rule & 10/10 & --- (success) \\
-gpt-4.1-mini& L3 & Expl. rule & 10/10 & --- (success) \\
-gpt-4o      & L4 & Examples only & 0/5 & Pattern blindness \\
+gpt-4o-mini & L2 & Expl. grammar & 5/5   & None (adopted) \\
+gpt-4o      & L2 & Expl. grammar & 20/20 & None (adopted) \\
+gpt-4.1-mini& L2 & Expl. grammar & 20/20 & None (adopted) \\
+gpt-4.1-nano& L2 & Expl. grammar & 20/20 & None (adopted) \\
+\midrule
+gpt-4o-mini & L3 & Expl. rule    & 0/5   & Prior dominance \\
+gpt-4o      & L3 & Expl. rule    & 20/20 & --- (success) \\
+gpt-4.1-mini& L3 & Expl. rule    & 20/20 & --- (success) \\
+gpt-4.1-nano& L3 & Expl. rule    & 20/20 & --- (success) \\
+\midrule
+gpt-4o      & L4 & Examples only & 0/5   & Pattern blindness \\
+gpt-4.1-nano& L4 & Examples only & 0/50  & Pattern blindness \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{L2: Syntax inversion not resistant}
-All models adopted L2 syntax fully (SIR=0.0) when given explicit rules. Structural novelty alone does not create LLM resistance.
+All four evaluated models (gpt-4o, gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano) adopted L2 syntax fully (SIR=0.0, $n=20$ each), confirming that structural novelty alone does not create LLM resistance.
 
 \subsection{L3: Capability threshold at semantic rule-following}
-With an explicit semantic inversion rule, gpt-4o-mini fails completely (PPR=1.0): it generates standard Python despite instruction. gpt-4o and gpt-4.1-mini succeed (PPR=0.0). This reveals a model capacity threshold for following semantic meta-rules.
+With an explicit semantic inversion rule, gpt-4o-mini fails completely (PPR=1.0): it generates standard Python despite instruction. By contrast, gpt-4o, gpt-4.1-mini, and gpt-4.1-nano all succeed (20/20, PPR=0.0). This reveals a model capacity threshold between gpt-4o-mini and the larger/newer models for following semantic meta-rules.
+
+\textbf{Key contrast: L3 success $\nRightarrow$ L4 success.} gpt-4.1-nano achieves 20/20 at L3 but 0/50 (PPR=1.0) at L4---the same model that correctly follows an explicit inversion rule is completely blind to the same rule embedded only in examples. This within-model contrast directly isolates pattern blindness as a failure mode independent of model capacity to follow rules when stated explicitly.
 
 \subsection{L4: Pattern blindness across all tested models}
 \label{sec:l4_ablation}
@@ -127,47 +136,35 @@ return fib(n-1) + fib(n-2)
 \subsection{L4 Multi-task Generalization}
 To assess whether pattern blindness extends beyond Fibonacci, we evaluated all seven models on three tasks: T1 (\texttt{fibonacci}), T2 (\texttt{is\_sorted}), and T3 (\texttt{count\_vowels}). The multi-task prompt uses inline code comments that partially annotate the inversion rule (\textit{e.g.}, \texttt{\# runs when a > b is FALSE, i.e., a <= b}); this is a \emph{partially-annotated L4} condition---less explicit than L3 (no stated rule), but more informative than the pure example-only variants used in the ablation. \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-5.4-mini}, and \texttt{o4-mini} were evaluated at $n=10$ or $n=15$ per task; \texttt{gpt-4.1-mini} at $n=20$ per task; \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} at $n=10$ per task (255 initial runs). We further scaled gpt-4o T3 and gpt-4.1 T2 to $n=50$ each to resolve preliminary ambiguities, yielding 355 total multi-task runs. Results are in Table~\ref{tab:l4_multitask}.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \centering
-\caption{L4 multi-task generalization. \textbf{Note: uses partially-annotated prompts (inline comments); not directly comparable to Table~\ref{tab:l4_ablation} (strict example-only).} T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully. T3 exposes \textit{operational substitution} as dominant (gpt-4o T3 $n=50$: 47/50 runs, 94\%). gpt-4.1 T2 scale-up confirms systematic resistance vs.\ gpt-4.1-mini (Fisher's exact $p < 0.0001$). o4-mini achieves 8/15 on T1 under partially-annotated condition but 0/50 under strict ablation. gpt-5.4-mini fails all tasks (0/30; T1/T2 PPR=1.0, T3 operational substitution).}
+\caption{L4 multi-task generalization (partially-annotated prompts; not directly comparable to Table~\ref{tab:l4_ablation}). Each cell shows pass rate; PPR in parentheses. ``Pass'' = model applied inverted if-block semantics correctly. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. OpSub = operational substitution (correct output via arithmetic workaround, not semantic inversion).}
 \label{tab:l4_multitask}
-\footnotesize
-\begin{tabular}{@{}lllcc@{}}
+\small
+\begin{tabular}{@{}l ccc ccc ccc@{}}
 \toprule
-Task & Model & $n$ & Pass & PPR \\
+& \multicolumn{3}{c}{\textbf{T1: fibonacci}} & \multicolumn{3}{c}{\textbf{T2: is\_sorted}} & \multicolumn{3}{c}{\textbf{T3: count\_vowels}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+Model & $n$ & Pass & PPR & $n$ & Pass & PPR & $n$ & Pass & PPR \\
 \midrule
-T1 fib    & gpt-4o       & 10 & 0/10  & 1.00 \\
-T1 fib    & gpt-4o-mini  & 10 & 0/10  & 0.00$^*$ \\
-T1 fib    & gpt-4.1      & 10 & 0/10  & 1.00 \\
-T1 fib    & gpt-4.1-mini & 20 & 0/20  & 1.00 \\
-T1 fib    & gpt-4.1-nano & 10 & 0/10  & 0.20 \\
-T1 fib    & gpt-5.4-mini & 10 & 0/10  & 1.00 \\
-T1 fib    & o4-mini      & 15 & 8/15  & 0.33 \\
-\midrule
-T2 sorted & gpt-4o       & 10 & 10/10 & 0.00 \\
-T2 sorted & gpt-4o-mini  & 10 & 0/10  & 1.00 \\
-T2 sorted & gpt-4.1      & 50$^\dagger$ & 1/50  & 0.42 \\
-T2 sorted & gpt-4.1-mini & 20 & 20/20 & 0.00 \\
-T2 sorted & gpt-4.1-nano & 10 & 0/10  & 1.00 \\
-T2 sorted & gpt-5.4-mini & 10 & 0/10  & 1.00 \\
-T2 sorted & o4-mini      & 15 & 0/15  & 0.00 \\
-\midrule
-T3 vowels & gpt-4o       & 50$^\ddagger$ & 0/50  & 0.00 \\
-T3 vowels & gpt-4o-mini  & 10 & 0/10  & 0.00 \\
-T3 vowels & gpt-4.1      & 10 & 0/10  & 0.00 \\
-T3 vowels & gpt-4.1-mini & 20 & 0/20  & 0.25 \\
-T3 vowels & gpt-4.1-nano & 10 & 0/10  & 0.00 \\
-T3 vowels & gpt-5.4-mini & 10 & 0/10  & 0.00 \\
-T3 vowels & o4-mini      & 15 & 0/15  & 0.00 \\
+gpt-4o       & 10 & 0/10        & 1.00 & 10         & \textbf{10/10} & 0.00 & 50$^\ddagger$ & 0/50  & 0.00$^\ddagger$ \\
+gpt-4o-mini  & 10 & 0/10$^*$    & 0.00 & 10         & 0/10           & 1.00 & 10            & 0/10  & 0.00 \\
+gpt-4.1      & 10 & 0/10        & 1.00 & 50$^\dagger$ & 1/50         & 0.42 & 10            & 0/10  & 0.00 \\
+gpt-4.1-mini & 20 & 0/20        & 1.00 & 20         & \textbf{20/20} & 0.00 & 20            & 0/20  & 0.25 \\
+gpt-4.1-nano & 10 & 0/10        & 0.20 & 10         & 0/10           & 1.00 & 10            & 0/10  & 0.00 \\
+gpt-5.4-mini & 10 & 0/10        & 1.00 & 10         & 0/10           & 1.00 & 10            & 0/10  & 0.00 \\
+o4-mini      & 15 & \textbf{8/15}$^\S$ & 0.33 & 15 & 0/15           & 0.00 & 15            & 0/15  & 0.00 \\
 \bottomrule
-\multicolumn{5}{@{}p{\columnwidth}@{}}{\scriptsize
-$^*$gpt-4o-mini T1: \textit{template fragmentation}---split base cases rather than standard template; variant of prior dominance.\newline
-$^\dagger$gpt-4.1 T2 $n=50$: 1/50 pass (Wilson 95\% CI: [0.0\%, 10.5\%]), PPR=0.42 (CI: [29\%, 56\%]). Confirms systematic resistance vs.\ gpt-4.1-mini 20/20 (Fisher's exact $p < 0.0001$).\newline
-$^\ddagger$gpt-4o T3 $n=50$: 0/50 pass (Wilson 95\% CI: [0.0\%, 7.1\%]); operational substitution in 47/50 runs (94\%, CI: [83\%, 99\%]). Preliminary $n=10$ result (1 pass) was a statistical artifact.\newline
-$^\S$o4-mini T1 result (8/15) was obtained after correcting a token budget error in an earlier run (prior run used \texttt{max\_completion\_tokens=400}, which truncated reasoning-model responses; corrected to 5000). The 0/45 result reported in L4 ablation (§~\ref{sec:l4_ablation}) used the strict example-only prompt and is unaffected.
-} \\
 \end{tabular}
-\end{table}
+
+\vspace{2pt}
+{\scriptsize
+$^*$Template fragmentation (variant of prior dominance).
+$^\dagger$Wilson 95\% CI: pass [0\%, 10.5\%], PPR [29\%, 56\%]; Fisher's exact $p < 0.0001$ vs.\ gpt-4.1-mini.
+$^\ddagger$OpSub in 47/50 runs (94\%, CI: [83\%, 99\%]).
+$^\S$After token budget correction (\texttt{max\_completion\_tokens} 400$\to$5000); see §\ref{sec:l4_ablation}.
+}
+\end{table*}
 
 Seven findings emerge. (1) \textbf{T2 is extractable only by mid-to-large models}: gpt-4o (10/10) and gpt-4.1-mini (20/20) pass T2 fully, while gpt-4.1 (1/50, PPR=0.42), gpt-4.1-nano (0/10), gpt-5.4-mini (0/10), and gpt-4o-mini (0/10) fail. This reveals a non-monotonic capacity threshold: T2 extractability does not scale linearly within or across model families. (2) \textbf{T1 (Fibonacci) is resistant for all non-reasoning models}: six of seven models fail T1, with high or full PPR (PPR=1.0 for gpt-4o, gpt-4.1, gpt-4.1-mini, gpt-5.4-mini; PPR=0.2 for gpt-4.1-nano; template fragmentation for gpt-4o-mini). The exception is o4-mini, which achieves 8/15 under the partially-annotated prompt (after correcting a token budget truncation; see $^\S$)---consistent with reasoning-model capability to leverage partial annotation cues that dense models overlook. (3) \textbf{Operational substitution dominates T3}: the scale-up (gpt-4o T3, $n=50$) reveals operational substitution in 47/50 runs (94\%; Wilson 95\% CI: [83\%, 99\%])---the model applies arithmetic transformations (\texttt{count -= 1; return -count}) to achieve correct output without adopting the L4 semantic rule. The preliminary $n=10$ result (1 pass) was a statistical artifact; at $n=50$, gpt-4o achieves 0/50 pass (Wilson 95\% CI: [0\%, 7.1\%]). gpt-5.4-mini T3 also exhibits operational substitution (PPR=0.0, all 10 runs). This confirms operational substitution as a structurally distinct, frequent failure mode in capable models. (4) \textbf{Model capacity determines T2 extractability}: gpt-4o-mini, gpt-4.1, gpt-4.1-nano, and gpt-5.4-mini all fail T2, while gpt-4o and gpt-4.1-mini succeed---consistent with the capacity threshold observed at L3. (5) \textbf{Reasoning partially mitigates pattern blindness under partial annotation}: o4-mini achieves 8/15 on T1 under the partially-annotated prompt (after token budget correction), but fails T2 and T3 (0/15 each; overall 8/45). Under the strict example-only ablation (§~\ref{sec:l4_ablation}), o4-mini achieves 0/50---chain-of-thought reasoning alone cannot overcome pure pattern blindness, but reasoning models can exploit partial annotation cues that dense models miss. (6) \textbf{Within-family inconsistency is confirmed}: gpt-4.1 T2 scale-up ($n=50$) confirms the capacity gap is systematic---1/50 pass (Wilson 95\% CI: [0\%, 10.5\%]) vs.\ gpt-4.1-mini 20/20 (Fisher's exact $p < 0.0001$). Fine-tuning or RLHF choices appear to play a larger role than raw scale in determining L4 pattern extraction capability. (7) \textbf{gpt-5.4-mini shows uniform prior dominance across all tasks}: 0/30 with T1 PPR=1.0, T2 PPR=1.0, and T3 operational substitution pattern, consistent with its L4 ablation PPR=1.0 on Fibonacci variants.
 

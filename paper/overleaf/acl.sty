@@ -1,0 +1,46 @@
+%% acl.sty — minimal ACL-style wrapper for conference submissions
+%% Based on ACL 2023 style guidelines
+%% This is a lightweight adaptation; for official submission, use the full ACL style from:
+%% https://github.com/acl-org/acl-style-files
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{acl}[2023/01/01 Minimal ACL Conference Style]
+
+\newif\if@review
+\DeclareOption{review}{\@reviewtrue}
+\DeclareOption{final}{\@reviewfalse}
+\ProcessOptions\relax
+
+% Page geometry (ACL uses specific margins)
+\RequirePackage[a4paper,margin=2.5cm]{geometry}
+
+% Natbib for citations
+\RequirePackage{natbib}
+\setcitestyle{authoryear,round,semicolon,aysep={,},yysep={,}}
+
+% Title and author formatting
+\RequirePackage{titling}
+
+% Section formatting
+\RequirePackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% Abstract environment
+\renewenvironment{abstract}{%
+  \begin{center}\textbf{Abstract}\end{center}
+  \begin{quotation}\small
+}{%
+  \end{quotation}
+}
+
+% Keywords command
+\newcommand{\keywords}[1]{\par\smallskip\noindent\textbf{Keywords:} #1}
+
+% Review mode: line numbers
+\if@review
+  \RequirePackage{lineno}
+  \linenumbers
+\fi
+
+\endinput

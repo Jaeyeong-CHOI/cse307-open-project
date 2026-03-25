@@ -1,0 +1,408 @@
+{
+  "model": "gpt-4.1-mini",
+  "level": "L2",
+  "date": "2026-03-25",
+  "total": 20,
+  "results": [
+    {
+      "file": "v1.md",
+      "run": 0,
+      "answer": ":define fib [n] ->\n  n 1 <= 1 ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + <=\n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib print i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 2,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v1.md",
+      "run": 1,
+      "answer": ":define fib [n] ->\n  n 1 <= 1 ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v1.md",
+      "run": 2,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + <=\n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 2,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v1.md",
+      "run": 3,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v2.md",
+      "run": 0,
+      "answer": ":define fib [n] ->\n  n 1 <= 1 ?cond: n ;else: fib n 1 - fib n 2 - + ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i call print\n}",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 1
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v2.md",
+      "run": 1,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v2.md",
+      "run": 2,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v2.md",
+      "run": 3,
+      "answer": ":define fib [n] ->\n  n 1 <= 1 ?cond: n ;else: fib n 1 - fib n 2 - + ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v3.md",
+      "run": 0,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v3.md",
+      "run": 1,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n ;\n  else:\n    fib n 1 - [] + fib n 2 - [] ;\n  end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i [] print ;\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v3.md",
+      "run": 2,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v3.md",
+      "run": 3,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v4.md",
+      "run": 0,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v4.md",
+      "run": 1,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v4.md",
+      "run": 2,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v4.md",
+      "run": 3,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v5.md",
+      "run": 0,
+      "answer": ":define fib [n] ->\n  n 1 <= 1 ?cond:\n    n\n  ;else:\n    fib n 1 - [] + fib n 2 - []\n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  print i fib i []\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v5.md",
+      "run": 1,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v5.md",
+      "run": 2,
+      "answer": ":define fib [n] ->\n  n 1 <= 1 ?cond: n ;else: fib n 1 - + fib n 2 - ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "file": "v5.md",
+      "run": 3,
+      "answer": ":define fib [n] ->\n  n 1 <= ?cond:\n    n\n  ;else:\n    fib n 1 - fib n 2 - + \n  ;end\n;;\n\nloop i over 0 1 2 3 4 5 6 {\n  i fib i print\n}\n;;",
+      "judge": {
+        "pass": true,
+        "sir": 0.0,
+        "l2_adoption": 1.0,
+        "python_hits": {},
+        "l2_hits": {
+          ":define": 1,
+          "<=": 1,
+          "?cond:": 1,
+          "loop ": 1,
+          " over ": 1,
+          ";;": 2
+        },
+        "violations": []
+      }
+    }
+  ]
+}

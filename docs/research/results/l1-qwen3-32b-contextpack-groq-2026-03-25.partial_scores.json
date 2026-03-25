@@ -1,0 +1,261 @@
+{
+  "source": "/Users/jaeyeong_openclaw/.openclaw/workspace/cse307-open-project/docs/research/results/l1-qwen3-32b-contextpack-groq-2026-03-25.json",
+  "n": 20,
+  "samples": [
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": true,
+        "return": true,
+        "for": true,
+        "in": true
+      },
+      "file": "docs/archive/prompt-versions/v1.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": true,
+        "return": true,
+        "for": true,
+        "in": true
+      },
+      "file": "docs/archive/prompt-versions/v2.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v3.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": true,
+        "return": true,
+        "for": true,
+        "in": true
+      },
+      "file": "docs/archive/prompt-versions/v4.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": true,
+        "return": true,
+        "for": true,
+        "in": true
+      },
+      "file": "docs/archive/prompt-versions/v5.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v6.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v7.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v8.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v9.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v10.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v11.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v12.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v13.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v14.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v15.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v16.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v17.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {
+        "has_fib_function": false,
+        "has_base_case": false,
+        "has_recursion": false,
+        "has_loop": false
+      },
+      "per_token_leakage": {
+        "def": true,
+        "if": true,
+        "return": true,
+        "for": true,
+        "in": true
+      },
+      "file": "docs/archive/prompt-versions/v18.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v19.md"
+    },
+    {
+      "klr": 1.0,
+      "acr": 0.0,
+      "pss": 0.0,
+      "pir": 1.0,
+      "parse_ok": false,
+      "skeleton": {},
+      "per_token_leakage": {},
+      "file": "docs/archive/prompt-versions/v20.md"
+    }
+  ]
+}
