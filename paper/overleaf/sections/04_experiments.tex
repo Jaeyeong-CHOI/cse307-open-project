@@ -29,7 +29,7 @@ We ran $n=10$ per task for \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.
 Results are in Table~\ref{tab:l4_multitask}.
 
 \subsection{CoT Ablation Experiment}
-To test whether chain-of-thought reasoning overcomes pattern blindness, we added a CoT instruction (``think step by step about the pattern first, then write code'') to the L4 Variant A prompt. We compared CoT vs.\ no-CoT for four models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, and \texttt{o4-mini} ($n=20$ per condition, 160 total runs). Judge criteria are identical to the L4 ablation; we additionally track whether the model's reasoning text mentions the inversion pattern.
+To test whether chain-of-thought reasoning overcomes pattern blindness, we added a CoT instruction (``think step by step about the pattern first, then write code'') to the L4 Variant A prompt. We compared CoT vs.\ no-CoT for four models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, and \texttt{o4-mini} ($n=20$ per condition, 160 total runs). Judge criteria are identical to the L4 ablation; we additionally track whether the model's reasoning text mentions the inversion pattern (operationally defined as containing at least one of the substrings: \texttt{"inverted"}, \texttt{"opposite"}, \texttt{"false when"}, or \texttt{"condition is false"}, case-insensitive regex match on the full reasoning output).
 
 \subsection{L4 Hard-Task Extension: Complex Algorithms and Latest Models}
 To test whether task complexity amplifies or attenuates pattern blindness, we designed three ``hard'' L4 tasks requiring multi-step algorithms with deep Python priors:

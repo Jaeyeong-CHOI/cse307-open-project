@@ -72,7 +72,7 @@
   % x-axis label
   \node[below=8pt, font=\small] at (0.5,{-0.1}) {KLR (lower = better)};
 \end{tikzpicture}
-\caption{L1 KLR per model. Ctx-pack condition shown for all models except \texttt{gpt-4o} and \texttt{gpt-5.4-mini} (baseline only; ctx-pack not evaluated). $n{\geq}20$ per bar.
+\caption{L1 KLR per model (OpenAI models only). Ctx-pack condition shown for all models except \texttt{gpt-4o} and \texttt{gpt-5.4-mini} (baseline only; ctx-pack not evaluated). $n{\geq}20$ per bar. Open-weight models (\texttt{Llama-3.3-70B}, \texttt{Qwen3-32B}) appear in Table~\ref{tab:l1_results} only; bar chart shows OpenAI models for visual clarity.
   \textcolor{blue!65}{\rule{5pt}{5pt}}~\texttt{gpt-4o} fam.;
   \textcolor{orange!60}{\rule{5pt}{5pt}}~\texttt{gpt-4.1} fam.;
   \textcolor{green!55!black}{\rule{5pt}{5pt}}~\texttt{gpt-5.4-mini} (baseline);
@@ -311,7 +311,7 @@ Unlike \texttt{gpt-4.1} (E25: 10/10 on L3 T2), \texttt{Qwen3-32B} fails to apply
 
 \begin{table}[!t]
 \centering
-\caption{E28: Annotation density gradient for \texttt{o4-mini} on T1 Fibonacci ($n=10$ per level, 40 total runs). PPR = prior-pull rate (fraction of \texttt{fail\_prior} among all non-pass runs). Pass rate and PPR are both reported.}
+\caption{E28: Annotation density gradient for \texttt{o4-mini} on T1 Fibonacci ($n=10$ per level, 40 total runs; $n_\mathrm{eff}=9$ at 100\% due to 1 HTTP error). PPR = prior-pull rate (fraction of \texttt{fail\_prior} among all non-pass runs). Pass rate and PPR are both reported.}
 \label{tab:e28_density}
 \footnotesize
 \resizebox{\columnwidth}{!}{%
@@ -322,7 +322,9 @@ Unlike \texttt{gpt-4.1} (E25: 10/10 on L3 T2), \texttt{Qwen3-32B} fails to apply
 25\%  & 2/8 & 3  & 1 & 6 & 0.30 & 0.10 \\
 50\%  & 4/8 & 6  & 1 & 3 & \textbf{0.60} & 0.10 \\
 75\%  & 6/8 & 2  & 5 & 3 & 0.20 & 0.50 \\
-100\% & 8/8 & 1  & 2 & 6 & 0.11 & 0.22 \\
+100\%$^\dagger$ & 8/8 & 1  & 2 & 6 & 0.11 & 0.22 \\
+\midrule
+\multicolumn{7}{l}{\scriptsize $^\dagger$$n_\mathrm{eff}=9$ (1 HTTP error); pass rate = 1/9.} \\
 \bottomrule
 \end{tabular}%
 }
@@ -364,6 +366,8 @@ count\_vowels (T3) & \texttt{s}  & 0.1606 & 1.0000 \\
 
 \texttt{is\_sorted} (T2) shows slightly lower PES (0.9736 for \texttt{gpt-4o}), which may partly explain its extractability by capable models---but PES=0.9736 is still very high, suggesting that the ${\sim}0.03$ PES gap is not the primary driver of the T1--T2 pass rate difference (0\% vs.\ 100\% for \texttt{gpt-4o}).
 
+A secondary observation: \texttt{gpt-4o}'s low T3 PES (0.1606, \texttt{count\_vowels}) contrasts with its high operational substitution rate on T3 ($n=50$: 94\% OpSub). This suggests that a weaker prior (lower PES) does not simply yield L4 compliance; instead, the model explores alternative generation paths that still avoid semantic inversion, manifesting as arithmetic workarounds rather than canonical Python. The PES--operational-substitution relationship warrants future mechanistic study.
+
 \subsection{E32: Cross-Task Transfer Breaks L4 Resistance}
 \label{sec:e32_transfer}
 
@@ -371,7 +375,7 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 
 \begin{table}[!t]
 \centering
-\caption{E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref{tab:l4_ablation}) yields 0/50 for all models.}
+\caption{E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref{tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs: 10/10 $\to$ [72\%,100\%]; 6/10 $\to$ [29\%,88\%]; 1/10 $\to$ [2\%,44\%].}
 \label{tab:e32_transfer}
 \footnotesize
 \begin{tabular}{@{}lccl@{}}
@@ -385,7 +389,7 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 \end{tabular}
 \end{table}
 
-\textbf{Cross-task contamination defeats L4.} The same models that achieve 0/50 under strict L4 example-only delivery (Table~\ref{tab:l4_ablation}) achieve 60--100\% pass when primed with inverted code from unrelated tasks. \texttt{gpt-4.1-mini} transfers perfectly (10/10), consistent with its strong pattern extraction on T2 (20/20 in multi-task). \texttt{gpt-4o} achieves 6/10, and \texttt{o4-mini}---which relies on reasoning chains rather than pattern mimicry---achieves only 1/10.
+\textbf{Cross-task contamination defeats L4.} The same models that achieve 0/50 under strict L4 example-only delivery (Table~\ref{tab:l4_ablation}) achieve 60--100\% pass when primed with inverted code from unrelated tasks. \texttt{gpt-4.1-mini} transfers perfectly (10/10; Wilson 95\% CI: [72\%,100\%]), consistent with its strong pattern extraction on T2 (20/20 in multi-task). \texttt{gpt-4o} achieves 6/10 (Wilson 95\% CI: [29\%,88\%])---partial transfer, though the wide CI at $n=10$ means this result should be interpreted cautiously; Fisher's exact vs.\ \texttt{gpt-4.1-mini}: $p=0.08$ (not significant). \texttt{o4-mini} achieves only 1/10 (Wilson 95\% CI: [2\%,44\%])---\texttt{o4-mini}---which relies on reasoning chains rather than pattern mimicry---achieves only 1/10.
 
 \textbf{Assessment design implication.} L4 resistance depends on \emph{isolation}: if students include inverted code from other tasks in the same prompt (e.g., copying solved examples from a previous assignment), the model can transfer the inversion pattern cross-task. Instructors should ensure that L4 assignments do not provide cross-task inversion examples within the same prompt context. This finding also suggests that L4 resistance is a property of \emph{prompt-level pattern isolation}, not just task-level prior entrenchment.
 
@@ -417,13 +421,13 @@ E28 established a non-monotonic annotation density curve for \texttt{o4-mini} al
 \end{tabular}
 \end{table}
 
-\textbf{Key finding---non-monotonic density curve with peak at code-example delivery.} All three models show highest pass rates at 0\% annotation density (which includes an inverted code example), \emph{not} at 100\% (full explicit rule). This is the opposite of the naive expectation that more explicit instructions improve compliance. The curve shows a characteristic pattern: (1)~high pass at 0\% (pattern mimicry from code example), (2)~sharp collapse at 25\% (single comment hint disrupts mimicry without providing sufficient rule content), (3)~partial recovery at 50--75\%, and (4)~collapse at 100\% (full rule triggers prior conflict).
+\textbf{Key finding---pattern mimicry via code examples outperforms verbal annotation at all density levels.} All three models show highest pass rates at 0\% annotation density (which includes an inverted \emph{code} example, a qualitatively distinct condition from verbal annotation at 25--100\%), \emph{not} at 100\% (full explicit rule). This is the opposite of the naive expectation that more explicit instructions improve compliance. Within the verbal annotation range (25--100\%), pass rates are non-monotonic: (1)~sharp collapse at 25\% (single comment hint disrupts code-example mimicry without providing sufficient rule content), (2)~partial recovery at 50--75\%, and (3)~collapse at 100\% (full rule triggers prior conflict). The overall pattern distinguishes two qualitatively different mechanisms: code-example mimicry (effective at 0\%) and verbal rule induction (weak and non-monotonic across 25--100\%).
 
 \textbf{Pattern mimicry $>$ rule following.} The 0\% condition succeeds because the inverted code example provides a direct structural template for mimicry---the model copies the comparison operator pattern without needing to understand the underlying rule. Adding explicit annotations paradoxically \emph{hurts} because it shifts the model from pattern mimicry mode to rule-following mode, where the Python prior creates stronger interference. This is consistent with E32's cross-task transfer finding: code examples are more effective than verbal rules for inducing inverted behavior.
 
 \textbf{Contrast with strict L4 ablation.} The 0\% pass rates here (50--80\%) contrast with the strict L4 ablation's 0/350. The critical difference: E34's 0\% prompt shows an inverted \emph{code} example (\texttt{if n >= 0}), while the strict L4 ablation shows only I/O examples and worked solutions without explicitly inverted comparison operators in the prompt code. This confirms that L4 resistance depends on \emph{what} examples show, not just whether a rule is stated.
 
-\textbf{Convergence with E28 (\texttt{o4-mini}).} E34's \texttt{o4-mini} results (peak at 0\%, collapse at 100\%) are directionally consistent with E28's non-monotonic curve (peak at 50\%), though the absolute levels differ due to prompt design differences. Both experiments confirm that annotation saturation hurts reasoning models on prior-entrenched tasks.
+\textbf{Convergence with E28 (\texttt{o4-mini}).} E34's \texttt{o4-mini} results are directionally consistent with E28: both experiments agree at 50\% annotation density (E28: 6/10; E34: 6/10). The apparent ``peak at 0\%'' in E34 is due to the qualitatively distinct code-example baseline---E28 did not include a 0\% code-example condition, so the two experiments are directly comparable only in the 25--100\% verbal annotation range, where E34 shows the same non-monotonic pattern (50\%/75\% local peak, collapse at 100\%) consistent with E28. Both experiments confirm that annotation saturation hurts reasoning models on prior-entrenched tasks.
 
 \subsection{L4 Hard-Task Extension: Task Complexity vs.\ Prior Entrenchment}
 \label{sec:l4_hard}
