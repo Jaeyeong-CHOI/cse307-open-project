@@ -63,7 +63,7 @@ Y.~Liu \emph{et~al.}, ``{CodeIF}: Benchmarking instruction-following in code
 
 \bibitem{multicode2025}
 W.~Zhang \emph{et~al.}, ``{MultiCodeIF}: Comprehensive evaluation of code
-  instruction-following,'' arXiv:2507.00699, 2025.
+  instruction-following,'' 2025, preprint.
 
 \bibitem{chen2024instructhierarchy}
 E.~Chen \emph{et~al.}, ``The instruction hierarchy: Training {LLMs} to

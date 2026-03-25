@@ -76,6 +76,33 @@ PSS is a heuristic composite metric (alias compliance 0.4, parse 0.25, skeleton 
 \end{tabular}
 \end{table}
 
+\subsection{L4 Multi-Task Full PPR Values}
+\label{sec:appendix_l4_multitask_ppr}
+Full Python Prior Rate (PPR) values for Table~\ref{tab:l4_multitask}. PPR = fraction of outputs matching canonical Python prior (lower = more L4-compliant). Pass rate = 0 for all cells except \texttt{gpt-4o} T2, \texttt{gpt-4.1-mini} T2, and \texttt{o4-mini} T1.
+
+\begin{table}[h]
+\centering
+\caption{L4 multi-task full PPR. $\dagger$~Partially-annotated prompts (not comparable to Table~\ref{tab:l4_ablation}).}
+\label{tab:appendix_l4_ppr}
+\footnotesize
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l ccc ccc ccc@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{T1: fibonacci}} & \multicolumn{3}{c}{\textbf{T2: is\_sorted}} & \multicolumn{3}{c}{\textbf{T3: count\_vowels}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+\textbf{Model} & $n$ & \textbf{Pass} & \textbf{PPR} & $n$ & \textbf{Pass} & \textbf{PPR} & $n$ & \textbf{Pass} & \textbf{PPR} \\
+\midrule
+\texttt{gpt-4o}       & 10 & 0/10  & 1.00 & 10 & 10/10 & 0.00 & 50 & 0/50 & 0.00 \\
+\texttt{gpt-4o-mini}  & 10 & 0/10  & 0.00 & 10 & 0/10  & 1.00 & 10 & 0/10 & 0.00 \\
+\texttt{gpt-4.1}      & 10 & 0/10  & 1.00 & 50 & 1/50  & 0.42 & 10 & 0/10 & 0.00 \\
+\texttt{gpt-4.1-mini} & 20 & 0/20  & 1.00 & 20 & 20/20 & 0.00 & 20 & 0/20 & 0.25 \\
+\texttt{gpt-4.1-nano} & 10 & 0/10  & 0.20 & 10 & 0/10  & 1.00 & 10 & 0/10 & 0.00 \\
+\texttt{gpt-5.4-mini} & 10 & 0/10  & 1.00 & 10 & 0/10  & 1.00 & 10 & 0/10 & 0.00 \\
+\texttt{o4-mini}      & 15 & 8/15  & 0.33 & 20 & 0/20  & 0.30 & 20 & 0/20 & 0.00 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
 \subsection{Execution config snapshot (non-secret)}
 \begin{table}[h]
 \caption{Key runtime settings}

@@ -17,37 +17,37 @@ Warning--empty journal in jimenez2024swebench
 Done.
 You've used 40 entries,
             4087 wiz_defined-function locations,
-            987 strings with 12441 characters,
-and the built_in function-call counts, 16121 in all, are:
-= -- 1263
+            987 strings with 12433 characters,
+and the built_in function-call counts, 16137 in all, are:
+= -- 1264
 > -- 331
 < -- 0
 + -- 164
 - -- 82
-* -- 595
-:= -- 2793
+* -- 596
+:= -- 2794
 add.period$ -- 80
 call.type$ -- 40
-change.case$ -- 40
+change.case$ -- 41
 chr.to.int$ -- 0
 cite$ -- 42
-duplicate$ -- 1414
+duplicate$ -- 1416
 empty$ -- 1582
 format.name$ -- 122
-if$ -- 3618
+if$ -- 3621
 int.to.chr$ -- 0
 int.to.str$ -- 40
-missing$ -- 314
+missing$ -- 315
 newline$ -- 143
 num.names$ -- 40
-pop$ -- 871
+pop$ -- 874
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
 skip$ -- 1244
 stack$ -- 0
-substring$ -- 40
-swap$ -- 792
+substring$ -- 42
+swap$ -- 793
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 5

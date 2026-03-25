@@ -195,36 +195,29 @@ return fib(n-1) + fib(n-2)
 
 To assess whether pattern blindness extends beyond Fibonacci, we evaluated all seven models on three tasks: T1 (\texttt{fibonacci}), T2 (\texttt{is\_sorted}), and T3 (\texttt{count\_vowels}). The multi-task prompt uses inline code comments that partially annotate the inversion rule (\textit{e.g.}, \texttt{\# runs when a > b is FALSE, i.e., a <= b}); this is a \emph{partially-annotated L4} condition---less explicit than L3 (no stated rule), but more informative than the pure example-only variants used in the ablation. \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-5.4-mini}, and \texttt{o4-mini} were evaluated at $n=10$ or $n=15$ per task; \texttt{gpt-4.1-mini} at $n=20$ per task; \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} at $n=10$ per task (255 initial runs). We further scaled \texttt{gpt-4o} T3 and \texttt{gpt-4.1} T2 to $n=50$ each to resolve preliminary ambiguities, and extended \texttt{o4-mini} T2/T3 to $n=20$ each, yielding 345 total multi-task runs. Results are in Table~\ref{tab:l4_multitask}.
 
-\begin{table*}[!t]
+\begin{table}[!t]
 \centering
-\caption{L4 multi-task generalization (\textbf{345 total runs}). \textbf{$\ddagger$ Partially-annotated prompts; NOT directly comparable to Table~\ref{tab:l4_ablation} (strict example-only).} Each cell: pass/n; PPR in parentheses. T1=fibonacci, T2=is\_sorted, T3=count\_vowels.}
+\caption{L4 multi-task summary (\textbf{345 runs total}). $\dagger$~Partially-annotated prompts; \textbf{NOT directly comparable to Table~\ref{tab:l4_ablation}}~(strict example-only). Green = pass, red = fail. Dominant failure mode per row in rightmost column. Full PPR values in Appendix~\ref{sec:appendix_l4_multitask_ppr}.}
 \label{tab:l4_multitask}
-\small
-\begin{tabular}{@{}l ccc ccc ccc@{}}
+\footnotesize
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}l ccc l@{}}
 \toprule
-& \multicolumn{3}{c}{\textbf{T1: fibonacci}} & \multicolumn{3}{c}{\textbf{T2: is\_sorted}} & \multicolumn{3}{c}{\textbf{T3: count\_vowels}} \\
-\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
-\textbf{Model} & $n$ & \textbf{Pass} & \textbf{PPR} & $n$ & \textbf{Pass} & \textbf{PPR} & $n$ & \textbf{Pass} & \textbf{PPR} \\
+\textbf{Model} & \textbf{T1: fib} & \textbf{T2: sorted} & \textbf{T3: vowels} & \textbf{Dominant failure} \\
 \midrule
-\texttt{gpt-4o}       & 10 & \cellcolor{red!10}0/10        & 1.00 & 10         & \cellcolor{green!15}\textbf{10/10} & 0.00 & 50$^\ddagger$ & \cellcolor{red!10}0/50  & 0.00$^\ddagger$ \\
-\texttt{gpt-4o-mini}  & 10 & \cellcolor{red!10}0/10$^*$    & 0.00 & 10         & \cellcolor{red!10}0/10           & 1.00 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
-\texttt{gpt-4.1}      & 10 & \cellcolor{red!10}0/10        & 1.00 & 50$^\dagger$ & \cellcolor{red!10}1/50         & 0.42 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
-\texttt{gpt-4.1-mini} & 20 & \cellcolor{red!10}0/20        & 1.00 & 20         & \cellcolor{green!15}\textbf{20/20} & 0.00 & 20            & \cellcolor{red!10}0/20  & 0.25 \\
-\texttt{gpt-4.1-nano} & 10 & \cellcolor{red!10}0/10        & 0.20 & 10         & \cellcolor{red!10}0/10           & 1.00 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
-\texttt{gpt-5.4-mini} & 10 & \cellcolor{red!10}0/10        & 1.00 & 10         & \cellcolor{red!10}0/10           & 1.00 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
-\texttt{o4-mini}      & 15 & \cellcolor{green!15}\textbf{8/15}$^\S$ & 0.33 & 20$^\P$ & \cellcolor{red!10}0/20           & 0.30 & 20$^\P$       & \cellcolor{red!10}0/20  & 0.00 \\
+\texttt{gpt-4o}       & \cellcolor{red!10}0/10   & \cellcolor{green!15}\textbf{10/10} & \cellcolor{red!10}0/50$^a$  & T1: prior dom.; T3: op.\ sub.\ (94\%) \\
+\texttt{gpt-4o-mini}  & \cellcolor{red!10}0/10$^b$& \cellcolor{red!10}0/10            & \cellcolor{red!10}0/10      & template fragmentation (T1); prior dom. \\
+\texttt{gpt-4.1}      & \cellcolor{red!10}0/10   & \cellcolor{red!10}1/50$^c$         & \cellcolor{red!10}0/10      & prior dominance \\
+\texttt{gpt-4.1-mini} & \cellcolor{red!10}0/20   & \cellcolor{green!15}\textbf{20/20} & \cellcolor{red!10}0/20      & T1: prior dom.; T2: extractable \\
+\texttt{gpt-4.1-nano} & \cellcolor{red!10}0/10   & \cellcolor{red!10}0/10             & \cellcolor{red!10}0/10      & prior dominance \\
+\texttt{gpt-5.4-mini} & \cellcolor{red!10}0/10   & \cellcolor{red!10}0/10             & \cellcolor{red!10}0/10      & prior dominance (all tasks) \\
+\texttt{o4-mini}      & \cellcolor{green!15}\textbf{8/15}$^d$ & \cellcolor{red!10}0/20 & \cellcolor{red!10}0/20 & T1: partial extraction (reasoning); T2/T3: prior dom. \\
 \bottomrule
-\end{tabular}
-
-\vspace{2pt}
-{\scriptsize
-$^*$Template fragmentation (variant of prior dominance).
-$^\dagger$Wilson 95\% CI: pass [0\%, 10.5\%], PPR [29\%, 56\%]; Fisher's exact $p < 0.0001$ vs.\ \texttt{gpt-4.1-mini}.
-$^\ddagger$OpSub in 47/50 runs (94\%, CI: [83\%, 99\%]).
-$^\S$After token budget correction (\texttt{max\_completion\_tokens} 400$\to$5000); see §\ref{sec:l4_ablation}.
-$^\P$Scale-up: \texttt{o4-mini} T2/T3 extended from $n=15$ to $n=20$; T2 PPR=0.30, T3 PPR=0.00.
-}
-\end{table*}
+\multicolumn{5}{l}{\scriptsize $^a$OpSub 47/50 (94\%, CI: [83\%,99\%]).\ $^b$Template fragmentation.} \\
+\multicolumn{5}{l}{\scriptsize $^c$$n=50$ scale-up; Wilson CI: pass [0\%,10.5\%]; Fisher's $p{<}0.0001$ vs.\ \texttt{gpt-4.1-mini}.} \\
+\multicolumn{5}{l}{\scriptsize $^d$Token budget corrected (400$\to$5000 tokens); see \S\ref{sec:l4_ablation} for details.} \\
+\end{tabular}}
+\end{table}
 
 Seven findings emerge.
 
