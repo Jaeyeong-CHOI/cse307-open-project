@@ -1,0 +1,76 @@
+{
+  "experiment": "e32-gpt4o-scaleup",
+  "date": "2026-03-25",
+  "model": "gpt-4o",
+  "description": "Scale-up: 10 additional trials for gpt-4o cross-task transfer (total n=20)",
+  "additional_n": 10,
+  "additional_passed": 7,
+  "additional_errors": 0,
+  "combined_n": 20,
+  "combined_passed": 13,
+  "combined_pass_rate": 0.65,
+  "wilson_95ci_lo": 0.4329,
+  "wilson_95ci_hi": 0.8188,
+  "trials": [
+    {
+      "trial": 11,
+      "code": "def fib(n):\n    if n <= 1:  # inverted: <= means >=\n        return n\n    return fib(n - 1) + fib(n - 2)",
+      "passed": false,
+      "reason": "Uses standard (non-inverted) comparisons"
+    },
+    {
+      "trial": 12,
+      "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    while n <= 1:  # inverted: <= means >=\n        a, b = b, a + b\n        n -= 1\n    return a",
+      "passed": true,
+      "reason": "Uses inverted comparisons consistently"
+    },
+    {
+      "trial": 13,
+      "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": true,
+      "reason": "Uses inverted comparisons consistently"
+    },
+    {
+      "trial": 14,
+      "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):  # inverted: range stops when condition is false\n        a, b = b, a + b\n    return b",
+      "passed": true,
+      "reason": "Uses inverted comparisons consistently"
+    },
+    {
+      "trial": 15,
+      "code": "def fib(n):\n    if n <= 1:  # inverted: <= means >=\n        return n\n    a, b = 0, 1\n    while n > 1:  # inverted: > means <\n        a, b = b, a + b\n        n -= 1\n    return b",
+      "passed": false,
+      "reason": "Uses standard (non-inverted) comparisons"
+    },
+    {
+      "trial": 16,
+      "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": true,
+      "reason": "Uses inverted comparisons consistently"
+    },
+    {
+      "trial": 17,
+      "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": true,
+      "reason": "Uses inverted comparisons consistently"
+    },
+    {
+      "trial": 18,
+      "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": true,
+      "reason": "Uses inverted comparisons consistently"
+    },
+    {
+      "trial": 19,
+      "code": "def fib(n):\n    if n > 1:  # inverted: > means <\n        return n\n    a, b = 0, 1\n    for _ in range(2, n):\n        a, b = b, a + b\n    return b",
+      "passed": true,
+      "reason": "Uses inverted comparisons consistently"
+    },
+    {
+      "trial": 20,
+      "code": "def fib(n):\n    if n <= 1:  # inverted: <= means >=\n        return n\n    a, b = 0, 1\n    while n > 1:  # inverted: > means <\n        a, b = b, a + b\n        n -= 1\n    return b",
+      "passed": false,
+      "reason": "Uses standard (non-inverted) comparisons"
+    }
+  ]
+}
