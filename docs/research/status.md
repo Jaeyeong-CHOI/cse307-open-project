@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 07:59 KST
+마지막 업데이트: 2026-03-25 09:00 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -152,6 +152,17 @@
   - 논문 Table 4: 6 models → 7 models (7번째 finding 추가), runs 325 → 355
   - scripts/run_l4_multitask.py: COMPLETION_TOKEN_MODELS 추가 (gpt-5.4-mini fix)
   - PDF 재컴파일(10p), commit f20befa push 완료
+
+- [x] 2026-03-25 09:00 o4-mini T1 multi-task 결과 수정 (token budget 버그 수정)
+  - `scripts/run_l4_multitask.py`: reasoning model max_completion_tokens 400→5000
+  - `L4-multitask.o4mini.2026-03-25.json`: T1_fib **0/15→8/15** (53% pass, noticed_inversion=True)
+  - 논문 Table 4: o4-mini T1 row 수정 (8/15, PPR=0.33)
+  - Finding (2): "모든 모델 T1 실패" → "reasoning model은 partially-annotated에서 성공"
+  - Finding (5): "reasoning이 pattern blindness 극복 못함" → "partial annotation에서는 부분적 완화"
+  - §6.2 education: o4-mini T1 예외 반영
+  - `sec:l4_ablation` label 추가 (undefined ref 경고 수정)
+  - PDF 재컴파일(11p), commit 0d15882 push 완료
+  - **핵심 인사이트**: o4-mini는 token 공간이 충분하면 partial annotation에서 추론 능력으로 inversion 파악 가능 (dense 모델은 불가)
 
 - [ ] `docs/research/context-compression.md` 운영 적용
 
