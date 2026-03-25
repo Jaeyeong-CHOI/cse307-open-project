@@ -72,10 +72,10 @@
   % x-axis label
   \node[below=8pt, font=\small] at (0.5,{-0.1}) {KLR (lower = better)};
 \end{tikzpicture}
-\caption{L1 KLR per model (ctx-pack condition, $n{\geq}20$).
+\caption{L1 KLR per model. Ctx-pack condition shown for all models except \texttt{gpt-4o} and \texttt{gpt-5.4-mini} (baseline only; ctx-pack not evaluated). $n{\geq}20$ per bar.
   \textcolor{blue!65}{\rule{5pt}{5pt}}~\texttt{gpt-4o} fam.;
   \textcolor{orange!60}{\rule{5pt}{5pt}}~\texttt{gpt-4.1} fam.;
-  \textcolor{green!55!black}{\rule{5pt}{5pt}}~\texttt{gpt-5.4-mini};
+  \textcolor{green!55!black}{\rule{5pt}{5pt}}~\texttt{gpt-5.4-mini} (baseline);
   \textcolor{violet!60}{\rule{5pt}{5pt}}~\texttt{o4-mini}.}
 \label{fig:l1_klr_bar}
 \end{figure}
@@ -162,6 +162,9 @@ E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \
 \multicolumn{9}{l}{\scriptsize $^\ddagger$Overall PPR for \texttt{gpt-5.4-mini} computed over 4 valid variants (A--D); var-E excluded.} \\
 \end{tabular}}
 \end{table}
+
+\noindent\textbf{Variant E domain-shift anomaly (\texttt{gpt-4.1-mini}).}
+The most striking per-variant result is \texttt{gpt-4.1-mini}'s complete inversion across variant E: PPR=0.00 on variants~B (3ex-extra) and~D (2ex-swapped)---meaning it never generates the Python prior---yet PPR=1.00 on variant~E (3ex-diff-domain, where examples use a \emph{different} semantic domain). The structural difference is that variants B and D use the same Fibonacci-adjacent domain for all examples, while variant E uses cross-domain examples (e.g., sorting or arithmetic comparisons). We hypothesize that \emph{domain shift in examples weakens the model's pattern extraction signal}: when examples share the same function context as the target task, the model's in-context pattern extractor can align examples to the task template; when examples are drawn from a different domain, the learned pattern loses its grounding in the target task structure, causing the model to revert to the Python prior. This remains a hypothesis; controlled cross-domain vs.\ in-domain replication at larger $n$ would be needed to confirm it.
 
 \begin{figure}[!t]
 \centering
