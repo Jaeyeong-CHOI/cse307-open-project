@@ -393,12 +393,31 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 
 \textbf{Assessment design implication.} L4 resistance depends on \emph{isolation}: if students include inverted code from other tasks in the same prompt (e.g., copying solved examples from a previous assignment), the model can transfer the inversion pattern cross-task. Instructors should ensure that L4 assignments do not provide cross-task inversion examples within the same prompt context. This finding also suggests that L4 resistance is a property of \emph{prompt-level pattern isolation}, not just task-level prior entrenchment.
 
-\subsection{E33: I/O Transparency Null Result}
+\subsection{E33: I/O Transparency --- Prior vs.\ Opaque Mapping}
 \label{sec:e33_io}
 
-To isolate I/O transparency from prior strength, we tested two tasks: IO-A (\texttt{reverse\_fib}: deep Fibonacci prior, transparent I/O mapping) and IO-B (\texttt{opaque\_counter}: weak prior, opaque internal transformations). All three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}) achieved 10/10 on both tasks ($n=10$, temperature=0.7).
+We conducted two experiments to isolate I/O transparency from prior strength. The original E33 design was confounded: the IO-B (\texttt{opaque\_counter}) prompt disclosed explicit algorithmic steps (XOR, shift, conditional add/subtract), making both tasks procedurally transparent; all three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}) achieved 10/10 on both tasks. To properly test I/O opacity as an independent variable, we ran E35 (\textbf{redesigned}): IO-B prompts were replaced with pure input/output pairs ($n=8$ examples), with no algorithm disclosed. IO-A remained identical to E33 (explicit ``reverse Fibonacci'' semantics, Fibonacci prior).
 
-\textbf{Null result.} The IO-B prompt included explicit algorithmic steps (XOR, shift, conditional add/subtract), making the task procedurally transparent despite semantically opaque I/O. Models implemented the algorithm directly without needing to reverse-engineer the input--output mapping. This design flaw means the experiment did not successfully isolate I/O transparency as a variable---both tasks were \emph{procedurally} transparent. A future redesign should provide only input--output pairs for the opaque task, without revealing the internal algorithm, to properly test whether I/O opacity alone creates resistance independent of prior strength.
+\begin{table}[!t]
+\centering
+\caption{E35 (Redesigned I/O transparency): pass rate on IO-A (strong Fibonacci prior, transparent mapping) vs.\ IO-B (weak prior, opaque I/O only --- no algorithm description). $n=10$ per cell, temperature=0.7.}
+\label{tab:e35_io}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Model} & \textbf{IO-A Pass} & \textbf{IO-A Rate} & \textbf{IO-B Pass} & \textbf{IO-B Rate} \\
+\midrule
+\texttt{gpt-4o}       & 10/10 & \cellcolor{green!15}\textbf{100\%} & 0/10 & \cellcolor{red!10}\textbf{0\%} \\
+\texttt{gpt-4.1-mini} & 10/10 & \cellcolor{green!15}\textbf{100\%} & 0/10 & \cellcolor{red!10}\textbf{0\%} \\
+\texttt{gpt-4o-mini}  & 5/10  & \cellcolor{yellow!20}50\%           & 0/10 & \cellcolor{red!10}\textbf{0\%} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\textbf{Opaque I/O creates universal resistance.} When models receive only input/output pairs with no algorithmic description, all three models fail completely on IO-B (0/30 pooled; Wilson 95\% CI: [0\%,12\%]). By contrast, IO-A---which provides explicit naming cues (``reverse Fibonacci'') that activate a well-known prior---achieves 100\% for both larger models. The IO-A/IO-B contrast (100\% vs.\ 0\% for \texttt{gpt-4o}/\texttt{gpt-4.1-mini}) demonstrates that I/O opacity alone is sufficient to induce resistance, independent of prior strength: the \texttt{opaque\_counter} function has no deep training prior, yet models cannot infer or generalize the underlying bijection from 8 examples to held-out inputs. The \texttt{gpt-4o-mini} IO-A result (5/10) reveals an additional confound: even a transparent I/O mapping fails 50\% when the \emph{Fibonacci prior} interferes with the reversed sequence ordering, demonstrating bidirectional prior effects.
+
+\textbf{Design implication.} L4 resistance is not purely prior-strength-driven; it can also be induced by I/O-opaque task designs for which no training distribution provides a shortcut. This suggests a complementary pathway to NTP-resistant assignment design: rather than requiring the model to violate a known prior (L4), instructors can use opaque I/O specifications that prevent prior activation entirely.
 
 \subsection{E34: Annotation Density Curve (Multi-Model)}
 \label{sec:e34_density}

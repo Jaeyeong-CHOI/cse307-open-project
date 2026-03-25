@@ -1,0 +1,435 @@
+{
+  "experiment": "E35",
+  "description": "Redesigned I/O transparency test \u2014 I/O pairs only, no algorithm description",
+  "hypothesis": "Opaque I/O (no algorithmic cues) should produce lower pass rates than transparent-prior reverse_fib",
+  "models": [
+    "gpt-4o",
+    "gpt-4.1-mini",
+    "gpt-4o-mini"
+  ],
+  "n_trials": 10,
+  "temperature": 0.7,
+  "design_note": "IO-B prompt provides ONLY input/output pairs; no XOR/shift/algorithm steps revealed.",
+  "tasks": [
+    {
+      "task": "IO-A-reverse_fib",
+      "description": "Strong Fibonacci prior + transparent I/O (reverse ordering of fib sequence)",
+      "results": [
+        {
+          "model": "gpt-4o",
+          "passed": 10,
+          "n": 10,
+          "pass_rate": 1.0,
+          "trials": [
+            {
+              "trial": 1,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # Pre-computed reverse Fibonacci sequence from F(10) to F(0)\n    reverse_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    return reverse_fib_sequence[n]\n\n# Examples:\n# "
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # Predefined reversed Fibonacci sequence starting from 55\n    reversed_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    \n    # Return the nth element from the reversed "
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # The reversed Fibonacci sequence starting from the 10th Fibonacci number\n    reverse_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    return reverse_fib_sequence[n]\n\n#"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # Define the reverse Fibonacci sequence\n    reverse_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    \n    # Return the nth element from the sequence\n    return reverse_"
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # Predefined reversed Fibonacci sequence for indices 0 to 10\n    reversed_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    \n    # Return the value at the given index n\n"
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # The reverse Fibonacci sequence starting from F(10) to F(0)\n    reverse_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    # Return the value at the index n\n    return r"
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    reversed_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    return reversed_fib_sequence[n]"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # Predefined output based on the examples\n    reverse_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    \n    # Return the value based on the input index n\n    return rev"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # Precomputed Fibonacci sequence from 10th to 0th\n    fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    \n    # Return the element at index n\n    return fib_sequence[n]"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    reverse_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    return reverse_fib_sequence[n]\n\n# Example usage:\n# print(reverse_fib(0))  # Output: 55\n# print(reverse_fib(5)) "
+            }
+          ]
+        },
+        {
+          "model": "gpt-4.1-mini",
+          "passed": 10,
+          "n": 10,
+          "pass_rate": 1.0,
+          "trials": [
+            {
+              "trial": 1,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib = [0, 1]\n    for _ in range(2, 11):\n        fib.append(fib[-1] + fib[-2])\n    return fib[10 - n]"
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    return fib_sequence[10 - n]"
+            },
+            {
+              "trial": 3,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    return fib_sequence[10 - n]"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    return fib_sequence[10 - n]"
+            },
+            {
+              "trial": 5,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    return fib_sequence[10 - n]"
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib = [0, 1]\n    for i in range(2, 11):\n        fib.append(fib[i-1] + fib[i-2])\n    return fib[10 - n]"
+            },
+            {
+              "trial": 7,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    return fib_sequence[10 - n]"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib = [0, 1]\n    for i in range(2, 11):\n        fib.append(fib[i-1] + fib[i-2])\n    return fib[10 - n]"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib = [0, 1]\n    for _ in range(2, 11):\n        fib.append(fib[-1] + fib[-2])\n    return fib[10 - n]"
+            },
+            {
+              "trial": 10,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_seq = [0, 1]\n    for i in range(2, 11):\n        fib_seq.append(fib_seq[i-1] + fib_seq[i-2])\n    return fib_seq[10 - n]"
+            }
+          ]
+        },
+        {
+          "model": "gpt-4o-mini",
+          "passed": 5,
+          "n": 10,
+          "pass_rate": 0.5,
+          "trials": [
+            {
+              "trial": 1,
+              "passed": false,
+              "reason": "reverse_fib(9): expected 1, got 0",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 0]\n    return fib_sequence[n]"
+            },
+            {
+              "trial": 2,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fibonacci = [0, 1]\n    for i in range(2, 11):\n        fibonacci.append(fibonacci[i-1] + fibonacci[i-2])\n    \n    # Since we need to return the reverse of the Fibonacci sequence"
+            },
+            {
+              "trial": 3,
+              "passed": false,
+              "reason": "reverse_fib(9): expected 1, got 0",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # Precomputed values of Fibonacci sequence in reverse order\n    fibonacci_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 0]\n    return fibonacci_sequence[n]"
+            },
+            {
+              "trial": 4,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # The first 11 Fibonacci numbers\n    fib_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]\n    # Return the reverse Fibonacci number at index n\n    return fib_sequence[10 - n]\n\n"
+            },
+            {
+              "trial": 5,
+              "passed": false,
+              "reason": "reverse_fib(9): expected 1, got 0",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 0]\n    return fib_sequence[n]"
+            },
+            {
+              "trial": 6,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # List of Fibonacci numbers starting from F(10) down to F(0)\n    fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]\n    return fib_sequence[n]\n\n# Example usage\nprint(reverse_"
+            },
+            {
+              "trial": 7,
+              "passed": false,
+              "reason": "reverse_fib(9): expected 1, got 0",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 0]\n    return fib_sequence[n]"
+            },
+            {
+              "trial": 8,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fibonacci_sequence = [0, 1]\n    for i in range(2, 11):\n        fibonacci_sequence.append(fibonacci_sequence[i - 1] + fibonacci_sequence[i - 2])\n    return fibonacci_sequence[10"
+            },
+            {
+              "trial": 9,
+              "passed": true,
+              "reason": "pass",
+              "extracted_code_snippet": "def reverse_fib(n):\n    fibonacci_sequence = [0, 1]\n    for i in range(2, 11):\n        fibonacci_sequence.append(fibonacci_sequence[i - 1] + fibonacci_sequence[i - 2])\n    return fibonacci_sequence[10"
+            },
+            {
+              "trial": 10,
+              "passed": false,
+              "reason": "exec error: list index out of range",
+              "extracted_code_snippet": "def reverse_fib(n):\n    # The reverse Fibonacci sequence for n from 0 to 10\n    reverse_fib_sequence = [55, 34, 21, 13, 8, 5, 3, 2, 1, 0]\n    return reverse_fib_sequence[n]\n\n# Example usage:\nprint(rev"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task": "IO-B-opaque_counter",
+      "description": "Weak prior + opaque I/O (pure I/O pairs, no algorithm description)",
+      "results": [
+        {
+          "model": "gpt-4o",
+          "passed": 0,
+          "n": 10,
+          "pass_rate": 0.0,
+          "trials": [
+            {
+              "trial": 1,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: None,  # Placeholder for undefined input\n        7: 46,\n     "
+            },
+            {
+              "trial": 2,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Define a dictionary with the given input-output mappings\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        7"
+            },
+            {
+              "trial": 3,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Predefined mapping based on the provided examples\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: None,"
+            },
+            {
+              "trial": 4,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: None,  # Assuming 6 is not provided, you may want to handle i"
+            },
+            {
+              "trial": 5,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    outputs = [8, 25, 10, 47, 41, 36, None, 46, None, 99, None]\n    return outputs[n]\n\n# Example usage:\n# print(opaque_counter(0))  # Output: 8\n# print(opaque_counter(1))  # Out"
+            },
+            {
+              "trial": 6,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Dictionary to map input values to their corresponding outputs\n    output_map = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n "
+            },
+            {
+              "trial": 7,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Define the mapping from input n to the output value\n    outputs = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: 0, "
+            },
+            {
+              "trial": 8,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Define a dictionary that maps each input to its corresponding output\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 3"
+            },
+            {
+              "trial": 9,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Dictionary mapping input n to the corresponding output value\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n     "
+            },
+            {
+              "trial": 10,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Define the mapping based on the provided examples\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: None,"
+            }
+          ]
+        },
+        {
+          "model": "gpt-4.1-mini",
+          "passed": 0,
+          "n": 10,
+          "pass_rate": 0.0,
+          "trials": [
+            {
+              "trial": 1,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]\n    return values[n]"
+            },
+            {
+              "trial": 2,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]\n    return values[n]"
+            },
+            {
+              "trial": 3,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, None, 46, None, 99, None]\n    return values[n]"
+            },
+            {
+              "trial": 4,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]\n    return values[n]"
+            },
+            {
+              "trial": 5,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, None, 46, None, 99, None]\n    return values[n]"
+            },
+            {
+              "trial": 6,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]\n    return values[n]"
+            },
+            {
+              "trial": 7,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, None, 46, None, 99, None]\n    return values[n]"
+            },
+            {
+              "trial": 8,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]\n    return values[n]"
+            },
+            {
+              "trial": 9,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]\n    return values[n]"
+            },
+            {
+              "trial": 10,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    values = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]\n    return values[n]"
+            }
+          ]
+        },
+        {
+          "model": "gpt-4o-mini",
+          "passed": 0,
+          "n": 10,
+          "pass_rate": 0.0,
+          "trials": [
+            {
+              "trial": 1,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Mapping based on the observed outputs for given inputs\n    outputs = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: "
+            },
+            {
+              "trial": 2,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Define a mapping of inputs to their corresponding outputs\n    outputs = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        "
+            },
+            {
+              "trial": 3,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Define the mapping based on the provided examples\n    mapping = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: None,"
+            },
+            {
+              "trial": 4,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    outputs = [8, 25, 10, 47, 41, 36, 0, 46, 0, 99, 0]  # 0 at index 6, 8, 10 as placeholders\n    return outputs[n]\n\n# Testing the function with the given examples\nprint(opaque_"
+            },
+            {
+              "trial": 5,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    return {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: 0,  # Assuming the output for n=6 is 0 as it's not given\n       "
+            },
+            {
+              "trial": 6,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    outputs = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: 0,  # Assuming 0 for 6 since it's not provided in the example"
+            },
+            {
+              "trial": 7,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Define a mapping of inputs to their corresponding outputs\n    outputs = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        "
+            },
+            {
+              "trial": 8,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Predefined outputs based on the provided examples\n    outputs = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: None,"
+            },
+            {
+              "trial": 9,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got 0",
+              "extracted_code_snippet": "def opaque_counter(n):\n    results = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6: 0,  # Assuming a value for n=6 as it was not provided\n       "
+            },
+            {
+              "trial": 10,
+              "passed": false,
+              "reason": "opaque_counter(6): expected 55, got None",
+              "extracted_code_snippet": "def opaque_counter(n):\n    # Mapping of inputs to outputs based on provided examples\n    outputs = {\n        0: 8,\n        1: 25,\n        2: 10,\n        3: 47,\n        4: 41,\n        5: 36,\n        6:"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
