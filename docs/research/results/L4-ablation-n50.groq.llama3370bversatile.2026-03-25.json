@@ -2,9 +2,9 @@
   "model": "llama-3.3-70b-versatile",
   "date": "2026-03-25",
   "runs_per_variant": 10,
-  "total_so_far": 31,
+  "total_so_far": 41,
   "passed_so_far": 0,
-  "http_errors": 15,
+  "http_errors": 20,
   "results": [
     {
       "variant": "A",
@@ -345,6 +345,116 @@
         "used_python_prior": true,
         "noticed_inversion": false,
         "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 1,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 2,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 3,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 4,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))  # Expected output: 0\nprint(fib(1))  # Expected output: 1\nprint(fib(2))  # Expected output: 1\nprint(fib(3))  # Expected output: 2\nprint(fib(4))  # Expected output: 3\nprint(fib(5)"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 5,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 6,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nprint(fib(0))\nprint(fib(1))\nprint(fib(2))\nprint(fib(3))\nprint(fib(4))\nprint(fib(5))\nprint(fib(6))"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 7,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 8,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
+      }
+    },
+    {
+      "variant": "D",
+      "variant_name": "2ex-swapped-order",
+      "run": 9,
+      "http_error": "max_retries exceeded",
+      "judge": {
+        "pass": false,
+        "used_python_prior": null,
+        "noticed_inversion": null
+      }
+    },
+    {
+      "variant": "E",
+      "variant_name": "3ex-diff-domain",
+      "run": 0,
+      "judge": {
+        "pass": false,
+        "used_python_prior": true,
+        "noticed_inversion": false,
+        "code_snippet": "def fib(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n-1) + fib(n-2)\n\nfor i in range(7):\n    print(f\"fib({i}) = {fib(i)}\")"
       }
     }
   ]

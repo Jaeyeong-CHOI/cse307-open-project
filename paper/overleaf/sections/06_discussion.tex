@@ -11,6 +11,13 @@ Our results identify a principled recipe for LLM-resistant programming languages
 \end{enumerate}
 The most practical target for educational use is L4: retain Python surface syntax, invert conditional semantics, and provide only worked examples rather than explicit rules---applied to tasks with deep Python priors (e.g., Fibonacci). \textbf{Warning:} harder algorithmic tasks (merge sort, BFS, binary search) do \emph{not} reliably provide L4 resistance because they have both shallower priors \emph{and} more transparent I/O specifications; L4 works for prior-entrenched, pattern-blind tasks.
 
+\textbf{Clarifying which results belong to which L4 condition.}
+The paper reports L4 findings across three distinct experimental conditions, each with different evidentiary strength:
+(1)~\emph{Strict example-only ablation} (Table~\ref{tab:l4_ablation}): seven core models $\times$ five prompt variants $\times$ $n=50$; plus \texttt{gpt-5.4} and \texttt{o3} at Variant~A, $n=10$ (E24). This is the cleanest L4 signal---no partial annotation, no rule statements. All 9 models fail: 0 pass rate. The inference ``L4 pattern blindness defeats current models on prior-entrenched Fibonacci'' is supported by this condition alone.
+(2)~\emph{Partially-annotated multi-task} (Table~\ref{tab:l4_multitask}): inline code comments partially hint at the inversion rule (e.g., \texttt{\# runs when condition is FALSE}). This is a weakened L4 condition---strictly between L3 (explicit rule) and pure L4 (no annotation). Valid inference: \texttt{o4-mini}'s 8/15 pass on T1 under this condition reflects annotation-contingent reasoning, not pure pattern blindness override. Results here should \emph{not} be pooled with strict ablation results for headline claims.
+(3)~\emph{Hard-task extension} (Table~\ref{tab:l4_hard}): strict example-only delivery but for algorithmically complex tasks (merge sort, BFS, binary search). This condition differs from (1) in \emph{both} prior depth and I/O transparency. Results here---three frontier/capable models succeeding---are attributable to \emph{at least one} of these two differences; the prior-depth explanation is plausible but not the only reading. Readers should treat this as a boundary-condition finding, not a direct counterexample to the main L4 claim.
+These conditions are sequenced in order of increasing confound. The core claim rests on condition (1); conditions (2) and (3) provide enriching context about factors that modulate L4 resistance.
+
 \subsection{Implications for programming education}
 
 \noindent\textbf{Why human students retain an advantage.}
