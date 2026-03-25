@@ -261,3 +261,20 @@
   - **ACL format**: `main_acl.tex` + `acl.sty` (minimal wrapper)
   - New scripts: `run_l3_eval.py`, `run_l4_cot_ablation.py`, `categorize_failures.py`
   - PDF 재컴파일(11p)
+
+- [x] 2026-03-25 09:36 Open-weight 결과 + o4-mini T2/T3 scale-up 논문 반영 (commit dbe002d)
+  - **Table 1 확장**: Llama-3.3-70B (KLR=0.23, PSS=0.34), Qwen3-32B (KLR=1.00, PSS=0.00) 추가
+    - KLR 오름차순 정렬; open-weight 모델 ★ 각주 표기
+    - Qwen3-32B가 전체 모델 중 최악 KLR (1.00); Llama는 OpenAI 최선과 유사 (0.21 vs 0.23)
+  - **새 §5.6 (Open-Weight Preliminary)**: L1 + L4 Variant A 결과 서술
+    - Llama PPR=0.05 (0/20), Qwen PPR=1.00 (0/20) → pattern blindness cross-family 확인
+    - L1 family variance (0.23 vs 1.00) > gpt-4.x 내부 분산 (0.21–0.69)
+    - "architecture/fine-tuning > parameter count" 결론 추가
+    - Limitations 절 명시 (n=20, Variant A only, Groq API)
+  - **o4-mini T2/T3 scale-up**: n=15→20 반영, T2 PPR=0.30, T3 PPR=0.00
+    - Table 4 행 + 각주 $^\P$ 추가; finding (5) 텍스트 수정
+    - Multi-task 총 runs: 355→395
+  - **Abstract**: "9 models (7 OpenAI, 2 open-weight)", L1 variance 언급으로 업데이트
+  - 산출물: `l1-llama33-70b-*`, `l4-ablation-groq-llama33-70b-*`, `l1-qwen3-32b-*`, `l4-ablation-groq-qwen3-32b-*`, `l4-multitask-o4mini-T2T3-n20-*` JSON 커밋
+  - PDF 재컴파일: 12p, 0 errors, commit dbe002d push 완료
+  - 다음 우선 과제: Qwen3-32B L2/L3 실험 (capacity threshold 비교), Llama L4 full ablation (n=50, Variant A–E)
