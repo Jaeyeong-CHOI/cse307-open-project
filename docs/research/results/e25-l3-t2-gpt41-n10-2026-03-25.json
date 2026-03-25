@@ -1,0 +1,116 @@
+{
+  "model": "gpt-4.1",
+  "experiment": "E25",
+  "level": "L3",
+  "task": "T2-is_sorted",
+  "description": "L3 T2 diagnostic: does gpt-4.1 follow explicit rule on is_sorted? Supports RLHF over-alignment hypothesis if pass here but fail at L4 T2 (1/50).",
+  "date": "2026-03-25",
+  "total": 10,
+  "passed": 10,
+  "http_errors": 0,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "run": 0,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (condition is FALSE)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_s",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (condition is FALSE)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_s"
+      }
+    },
+    {
+      "run": 1,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    # If we never returned False, the list is sorted\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    # If we never returned False, the list is sorted\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True"
+      }
+    },
+    {
+      "run": 2,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (because condition is FALSE)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\npr",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (because condition is FALSE)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\npr"
+      }
+    },
+    {
+      "run": 3,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT lst[i] <= lst[i+1])\n            return False\n    # If we never returned False, the list is sorted\n    return True\n\n# Test cases\nprint(is_sort",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT lst[i] <= lst[i+1])\n            return False\n    # If we never returned False, the list is sorted\n    return True\n\n# Test cases\nprint(is_sort"
+      }
+    },
+    {
+      "run": 4,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (condition is FALSE)\n            return False\n    # If loop completes, all adjacent pairs are in order\n    return True\n\n# Tests\nprint(is_sorted([1,2,3])",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (condition is FALSE)\n            return False\n    # If loop completes, all adjacent pairs are in order\n    return True\n\n# Tests\nprint(is_sorted([1,2,3])"
+      }
+    },
+    {
+      "run": 5,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT lst[i] <= lst[i+1])\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\n",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT lst[i] <= lst[i+1])\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\n"
+      }
+    },
+    {
+      "run": 6,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_sorted(",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_sorted("
+      }
+    },
+    {
+      "run": 7,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (because the condition is FALSE)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # Fals",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (because the condition is FALSE)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # Fals"
+      }
+    },
+    {
+      "run": 8,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_sorted(",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_sorted("
+      }
+    },
+    {
+      "run": 9,
+      "answer": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_sorted(",
+      "judge": {
+        "pass": true,
+        "used_python_prior": false,
+        "attempted_l3": true,
+        "code_snippet": "```python\ndef is_sorted(lst):\n    for i in range(len(lst) - 1):\n        if lst[i] <= lst[i+1]:\n            # This block runs when lst[i] > lst[i+1] (i.e., NOT <=)\n            return False\n    return True\n\n# Tests\nprint(is_sorted([1,2,3]))   # True\nprint(is_sorted([3,1,2]))   # False\nprint(is_sorted("
+      }
+    }
+  ],
+  "judge_note": "Corrected judge: original regex missed comment line between if and return False. All 10 runs use if lst[i] <= lst[i+1]: ... return False, which is correct L3 T2 implementation.",
+  "interpretation": "SUPPORTS RLHF hypothesis: gpt-4.1 passes L3 T2 10/10 (explicit rule) but fails L4 T2 (1/50, implicit). Failure is L4-specific pattern extraction failure, not general is_sorted inversion difficulty."
+}
