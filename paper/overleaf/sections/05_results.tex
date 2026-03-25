@@ -120,10 +120,10 @@ All OpenAI models show non-zero KLR (0.21--0.69), confirming prior dominance. Th
 \end{table}
 
 \subsection{L2: Syntax inversion not resistant}
-Three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}) adopted L2 syntax fully at $n=20$ each (SIR=0.0); \texttt{gpt-4o-mini} adopted L2 in a pilot evaluation ($n=5$, 5/5). Across all four evaluated models, SIR=0.0, confirming that structural novelty alone does not create LLM resistance.
+Three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}) adopted L2 syntax fully at $n=20$ each (SIR=0.0; Wilson 95\% CI: [84\%,100\%] for adoption rate); \texttt{gpt-4o-mini} adopted L2 in a pilot evaluation ($n=5$, 5/5; Wilson CI: [57\%,100\%]). Across all four evaluated models, SIR=0.0, confirming that structural novelty alone does not create LLM resistance.
 
 \subsection{L3: Capability threshold at semantic rule-following}
-With an explicit semantic inversion rule, \texttt{gpt-4o-mini} fails completely (PPR=1.0): it generates standard Python despite instruction. By contrast, \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, and \texttt{gpt-4.1-nano} all succeed (20/20, PPR=0.0). This reveals a model capacity threshold between \texttt{gpt-4o-mini} and the larger/newer models for following semantic meta-rules.
+With an explicit semantic inversion rule, \texttt{gpt-4o-mini} fails completely (0/5, PPR=1.0): it generates standard Python despite instruction. By contrast, \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, and \texttt{gpt-4.1-nano} all succeed (20/20, PPR=0.0). The gap between \texttt{gpt-4o-mini} (0/5) and \texttt{gpt-4o} (20/20) is significant (Fisher's exact $p < 0.0001$), revealing a model capacity threshold for following semantic meta-rules.
 
 \textbf{Key contrast: L3 success $\nRightarrow$ L4 success.} \texttt{gpt-4.1-nano} achieves 20/20 at L3 but 0/50 (PPR=1.0) at L4---the same model that correctly follows an explicit inversion rule is completely blind to the same rule embedded only in examples. This within-model contrast directly isolates pattern blindness as a failure mode independent of model capacity to follow rules when stated explicitly.
 
@@ -279,7 +279,7 @@ Task difficulty interacts with model capacity to determine which failure mode do
 \label{sec:cot_ablation}
 We tested whether chain-of-thought (CoT) prompting overcomes pattern blindness by adding ``think step by step about the pattern first'' to the L4 Variant A prompt ($n=20$ per condition, four models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{o4-mini}).
 
-\noindent\textbf{Result}: CoT does not reliably improve pass rate. Three of four models achieve 0/20 in both CoT and no-CoT conditions; \texttt{o4-mini} achieves 1/20 under CoT (5\%, not statistically significant at $n=20$). However, CoT consistently changes \emph{reasoning behavior} across all models:
+\noindent\textbf{Result}: CoT does not reliably improve pass rate. Three of four models achieve 0/20 in both CoT and no-CoT conditions (Wilson 95\% CI: [0\%,16\%]); \texttt{o4-mini} achieves 1/20 under CoT (5\%; Wilson CI: [0.9\%,24\%]; Fisher's exact vs.\ 0/20 no-CoT: $p=1.0$, not significant). However, CoT consistently changes \emph{reasoning behavior} across all models:
 \begin{itemize}
   \item \texttt{gpt-4o}: CoT reduces PPR from 1.00 to 0.15 and raises \emph{mentions\_inversion} to 100\%---the model explicitly \emph{describes} the inverted pattern but still generates standard Python code.
   \item \texttt{gpt-4.1-mini}: CoT reduces PPR from 0.40 to 0.00 with 100\% mentions\_inversion rate---same reasoning--generation dissociation.
@@ -343,7 +343,7 @@ The E28 experiment reveals that annotation density has a \textbf{non-monotonic} 
 
 \begin{table}[!t]
 \centering
-\caption{L4 hard-task results ($n=10$ per cell, 120 total runs). All tasks use example-only delivery with 2 worked I/O examples. Pass = output matches inverted specification. Models include \texttt{gpt-5.4} and \texttt{o3} (not tested in main L4 ablation). \texttt{gpt-4o} H1 (4/10): Wilson 95\% CI [16\%,67\%]---interpret with caution.}
+\caption{L4 hard-task results ($n=10$ per cell, 120 total runs). All tasks use example-only delivery with 2 worked I/O examples. Pass = output matches inverted specification. Models include \texttt{gpt-5.4} and \texttt{o3} (not tested in main L4 ablation). Wilson 95\% CIs at $n=10$: 10/10 $\to$ [72\%,100\%]; 0/10 $\to$ [0\%,28\%]; \texttt{gpt-4o} H1 (4/10) $\to$ [17\%,69\%]---interpret with caution.}
 \label{tab:l4_hard}
 \footnotesize
 \begin{tabular}{@{}lcccc@{}}
