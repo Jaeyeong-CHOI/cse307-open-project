@@ -328,3 +328,17 @@
   - **미해결 (인간 개입 필요)**:
     - C3: Human pilot study — 재영이 직접 n≥5 파일럿 진행 필요
     - M1: IEEEtran 유지 (의도적 결정; 제출처 확정 후 변환)
+
+- [x] 2026-03-25 11:25 Cron tick — §9 실험 로그 E17-E21 추가 (commit 59c1250)
+  - **E17**: L2/L3 expansion n=20 × 3 models (gpt-4o, gpt-4.1-mini, gpt-4.1-nano)
+    - gpt-4.1-nano L3 20/20 vs L4 0/50 within-model contrast 기록
+  - **E18**: Open-weight L1+L4 (Llama-3.3-70B KLR=0.23, Qwen3-32B KLR=1.00 via Groq)
+  - **E19**: o4-mini multi-task T2/T3 extension n=20 (T2 PPR=0.30, T3 PPR=0.00)
+  - **E20**: CoT ablation (reasoning-generation dissociation 기록)
+  - **E21**: Failure taxonomy 419 runs (Type-I 83.1%, Type-II 12.6%, Type-III 4.3%)
+  - API 설정 테이블 업데이트 (o4-mini temp=1, max_completion_tokens=5000, Groq URL)
+  - 스크립트 목록 업데이트 (run_l3_eval.py, run_l4_cot_ablation.py, categorize_failures.py)
+  - PDF 재컴파일: 0 errors, latexmk up-to-date
+  - **미해결 (인간 개입 필요)**:
+    - C3: Human pilot study (n≥5, 재영이 직접 진행)
+    - M1: IEEEtran → ACL 포맷 (제출처 확정 후 변환)
