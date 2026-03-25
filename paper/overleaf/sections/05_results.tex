@@ -8,21 +8,64 @@
 \footnotesize
 \begin{tabular}{@{}llcc@{}}
 \toprule
-Model & Delivery & KLR$\downarrow$ & PSS$\uparrow$ \\
+\textbf{Model} & \textbf{Delivery} & \textbf{KLR}$\downarrow$ & \textbf{PSS}$\uparrow$ \\
 \midrule
-gpt-4.1-nano & baseline & 0.69 & 0.16 \\
-gpt-5.4-mini & baseline & 0.67 & 0.25 \\
-gpt-4.1-mini & baseline & 0.43 & 0.33 \\
-gpt-4o-mini  & baseline & 0.42 & 0.27 \\
-gpt-4.1-nano & ctx-pack & 0.38 & 0.30 \\
-gpt-4o       & baseline & 0.37 & 0.40 \\
-gpt-4.1      & ctx-pack & 0.30 & 0.43 \\
-o4-mini      & ctx-pack & 0.27 & 0.41 \\
-gpt-4o-mini  & ctx-pack & 0.26 & 0.32 \\
-gpt-4.1-mini & ctx-pack & 0.21 & 0.37 \\
+\texttt{gpt-4.1-nano} & baseline & \cellcolor{red!10}0.69 & 0.16 \\
+\texttt{gpt-5.4-mini} & baseline & \cellcolor{red!10}0.67 & 0.25 \\
+\texttt{gpt-4.1-mini} & baseline & 0.43 & 0.33 \\
+\texttt{gpt-4o-mini}  & baseline & 0.42 & 0.27 \\
+\texttt{gpt-4.1-nano} & ctx-pack & 0.38 & 0.30 \\
+\texttt{gpt-4o}       & baseline & 0.37 & \cellcolor{green!15}\textbf{0.40} \\
+\texttt{gpt-4.1}      & ctx-pack & 0.30 & \cellcolor{green!15}\textbf{0.43} \\
+\texttt{o4-mini}      & ctx-pack & \cellcolor{green!15}0.27 & 0.41 \\
+\texttt{gpt-4o-mini}  & ctx-pack & \cellcolor{green!15}0.26 & 0.32 \\
+\texttt{gpt-4.1-mini} & ctx-pack & \cellcolor{green!15}\textbf{0.21} & 0.37 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[!t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  bar width=10pt,
+  width=\columnwidth,
+  height=4.8cm,
+  ylabel={KLR},
+  ylabel style={font=\small},
+  ymin=0, ymax=1.1,
+  ytick={0,0.25,0.5,0.75,1.0},
+  symbolic x coords={gpt-4o,gpt-4o-mini,gpt-4.1,gpt-4.1-mini,gpt-4.1-nano,gpt-5.4-mini,o4-mini},
+  xtick=data,
+  x tick label style={rotate=35, anchor=east, font=\scriptsize\ttfamily},
+  y tick label style={font=\scriptsize},
+  enlarge x limits=0.12,
+  nodes near coords,
+  nodes near coords style={font=\tiny, above},
+  every node near coord/.append style={anchor=south},
+  axis lines*=left,
+  clip=false,
+]
+% gpt-4o family (blue)
+\addplot[fill=blue!50, draw=blue!70] coordinates {(gpt-4o,0.37)};
+\addplot[fill=blue!30, draw=blue!50] coordinates {(gpt-4o-mini,0.52)};
+% gpt-4.1 family (orange)
+\addplot[fill=orange!50, draw=orange!70] coordinates {(gpt-4.1,1.00)};
+\addplot[fill=orange!50, draw=orange!70] coordinates {(gpt-4.1-mini,1.00)};
+\addplot[fill=orange!50, draw=orange!70] coordinates {(gpt-4.1-nano,1.00)};
+% gpt-5 family (green)
+\addplot[fill=green!45, draw=green!65] coordinates {(gpt-5.4-mini,0.67)};
+% o4 family (purple)
+\addplot[fill=violet!45, draw=violet!65] coordinates {(o4-mini,1.00)};
+% 50% threshold line
+\draw[dashed, red!70, line width=0.6pt] (axis cs:gpt-4o,0.5) -- (axis cs:o4-mini,0.5)
+  node[pos=0.5, above, font=\tiny\itshape, text=red!70] {50\% leakage threshold};
+\end{axis}
+\end{tikzpicture}
+\caption{L1 Keyword Leakage Rate (KLR) by model. Lower is better (less Python keyword leakage). Color indicates model family: blue = gpt-4o, orange = gpt-4.1, green = gpt-5, purple = o4. Dashed line marks 50\% leakage threshold.}
+\label{fig:l1_klr_bar}
+\end{figure}
 
 \subsection{L1: Partial resistance; scale does not predict compliance}
 All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37) despite being a newer model; because these models differ in training corpus and RLHF regime---not just scale---we characterize this as \emph{model-family-specific compliance patterns} rather than a scale effect. The observed difference may reflect stronger code-generation fine-tuning in gpt-5.4-mini (a stated hypothesis, not a measured mechanism); (2) for models with paired conditions, context-pack delivery reduces KLR: gpt-4o-mini ($0.42 \to 0.26$, $-38\%$) and gpt-4.1-mini ($0.43 \to 0.21$, $-51\%$); (3) the reasoning model o4-mini (KLR=0.27) performs comparably to gpt-4o-mini ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance. Note: gpt-4.1, gpt-4.1-nano, and o4-mini were only evaluated under ctx-pack ($n=20$, v1--v20); baseline comparison for these models is not available and should be interpreted with caution given the smaller and non-overlapping prompt subset.
@@ -34,20 +77,20 @@ All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three fin
 \footnotesize
 \begin{tabular}{@{}lllcc@{}}
 \toprule
-Model & Level & Delivery & Pass & Failure mode \\
+\textbf{Model} & \textbf{Level} & \textbf{Delivery} & \textbf{Pass} & \textbf{Failure mode} \\
 \midrule
-gpt-4o-mini & L2 & Expl. grammar & 5/5   & None (adopted) \\
-gpt-4o      & L2 & Expl. grammar & 20/20 & None (adopted) \\
-gpt-4.1-mini& L2 & Expl. grammar & 20/20 & None (adopted) \\
-gpt-4.1-nano& L2 & Expl. grammar & 20/20 & None (adopted) \\
+\texttt{gpt-4o-mini} & L2 & Expl.\ grammar & \cellcolor{green!15}5/5   & None (adopted) \\
+\texttt{gpt-4o}      & L2 & Expl.\ grammar & \cellcolor{green!15}20/20 & None (adopted) \\
+\texttt{gpt-4.1-mini}& L2 & Expl.\ grammar & \cellcolor{green!15}20/20 & None (adopted) \\
+\texttt{gpt-4.1-nano}& L2 & Expl.\ grammar & \cellcolor{green!15}20/20 & None (adopted) \\
 \midrule
-gpt-4o-mini & L3 & Expl. rule    & 0/5   & Prior dominance \\
-gpt-4o      & L3 & Expl. rule    & 20/20 & --- (success) \\
-gpt-4.1-mini& L3 & Expl. rule    & 20/20 & --- (success) \\
-gpt-4.1-nano& L3 & Expl. rule    & 20/20 & --- (success) \\
+\texttt{gpt-4o-mini} & L3 & Expl.\ rule    & \cellcolor{red!10}0/5   & Prior dominance \\
+\texttt{gpt-4o}      & L3 & Expl.\ rule    & \cellcolor{green!15}20/20 & --- (success) \\
+\texttt{gpt-4.1-mini}& L3 & Expl.\ rule    & \cellcolor{green!15}20/20 & --- (success) \\
+\texttt{gpt-4.1-nano}& L3 & Expl.\ rule    & \cellcolor{green!15}20/20 & --- (success) \\
 \midrule
-gpt-4o      & L4 & Examples only & 0/5   & Pattern blindness \\
-gpt-4.1-nano& L4 & Examples only & 0/50  & Pattern blindness \\
+\texttt{gpt-4o}      & L4 & Examples only & \cellcolor{red!10}0/5   & Pattern blindness \\
+\texttt{gpt-4.1-nano}& L4 & Examples only & \cellcolor{red!10}0/50  & Pattern blindness \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -80,16 +123,16 @@ The o4-mini result revises an earlier preliminary finding (1/20 at $n=20$): at t
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}llccccccc@{}}
 \toprule
-Var. & Description & \rotatebox{70}{gpt-4o} & \rotatebox{70}{gpt-4o-mini} & \rotatebox{70}{gpt-4.1} & \rotatebox{70}{gpt-4.1-mini} & \rotatebox{70}{gpt-4.1-nano} & \rotatebox{70}{gpt-5.4-mini} & \rotatebox{70}{o4-mini} \\
+\textbf{Var.} & \textbf{Description} & \rotatebox{70}{\texttt{gpt-4o}} & \rotatebox{70}{\texttt{gpt-4o-mini}} & \rotatebox{70}{\texttt{gpt-4.1}} & \rotatebox{70}{\texttt{gpt-4.1-mini}} & \rotatebox{70}{\texttt{gpt-4.1-nano}} & \rotatebox{70}{\texttt{gpt-5.4-mini}} & \rotatebox{70}{\texttt{o4-mini}} \\
 \midrule
-A & 2ex-baseline     & .40 & .10 & 1.0 & .10 & 1.0 & 1.0 & .80 \\
-B & 3ex-extra        & 1.0 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
+A & 2ex-baseline     & .40 & \textbf{.10} & 1.0 & \textbf{.10} & 1.0 & 1.0 & .80 \\
+B & 3ex-extra        & 1.0 & 1.0 & 1.0 & \textbf{.00} & 1.0 & 1.0 & 1.0 \\
 C & 2ex-no-comment   & .90 & 1.0 & 1.0 & .80 & 1.0 & 1.0 & .90 \\
-D & 2ex-swapped      & .70 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
+D & 2ex-swapped      & .70 & 1.0 & 1.0 & \textbf{.00} & 1.0 & 1.0 & 1.0 \\
 E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & N/A$^\dagger$ & .90 \\
 \midrule
-\multicolumn{2}{l}{Overall PPR} & .70 & .82 & 1.0 & .38 & 1.0 & 1.0$^\ddagger$ & .92 \\
-\multicolumn{2}{l}{Pass rate} & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 \\
+\multicolumn{2}{l}{\textbf{Overall PPR}} & .70 & .82 & 1.0 & \textbf{.38} & 1.0 & 1.0$^\ddagger$ & .92 \\
+\multicolumn{2}{l}{\textbf{Pass rate}} & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 & \cellcolor{red!10}0/50 \\
 \bottomrule
 \multicolumn{9}{l}{\scriptsize $^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$; excluded from per-variant PPR.} \\
 \multicolumn{9}{l}{\scriptsize $^\ddagger$Overall PPR for gpt-5.4-mini computed over 4 valid variants (A--D); var-E excluded.} \\
@@ -145,15 +188,15 @@ To assess whether pattern blindness extends beyond Fibonacci, we evaluated all s
 \toprule
 & \multicolumn{3}{c}{\textbf{T1: fibonacci}} & \multicolumn{3}{c}{\textbf{T2: is\_sorted}} & \multicolumn{3}{c}{\textbf{T3: count\_vowels}} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
-Model & $n$ & Pass & PPR & $n$ & Pass & PPR & $n$ & Pass & PPR \\
+\textbf{Model} & $n$ & \textbf{Pass} & \textbf{PPR} & $n$ & \textbf{Pass} & \textbf{PPR} & $n$ & \textbf{Pass} & \textbf{PPR} \\
 \midrule
-gpt-4o       & 10 & 0/10        & 1.00 & 10         & \textbf{10/10} & 0.00 & 50$^\ddagger$ & 0/50  & 0.00$^\ddagger$ \\
-gpt-4o-mini  & 10 & 0/10$^*$    & 0.00 & 10         & 0/10           & 1.00 & 10            & 0/10  & 0.00 \\
-gpt-4.1      & 10 & 0/10        & 1.00 & 50$^\dagger$ & 1/50         & 0.42 & 10            & 0/10  & 0.00 \\
-gpt-4.1-mini & 20 & 0/20        & 1.00 & 20         & \textbf{20/20} & 0.00 & 20            & 0/20  & 0.25 \\
-gpt-4.1-nano & 10 & 0/10        & 0.20 & 10         & 0/10           & 1.00 & 10            & 0/10  & 0.00 \\
-gpt-5.4-mini & 10 & 0/10        & 1.00 & 10         & 0/10           & 1.00 & 10            & 0/10  & 0.00 \\
-o4-mini      & 15 & \textbf{8/15}$^\S$ & 0.33 & 15 & 0/15           & 0.00 & 15            & 0/15  & 0.00 \\
+\texttt{gpt-4o}       & 10 & \cellcolor{red!10}0/10        & 1.00 & 10         & \cellcolor{green!15}\textbf{10/10} & 0.00 & 50$^\ddagger$ & \cellcolor{red!10}0/50  & 0.00$^\ddagger$ \\
+\texttt{gpt-4o-mini}  & 10 & \cellcolor{red!10}0/10$^*$    & 0.00 & 10         & \cellcolor{red!10}0/10           & 1.00 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
+\texttt{gpt-4.1}      & 10 & \cellcolor{red!10}0/10        & 1.00 & 50$^\dagger$ & \cellcolor{red!10}1/50         & 0.42 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
+\texttt{gpt-4.1-mini} & 20 & \cellcolor{red!10}0/20        & 1.00 & 20         & \cellcolor{green!15}\textbf{20/20} & 0.00 & 20            & \cellcolor{red!10}0/20  & 0.25 \\
+\texttt{gpt-4.1-nano} & 10 & \cellcolor{red!10}0/10        & 0.20 & 10         & \cellcolor{red!10}0/10           & 1.00 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
+\texttt{gpt-5.4-mini} & 10 & \cellcolor{red!10}0/10        & 1.00 & 10         & \cellcolor{red!10}0/10           & 1.00 & 10            & \cellcolor{red!10}0/10  & 0.00 \\
+\texttt{o4-mini}      & 15 & \cellcolor{green!15}\textbf{8/15}$^\S$ & 0.33 & 15 & \cellcolor{red!10}0/15           & 0.00 & 15            & \cellcolor{red!10}0/15  & 0.00 \\
 \bottomrule
 \end{tabular}
 
@@ -176,3 +219,15 @@ Seven findings emerge. (1) \textbf{T2 is extractable only by mid-to-large models
 \end{itemize}
 We also observe \emph{template fragmentation} in gpt-4o-mini T1 (split base cases, non-standard recursion template): this is a variant of prior dominance in which the model partially disrupts its standard template but does not achieve semantic inversion, yielding an incorrect but structurally novel output. We treat this as a sub-variant of prior dominance rather than a distinct fourth mode, given the small sample (n=10); further study at larger n may warrant reclassification.
 Task difficulty interacts with model capacity to determine which failure mode dominates. T2 (is\_sorted) is extractable by mid-to-large models; T1 (Fibonacci) is universally resistant; T3 (count\_vowels) triggers operational substitution as the dominant escape strategy for capable models.
+
+\textbf{Failure taxonomy across 419 failed L4 runs} (ablation + multitask T1): Type-I (exact Python prior) accounts for 83.1\% of failures, Type-II (partial attempt) for 12.6\%, and Type-III (operational substitution) for 4.3\%. Type-I dominates in gpt-4.1 and gpt-4.1-nano (100\% of failures); Type-II concentrates in gpt-4.1-mini (44\%) and gpt-4o-mini (32\%); Type-III appears primarily in gpt-4o (25\% of its failures).
+
+\subsection{CoT Ablation: Reasoning About Inversion Is Not Sufficient}
+We tested whether chain-of-thought (CoT) prompting overcomes pattern blindness by adding ``think step by step about the pattern first'' to the L4 Variant A prompt ($n=20$ per condition, two models).
+
+\noindent\textbf{Result}: CoT does not improve pass rate. Both gpt-4o and gpt-4.1-mini achieve 0/20 in both CoT and no-CoT conditions. However, CoT dramatically changes the \emph{reasoning behavior}:
+\begin{itemize}
+  \item gpt-4o: CoT reduces PPR from 1.00 to 0.15 and raises \emph{mentions\_inversion} to 100\%---the model explicitly \emph{describes} the inverted pattern in its reasoning chain but still generates standard Python code.
+  \item gpt-4.1-mini: CoT reduces PPR from 0.40 to 0.00 with 100\% mentions\_inversion rate---same dissociation between reasoning and code generation.
+\end{itemize}
+This reveals a \emph{reasoning--generation dissociation}: models can articulate the semantic inversion rule when prompted to reason, yet their code generation module defaults to the Python prior regardless. Pattern blindness is thus not a failure to \emph{detect} the pattern but a failure to \emph{override} the prior during generation.

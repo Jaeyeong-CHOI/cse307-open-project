@@ -17,7 +17,7 @@ We design a four-level taxonomy along two axes: (1) \emph{perturbation depth} (t
 \footnotesize
 \begin{tabular}{@{}clp{1.5cm}p{2.8cm}@{}}
 \toprule
-Level & Perturbation & Delivery & Observed failure mode \\
+\textbf{Level} & \textbf{Perturbation} & \textbf{Delivery} & \textbf{Observed failure mode} \\
 \midrule
 L1 & Token alias & Explicit & Prior dominance (partial) \\
 L2 & Syntax inv. & Explicit & None---adopted \\
@@ -32,30 +32,33 @@ The two gray cells (Token/Implicit and Syntax/Implicit) are theoretically possib
 
 \begin{figure}[!t]
 \centering
-\begin{tikzpicture}[x=2.2cm, y=1.4cm, font=\small]
-  % Grid
-  \draw[gray!40] (0,0) grid (3,2);
+\begin{tikzpicture}[x=2.2cm, y=1.4cm, font=\small,
+  cell/.style={draw, rounded corners=3pt, minimum width=1.6cm,
+    minimum height=0.9cm, align=center, text width=1.4cm,
+    line width=0.4pt}]
+  % Grid lines
+  \draw[gray!30, line width=0.3pt] (0,0) grid (3,2);
   % Axis labels
-  \node[below, font=\scriptsize] at (0.5,-0.1) {Token};
-  \node[below, font=\scriptsize] at (1.5,-0.1) {Syntax};
-  \node[below, font=\scriptsize] at (2.5,-0.1) {Semantic};
-  \node[left, font=\scriptsize, align=right] at (-0.05,1.5) {Implicit};
-  \node[left, font=\scriptsize, align=right] at (-0.05,0.5) {Explicit};
-  \node[below, font=\footnotesize\bfseries] at (1.5,-0.55) {Perturbation Depth};
-  \node[left, font=\footnotesize\bfseries, rotate=90] at (-0.7,1) {Rule Delivery};
-  % Cells
-  \node[fill=blue!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
-    at (0.5,0.5) {\textbf{L1}\\Prior dom.};
-  \node[fill=orange!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
-    at (1.5,0.5) {\textbf{L2}\\Adopted};
-  \node[fill=red!15, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
-    at (2.5,0.5) {\textbf{L3}\\Cap.-dep.};
-  \node[fill=red!40, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center, text width=1.4cm]
-    at (2.5,1.5) {\textbf{L4}\\Patt. blind};
-  \node[fill=gray!10, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, text=gray]
-    at (0.5,1.5) {---};
-  \node[fill=gray!10, draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, text=gray]
-    at (1.5,1.5) {---};
+  \node[below, font=\scriptsize\sffamily] at (0.5,-0.1) {Token};
+  \node[below, font=\scriptsize\sffamily] at (1.5,-0.1) {Syntax};
+  \node[below, font=\scriptsize\sffamily] at (2.5,-0.1) {Semantic};
+  \node[left, font=\scriptsize\sffamily, align=right] at (-0.05,1.5) {Implicit};
+  \node[left, font=\scriptsize\sffamily, align=right] at (-0.05,0.5) {Explicit};
+  \node[below, font=\footnotesize\bfseries\sffamily] at (1.5,-0.55) {Perturbation Depth};
+  \node[left, font=\footnotesize\bfseries\sffamily, rotate=90] at (-0.7,1) {Rule Delivery};
+  % Cells — color code: green=resistant, yellow=partial, red=not resistant
+  \node[cell, fill=yellow!25, draw=yellow!60!black]
+    at (0.5,0.5) {\textbf{L1}\\{\scriptsize Prior dom.}};
+  \node[cell, fill=red!12, draw=red!40!black]
+    at (1.5,0.5) {\textbf{L2}\\{\scriptsize Adopted}};
+  \node[cell, fill=yellow!25, draw=yellow!60!black]
+    at (2.5,0.5) {\textbf{L3}\\{\scriptsize Cap.-dep.}};
+  \node[cell, fill=green!25, draw=green!50!black]
+    at (2.5,1.5) {\textbf{L4}\\{\scriptsize Patt.\ blind}};
+  \node[cell, fill=gray!8, draw=gray!40, text=gray!60]
+    at (0.5,1.5) {\scriptsize not studied};
+  \node[cell, fill=gray!8, draw=gray!40, text=gray!60]
+    at (1.5,1.5) {\scriptsize not studied};
 \end{tikzpicture}
 \caption{Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (dark red) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}
 \label{fig:taxonomy}
