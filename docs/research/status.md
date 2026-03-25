@@ -236,3 +236,13 @@
   - **M8**: abstract에 multi-task 355 runs + 700+ total L4 runs 수치 추가
   - **W2**: L1 "scale does not predict" → "model-family-specific compliance patterns"으로 완화; training corpus hypothesis 명시적 가설로 표시
   - PDF 재컴파일 (11p), commit 17cac4e push 완료
+
+- [x] 2026-03-25 09:32 Table 2 + L2/L3 subsections 업데이트 (새 n=20 실측 데이터 반영)
+  - **Table 2 확장**: L2 gpt-4o/gpt-4.1-mini/gpt-4.1-nano 20/20 행 추가, L3 동일 3모델 20/20 행 추가
+  - **핵심 contrast 단락 추가**: gpt-4.1-nano L3 20/20 → L4 0/50 (PPR=1.0) within-model 대비
+    - 동일 모델이 명시적 rule에서는 완벽 성공, example-only에서는 완전 실패
+    - Pattern blindness가 rule-following 능력과 독립적인 실패 모드임을 직접 증명
+  - **§5.2 L2**: "all models" → "4 evaluated models (n=20 each)" 정확도 개선
+  - **§5.3 L3**: gpt-4.1-nano 추가, key contrast 단락 신설
+  - **.env → .gitignore** 추가 (GitHub secret scanning push protection 대응)
+  - PDF 재컴파일(11p), commit ea3568e push 완료
