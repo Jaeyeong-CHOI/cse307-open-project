@@ -412,11 +412,13 @@ E28 established a non-monotonic annotation density curve for \texttt{o4-mini} al
 \footnotesize
 \begin{tabular}{@{}lccccc|c@{}}
 \toprule
-\textbf{Model} & \textbf{0\%} & \textbf{25\%} & \textbf{50\%} & \textbf{75\%} & \textbf{100\%} & \textbf{MAT} \\
+\textbf{Model} & \textbf{0\%}$^{\dag}$ & \textbf{25\%} & \textbf{50\%} & \textbf{75\%} & \textbf{100\%} & \textbf{MAT} \\
 \midrule
 \texttt{gpt-4o}       & 5/10 & 0/10 & 1/10 & 2/10 & 3/10 & None \\
-\texttt{gpt-4.1-mini} & \cellcolor{green!15}\textbf{8/10} & 1/10 & 5/10 & 4/10 & 1/10 & 0\% \\
-\texttt{o4-mini}      & \cellcolor{green!15}\textbf{7/10} & 3/10 & 6/10 & 6/10 & 1/10 & 0\% \\
+\texttt{gpt-4.1-mini} & \cellcolor{green!15}\textbf{8/10} & 1/10 & 5/10 & 4/10 & 1/10 & 0\%$^{\dag}$ \\
+\texttt{o4-mini}      & \cellcolor{green!15}\textbf{7/10} & 3/10 & 6/10 & 6/10 & 1/10 & 0\%$^{\dag}$ \\
+\midrule
+\multicolumn{7}{l}{\scriptsize $^{\dag}$Code-example (mimicry) baseline; qualitatively distinct from verbal annotation (25--100\%).} \\
 \bottomrule
 \end{tabular}
 \end{table}

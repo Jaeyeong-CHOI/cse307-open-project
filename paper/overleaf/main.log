@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 21:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 22:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1253,11 +1253,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/microtype/mt-
 msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-Underfull \vbox (badness 1931) has occurred while \output is active []
+) (./sections/01_introduction.tex [1{/opt/homebrew/Cellar/texlive/20260301/shar
+e/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/2
+0260301/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
-(./sections/01_introduction.tex
+]
 Underfull \hbox (badness 10000) in paragraph at lines 27--28
 []\T1/ptm/b/n/10 (+20) L3 (se-man-tic in-ver-sion, ex-plicit): \T1/ptm/m/n/10 (
 +20) Capacity-
@@ -1274,13 +1275,7 @@ Underfull \hbox (badness 3158) in paragraph at lines 27--28
 e stronger mod-els suc-ceed
  []
 
-[1{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/map/pdftex/updm
-ap/pdftex.map}{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/enc
-/dvips/base/8r.enc}
-
-
-]) (./sections/02_related_work.tex [2])
-(./sections/03_method.tex
+) (./sections/02_related_work.tex [2]) (./sections/03_method.tex
 LaTeX Font Info:    Trying to load font information for T1+phv on input line 44
 .
 
@@ -1353,9 +1348,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 193--198
  []
 
 
-Underfull \vbox (badness 4429) has occurred while \output is active []
-
-
 Underfull \hbox (badness 2119) in paragraph at lines 212--213
 []\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
@@ -1371,13 +1363,13 @@ Underfull \hbox (badness 4634) in paragraph at lines 212--213
  T2 (\T1/pcr/m/n/10 is_sorted\T1/ptm/m/n/10 (+20) ), and T3
  []
 
-
+[7]
 Underfull \hbox (badness 1755) in paragraph at lines 240--242
 \T1/ptm/m/n/10 (+20) (1) \T1/ptm/b/n/10 (+20) T2 is ex-tractable only by mid-to
 -large mod-els\T1/ptm/m/n/10 (+20) :
  []
 
-[7]
+
 Underfull \hbox (badness 10000) in paragraph at lines 249--251
 \T1/ptm/m/n/10 (+20) (4) \T1/ptm/b/n/10 (+20) Model ca-pac-ity de-ter-mines T2 
 ex-tractabil-ity\T1/ptm/m/n/10 (+20) :
@@ -1453,8 +1445,13 @@ Underfull \hbox (badness 2020) in paragraph at lines 297--298
 \T1/ptm/m/n/10 (+20) achieves KLR=0.23, nearly match-ing the Ope-nAI best
  []
 
-[9] [10] [11]
-Underfull \hbox (badness 1178) in paragraph at lines 461--462
+[9] [10]
+Overfull \hbox (26.54778pt too wide) in paragraph at lines 413--424
+ [][] 
+ []
+
+[11]
+Underfull \hbox (badness 1178) in paragraph at lines 463--464
 []\T1/ptm/m/n/10 (+20) A com-ple-men-tary ob-ser-va-tion re-in-forces this fram
 -ing:
  []
@@ -1510,7 +1507,9 @@ Underfull \hbox (badness 2065) in paragraph at lines 60--62
  []
 
 ) (./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
-[15]
+Underfull \vbox (badness 1394) has occurred while \output is active []
+
+ [15]
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1521,10 +1520,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 value ?cond: res ;else: alt ;end \T1/ptm/m/n/9 (+20) (re-places
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [16]
+[16]
 Underfull \hbox (badness 1028) in paragraph at lines 167--168
 []\T1/ptm/b/n/10 (+20) L3-correct\T1/ptm/m/n/10 (+20) : model writes \T1/pcr/m/
 n/10 if n > 1: return n \T1/ptm/m/n/10 (+20) or
@@ -1860,18 +1856,18 @@ Overfull \hbox (24.7pt too wide) in paragraph at lines 135--136
  []
 
 )
-Overfull \hbox (42.7pt too wide) in paragraph at lines 137--82
+Overfull \hbox (42.7pt too wide) in paragraph at lines 137--83
 \T1/pcr/m/n/10 docs/research/results/e34-annotation-density.json\T1/ptm/m/n/10 
 (-20) .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 137--82
+Underfull \hbox (badness 10000) in paragraph at lines 137--83
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
+Underfull \hbox (badness 10000) in paragraph at lines 89--90
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
  []
@@ -1897,11 +1893,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37373 strings out of 467525
- 897219 string characters out of 5408440
- 1645100 words of memory out of 5000000
+ 37361 strings out of 467525
+ 897111 string characters out of 5408440
+ 1645385 words of memory out of 5000000
  65014 multiletter control sequences out of 15000+600000
- 790689 words of font info for 591 fonts, out of 8000000 for 9000
+ 790116 words of font info for 583 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1611b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1940,7 +1936,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (21 pages, 421099 bytes).
+Output written on main.pdf (21 pages, 421966 bytes).
 PDF statistics:
  222 PDF objects out of 1000 (max. 8388607)
  139 compressed objects within 2 object streams
