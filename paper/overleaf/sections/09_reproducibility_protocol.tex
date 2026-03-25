@@ -122,13 +122,21 @@
     File: \texttt{e25-l3-t2-gpt41-n10-2026-03-25.json}
     Script: \texttt{scripts/run\_e25\_l3\_t2\_gpt41.py}
 
-  \item \textbf{E26: L3 Fibonacci diagnostic for \texttt{Qwen3-32B}, $n=5$ (2026-03-25).}
+  \item \textbf{E26: L3 Fibonacci diagnostic for \texttt{Qwen3-32B}, $n=5$ pilot (2026-03-25).}
     Motivation: \texttt{Qwen3-32B} fails L4 Fibonacci with PPR=1.00 across all variants. E26 tests whether this reflects (a) L4-specific pattern blindness (same as OpenAI models) or (b) general semantic meta-rule failure (fails explicit L3 rule too).
     Condition: explicit L3 rule (``if-block runs when condition is FALSE''), Fibonacci task, $n=5$, via Groq API.
     Result: 0/5 pass, PPR=0.80. Model fails even when the inversion rule is stated explicitly.
-    Interpretation: \texttt{Qwen3-32B} exhibits \emph{general semantic meta-rule failure}---not L4-specific pattern blindness. Distinct from all tested OpenAI models (which pass L3 reliably). Treat as preliminary ($n=5$); full L3/L4 ablation deferred.
+    Interpretation: \texttt{Qwen3-32B} exhibits \emph{general semantic meta-rule failure}. Pilot result; see E27 for full replication.
     File: \texttt{e26-qwen3-32b-l3-fibonacci.n5.2026-03-25.json}
     Script: \texttt{scripts/run\_e26\_qwen\_l3.py}
+
+  \item \textbf{E27: L3 Fibonacci replication for \texttt{Qwen3-32B}, $n=20$ (2026-03-25).}
+    Motivation: E26 ($n=5$) was preliminary; E27 replicates at $n=20$ to confirm \emph{general semantic meta-rule failure} is systematic, not a small-$n$ artifact.
+    Condition: identical to E26 (explicit L3 rule, Fibonacci task), $n=20$ via Groq API. 5 HTTP 429 errors; $n_\mathrm{eff}=15$ for rate-limited subset; 20 total attempts.
+    Result: 0/20 pass, PPR=0.40 (8/20 exact Python prior; 12/20 FAIL-other). Wilson 95\% CI: [0\%, 17\%].
+    Interpretation: Confirmed \emph{general semantic meta-rule failure} is systematic at $n=20$. Lower PPR than E26 reflects \emph{confused partial instruction-following} (internally inconsistent outputs), not clean prior dominance. Architecture-level deficit, distinct from all OpenAI models.
+    File: \texttt{e27-qwen3-32b-l3-fibonacci.n20.2026-03-25.json}
+    Script: \texttt{scripts/run\_e27\_qwen\_l3\_n20.py}
 
   \item \textbf{E24: Frontier model L4 Fibonacci ablation, $n=10$, \texttt{gpt-5.4} and \texttt{o3} (2026-03-25).}
     Motivation: E23 only tested \texttt{gpt-5.4}/\texttt{o3} on hard tasks (I/O-transparent, shallow priors). C2 critique required testing same models on strict L4 Fibonacci to confirm core claim.

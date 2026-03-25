@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 16:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 17:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1226,13 +1226,13 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `pcr' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- (./sections/01_introduction.tex
+
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/microtype/mt-
 cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 25.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 65.
 
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/umsa
@@ -1243,7 +1243,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 25.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 65.
 
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/umsb
@@ -1253,7 +1253,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/microtype/mt-
 msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
+) (./sections/01_introduction.tex
 Underfull \hbox (badness 10000) in paragraph at lines 27--28
 []\T1/ptm/b/n/10 (+20) L3 (se-man-tic in-ver-sion, ex-plicit): \T1/ptm/m/n/10 (
 +20) Capacity-
@@ -1288,22 +1288,22 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-
+ [3]
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/lstl
 ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
-) [3]) (./sections/04_experiments.tex [4]) (./sections/05_results.tex
+)) (./sections/04_experiments.tex [4]) (./sections/05_results.tex
 Underfull \hbox (badness 1043) in paragraph at lines 79--79
 \T1/ptm/m/n/9 (+20) mod-els ex-cept \T1/pcr/m/n/9 gpt-4o \T1/ptm/m/n/9 (+20) an
 d \T1/pcr/m/n/9 gpt-5.4-mini \T1/ptm/m/n/9 (+20) (base-line
  []
 
-
+[5]
 Underfull \hbox (badness 5388) in paragraph at lines 94--95
 \T1/ptm/m/n/10 (+20) is com-pa-ra-ble to the best Ope-nAI ctx-pack re-sults;
  []
 
-[5]
+
 Underfull \hbox (badness 10000) in paragraph at lines 123--124
 []\T1/ptm/m/n/10 (+20) Three mod-els (\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20)
  , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
@@ -1340,6 +1340,7 @@ Underfull \hbox (badness 1152) in paragraph at lines 134--141
 1/ptm/m/n/10 (+20) ) to 1.0
  []
 
+[6]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 179.
 
@@ -1358,7 +1359,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 193--198
 
  []
 
-[6]
+
 Underfull \hbox (badness 2119) in paragraph at lines 212--213
 []\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
@@ -1404,7 +1405,7 @@ Underfull \hbox (badness 2913) in paragraph at lines 249--251
 ca-pac-ity
  []
 
-
+[7]
 Underfull \hbox (badness 2884) in paragraph at lines 255--256
 []\T1/ptm/b/n/10 (+20) Methodological note on \T1/pcr/b/n/10 o4-mini \T1/ptm/b/
 n/10 (+20) (to-ken bud-get
@@ -1445,7 +1446,7 @@ Underfull \hbox (badness 7133) in paragraph at lines 255--256
 o4-mini \T1/ptm/m/n/10 (+20) achieved
  []
 
-[7] [8]
+[8]
 Underfull \hbox (badness 10000) in paragraph at lines 297--298
 []\T1/ptm/b/n/10 (+20) L1 (ctx-pack, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 = 20$\
 T1/ptm/b/n/10 (+20) ): \T1/pcr/m/n/10 Llama-3.3-70B
@@ -1457,12 +1458,15 @@ Underfull \hbox (badness 2020) in paragraph at lines 297--298
  []
 
 [9]
-Underfull \hbox (badness 1178) in paragraph at lines 335--336
+Underfull \hbox (badness 1178) in paragraph at lines 338--339
 []\T1/ptm/m/n/10 (+20) A com-ple-men-tary ob-ser-va-tion re-in-forces this fram
 -ing:
  []
 
 ) (./sections/06_discussion.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 1521) in paragraph at lines 7--8
 []\T1/ptm/m/n/10 (+20) Semantic in-ver-sion with ex-plicit in-struc-tion pro-vi
 des
@@ -1507,6 +1511,7 @@ Underfull \hbox (badness 2065) in paragraph at lines 62--64
  []
 
 ) (./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
+[12]
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1517,16 +1522,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 value ?cond: res ;else: alt ;end \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[12]
+
 Underfull \hbox (badness 1028) in paragraph at lines 167--168
 []\T1/ptm/b/n/10 (+20) L3-correct\T1/ptm/m/n/10 (+20) : model writes \T1/pcr/m/
 n/10 if n > 1: return n \T1/ptm/m/n/10 (+20) or
  []
 
-) (./sections/09_reproducibility_protocol.tex
-Underfull \vbox (badness 3312) has occurred while \output is active []
-
- [13]
+[13]) (./sections/09_reproducibility_protocol.tex
 Underfull \hbox (badness 1112) in paragraph at lines 10--13
 []\T1/ptm/b/n/10 (+20) E5: L1 context-pack ab-la-tion, $\OML/cmm/m/it/10 n \OT1
 /cmr/m/n/10 = 120$\T1/ptm/b/n/10 (+20) , gpt-4o-
@@ -1619,6 +1621,9 @@ Underfull \hbox (badness 3029) in paragraph at lines 49--54
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [14]
 Underfull \hbox (badness 2269) in paragraph at lines 79--85
 \T1/ptm/m/n/10 (+20) cor-rected to-ken bud-get; T2/T3 needed ex-ten-sion to
  []
@@ -1707,9 +1712,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 94--101
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [14]
 Underfull \hbox (badness 4595) in paragraph at lines 110--116
 \T1/ptm/b/n/10 (+20) 03-25). \T1/ptm/m/n/10 (+20) Clas-si-fied all failed L4 ab
 -la-tion + multi-
@@ -1742,14 +1744,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 110--116
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 1521) in paragraph at lines 117--124
 \T1/ptm/m/n/10 (+20) not a gen-eral \T1/pcr/m/n/10 is_sorted \T1/ptm/m/n/10 (+2
 0) in-ver-sion dif-fi-culty. File:
- []
-
-
-Underfull \hbox (badness 1859) in paragraph at lines 125--132
-\T1/ptm/m/n/10 (+20) Ope-nAI mod-els (which pass L3 re-li-ably). Treat as
  []
 
 
@@ -1758,22 +1758,39 @@ Overfull \hbox (31.32996pt too wide) in paragraph at lines 125--132
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 133--140
+\T1/ptm/m/it/10 (+20) par-tial instruction-following \T1/ptm/m/n/10 (+20) (in-t
+er-nally in-con-sis-tent
+ []
+
+
+Underfull \hbox (badness 6893) in paragraph at lines 133--140
+\T1/ptm/m/n/10 (+20) out-puts), not clean prior dom-i-nance. Architecture-
+ []
+
+
+Underfull \hbox (badness 1259) in paragraph at lines 133--140
+\T1/ptm/m/n/10 (+20) level deficit, dis-tinct from all Ope-nAI mod-els. File:
+ []
+
+
+Overfull \hbox (37.32996pt too wide) in paragraph at lines 133--140
+\T1/pcr/m/n/10 e27-qwen3-32b-l3-fibonacci.n20.2026-03-25.json
+ []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-)
+ [15])
 (./sections/10_appendix_experiment_details.tex
-Underfull \hbox (badness 10000) in paragraph at lines 169--1
+Underfull \hbox (badness 10000) in paragraph at lines 177--1
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 169--1
+Underfull \hbox (badness 10000) in paragraph at lines 177--1
 
  []
-
-[15]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1796,13 +1813,13 @@ Underfull \hbox (badness 3769) in paragraph at lines 125--82
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-
+[16]
 Underfull \hbox (badness 10000) in paragraph at lines 88--89
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
  []
 
-(./main.bbl [16])
+(./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1814,22 +1831,20 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[17
-
-] (./main.aux)
+[17] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37322 strings out of 467525
- 896703 string characters out of 5408440
- 1649107 words of memory out of 5000000
+ 37325 strings out of 467525
+ 896736 string characters out of 5408440
+ 1638154 words of memory out of 5000000
  65003 multiletter control sequences out of 15000+600000
- 788741 words of font info for 564 fonts, out of 8000000 for 9000
+ 789064 words of font info for 566 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,18n,108p,1525b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,18n,108p,1611b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1840,34 +1855,36 @@ t/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts
 e1/public/amsfonts/cm/cmmi9.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive
 /20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></opt/homebr
-ew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7
+ew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6
 .pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmr9.pfb></opt/homebrew/Cellar/texlive/20260301/s
-hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar
-/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></o
-pt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive/20260301/share/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texliv
-e/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></opt/home
-brew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/symbo
-ls/msam10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/typ
-e1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20260301/sh
-are/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></opt/homebrew/Cellar/texlive
-/20260301/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Ce
-llar/texlive/20260301/share/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></op
-t/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/helvetic/uh
-vb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/ur
-w/helvetic/uhvr8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
-onts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
-xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202603
-01/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texl
-ive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (17 pages, 385828 bytes).
+/amsfonts/cm/cmr7.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20260301/s
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></opt/homebrew/Cellar/t
+exlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></op
+t/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmsy5.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive
+/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homeb
+rew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y9.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/publ
+ic/amsfonts/symbols/msam10.pfb></opt/homebrew/Cellar/texlive/20260301/share/tex
+mf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/te
+xlive/20260301/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></opt/homebr
+ew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
+</opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/courier
+/ucrro8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type
+1/urw/helvetic/uhvb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-di
+st/fonts/type1/urw/helvetic/uhvr8a.pfb></opt/homebrew/Cellar/texlive/20260301/s
+hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
+20260301/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cell
+ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
+ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
+b>
+Output written on main.pdf (17 pages, 397824 bytes).
 PDF statistics:
- 204 PDF objects out of 1000 (max. 8388607)
- 127 compressed objects within 2 object streams
+ 209 PDF objects out of 1000 (max. 8388607)
+ 130 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  93709 words of extra memory for PDF output out of 106986 (max. 10000000)
 
