@@ -1,6 +1,6 @@
 # Research Live Status
 
-마지막 업데이트: 2026-03-25 09:00 KST
+마지막 업데이트: 2026-03-25 09:20 KST
 
 ## Snapshot
 - 전체 진행도(추정): **92%**
@@ -229,3 +229,10 @@
   - Paper placeholder 없음 확인 (TODO/FIXME 없음)
   - Current state: 논문 10p, 모든 수치 실측값 기반, 과도한 주장 없음
   - 다음 우선 과제: Human pilot 실행 (IRB/instructor 승인 후)
+
+- [x] 2026-03-25 09:20 critic report (09:08) 기반 논문 수정 (M2/M8/C2/W2)
+  - **M2**: gpt-5.4-mini var-E PPR=1.0† → N/A (n_eff=2; excluded) 수정; Overall PPR footnote 추가
+  - **C2**: Table 4 caption에 bold 경고 추가 ("not directly comparable to Table 3 (strict example-only)")
+  - **M8**: abstract에 multi-task 355 runs + 700+ total L4 runs 수치 추가
+  - **W2**: L1 "scale does not predict" → "model-family-specific compliance patterns"으로 완화; training corpus hypothesis 명시적 가설로 표시
+  - PDF 재컴파일 (11p), commit 17cac4e push 완료
