@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 07:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1076,48 +1076,45 @@ ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )) (./sections/04_experiments.tex [3]) (./sections/05_results.tex
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 93--99
+Underfull \hbox (badness 10000) in paragraph at lines 94--100
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--115
+Underfull \hbox (badness 10000) in paragraph at lines 110--116
 
  []
 
 
-Overfull \hbox (3.05284pt too wide) in paragraph at lines 116--117
+Overfull \hbox (3.05284pt too wide) in paragraph at lines 117--118
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][][][][][][][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--127
-[]\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends
+Underfull \hbox (badness 2119) in paragraph at lines 127--128
+[]\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
 
 
-Underfull \hbox (badness 2932) in paragraph at lines 126--127
-\T1/ptm/m/n/10 (+20) be-yond Fi-bonacci, we eval-u-ated six mod-els on three
+Underfull \hbox (badness 6016) in paragraph at lines 127--128
+\T1/ptm/m/n/10 (+20) Fi-bonacci, we eval-u-ated all seven mod-els on three
  []
 
 
-Underfull \hbox (badness 4634) in paragraph at lines 126--127
+Underfull \hbox (badness 4634) in paragraph at lines 127--128
 \T1/ptm/m/n/10 (+20) tasks: T1 (\T1/pcr/m/n/10 fibonacci\T1/ptm/m/n/10 (+20) ),
  T2 (\T1/pcr/m/n/10 is_sorted\T1/ptm/m/n/10 (+20) ), and T3
  []
 
 LaTeX Font Info:    Font shape `T1/ptm/m/scit' in size <8> not available
-(Font)              Font shape `T1/ptm/m/it' tried instead on input line 130.
+(Font)              Font shape `T1/ptm/m/it' tried instead on input line 131.
 
 Underfull \vbox (badness 2111) has occurred while \output is active []
 
  [5])
 (./sections/06_discussion.tex [6]) (./sections/07_conclusion.tex)
 (./sections/08_prompt_and_judge_details.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [7]
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1133,7 +1130,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-) (./sections/09_reproducibility_protocol.tex
+[7]
+Overfull \vbox (2.33925pt too high) has occurred while \output is active []
+
+
+[8]) (./sections/09_reproducibility_protocol.tex
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
 
@@ -1142,7 +1143,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--19
 ) Script:
  []
 
-[8]
+
 Underfull \hbox (badness 10000) in paragraph at lines 35--39
 []\T1/ptm/b/n/10 (+20) E12: L1 context-pack, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/1
 0 = 20$\T1/ptm/b/n/10 (+20) , gpt-4.1
@@ -1176,34 +1177,34 @@ e:
  []
 
 
-Underfull \hbox (badness 1616) in paragraph at lines 49--53
+Underfull \hbox (badness 4441) in paragraph at lines 49--54
 []\T1/ptm/b/n/10 (+20) E15: L4 multi-task, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 
 = 10$\T1/ptm/b/n/10 (+20) --$\OT1/cmr/m/n/10 20$ \T1/ptm/b/n/10 (+20) per task,
- 6
+
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--53
-\T1/ptm/b/n/10 (+20) mod-els (2026-03-25). \T1/ptm/m/n/10 (+20) Tasks: T1 (fi-b
-onacci),
+Overfull \hbox (67.53001pt too wide) in paragraph at lines 55--62
+\T1/pcr/m/n/10 L4-scaleup-count_vowels.gpt4o.n50.2026-03-25.json\T1/ptm/m/n/10 
+(-20) ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--53
-\T1/ptm/m/n/10 (+20) T2 (is_sorted), T3 (count_vowels). Mod-els:
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 49--53
-\T1/ptm/m/n/10 (+20) gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 49--53
-\T1/ptm/m/n/10 (+20) gpt-4.1-nano, o4-mini (225 to-tal runs). Files:
+Overfull \hbox (48.33002pt too wide) in paragraph at lines 55--62
+\T1/pcr/m/n/10 L4-scaleup-is_sorted.gpt41.n50.2026-03-25.json
  []
 
 ) (./sections/10_appendix_experiment_details.tex
+Underfull \hbox (badness 10000) in paragraph at lines 81--1
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--1
+
+ []
+
+[9]
 Underfull \hbox (badness 1983) in paragraph at lines 60--61
 []|\T1/ptm/m/n/8 (+20) v1--v120 (base-line); v1--v20
  []
@@ -1213,7 +1214,7 @@ Underfull \hbox (badness 3769) in paragraph at lines 68--61
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-[9] (./main.bbl)
+(./main.bbl [10])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1225,20 +1226,22 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[10] (./main.aux)
+[11
+
+] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25172 strings out of 467525
- 517026 string characters out of 5408440
- 1184840 words of memory out of 5000000
- 53155 multiletter control sequences out of 15000+600000
- 774304 words of font info for 472 fonts, out of 8000000 for 9000
+ 25186 strings out of 467525
+ 517170 string characters out of 5408440
+ 1188875 words of memory out of 5000000
+ 53158 multiletter control sequences out of 15000+600000
+ 775412 words of font info for 481 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,14n,108p,2115b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,14n,108p,2836b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1266,10 +1269,10 @@ ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 utmbi8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1
 /urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (10 pages, 286950 bytes).
+Output written on main.pdf (11 pages, 290573 bytes).
 PDF statistics:
- 151 PDF objects out of 1000 (max. 8388607)
- 94 compressed objects within 1 object stream
+ 154 PDF objects out of 1000 (max. 8388607)
+ 96 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 72205 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 72717 words of extra memory for PDF output out of 74296 (max. 10000000)
 

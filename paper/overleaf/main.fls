@@ -451,6 +451,7 @@ INPUT ./sections/05_results.tex
 INPUT ./sections/05_results.tex
 INPUT sections/05_results.tex
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrrc8t.tfm
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8t.tfm
 INPUT ./sections/06_discussion.tex
 INPUT ./sections/06_discussion.tex
 INPUT ./sections/06_discussion.tex
@@ -462,6 +463,8 @@ INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/time
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/times/ptmri8t.vf
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrr8t.vf
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
 INPUT ./sections/07_conclusion.tex
 INPUT ./sections/07_conclusion.tex
 INPUT ./sections/07_conclusion.tex
@@ -487,13 +490,13 @@ INPUT ./sections/09_reproducibility_protocol.tex
 INPUT ./sections/09_reproducibility_protocol.tex
 INPUT sections/09_reproducibility_protocol.tex
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrro8t.tfm
-INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrro8t.vf
-INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrro8r.tfm
 INPUT ./sections/10_appendix_experiment_details.tex
 INPUT ./sections/10_appendix_experiment_details.tex
 INPUT ./sections/10_appendix_experiment_details.tex
 INPUT ./sections/10_appendix_experiment_details.tex
 INPUT sections/10_appendix_experiment_details.tex
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrro8t.vf
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrro8r.tfm
 INPUT ./main.bbl
 INPUT ./main.bbl
 INPUT main.bbl

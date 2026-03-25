@@ -142,11 +142,14 @@ def chat(messages, temperature=0):
                 merged.append(m)
         messages = merged
     token_key = "max_completion_tokens" if (MODEL in REASONING_MODELS or MODEL in COMPLETION_TOKEN_MODELS) else "max_tokens"
+    # Reasoning models (o-series) need larger token budget: reasoning tokens consume most of the budget
+    # so 400 leaves nothing for actual response text. Use 5000 for reasoning, 400 for others.
+    token_limit = 5000 if MODEL in REASONING_MODELS else 400
     payload = json.dumps({
         "model": MODEL,
         "messages": messages,
         "temperature": temperature,
-        token_key: 400,
+        token_key: token_limit,
     }).encode()
     req = urllib.request.Request(
         f"{BASE}/chat/completions",

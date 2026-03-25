@@ -12,7 +12,7 @@ The most practical target for educational use is L4: retain Python surface synta
 
 \subsection{Implications for programming education}
 Our findings partially address the concern of LLM-solved homework.
-L4-style assignments provide meaningful resistance for tasks with deep Python priors (e.g., Fibonacci recursion): all models fail T1 universally.
+L4-style assignments provide meaningful resistance for tasks with deep Python priors (e.g., Fibonacci recursion): all non-reasoning models fail T1 universally; o4-mini achieves 8/15 only under the partially-annotated multi-task prompt (not under the strict example-only condition).
 However, task selection matters: T2 (is\_sorted) is solved by capable models (gpt-4o, gpt-4.1-mini at 100\%), indicating that simpler idioms with shallow priors may remain vulnerable.
 The general mechanism for LLM failure on L4 is:
 (1) the model defaults to Python prior when encountering familiar syntax, and
