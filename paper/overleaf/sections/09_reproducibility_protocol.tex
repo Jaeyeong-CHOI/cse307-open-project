@@ -98,6 +98,14 @@
     Files: \texttt{l4-cot-ablation-gpt41nano-*.json}, \texttt{l4-cot-ablation-o4mini-*.json}.
     Script: \texttt{run\_l4\_cot\_ablation.py} (\texttt{EVAL\_MODEL=gpt-4.1-nano/o4-mini})
 
+  \item \textbf{E23: L4 hard-task battery, $n=10$ per cell, 4 models, 3 tasks (2026-03-25).}
+    Hypothesis: harder algorithmic tasks amplify pattern blindness.
+    Tasks: H1 (merge\_sort, descending), H2 (binary\_search, inverted return), H3 (BFS, reversed traversal).
+    Models: \texttt{gpt-4o}, \texttt{gpt-5.4}, \texttt{o3}, \texttt{o4-mini} (120 total runs).
+    Result: hypothesis REJECTED. \texttt{gpt-5.4}, \texttt{o3}, \texttt{o4-mini}: 30/30 (100\%); \texttt{gpt-4o}: 24/30 (80\%).
+    Key finding: hard tasks provide \emph{explicit I/O specifications} allowing direct behavioral compliance; simple L4 tasks embed an \emph{implicit semantic rule} that models cannot extract. Pattern blindness is specific to implicit rule extraction, not task complexity. Prior entrenchment depth (not algorithmic difficulty) is the key predictor of resistance.
+    Files: \texttt{l4-hard-tasks-*.2026-03-25.json}, \texttt{hard-vs-simple-summary-2026-03-25.md}.
+
   \item \textbf{E21: Failure taxonomy, 419 failed L4 runs (2026-03-25).}
     Classified all failed L4 ablation + multi-task T1 runs across ablation (350) and multi-task (69 failed T1 runs).
     Type-I (exact Python prior): 83.1\%; Type-II (partial attempt): 12.6\%; Type-III (operational substitution): 4.3\%.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 12:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 12:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1703,48 +1703,47 @@ Underfull \hbox (badness 10000) in paragraph at lines 93--100
  []
 
 
-Underfull \hbox (badness 4595) in paragraph at lines 101--107
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 4595) in paragraph at lines 109--115
 \T1/ptm/b/n/10 (+20) 03-25). \T1/ptm/m/n/10 (+20) Clas-si-fied all failed L4 ab
 -la-tion + multi-
  []
 
 
-Underfull \hbox (badness 2970) in paragraph at lines 101--107
+Underfull \hbox (badness 2970) in paragraph at lines 109--115
 \T1/ptm/m/n/10 (+20) task T1 runs across ab-la-tion (350) and multi-task
  []
 
 
-Underfull \hbox (badness 4595) in paragraph at lines 101--107
+Underfull \hbox (badness 4595) in paragraph at lines 109--115
 \T1/ptm/m/n/10 (+20) (69 failed T1 runs). Type-I (ex-act Python prior):
  []
 
 
-Underfull \hbox (badness 8075) in paragraph at lines 101--107
+Underfull \hbox (badness 8075) in paragraph at lines 109--115
 \T1/ptm/m/n/10 (+20) 83.1%; Type-II (par-tial at-tempt): 12.6%; Type-III
  []
 
 
-Underfull \hbox (badness 1325) in paragraph at lines 101--107
+Underfull \hbox (badness 1325) in paragraph at lines 109--115
 \T1/ptm/m/n/10 (+20) (op-er-a-tional sub-sti-tu-tion): 4.3%. Type-I dom-i-nates
  in
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--107
+Underfull \hbox (badness 10000) in paragraph at lines 109--115
 \T1/ptm/m/n/10 (+20) File: \T1/pcr/m/n/10 failure-taxonomy-2026-03-25.json
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-)
-(./sections/10_appendix_experiment_details.tex
-Underfull \hbox (badness 10000) in paragraph at lines 133--1
+) (./sections/10_appendix_experiment_details.tex
+Underfull \hbox (badness 10000) in paragraph at lines 141--1
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 133--1
+Underfull \hbox (badness 10000) in paragraph at lines 141--1
 
  []
 
@@ -1790,11 +1789,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37262 strings out of 467525
- 895634 string characters out of 5408440
+ 37271 strings out of 467525
+ 895712 string characters out of 5408440
  1649397 words of memory out of 5000000
  64975 multiletter control sequences out of 15000+600000
- 787007 words of font info for 545 fonts, out of 8000000 for 9000
+ 787394 words of font info for 551 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1126b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1831,7 +1830,7 @@ onts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
 xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202603
 01/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texl
 ive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (15 pages, 370720 bytes).
+Output written on main.pdf (15 pages, 371537 bytes).
 PDF statistics:
  198 PDF objects out of 1000 (max. 8388607)
  123 compressed objects within 2 object streams
