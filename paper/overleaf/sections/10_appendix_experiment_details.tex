@@ -46,6 +46,36 @@ Top counts in context-pack run include:
   \item \texttt{if} leaked: 33
 \end{itemize}
 
+\subsection{PSS (Partial Structural Score) Supplementary Data}
+\label{sec:appendix_pss}
+PSS is a heuristic composite metric (alias compliance 0.4, parse 0.25, skeleton 0.25, format 0.1) reported as a secondary diagnostic only. Weights are not validated; PSS is not used as a primary result. The table below provides reference values alongside KLR for L1 evaluation.
+
+\begin{table}[h]
+\centering
+\caption{L1 KLR and PSS (supplementary). PSS is exploratory; KLR is the validated primary metric.}
+\label{tab:l1_pss}
+\footnotesize
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Model} & \textbf{Delivery} & \textbf{KLR}$\downarrow$ & \textbf{PSS}$\uparrow$ \\
+\midrule
+\texttt{gpt-4.1-mini} & ctx-pack & 0.21 & 0.37 \\
+\texttt{Llama-3.3-70B}$^\star$ & ctx-pack & 0.23 & 0.34 \\
+\texttt{gpt-4o-mini}  & ctx-pack & 0.26 & 0.32 \\
+\texttt{o4-mini}      & ctx-pack & 0.27 & 0.41 \\
+\texttt{gpt-4.1}      & ctx-pack & 0.30 & \textbf{0.43} \\
+\texttt{gpt-4o}       & baseline & 0.37 & 0.40 \\
+\texttt{gpt-4.1-nano} & ctx-pack & 0.38 & 0.30 \\
+\texttt{gpt-4o-mini}  & baseline & 0.42 & 0.27 \\
+\texttt{gpt-4.1-mini} & baseline & 0.43 & 0.33 \\
+\texttt{gpt-5.4-mini} & baseline & 0.67 & 0.25 \\
+\texttt{gpt-4.1-nano} & baseline & 0.69 & 0.16 \\
+\texttt{Qwen3-32B}$^\star$ & ctx-pack & 1.00 & 0.00 \\
+\bottomrule
+\multicolumn{4}{l}{\scriptsize $^\star$Open-weight via Groq API; $n=20$, ctx-pack only.} \\
+\end{tabular}
+\end{table}
+
 \subsection{Execution config snapshot (non-secret)}
 \begin{table}[h]
 \caption{Key runtime settings}

@@ -83,12 +83,12 @@
 \@writefile{toc}{\contentsline {section}{\numberline {V}Results}{4}{}\protected@file@percent }
 \newlabel{sec:results}{{V}{4}{}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}L1: Partial resistance; scale does not predict compliance}{4}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 evaluation: KLR and PSS per model. Baseline rows use $n=120$; ctx-pack rows for \texttt  {gpt-4.1} family, \texttt  {o4-mini}, and open-weight models use $n=20$. Models sorted by KLR (ascending). For \texttt  {gpt-4o-mini} and \texttt  {gpt-4.1-mini} (paired conditions), context-pack reduces KLR ($-38\%$ and $-51\%$ respectively). Open-weight models (marked $^\star $) are ctx-pack only via Groq API.}}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 evaluation: Keyword Leakage Rate (KLR) per model. Baseline rows use $n=120$; ctx-pack rows use $n=20$. Models sorted by KLR (ascending). Context-pack reduces KLR for paired models: \texttt  {gpt-4o-mini} ($-38\%$), \texttt  {gpt-4.1-mini} ($-51\%$). Open-weight models (marked $^\star $) via Groq API, ctx-pack only. PSS (heuristic diagnostic) reported in Appendix~\ref {sec:appendix_pss}.}}{5}{}\protected@file@percent }
 \newlabel{tab:l1_results}{{II}{5}{}{table.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces L1 Keyword Leakage Rate (KLR) by model. Lower is better (less Python keyword leakage). Color indicates model family: blue = \texttt  {gpt-4o}, orange = \texttt  {gpt-4.1}, green = \texttt  {gpt-5}, purple = \texttt  {o4}. Dashed line marks 50\% leakage threshold.}}{5}{}\protected@file@percent }
 \newlabel{fig:l1_klr_bar}{{3}{5}{}{figure.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}L2: Syntax inversion not resistant}{5}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted by all models ($n=20$); L3 reveals a model-capability threshold (\texttt  {gpt-4o-mini} fails, others succeed); L4 (example-only) defeats all models despite L3 success.}}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted by all models ($n=20$); L3 reveals a model-capability threshold (\texttt  {gpt-4o-mini} fails, others succeed); L4 (example-only) defeats all models despite L3 success. Rows with $n=5$ are pilot results; Wilson 95\% CIs shown.}}{5}{}\protected@file@percent }
 \newlabel{tab:l234_results}{{III}{5}{}{table.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}L4: Pattern blindness across all tested models}{5}{}\protected@file@percent }
@@ -135,9 +135,9 @@
 \@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{11}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{11}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}Execution config snapshot (non-secret)}{11}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Key runtime settings}}{11}{}\protected@file@percent }
-\newlabel{tab:config_snapshot}{{VI}{11}{}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}PSS (Partial Structural Score) Supplementary Data}{11}{}\protected@file@percent }
+\newlabel{sec:appendix_pss}{{\mbox  {X-C}}{11}{}{subsection.10.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-D}}Execution config snapshot (non-secret)}{11}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{chen2021codex}{1}
@@ -180,6 +180,10 @@
 \bibcite{novak2025llmhw}{38}
 \bibcite{codeplagiarism2024}{39}
 \bibcite{ouyang2022instruct}{40}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces L1 KLR and PSS (supplementary). PSS is exploratory; KLR is the validated primary metric.}}{12}{}\protected@file@percent }
+\newlabel{tab:l1_pss}{{VI}{12}{}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Key runtime settings}}{12}{}\protected@file@percent }
+\newlabel{tab:config_snapshot}{{VII}{12}{}{table.7}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{12}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{12}{}\protected@file@percent }
 \gdef \@abspage@last{12}
