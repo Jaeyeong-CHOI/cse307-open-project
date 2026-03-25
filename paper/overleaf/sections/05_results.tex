@@ -271,9 +271,9 @@ We also observe \emph{template fragmentation} in \texttt{gpt-4o-mini} T1: the mo
 \smallskip
 Task difficulty interacts with model capacity to determine which failure mode dominates. T2 (is\_sorted) is extractable by mid-to-large models; T1 (Fibonacci) is universally resistant; T3 (count\_vowels) triggers operational substitution as the dominant escape strategy for capable models.
 
-\textbf{Failure taxonomy across 419 failed L4 runs} (ablation + multitask T1): Type-I (exact Python prior) accounts for 83.1\% of failures, Type-II (partial attempt) for 12.6\%, and Type-III (operational substitution) for 4.3\%. Type-I dominates in \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} (100\% of failures); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%); Type-III appears primarily in \texttt{gpt-4o} (25\% of its failures).
+\textbf{Failure taxonomy across 427 failed L4 runs} (ablation + multitask T1): Type-I (exact Python prior) accounts for ${\approx}81.5\%$ of failures, Type-II (partial attempt) for ${\approx}12.4\%$, and Type-III (operational substitution) for ${\approx}4.2\%$. Type-I dominates in \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} (100\% of failures); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%); Type-III appears primarily in \texttt{gpt-4o} (25\% of its failures).
 
-\noindent\textit{Population note:} The 419 pooled runs consist of 350 strict example-only ablation failures and 69 failed multitask T1 runs (partially-annotated prompt). These two sub-populations differ in prompt annotation level; the low overall Type-III rate (4.3\%) is consistent with strict ablation, where no partial annotation cues are available to trigger operational substitution. In the multi-task sub-population, Type-III is observed primarily in \texttt{gpt-4o} T3 at $n=50$ (94\% operational substitution rate), but that data is counted in T3 (not T1) and is therefore excluded from the 419 pooled taxonomy. A full split analysis per prompt protocol is deferred to future work.
+\noindent\textit{Population note:} The 427 pooled runs consist of 350 strict example-only ablation failures and 77 failed multitask T1 runs (partially-annotated prompt; updated from an earlier draft count of 419/69 that predated the \texttt{gpt-4.1-mini} T1 scale-up from $n=10$ to $n=20$ and the \texttt{o4-mini} token-budget correction). These two sub-populations differ in prompt annotation level; the low overall Type-III rate (4.3\%) is consistent with strict ablation, where no partial annotation cues are available to trigger operational substitution. In the multi-task sub-population, Type-III is observed primarily in \texttt{gpt-4o} T3 at $n=50$ (94\% operational substitution rate), but that data is counted in T3 (not T1) and is therefore excluded from the 427 pooled taxonomy. A full split analysis per prompt protocol is deferred to future work.
 
 \subsection{CoT Ablation: Reasoning About Inversion Is Not Sufficient}
 \label{sec:cot_ablation}
@@ -383,7 +383,7 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 \textbf{Model} & \textbf{Pass} & \textbf{Pass rate} & \textbf{Wilson 95\% CI} & \textbf{Note} \\
 \midrule
 \texttt{gpt-4.1-mini} & 10/10 & \cellcolor{green!15}\textbf{100\%} & [72\%,100\%] & Perfect transfer \\
-\texttt{gpt-4o}       & 13/20 & \cellcolor{yellow!20}65\% & [43\%,82\%] & Partial transfer \\
+\texttt{gpt-4o}       & 13/20 & \cellcolor{yellow!20}65\% & [43\%,82\%] & Partial transfer; vs.\ mini: $p{=}0.11$, n.s. \\
 \texttt{o4-mini}      & 1/10  & \cellcolor{red!10}10\% & [2\%,44\%] & Minimal transfer \\
 \bottomrule
 \end{tabular}
