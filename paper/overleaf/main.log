@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 11:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 11:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1288,163 +1288,156 @@ Package microtype Info: Loading generic protrusion settings for font family
 ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 ) [3]) (./sections/04_experiments.tex) (./sections/05_results.tex
-Package pgfplots info on input line 54: Using 'lua backend=false' for axis: x c
-oord trafo unsupported.
-
-Overfull \hbox (4.50969pt too wide) in paragraph at lines 70--71
- [][] 
- []
-
 [4]
-Underfull \hbox (badness 5388) in paragraph at lines 86--87
+Underfull \hbox (badness 5388) in paragraph at lines 94--95
 \T1/ptm/m/n/10 (+20) is com-pa-ra-ble to the best Ope-nAI ctx-pack re-sults;
  []
 
 
-Underfull \hbox (badness 1199) in paragraph at lines 115--116
+Underfull \hbox (badness 1199) in paragraph at lines 123--124
 []\T1/ptm/m/n/10 (+20) All four eval-u-ated mod-els (\T1/pcr/m/n/10 gpt-4o\T1/p
 tm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) ,
  []
 
 
-Underfull \hbox (badness 6047) in paragraph at lines 126--133
+Underfull \hbox (badness 6047) in paragraph at lines 134--141
 []\T1/ptm/b/n/10 (+20) L4 ab-la-tion (n=50 per model). \T1/ptm/m/n/10 (+20) We 
 scaled the
  []
 
 
-Underfull \hbox (badness 2538) in paragraph at lines 126--133
+Underfull \hbox (badness 2538) in paragraph at lines 134--141
 \T1/ptm/m/n/10 (+20) L4 eval-u-a-tion across seven mod-els, all at $\OML/cmm/m/
 it/10 n \OT1/cmr/m/n/10 = 50$
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 126--133
+Underfull \hbox (badness 2680) in paragraph at lines 134--141
 \T1/ptm/m/n/10 (+20) (\T1/pcr/m/n/10 gpt-4o\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/1
 0 gpt-4o-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1\T1/ptm/m/n/10 (+20) 
 , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
  []
 
 
-Underfull \hbox (badness 1152) in paragraph at lines 126--133
+Underfull \hbox (badness 1152) in paragraph at lines 134--141
 \T1/ptm/m/n/10 (+20) PPR val-ues range from 0.38 (\T1/pcr/m/n/10 gpt-4.1-mini\T
 1/ptm/m/n/10 (+20) ) to 1.0
  []
 
 [5]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 164.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 172.
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--169
+Underfull \hbox (badness 10000) in paragraph at lines 171--177
 
  []
 
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
-78.
+86.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/ts1ptm
 .fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 179--185
+Underfull \hbox (badness 10000) in paragraph at lines 187--193
 
  []
 
 
-Underfull \hbox (badness 2119) in paragraph at lines 198--199
+Underfull \hbox (badness 2119) in paragraph at lines 206--207
 []\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
 
 
-Underfull \hbox (badness 6016) in paragraph at lines 198--199
+Underfull \hbox (badness 6016) in paragraph at lines 206--207
 \T1/ptm/m/n/10 (+20) Fi-bonacci, we eval-u-ated all seven mod-els on three
  []
 
 
-Underfull \hbox (badness 4634) in paragraph at lines 198--199
+Underfull \hbox (badness 4634) in paragraph at lines 206--207
 \T1/ptm/m/n/10 (+20) tasks: T1 (\T1/pcr/m/n/10 fibonacci\T1/ptm/m/n/10 (+20) ),
  T2 (\T1/pcr/m/n/10 is_sorted\T1/ptm/m/n/10 (+20) ), and T3
  []
 
 
-Underfull \hbox (badness 1755) in paragraph at lines 226--228
+Underfull \hbox (badness 1755) in paragraph at lines 234--236
 \T1/ptm/m/n/10 (+20) (1) \T1/ptm/b/n/10 (+20) T2 is ex-tractable only by mid-to
 -large mod-els\T1/ptm/m/n/10 (+20) :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 235--237
+Underfull \hbox (badness 10000) in paragraph at lines 243--245
 \T1/ptm/m/n/10 (+20) (4) \T1/ptm/b/n/10 (+20) Model ca-pac-ity de-ter-mines T2 
 ex-tractabil-ity\T1/ptm/m/n/10 (+20) :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 235--237
+Underfull \hbox (badness 10000) in paragraph at lines 243--245
 \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1\T1/ptm/
 m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1-nano\T1/ptm/m/n/10 (+20) , and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 235--237
+Underfull \hbox (badness 10000) in paragraph at lines 243--245
 \T1/pcr/m/n/10 gpt-5.4-mini \T1/ptm/m/n/10 (+20) all fail T2, while \T1/pcr/m/n
 /10 gpt-4o \T1/ptm/m/n/10 (+20) and
  []
 
 
-Underfull \hbox (badness 2913) in paragraph at lines 235--237
+Underfull \hbox (badness 2913) in paragraph at lines 243--245
 \T1/pcr/m/n/10 gpt-4.1-mini \T1/ptm/m/n/10 (+20) succeed---consistent with the 
 ca-pac-ity
  []
 
 [6]
-Underfull \hbox (badness 2884) in paragraph at lines 241--242
+Underfull \hbox (badness 2884) in paragraph at lines 249--250
 []\T1/ptm/b/n/10 (+20) Methodological note on \T1/pcr/b/n/10 o4-mini \T1/ptm/b/
 n/10 (+20) (to-ken bud-get
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 241--242
+Underfull \hbox (badness 10000) in paragraph at lines 249--250
 \T1/ptm/b/n/10 (+20) cor-rec-tion). \T1/ptm/m/n/10 (+20) An ini-tial \T1/pcr/m/
 n/10 o4-mini \T1/ptm/m/n/10 (+20) T1 run used
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 241--242
+Underfull \hbox (badness 10000) in paragraph at lines 249--250
 \T1/pcr/m/n/10 max_completion_tokens\T1/ptm/m/n/10 (+20) =400, which trun-cated
 
  []
 
 
-Underfull \hbox (badness 2376) in paragraph at lines 241--242
+Underfull \hbox (badness 2376) in paragraph at lines 249--250
 \T1/ptm/m/n/10 (+20) the model's chain-of-thought be-fore it could com-plete
  []
 
 
-Underfull \hbox (badness 3302) in paragraph at lines 241--242
+Underfull \hbox (badness 3302) in paragraph at lines 249--250
 \T1/ptm/m/n/10 (+20) the in-ver-sion task; this yielded 0/15 pass (con-sis-tent
 
  []
 
 
-Underfull \hbox (badness 1337) in paragraph at lines 241--242
+Underfull \hbox (badness 1337) in paragraph at lines 249--250
 \T1/ptm/m/n/10 (+20) with pat-tern blind-ness). Upon cor-rect-ing the bud-get t
 o
  []
 
 
-Underfull \hbox (badness 7133) in paragraph at lines 241--242
+Underfull \hbox (badness 7133) in paragraph at lines 249--250
 \T1/pcr/m/n/10 max_completion_tokens\T1/ptm/m/n/10 (+20) =5000, \T1/pcr/m/n/10 
 o4-mini \T1/ptm/m/n/10 (+20) achieved
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 276--277
+Underfull \hbox (badness 10000) in paragraph at lines 284--285
 []\T1/ptm/b/n/10 (+20) L1 (ctx-pack, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 = 20$\
 T1/ptm/b/n/10 (+20) ): \T1/pcr/m/n/10 Llama-3.3-70B
  []
 
 
-Underfull \hbox (badness 2020) in paragraph at lines 276--277
+Underfull \hbox (badness 2020) in paragraph at lines 284--285
 \T1/ptm/m/n/10 (+20) achieves KLR=0.23, nearly match-ing the Ope-nAI best
  []
 
@@ -1737,13 +1730,13 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37623 strings out of 467525
- 907463 string characters out of 5408440
- 1649762 words of memory out of 5000000
- 65392 multiletter control sequences out of 15000+600000
- 782174 words of font info for 509 fonts, out of 8000000 for 9000
+ 37209 strings out of 467525
+ 895111 string characters out of 5408440
+ 1649774 words of memory out of 5000000
+ 64970 multiletter control sequences out of 15000+600000
+ 783289 words of font info for 514 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,18n,108p,1103b,2337s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,18n,108p,1103b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1778,10 +1771,10 @@ onts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
 xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202603
 01/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texl
 ive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (13 pages, 357991 bytes).
+Output written on main.pdf (13 pages, 357147 bytes).
 PDF statistics:
  192 PDF objects out of 1000 (max. 8388607)
  119 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 87565 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 89613 words of extra memory for PDF output out of 106986 (max. 10000000)
 

@@ -107,6 +107,8 @@ INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/cite/cite.sty
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/cite/cite.sty
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/enumitem/enumitem.sty
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/enumitem/enumitem.sty
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/xcolor/xcolor.sty
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/xcolor/xcolor.sty
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/graphics-cfg/color.cfg
@@ -538,10 +540,12 @@ INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/cou
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8t.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrr8t.vf
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/times/ptmr8t.vf
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/times/ptmb8t.vf
+INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/courier/pcrr8t.vf
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
-INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/vf/adobe/times/ptmri8t.vf
-INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/tfm/adobe/courier/pcrro8t.tfm
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 INPUT /opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
