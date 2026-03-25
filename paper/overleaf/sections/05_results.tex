@@ -371,7 +371,7 @@ A secondary observation: \texttt{gpt-4o}'s low T3 PES (0.1606, \texttt{count\_vo
 \subsection{E32: Cross-Task Transfer Breaks L4 Resistance}
 \label{sec:e32_transfer}
 
-A critical question for assessment design: can a model crack L4 Fibonacci if it first sees inverted semantics demonstrated on \emph{other} tasks? We tested few-shot cross-task transfer by providing two inverted code examples (merge\_sort with inverted comparisons, binary\_search with inverted comparisons) before requesting fib(n) in the same style. \texttt{gpt-4.1-mini} and \texttt{o4-mini} were evaluated at $n=10$; \texttt{gpt-4o} was scaled up to $n=20$ to tighten the confidence interval on its partial-transfer result. Temperature=0.7 for all.
+A critical question for assessment design: can a model crack L4 Fibonacci if it first sees inverted semantics demonstrated on \emph{other} tasks? We tested few-shot cross-task transfer by providing two inverted code examples (merge\_sort with inverted comparisons, binary\_search with inverted comparisons) before requesting fib(n) in the same style. \texttt{gpt-4.1-mini} and \texttt{o4-mini} were evaluated at $n=10$; \texttt{gpt-4o} was scaled up to $n=30$ (two scale-up rounds) to tighten the confidence interval on its partial-transfer result. Temperature=0.7 for all.
 
 \begin{table}[!t]
 \centering
