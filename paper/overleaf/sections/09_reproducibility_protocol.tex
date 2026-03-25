@@ -56,7 +56,7 @@
     Rationale: preliminary $n=10$ results showed 1 pass each; scaled to $n=50$ to rule out statistical artifact.
     gpt-4o T3 (\texttt{count\_vowels}): 0/50 pass; operational substitution in 47/50 runs (94\%, Wilson 95\% CI: [83\%, 99\%]). Confirms preliminary pass was artifact.
     gpt-4.1 T2 (\texttt{is\_sorted}): 1/50 pass (Wilson 95\% CI: [0.0\%, 10.5\%]); Fisher's exact vs.\ gpt-4.1-mini 20/20: $p < 0.0001$.
-    Total multi-task runs (E15+E16): 355 (255 initial + 100 scale-up).
+    Total multi-task runs (E15+E16+E19): 345 (255 initial + 80 scale-up \texttt{gpt-4o} T3 / \texttt{gpt-4.1} T2 + 10 \texttt{o4-mini} T2/T3 extension).
     Files: \texttt{L4-scaleup-*.n50.json}.
     Script: \texttt{run\_targeted\_scaleup.py}
 
