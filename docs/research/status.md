@@ -278,3 +278,21 @@
   - 산출물: `l1-llama33-70b-*`, `l4-ablation-groq-llama33-70b-*`, `l1-qwen3-32b-*`, `l4-ablation-groq-qwen3-32b-*`, `l4-multitask-o4mini-T2T3-n20-*` JSON 커밋
   - PDF 재컴파일: 12p, 0 errors, commit dbe002d push 완료
   - 다음 우선 과제: Qwen3-32B L2/L3 실험 (capacity threshold 비교), Llama L4 full ablation (n=50, Variant A–E)
+
+- [x] 2026-03-25 09:49 논문 수정 (M3 overclaim + 스타일 개선)
+  - **M3 fix**: §6.2 "all non-reasoning models fail T1 universally" → 실측값 기반 정정
+    - gpt-4.1-nano는 PPR=0.20 (template fragmentation), 나머지는 PPR=1.0 (prior dominance)
+    - "0/10 to 0/20 pass rates, via different failure modes" 표현으로 완화
+  - **스타일**: Table 3 PPR 소수점 통일 (.40 → 0.40 등), 모델명 macros 추가 (preamble)
+  - PDF 재컴파일(11p), commit e35af95 push 완료
+  - 남은 critic 이슈: C1(Table 4 density), W3(PSS to appendix), M1(IEEEtran→ACL format)
+
+- [x] 2026-03-25 09:56 Critic report-09 피드백 반영 (commit a595c5e)
+  - **C2 fix**: §5.4 시작부에 프로토콜 경고 박스 추가 ("partially-annotated ≠ strict example-only")
+    - Table 4 캡션에 bold warning 추가 ("not directly comparable to Table 3")
+  - **M4 fix**: §6.3 structural judge 표현 수정
+    - "conservative (arithmetic heuristic)" → "high recall (47/50 detected); novel workarounds may evade"
+  - §5.1 L1 결과 서술 paragraph 분리 (가독성 개선, 내용 불변)
+  - §6.3 Limits paragraph 분리 (가독성 개선)
+  - PDF 재컴파일: 0 errors, commit a595c5e
+  - 남은 크리틱 이슈: C1(Table 4 dense), C3(human pilot), W1(open-weight more), W3(PSS→appendix), M1(IEEEtran format)
