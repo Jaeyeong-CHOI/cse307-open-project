@@ -288,6 +288,8 @@ We tested whether chain-of-thought (CoT) prompting overcomes pattern blindness b
 \end{itemize}
 This reveals a \emph{reasoning--generation dissociation} that generalizes across four model families: models can articulate the semantic inversion rule when prompted to reason, yet their code generation defaults to the Python prior regardless. Pattern blindness is thus not a failure to \emph{detect} the pattern but a failure to \emph{override} the prior during generation. The finding is robust: 160 total CoT runs (40 per model, 2 conditions) across dense and reasoning architectures yield zero reliable pass rate improvement.
 
+\textbf{CoT vs.\ partial annotation for \texttt{o4-mini}.} A notable dissociation emerges when comparing the CoT ablation result to the multi-task result for \texttt{o4-mini}: CoT instruction on strict Variant~A yields 1/20 (5\%), while partial annotation (inline comment hints) without CoT instruction yields 8/15 (53\%, Table~\ref{tab:l4_multitask}). This suggests that for reasoning models, partial rule disclosure is more effective than meta-cognitive prompting alone: CoT helps dense models articulate the inversion pattern but does not supply the rule content; partial annotation provides actual rule content that reasoning models can exploit. The implication for resistance design is that partial annotations---not just implicit example delivery---are the key vulnerability for reasoning models.
+
 \subsection{Open-Weight Models: Preliminary L1 and L4 Results}
 \label{sec:open_weight}
 To assess whether the failure modes generalize beyond the OpenAI model family, we conducted preliminary evaluations on two open-weight models via Groq API: \texttt{Llama-3.3-70B}-Versatile and \texttt{Qwen3-32B}.

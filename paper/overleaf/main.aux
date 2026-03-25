@@ -59,7 +59,7 @@
 \@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Four-level confusion language taxonomy. Each level targets a distinct linguistic dimension and delivery modality. L4 is the only level where all tested models fail regardless of capacity.}}{3}{}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{tab:levels}{{I}{3}{}{table.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (dark red) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (green = most resistant) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}}{3}{}\protected@file@percent }
 \newlabel{fig:taxonomy}{{1}{3}{}{figure.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Language Level Taxonomy}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}L1: Token Alias Substitution}{3}{}\protected@file@percent }
@@ -90,9 +90,9 @@
 \newlabel{tab:l1_results}{{II}{5}{}{table.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces L1 KLR per model. Ctx-pack condition shown for all models except \texttt  {gpt-4o} and \texttt  {gpt-5.4-mini} (baseline only; ctx-pack not evaluated). $n{\geq }20$ per bar. \textcolor {blue!65}{\rule  {5pt}{5pt}}~\texttt  {gpt-4o} fam.; \textcolor {orange!60}{\rule  {5pt}{5pt}}~\texttt  {gpt-4.1} fam.; \textcolor {green!55!black}{\rule  {5pt}{5pt}}~\texttt  {gpt-5.4-mini} (baseline); \textcolor {violet!60}{\rule  {5pt}{5pt}}~\texttt  {o4-mini}.}}{5}{}\protected@file@percent }
 \newlabel{fig:l1_klr_bar}{{3}{5}{}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}L2: Syntax inversion not resistant}{5}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted by all models (three at $n=20$; \texttt  {gpt-4o-mini} pilot $n=5$); L3 reveals a model-capability threshold (\texttt  {gpt-4o-mini} fails, others succeed); L4 (example-only) defeats all models despite L3 success. Rows with $n=5$ are pilot results; Wilson 95\% CIs shown.}}{6}{}\protected@file@percent }
 \newlabel{tab:l234_results}{{III}{6}{}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}L2: Syntax inversion not resistant}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}L4: Pattern blindness across all tested models}{6}{}\protected@file@percent }
 \newlabel{sec:l4_ablation}{{\mbox  {V-D}}{6}{}{subsection.5.4}{}}
@@ -107,8 +107,8 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Three Failure Modes}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-G}}CoT Ablation: Reasoning About Inversion Is Not Sufficient}{8}{}\protected@file@percent }
 \newlabel{sec:cot_ablation}{{\mbox  {V-G}}{8}{}{subsection.5.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-H}}Open-Weight Models: Preliminary L1 and L4 Results}{8}{}\protected@file@percent }
-\newlabel{sec:open_weight}{{\mbox  {V-H}}{8}{}{subsection.5.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-H}}Open-Weight Models: Preliminary L1 and L4 Results}{9}{}\protected@file@percent }
+\newlabel{sec:open_weight}{{\mbox  {V-H}}{9}{}{subsection.5.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces L4 hard-task results ($n=10$ per cell, 120 total runs). All tasks use example-only delivery with 2 worked I/O examples. Pass = output matches inverted specification. Models include \texttt  {gpt-5.4} and \texttt  {o3} (not tested in main L4 ablation). \texttt  {gpt-4o} H1 (4/10): Wilson 95\% CI [16\%,67\%]---interpret with caution.}}{9}{}\protected@file@percent }
 \newlabel{tab:l4_hard}{{VI}{9}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-I}}L4 Hard-Task Extension: Task Complexity vs.\ Prior Entrenchment}{9}{}\protected@file@percent }
@@ -118,41 +118,33 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Implications for programming education}{10}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Non-monotonic capacity and the gpt-4.1 vs.\ gpt-4.1-mini anomaly}{11}{}\protected@file@percent }
 \newlabel{sec:nonmonotonic}{{\mbox  {VI-C}}{11}{}{subsection.6.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Limits}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Next steps}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Open-weight model failure modes}{11}{}\protected@file@percent }
+\newlabel{sec:open_weight_discussion}{{\mbox  {VI-D}}{11}{}{subsection.6.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Limits}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-F}}Next steps}{12}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}}{12}{}\protected@file@percent }
 \newlabel{fig:l1_system_prompts}{{5}{12}{}{figure.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{12}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Evaluation Protocol}{12}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}L1: Token Alias Substitution}{12}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}}{12}{}\protected@file@percent }
-\newlabel{fig:l1_user_prompt}{{6}{12}{}{figure.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}}{12}{}\protected@file@percent }
-\newlabel{fig:l2_prompt}{{7}{12}{}{figure.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}L2: Syntax Inversion}{12}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}L3: Semantic Inversion (Explicit)}{12}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}L4: Semantic Inversion (Implicit)}{12}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Evaluation Metrics}{12}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L1)}{12}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}}{13}{}\protected@file@percent }
+\newlabel{fig:l1_user_prompt}{{6}{13}{}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}}{13}{}\protected@file@percent }
+\newlabel{fig:l2_prompt}{{7}{13}{}{figure.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}L2: Syntax Inversion}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}L3: Semantic Inversion (Explicit)}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}L4: Semantic Inversion (Implicit)}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Evaluation Metrics}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-F}}Judge Protocol (L1)}{13}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}}{13}{}\protected@file@percent }
 \newlabel{fig:l3_prompts}{{8}{13}{}{figure.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python fib---exhibiting \emph  {pattern blindness}.}}{13}{}\protected@file@percent }
 \newlabel{fig:l4_prompt}{{9}{13}{}{figure.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-G}}Judge Protocol (L3/L4)}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}All experiments (chronological)}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{14}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}All experiments (chronological)}{14}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}API and runtime settings}{15}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-C}}Repository structure for replication}{15}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{15}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{15}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{15}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}PSS (Partial Structural Score) Supplementary Data}{15}{}\protected@file@percent }
-\newlabel{sec:appendix_pss}{{\mbox  {X-C}}{15}{}{subsection.10.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces L1 KLR and PSS (supplementary). PSS is exploratory; KLR is the validated primary metric.}}{15}{}\protected@file@percent }
-\newlabel{tab:l1_pss}{{VII}{15}{}{table.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-D}}L4 Multi-Task Full PPR Values}{15}{}\protected@file@percent }
-\newlabel{sec:appendix_l4_multitask_ppr}{{\mbox  {X-D}}{15}{}{subsection.10.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-E}}Execution config snapshot (non-secret)}{15}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{chen2021codex}{1}
@@ -169,6 +161,20 @@
 \bibcite{chen2024instructhierarchy}{12}
 \bibcite{xie2024conflict}{13}
 \bibcite{wu2024contextparametric}{14}
+\@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Prompt Samples, Taxonomy, and Config Snapshot}{16}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Prompt samples (readable form)}{16}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}Violation taxonomy summary (gpt-4o-mini, v1--v120)}{16}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}PSS (Partial Structural Score) Supplementary Data}{16}{}\protected@file@percent }
+\newlabel{sec:appendix_pss}{{\mbox  {X-C}}{16}{}{subsection.10.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-D}}L4 Multi-Task Full PPR Values}{16}{}\protected@file@percent }
+\newlabel{sec:appendix_l4_multitask_ppr}{{\mbox  {X-D}}{16}{}{subsection.10.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-E}}Execution config snapshot (non-secret)}{16}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces L1 KLR and PSS (supplementary). PSS is exploratory; KLR is the validated primary metric.}}{16}{}\protected@file@percent }
+\newlabel{tab:l1_pss}{{VII}{16}{}{table.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces L4 multi-task full PPR. $\dagger $~Partially-annotated prompts (not comparable to Table~\ref {tab:l4_ablation}).}}{16}{}\protected@file@percent }
+\newlabel{tab:appendix_l4_ppr}{{VIII}{16}{}{table.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{16}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{16}{}\protected@file@percent }
 \bibcite{zhang2024conflict}{15}
 \bibcite{contextinvert2024}{16}
 \bibcite{wang2024ntp}{17}
@@ -195,10 +201,6 @@
 \bibcite{novak2025llmhw}{38}
 \bibcite{codeplagiarism2024}{39}
 \bibcite{ouyang2022instruct}{40}
-\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces L4 multi-task full PPR. $\dagger $~Partially-annotated prompts (not comparable to Table~\ref {tab:l4_ablation}).}}{16}{}\protected@file@percent }
-\newlabel{tab:appendix_l4_ppr}{{VIII}{16}{}{table.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces Key runtime settings}}{16}{}\protected@file@percent }
-\newlabel{tab:config_snapshot}{{IX}{16}{}{table.9}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{16}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{16}{}\protected@file@percent }
-\gdef \@abspage@last{16}
+\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces Key runtime settings}}{17}{}\protected@file@percent }
+\newlabel{tab:config_snapshot}{{IX}{17}{}{table.9}{}}
+\gdef \@abspage@last{17}
