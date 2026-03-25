@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 10:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1346,48 +1346,48 @@ Overfull \hbox (7.85284pt too wide) in paragraph at lines 183--184
 ][][][][][][][][][] 
  []
 
-
-Underfull \hbox (badness 2119) in paragraph at lines 193--194
+[5]
+Underfull \hbox (badness 2119) in paragraph at lines 195--196
 []\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
 
 
-Underfull \hbox (badness 6016) in paragraph at lines 193--194
+Underfull \hbox (badness 6016) in paragraph at lines 195--196
 \T1/ptm/m/n/10 (+20) Fi-bonacci, we eval-u-ated all seven mod-els on three
  []
 
 
-Underfull \hbox (badness 4634) in paragraph at lines 193--194
+Underfull \hbox (badness 4634) in paragraph at lines 195--196
 \T1/ptm/m/n/10 (+20) tasks: T1 (\T1/pcr/m/n/10 fibonacci\T1/ptm/m/n/10 (+20) ),
  T2 (\T1/pcr/m/n/10 is_sorted\T1/ptm/m/n/10 (+20) ), and T3
  []
 
-[5]
-Underfull \hbox (badness 1755) in paragraph at lines 228--230
+
+Underfull \hbox (badness 1755) in paragraph at lines 230--232
 \T1/ptm/m/n/10 (+20) (1) \T1/ptm/b/n/10 (+20) T2 is ex-tractable only by mid-to
 -large mod-els\T1/ptm/m/n/10 (+20) :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--239
+Underfull \hbox (badness 10000) in paragraph at lines 239--241
 \T1/ptm/m/n/10 (+20) (4) \T1/ptm/b/n/10 (+20) Model ca-pac-ity de-ter-mines T2 
 ex-tractabil-ity\T1/ptm/m/n/10 (+20) :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--239
+Underfull \hbox (badness 10000) in paragraph at lines 239--241
 \T1/pcr/m/n/10 gpt-4o-mini\T1/ptm/m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1\T1/ptm/
 m/n/10 (+20) , \T1/pcr/m/n/10 gpt-4.1-nano\T1/ptm/m/n/10 (+20) , and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--239
+Underfull \hbox (badness 10000) in paragraph at lines 239--241
 \T1/pcr/m/n/10 gpt-5.4-mini \T1/ptm/m/n/10 (+20) all fail T2, while \T1/pcr/m/n
 /10 gpt-4o \T1/ptm/m/n/10 (+20) and
  []
 
 
-Underfull \hbox (badness 2913) in paragraph at lines 237--239
+Underfull \hbox (badness 2913) in paragraph at lines 239--241
 \T1/pcr/m/n/10 gpt-4.1-mini \T1/ptm/m/n/10 (+20) succeed---consistent with the 
 ca-pac-ity
  []
@@ -1447,15 +1447,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-
-Overfull \vbox (35.14354pt too high) has occurred while \output is active []
-
-
-[9]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-)
-(./sections/09_reproducibility_protocol.tex
+[9]) (./sections/09_reproducibility_protocol.tex
 Underfull \hbox (badness 10000) in paragraph at lines 17--19
 []\T1/ptm/b/n/10 (+20) Partial judge ap-plied (2026-03-24). \T1/ptm/m/n/10 (+20
 ) Script:
@@ -1488,7 +1480,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--39
 \T1/pcr/m/n/10 l1-gpt41-contextpack-2026-03-25.json\T1/ptm/m/n/10 (+20) ,
  []
 
-
+[10]
 Underfull \hbox (badness 2698) in paragraph at lines 45--48
 \T1/ptm/m/n/10 (+20) (1/20 pre-lim-i-nary was a sta-tis-ti-cal ar-ti-fact). Fil
 e:
@@ -1501,7 +1493,7 @@ Underfull \hbox (badness 4441) in paragraph at lines 49--54
 
  []
 
-[10]
+
 Overfull \hbox (67.53001pt too wide) in paragraph at lines 55--62
 \T1/pcr/m/n/10 L4-scaleup-count_vowels.gpt4o.n50.2026-03-25.json\T1/ptm/m/n/10 
 (-20) ,
@@ -1532,7 +1524,7 @@ Underfull \hbox (badness 3769) in paragraph at lines 68--76
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
-(./main.bbl [11])
+[11] (./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1551,11 +1543,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37288 strings out of 467525
- 901622 string characters out of 5408440
- 1645691 words of memory out of 5000000
+ 37289 strings out of 467525
+ 901632 string characters out of 5408440
+ 1644692 words of memory out of 5000000
  65062 multiletter control sequences out of 15000+600000
- 781052 words of font info for 509 fonts, out of 8000000 for 9000
+ 781168 words of font info for 510 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1103b,2336s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1592,7 +1584,7 @@ onts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
 xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202603
 01/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texl
 ive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (12 pages, 350596 bytes).
+Output written on main.pdf (12 pages, 351132 bytes).
 PDF statistics:
  188 PDF objects out of 1000 (max. 8388607)
  116 compressed objects within 2 object streams

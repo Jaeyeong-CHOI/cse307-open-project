@@ -190,11 +190,13 @@ return fib(n-1) + fib(n-2)
 \end{figure}
 
 \subsection{L4 Multi-task Generalization}
+\textbf{Protocol note:} This section uses \emph{partially-annotated} prompts (inline comments partially state the inversion rule), which differ from the strict \emph{example-only} prompts in \S\ref{sec:l4_ablation}. Results in Table~\ref{tab:l4_multitask} are \textbf{not directly comparable} to Table~\ref{tab:l4_ablation}; comparisons across these sections should account for this prompt protocol difference.
+
 To assess whether pattern blindness extends beyond Fibonacci, we evaluated all seven models on three tasks: T1 (\texttt{fibonacci}), T2 (\texttt{is\_sorted}), and T3 (\texttt{count\_vowels}). The multi-task prompt uses inline code comments that partially annotate the inversion rule (\textit{e.g.}, \texttt{\# runs when a > b is FALSE, i.e., a <= b}); this is a \emph{partially-annotated L4} condition---less explicit than L3 (no stated rule), but more informative than the pure example-only variants used in the ablation. \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-5.4-mini}, and \texttt{o4-mini} were evaluated at $n=10$ or $n=15$ per task; \texttt{gpt-4.1-mini} at $n=20$ per task; \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} at $n=10$ per task (255 initial runs). We further scaled \texttt{gpt-4o} T3 and \texttt{gpt-4.1} T2 to $n=50$ each to resolve preliminary ambiguities, and extended \texttt{o4-mini} T2/T3 to $n=20$ each, yielding 395 total multi-task runs. Results are in Table~\ref{tab:l4_multitask}.
 
 \begin{table*}[!t]
 \centering
-\caption{L4 multi-task generalization (partially-annotated prompts; not directly comparable to Table~\ref{tab:l4_ablation}). Each cell shows pass rate; PPR in parentheses. ``Pass'' = model applied inverted if-block semantics correctly. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. OpSub = operational substitution (correct output via arithmetic workaround, not semantic inversion).}
+\caption{L4 multi-task generalization. \textbf{Note:} Partially-annotated prompts (inline comments partially state the rule); \emph{not directly comparable to Table~\ref{tab:l4_ablation}} (strict example-only). Each cell shows pass rate; PPR in parentheses. ``Pass'' = model applied inverted if-block semantics correctly. T1=fibonacci, T2=is\_sorted, T3=count\_vowels. OpSub = operational substitution (correct output via arithmetic workaround, not semantic inversion).}
 \label{tab:l4_multitask}
 \small
 \begin{tabular}{@{}l ccc ccc ccc@{}}
