@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 09:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1076,40 +1076,44 @@ ang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 ) [3]) (./sections/04_experiments.tex) (./sections/05_results.tex
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 94--100
+Underfull \hbox (badness 10000) in paragraph at lines 95--101
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 110--116
+Underfull \hbox (badness 10000) in paragraph at lines 111--117
 
  []
 
 
-Overfull \hbox (3.05284pt too wide) in paragraph at lines 117--118
+Overfull \hbox (3.05284pt too wide) in paragraph at lines 118--119
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][][][][][][][] 
  []
 
 
-Underfull \hbox (badness 2119) in paragraph at lines 127--128
+Underfull \hbox (badness 2119) in paragraph at lines 128--129
 []\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
 
 
-Underfull \hbox (badness 6016) in paragraph at lines 127--128
+Underfull \hbox (badness 6016) in paragraph at lines 128--129
 \T1/ptm/m/n/10 (+20) Fi-bonacci, we eval-u-ated all seven mod-els on three
  []
 
 
-Underfull \hbox (badness 4634) in paragraph at lines 127--128
+Underfull \hbox (badness 4634) in paragraph at lines 128--129
 \T1/ptm/m/n/10 (+20) tasks: T1 (\T1/pcr/m/n/10 fibonacci\T1/ptm/m/n/10 (+20) ),
  T2 (\T1/pcr/m/n/10 is_sorted\T1/ptm/m/n/10 (+20) ), and T3
  []
 
 LaTeX Font Info:    Font shape `T1/ptm/m/scit' in size <8> not available
-(Font)              Font shape `T1/ptm/m/it' tried instead on input line 131.
-[5]) (./sections/06_discussion.tex [6]
+(Font)              Font shape `T1/ptm/m/it' tried instead on input line 132.
+[5]
+Underfull \vbox (badness 3884) has occurred while \output is active []
+
+)
+(./sections/06_discussion.tex [6]
 Underfull \hbox (badness 2181) in paragraph at lines 28--30
 \T1/ptm/b/n/10 (+20) reasoning-model ex-trac-tion. \T1/ptm/m/n/10 (+20) An ear-
 lier multi-task run
@@ -1142,8 +1146,8 @@ Underfull \hbox (badness 2065) in paragraph at lines 28--30
 \T1/ptm/m/n/10 (+20) 8/15 on T1 (partially-annotated prompt). This re-vi-sion
  []
 
-) (./sections/07_conclusion.tex [7])
-(./sections/08_prompt_and_judge_details.tex
+[7]) (./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
+
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1159,11 +1163,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 loop var over iterable { body } \T1/ptm/m/n/9 (+20) (re-places
  []
 
-
-Underfull \vbox (badness 4699) has occurred while \output is active []
-
- [8])
-(./sections/09_reproducibility_protocol.tex
+[8]) (./sections/09_reproducibility_protocol.tex
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
 (Font)              Font shape `T1/pcr/m/sl' tried instead on input line 8.
 
@@ -1267,11 +1267,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25191 strings out of 467525
- 517211 string characters out of 5408440
- 1192564 words of memory out of 5000000
- 53158 multiletter control sequences out of 15000+600000
- 775633 words of font info for 484 fonts, out of 8000000 for 9000
+ 25212 strings out of 467525
+ 517416 string characters out of 5408440
+ 1193564 words of memory out of 5000000
+ 53160 multiletter control sequences out of 15000+600000
+ 781818 words of font info for 496 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,14n,108p,2836b,1594s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1301,10 +1301,10 @@ ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 utmbi8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1
 /urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (11 pages, 292633 bytes).
+Output written on main.pdf (11 pages, 293685 bytes).
 PDF statistics:
  154 PDF objects out of 1000 (max. 8388607)
  96 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 72717 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 76813 words of extra memory for PDF output out of 89155 (max. 10000000)
 

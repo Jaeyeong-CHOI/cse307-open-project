@@ -94,7 +94,7 @@
 \newlabel{tab:l4_ablation}{{IV}{5}{}{table.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Prior dominance vs.\ pattern blindness isolated on the same model (gpt-4o). \textbf  {A}: gpt-4o correctly inverts logic with explicit rule (L3). \textbf  {B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}}{5}{}\protected@file@percent }
 \newlabel{fig:l4_failure}{{3}{5}{}{figure.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces L4 multi-task generalization (partially-annotated prompt; see text). T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt  {gpt-4o} and \texttt  {gpt-4.1-mini} both pass T2 fully. T3 exposes \textit  {operational substitution} as dominant (gpt-4o T3 $n=50$: 47/50 runs, 94\%). gpt-4.1 T2 scale-up confirms systematic resistance vs.\ gpt-4.1-mini (Fisher's exact $p < 0.0001$). o4-mini achieves 8/15 on T1 under partially-annotated condition but 0/15 on T2/T3 (0/50 under strict ablation). gpt-5.4-mini fails all tasks (0/30; T1/T2 PPR=1.0, T3 operational substitution).}}{6}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces L4 multi-task generalization. \textbf  {Note: uses partially-annotated prompts (inline comments); not directly comparable to Table~\ref {tab:l4_ablation} (strict example-only).} T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt  {gpt-4o} and \texttt  {gpt-4.1-mini} both pass T2 fully. T3 exposes \textit  {operational substitution} as dominant (gpt-4o T3 $n=50$: 47/50 runs, 94\%). gpt-4.1 T2 scale-up confirms systematic resistance vs.\ gpt-4.1-mini (Fisher's exact $p < 0.0001$). o4-mini achieves 8/15 on T1 under partially-annotated condition but 0/50 under strict ablation. gpt-5.4-mini fails all tasks (0/30; T1/T2 PPR=1.0, T3 operational substitution).}}{6}{}\protected@file@percent }
 \newlabel{tab:l4_multitask}{{V}{6}{}{table.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Three Failure Modes}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion}{6}{}\protected@file@percent }
@@ -102,9 +102,9 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Implications for programming education}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Limits}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Next steps}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{7}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}}{8}{}\protected@file@percent }
 \newlabel{fig:l1_system_prompts}{{4}{8}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VIII}Prompt and Evaluation Protocol}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}L1: Token Alias Substitution}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}}{8}{}\protected@file@percent }

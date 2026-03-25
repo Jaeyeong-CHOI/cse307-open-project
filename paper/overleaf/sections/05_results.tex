@@ -25,7 +25,7 @@ gpt-4.1-mini & ctx-pack & 0.21 & 0.37 \\
 \end{table}
 
 \subsection{L1: Partial resistance; scale does not predict compliance}
-All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37), suggesting model scale does not straightforwardly predict alias compliance---possibly due to stronger code-generation training in newer model families; (2) for models with paired conditions, context-pack delivery reduces KLR: gpt-4o-mini ($0.42 \to 0.26$, $-38\%$) and gpt-4.1-mini ($0.43 \to 0.21$, $-51\%$); (3) the reasoning model o4-mini (KLR=0.27) performs comparably to gpt-4o-mini ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance. Note: gpt-4.1, gpt-4.1-nano, and o4-mini were only evaluated under ctx-pack ($n=20$, v1--v20); baseline comparison for these models is not available and should be interpreted with caution given the smaller and non-overlapping prompt subset.
+All models show non-zero KLR (0.21--0.69), confirming prior dominance. Three findings stand out: (1) gpt-5.4-mini (KLR=0.67) underperforms gpt-4o (KLR=0.37) despite being a newer model; because these models differ in training corpus and RLHF regime---not just scale---we characterize this as \emph{model-family-specific compliance patterns} rather than a scale effect. The observed difference may reflect stronger code-generation fine-tuning in gpt-5.4-mini (a stated hypothesis, not a measured mechanism); (2) for models with paired conditions, context-pack delivery reduces KLR: gpt-4o-mini ($0.42 \to 0.26$, $-38\%$) and gpt-4.1-mini ($0.43 \to 0.21$, $-51\%$); (3) the reasoning model o4-mini (KLR=0.27) performs comparably to gpt-4o-mini ctx-pack (0.26), suggesting chain-of-thought reasoning provides modest benefit for alias compliance. Note: gpt-4.1, gpt-4.1-nano, and o4-mini were only evaluated under ctx-pack ($n=20$, v1--v20); baseline comparison for these models is not available and should be interpreted with caution given the smaller and non-overlapping prompt subset.
 
 \begin{table}[!t]
 \centering
@@ -77,12 +77,13 @@ A & 2ex-baseline     & .40 & .10 & 1.0 & .10 & 1.0 & 1.0 & .80 \\
 B & 3ex-extra        & 1.0 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
 C & 2ex-no-comment   & .90 & 1.0 & 1.0 & .80 & 1.0 & 1.0 & .90 \\
 D & 2ex-swapped      & .70 & 1.0 & 1.0 & .00 & 1.0 & 1.0 & 1.0 \\
-E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0$^\dagger$ & .90 \\
+E & 3ex-diff-domain  & .50 & 1.0 & 1.0 & 1.0 & 1.0 & N/A$^\dagger$ & .90 \\
 \midrule
-\multicolumn{2}{l}{Overall PPR} & .70 & .82 & 1.0 & .38 & 1.0 & 1.0 & .92 \\
+\multicolumn{2}{l}{Overall PPR} & .70 & .82 & 1.0 & .38 & 1.0 & 1.0$^\ddagger$ & .92 \\
 \multicolumn{2}{l}{Pass rate} & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 & 0/50 \\
 \bottomrule
-\multicolumn{9}{l}{\scriptsize $^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$.} \\
+\multicolumn{9}{l}{\scriptsize $^\dagger$gpt-5.4-mini var-E: 8 HTTP errors; $n_\mathrm{eff}=2$; excluded from per-variant PPR.} \\
+\multicolumn{9}{l}{\scriptsize $^\ddagger$Overall PPR for gpt-5.4-mini computed over 4 valid variants (A--D); var-E excluded.} \\
 \end{tabular}}
 \end{table}
 
@@ -128,7 +129,7 @@ To assess whether pattern blindness extends beyond Fibonacci, we evaluated all s
 
 \begin{table}[!t]
 \centering
-\caption{L4 multi-task generalization (partially-annotated prompt; see text). T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully. T3 exposes \textit{operational substitution} as dominant (gpt-4o T3 $n=50$: 47/50 runs, 94\%). gpt-4.1 T2 scale-up confirms systematic resistance vs.\ gpt-4.1-mini (Fisher's exact $p < 0.0001$). o4-mini achieves 8/15 on T1 under partially-annotated condition but 0/15 on T2/T3 (0/50 under strict ablation). gpt-5.4-mini fails all tasks (0/30; T1/T2 PPR=1.0, T3 operational substitution).}
+\caption{L4 multi-task generalization. \textbf{Note: uses partially-annotated prompts (inline comments); not directly comparable to Table~\ref{tab:l4_ablation} (strict example-only).} T1=fibonacci, T2=is\_sorted, T3=count\_vowels. Pass rate and PPR (Python Prior Rate). \texttt{gpt-4o} and \texttt{gpt-4.1-mini} both pass T2 fully. T3 exposes \textit{operational substitution} as dominant (gpt-4o T3 $n=50$: 47/50 runs, 94\%). gpt-4.1 T2 scale-up confirms systematic resistance vs.\ gpt-4.1-mini (Fisher's exact $p < 0.0001$). o4-mini achieves 8/15 on T1 under partially-annotated condition but 0/50 under strict ablation. gpt-5.4-mini fails all tasks (0/30; T1/T2 PPR=1.0, T3 operational substitution).}
 \label{tab:l4_multitask}
 \footnotesize
 \begin{tabular}{@{}lllcc@{}}
