@@ -74,7 +74,7 @@
     L4 ablation Variant A pilot: both models 0/20 pass (Llama PPR=0.05, Qwen PPR=1.00); confirms cross-family pattern blindness.
     Full 5-variant ablation ($n=50$ attempted): Qwen3-32B 50/50 valid, 0/50 pass, PPR=1.00; Llama-3.3-70B 25/50 valid (25 HTTP errors), 0/25 pass, per-variant PPR: A=0.00, B=0.00, C=0.60, D=1.00, E=1.00 (overall PPR=0.52).
     L1 family variance (0.23--1.00) exceeds gpt-4.x intra-family variance (0.21--0.69).
-    Files: \texttt{l\{1,4\}-*-groq-*.json}, \texttt{L4-ablation-n50.groq.llama3370bversatile.2026-03-25.json}
+    Files: \texttt{l\{1,4\}-*-groq-*.json}, \texttt{\seqsplit{L4-ablation-n50.groq.llama3370bversatile.2026-03-25.json}}
 
   \item \textbf{E19: o4-mini multi-task T2/T3 extension, $n=20$ each (2026-03-25).}
     Rationale: E15 only ran T1 with corrected token budget; T2/T3 needed extension to $n=20$.
@@ -128,7 +128,8 @@
     \texttt{gpt-5.4}: 0/10 pass, PPR=1.00 (complete prior dominance).
     \texttt{o3}: 0/10 pass, PPR=1.00 (complete prior dominance).
     Key finding: L4 pattern blindness on prior-entrenched Fibonacci holds for both frontier models as of 2026-03-25.
-    Files: \texttt{e24-frontier-l4-fibonacci.gpt-54.n10.2026-03-25.json}, \texttt{e24-frontier-l4-fibonacci.o3.n10.2026-03-25.json}.
+    Files: \texttt{\seqsplit{e24-frontier-l4-fibonacci.gpt-54.n10.2026-03-25.json}},
+    \texttt{\seqsplit{e24-frontier-l4-fibonacci.o3.n10.2026-03-25.json}}.
     Script: \texttt{scripts/run\_e24\_frontier\_l4.py}
 \end{enumerate}
 

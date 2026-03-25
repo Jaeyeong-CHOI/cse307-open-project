@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 15:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  25 MAR 2026 16:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -207,6 +207,11 @@ Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/seqsplit/seqs
+plit.sty
+Package: seqsplit 2006/08/07 v0.1 Splitting long sequences (DNA, RNA, proteins,
+ etc.) 
 )
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/microtype/mic
 rotype.sty
@@ -1138,20 +1143,20 @@ Package caption Info: listings package is loaded.
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
 
 -- Lines per column: 56 (exact).
 
@@ -1181,13 +1186,13 @@ pstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 55.
-Package microtype Info: Applying patch `item' on input line 55.
-Package microtype Info: Applying patch `toc' on input line 55.
-Package microtype Info: Applying patch `eqnum' on input line 55.
-Package microtype Info: Applying patch `footnote' on input line 55.
-Package microtype Info: Applying patch `verbatim' on input line 55.
-LaTeX Info: Redefining \microtypesetup on input line 55.
+LaTeX Info: Redefining \microtypecontext on input line 56.
+Package microtype Info: Applying patch `item' on input line 56.
+Package microtype Info: Applying patch `toc' on input line 56.
+Package microtype Info: Applying patch `eqnum' on input line 56.
+Package microtype Info: Applying patch `footnote' on input line 56.
+Package microtype Info: Applying patch `verbatim' on input line 56.
+LaTeX Info: Redefining \microtypesetup on input line 56.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1210,7 +1215,7 @@ s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 56
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 57
 .
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/t1pcr.
@@ -1624,11 +1629,6 @@ Underfull \hbox (badness 3029) in paragraph at lines 49--54
  []
 
 [13]
-Overfull \hbox (97.32996pt too wide) in paragraph at lines 71--78
-\T1/pcr/m/n/10 L4-ablation-n50.groq.llama3370bversatile.2026-03-25.json 
- []
-
-
 Underfull \hbox (badness 2269) in paragraph at lines 79--85
 \T1/ptm/m/n/10 (+20) cor-rected to-ken bud-get; T2/T3 needed ex-ten-sion to
  []
@@ -1758,60 +1758,16 @@ Underfull \hbox (badness 1521) in paragraph at lines 117--124
  []
 
 
-Underfull \hbox (badness 3612) in paragraph at lines 125--133
-\T1/ptm/m/n/10 (+20) tested \T1/pcr/m/n/10 gpt-5.4\T1/ptm/m/n/10 (+20) /\T1/pcr
-/m/n/10 o3 \T1/ptm/m/n/10 (+20) on hard tasks (I/O-transparent,
- []
-
-
-Underfull \hbox (badness 4168) in paragraph at lines 125--133
-\T1/ptm/m/n/10 (+20) shal-low pri-ors). C2 cri-tique re-quired test-ing same
- []
-
-
-Underfull \hbox (badness 3029) in paragraph at lines 125--133
-\T1/ptm/m/n/10 (+20) Con-di-tion: Vari-ant A (2ex-baseline), strict example-
- []
-
-
-Underfull \hbox (badness 3240) in paragraph at lines 125--133
-\T1/ptm/m/n/10 (+20) only, iden-ti-cal to Ta-ble IV[]. \T1/pcr/m/n/10 gpt-5.4\T
-1/ptm/m/n/10 (+20) : 0/10 pass,
- []
-
-
-Underfull \hbox (badness 2237) in paragraph at lines 125--133
-\T1/ptm/m/n/10 (+20) PPR=1.00 (com-plete prior dom-i-nance). Key find-ing:
- []
-
-
-Underfull \hbox (badness 3601) in paragraph at lines 125--133
-\T1/ptm/m/n/10 (+20) L4 pat-tern blind-ness on prior-entrenched Fi-bonacci
- []
-
-
-Overfull \hbox (74.52995pt too wide) in paragraph at lines 125--133
-\T1/pcr/m/n/10 e24-frontier-l4-fibonacci.gpt-54.n10.2026-03-25.json\T1/ptm/m/n/
-10 (-20) ,
- []
-
-
-Overfull \hbox (50.02995pt too wide) in paragraph at lines 125--133
-\T1/pcr/m/n/10 e24-frontier-l4-fibonacci.o3.n10.2026-03-25.json\T1/ptm/m/n/10 (
--20) .
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [14])
 (./sections/10_appendix_experiment_details.tex
-Underfull \hbox (badness 10000) in paragraph at lines 160--1
+Underfull \hbox (badness 10000) in paragraph at lines 161--1
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 160--1
+Underfull \hbox (badness 10000) in paragraph at lines 161--1
 
  []
 
@@ -1832,12 +1788,12 @@ Underfull \hbox (badness 1983) in paragraph at lines 117--118
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 )
-Underfull \hbox (badness 3769) in paragraph at lines 125--81
+Underfull \hbox (badness 3769) in paragraph at lines 125--82
 []\T1/ptm/m/n/10 (+20) Secret-bearing val-ues (API keys) are ex-cluded and
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 87--88
+Underfull \hbox (badness 10000) in paragraph at lines 88--89
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
  []
@@ -1861,10 +1817,10 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37286 strings out of 467525
- 895866 string characters out of 5408440
- 1649798 words of memory out of 5000000
- 64977 multiletter control sequences out of 15000+600000
+ 37315 strings out of 467525
+ 896621 string characters out of 5408440
+ 1650010 words of memory out of 5000000
+ 65002 multiletter control sequences out of 15000+600000
  788392 words of font info for 560 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1598b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1902,7 +1858,7 @@ onts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20260301/share/te
 xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202603
 01/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texl
 ive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (16 pages, 381247 bytes).
+Output written on main.pdf (16 pages, 381582 bytes).
 PDF statistics:
  201 PDF objects out of 1000 (max. 8388607)
  125 compressed objects within 2 object streams
