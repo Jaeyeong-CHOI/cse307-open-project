@@ -46,9 +46,9 @@ Results are in Table~\ref{tab:l4_hard}.
 \label{sec:e24}
 To directly address whether frontier models (\texttt{gpt-5.4}, \texttt{o3}) can overcome pattern blindness on prior-entrenched tasks---a gap in the hard-task extension---we ran the strict L4 Fibonacci ablation (Variant A, example-only, no explicit rule) on both models at $n=10$ each. This is the same Variant A condition used in Table~\ref{tab:l4_ablation}. Results are reported in \S\ref{sec:l4_ablation}.
 
-\subsection{E28: Annotation Density Gradient (o4-mini)}
+\subsection{E28: Annotation Density Gradient (o4-mini, Pilot)}
 \label{sec:e28}
-To map the annotation sensitivity boundary for reasoning models---motivated by the dissociation between CoT ($1/20$ pass) and partial annotation ($8/15$ pass) for \texttt{o4-mini}---we ran a density gradient experiment varying the fraction of inline annotation comments across the 8 worked examples in a T1 Fibonacci L4 prompt. Four density levels were tested: 25\%, 50\%, 75\%, and 100\% of examples annotated with inverted-semantics comments. $n=10$ per density level (40 total runs, \texttt{o4-mini} only). This directly operationalizes the annotation-sensitivity hypothesis: does more annotation monotonically improve extraction, or is there an optimal density beyond which prior conflicts increase?
+\emph{Pilot for E34.} To map the annotation sensitivity boundary for reasoning models---motivated by the dissociation between CoT ($1/20$ pass) and partial annotation ($8/15$ pass) for \texttt{o4-mini}---we ran a density gradient experiment varying the fraction of inline annotation comments across the 8 worked examples in a T1 Fibonacci L4 prompt. Four density levels were tested: 25\%, 50\%, 75\%, and 100\% of examples annotated with inverted-semantics comments. $n=10$ per density level (40 total runs, \texttt{o4-mini} only). This pilot directly operationalizes the annotation-sensitivity hypothesis; the full multi-model replication is E34 (\S\ref{sec:e34}).
 
 \subsection{E25--E27: Diagnostic L3 for \texttt{gpt-4.1} and \texttt{Qwen3-32B}}
 \label{sec:e25e27}
@@ -66,9 +66,9 @@ To test whether L4 resistance survives cross-task contamination, we evaluated L4
 \label{sec:e33e35}
 E33 tested IO-A (transparent Fibonacci-adjacent mapping) vs.\ IO-B (opaque counter function with disclosed algorithm), revealing a confound: IO-B disclosed algorithmic steps, making both tasks procedurally transparent. Models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}) achieved 10/10 on both. E33v2 replicated with \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini} to confirm confound robustness. E35 (redesigned) replaced IO-B with pure I/O pairs (8 examples, no algorithm description) to cleanly isolate opacity as an independent variable. $n=10$ per cell, temperature=0.7. Results are in \S\ref{sec:e33_io}.
 
-\subsection{E34: Annotation Density Curve (Multi-Model)}
+\subsection{E34: Annotation Density Curve (Multi-Model, Full Replication)}
 \label{sec:e34}
-Extending E28 (\texttt{o4-mini} only, 4 density levels) to three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}) across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons. The 0\% condition includes an inverted \emph{code} example (not I/O-only), making it qualitatively distinct from verbal annotation levels (25--100\%). $n=10$ per cell (150 total runs). Results are in \S\ref{sec:e34_density}.
+Full replication of the E28 pilot (\S\ref{sec:e28}), extending to three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}) across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons. The 0\% condition includes an inverted \emph{code} example (not I/O-only), making it qualitatively distinct from verbal annotation levels (25--100\%). $n=10$ per cell (150 total runs). Results are in \S\ref{sec:e34_density}.
 
 \subsection{Reproducibility}
 All experimental artifacts, commands, and results are committed to the repository under \texttt{docs/research/results/}. See reproducibility protocol section for commands.

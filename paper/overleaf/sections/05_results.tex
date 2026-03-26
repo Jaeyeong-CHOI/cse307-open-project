@@ -306,7 +306,7 @@ E26 result ($n=5$): 0/5 pass, PPR=0.80 (1/5 showed a structurally distinct non-p
 E27 result ($n=20$, 2026-03-25): 0/20 pass, PPR=0.40 (8/20 exact Python prior; 12/20 FAIL-other). No valid passes at $n_\mathrm{eff}=20$; Wilson 95\% CI: [0\%, 17\%]. The PPR=0.40 is \emph{lower} than the E26 pilot (0.80), reflecting that a substantial fraction of failures are structurally distinct from the pure Python prior---the model often produces internally inconsistent code that attempts partial rule application but fails, rather than simply returning the standard Fibonacci template. This is consistent with \emph{confused partial instruction-following}, not clean prior dominance.
 Unlike \texttt{gpt-4.1} (E25: 10/10 on L3 T2), \texttt{Qwen3-32B} fails to apply the semantic inversion rule even when stated explicitly across $n=20$ trials---confirming \emph{general semantic meta-rule failure} as a systematic property, not a small-$n$ artifact. This represents a qualitatively different failure mode from all tested OpenAI models: \texttt{Qwen3-32B} cannot reliably follow semantic inversions via prompt instructions alone, regardless of delivery (explicit vs.\ implicit).
 
-\subsection{E28: Annotation Density Gradient for \texttt{o4-mini}}
+\subsection{E28: Annotation Density Gradient for \texttt{o4-mini} (Pilot)}
 \label{sec:e28_results}
 
 \begin{table}[!t]
@@ -330,7 +330,7 @@ Unlike \texttt{gpt-4.1} (E25: 10/10 on L3 T2), \texttt{Qwen3-32B} fails to apply
 }
 \end{table}
 
-The E28 experiment reveals that annotation density has a \textbf{non-monotonic} effect on \texttt{o4-mini}'s ability to extract the L4 inversion pattern. Results are in Table~\ref{tab:e28_density}.
+\emph{This section reports the single-model pilot; the full three-model replication (E34) is in \S\ref{sec:e34_density}.} The E28 experiment reveals that annotation density has a \textbf{non-monotonic} effect on \texttt{o4-mini}'s ability to extract the L4 inversion pattern. Results are in Table~\ref{tab:e28_density}.
 
 \textbf{Key finding---optimal density at 50\%}: Pass rate peaks at 50\% annotation density (6/10, PPR=0.10). Below this, at 25\% density, pass rate drops to 3/10---insufficient annotation signal for the reasoning model's chain-of-thought. Above 50\%, at 75\% annotation, pass rate collapses to 2/10 and PPR \emph{rises} sharply to 0.50---a paradoxical result where more annotation triggers stronger prior conflict. At 100\% density, pass rate is lowest (1/9 valid runs; 1 HTTP error), though PPR partially recovers to 0.22.
 
