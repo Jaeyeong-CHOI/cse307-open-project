@@ -19,7 +19,7 @@ from datetime import datetime
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "docs" / "research" / "results"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-OUT_FILE = OUT_DIR / "l1-factorial-typeABC-2026-03-27.json"
+OUT_FILE = OUT_DIR / os.environ.get("L1_OUT_FILE", "l1-factorial-typeABC-n5-2026-03-27.json")
 
 sys.path.insert(0, str(ROOT / "scripts"))
 from partial_judge import evaluate as partial_evaluate, parse_mapping, compute_klr_acr
@@ -27,7 +27,7 @@ from partial_judge import evaluate as partial_evaluate, parse_mapping, compute_k
 API_KEY = os.environ.get("OPENAI_API_KEY")
 BASE = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
 MODEL = "gpt-4o"
-N_PER_PROMPT = 10
+N_PER_PROMPT = int(os.environ.get("L1_N_PER_PROMPT", "5"))
 DATE_STR = datetime.now().strftime("%Y-%m-%d")
 
 # ─── Alias pool definitions ────────────────────────────────────────────────
@@ -381,9 +381,10 @@ def main():
     print(f"Model: {MODEL} | N per prompt: {N_PER_PROMPT}")
     print(f"Generating configs...")
 
-    type_a_configs = generate_type_a_configs(30, seed=42)
-    type_b_configs = generate_type_b_configs(30, seed=43)
-    type_c_configs = generate_type_c_configs(30, seed=44)
+    n_configs = int(os.environ.get("L1_N_CONFIGS", "10"))
+    type_a_configs = generate_type_a_configs(n_configs, seed=42)
+    type_b_configs = generate_type_b_configs(n_configs, seed=43)
+    type_c_configs = generate_type_c_configs(n_configs, seed=44)
 
     print(f"Type A (cross-keyword): {len(type_a_configs)} configs")
     print(f"Type B (long phrase): {len(type_b_configs)} configs")

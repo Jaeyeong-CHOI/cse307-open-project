@@ -1,0 +1,2101 @@
+{
+  "experiment": "L1 Factorial Design (Type A/B/C)",
+  "date": "2026-03-27",
+  "model": "gpt-4o",
+  "n_per_prompt": 5,
+  "seeds": {
+    "type_A": 42,
+    "type_B": 43,
+    "type_C": 44
+  },
+  "design": {
+    "type_A": "cross-keyword: Python keyword → different Python keyword",
+    "type_B": "long-phrase: Python keyword → 3+ word natural language phrase",
+    "type_C": "short-nonkw: Python keyword → short non-keyword token"
+  },
+  "rigor_notes": {
+    "alias_generation": "random (seeded; seed=42,43,44); no researcher selection bias",
+    "judge": "deterministic rule-based (alias presence + keyword leakage + AST parse)",
+    "judge_validation": "automated judge, unvalidated (manual spot-check recommended)",
+    "n_per_cell": "5 trials per config; n=30 configs per type",
+    "statistical_test": "Wilson CI (95%) per type reported in summary",
+    "type_A_collision_warning": "Type A cross-kw aliases may produce src-alias collisions (e.g., alias(return)=for while for is also a source token). Judge conservatively flags such outputs as violations; true compliance may be slightly higher than reported KLR."
+  },
+  "summary": {
+    "type_A": {
+      "n_configs": 10,
+      "total_trials": 50,
+      "total_pass": 15,
+      "avg_pass_rate": 0.3,
+      "avg_klr": 0.152,
+      "wilson_ci_95": {
+        "lower": 0.191,
+        "upper": 0.4375,
+        "p_hat": 0.3
+      }
+    },
+    "type_B": {
+      "n_configs": 10,
+      "total_trials": 50,
+      "total_pass": 20,
+      "avg_pass_rate": 0.4,
+      "avg_klr": 0.12,
+      "wilson_ci_95": {
+        "lower": 0.2761,
+        "upper": 0.5382,
+        "p_hat": 0.4
+      }
+    },
+    "type_C": {
+      "n_configs": 10,
+      "total_trials": 50,
+      "total_pass": 50,
+      "avg_pass_rate": 1.0,
+      "avg_klr": 0.0,
+      "wilson_ci_95": {
+        "lower": 0.9286,
+        "upper": 1,
+        "p_hat": 1.0
+      }
+    }
+  },
+  "results": {
+    "type_A": [
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 1,
+        "alias_map": {
+          "def": "assert",
+          "if": "in",
+          "return": "for",
+          "for": "nonlocal",
+          "in": "from"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.4,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: for",
+              "original keyword used: in"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "assert fib(n):\n    in n <= 1:\n        for n\n    for fib(n-1) + fib(n-2)\n\nassert main():\n    nonlocal i from range(7):\n        print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: for",
+              "original keyword used: in"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "assert fib(n):\n    in n <= 1:\n        for n\n    else:\n        for fib(n-1) + fib(n-2)\n\nassert main():\n    nonlocal i from range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: for",
+              "missing alias for in: from",
+              "original keyword used: in",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 7)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "assert fib(n):\n    in n <= 1:\n        for n\n    for fib(n-1) + fib(n-2)\n\nassert main():\n    nonlocal i in range(0, 7):\n        print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: for",
+              "original keyword used: in"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "assert fibonacci(n):\n    in n <= 1:\n        for n\n    for fibonacci(n-1) + fibonacci(n-2)\n\nnonlocal i from range(7):\n    print(i, fibonacci(i))"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: for",
+              "original keyword used: in"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "assert fib(n):\n    in n <= 1:\n        for n\n    for fib(n-1) + fib(n-2)\n\nnonlocal i from range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 2,
+        "alias_map": {
+          "def": "import",
+          "if": "import",
+          "return": "else",
+          "for": "nonlocal",
+          "in": "return"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.16,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: return",
+              "python parse failed after normalization: expected '(' (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "import fib(n):\n    import n <= 1:\n        else n\n    else fib(n-1) + fib(n-2)\n\nnonlocal i return range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: return",
+              "python parse failed after normalization: expected '(' (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "import fib(n):\n    import n <= 1:\n        else n\n    else fib(n-1) + fib(n-2)\n\nnonlocal i return range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: return",
+              "python parse failed after normalization: expected '(' (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "import fib(n):\n    import n <= 1:\n        else n\n    else fib(n - 1) + fib(n - 2)\n\nnonlocal i return range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: return",
+              "python parse failed after normalization: expected '(' (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "import fib(n):\n    import n <= 1:\n        else n\n    else fib(n - 1) + fib(n - 2)\n\nnonlocal i return range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "missing alias for in: return",
+              "python parse failed after normalization: expected '(' (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "import fib(n):\n    import n <= 1:\n        else n\n    else fib(n-1) + fib(n-2)\n\nimport main():\n    nonlocal i nonlocal range(7):\n        print(i, fib(i))\n\nmain()"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 3,
+        "alias_map": {
+          "def": "del",
+          "if": "nonlocal",
+          "return": "False",
+          "for": "except",
+          "in": "def"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: def",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "del fib(n):\n    nonlocal n <= 1:\n        False n\n    False fib(n - 1) + fib(n - 2)\n\ndel main():\n    except i def range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: def",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "del fib(n):\n    nonlocal n <= 1:\n        False n\n    False fib(n-1) + fib(n-2)\n\ndel main():\n    except i def range(0, 7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: def",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "del fib(n):\n    nonlocal n <= 1:\n        False n\n    False fib(n-1) + fib(n-2)\n\nexcept i def range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: def",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "del fib(n):\n    nonlocal n <= 1:\n        False n\n    False fib(n-1) + fib(n-2)\n\ndel main():\n    except i def range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: def",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "del fib(n):\n    nonlocal n <= 1:\n        False n\n    False fib(n-1) + fib(n-2)\n\nexcept i def range(0, 7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 4,
+        "alias_map": {
+          "def": "finally",
+          "if": "yield",
+          "return": "if",
+          "for": "if",
+          "in": "def"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.4,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: def",
+              "original keyword used: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "finally fib(n):\n    yield n <= 1:\n        if n\n    else:\n        if fib(n-1) + fib(n-2)\n\nif i def range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: def",
+              "original keyword used: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "finally fib(n):\n    yield n <= 1:\n        if n\n    if:\n        if fib(n-1) + fib(n-2)\n\nfinally main():\n    if i def range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: def",
+              "original keyword used: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "finally fib(n):\n    yield n <= 1:\n        if n\n    if:\n        if fib(n-1) + fib(n-2)\n\nif i def range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: def",
+              "original keyword used: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "finally fib(n):\n    yield n <= 1:\n        if n\n    else:\n        if fib(n-1) + fib(n-2)\n\nif i def range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: def",
+              "original keyword used: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "finally fib(n):\n    yield n <= 1:\n        if n\n    else:\n        if fib(n-1) + fib(n-2)\n\nnumbers = range(7)\nif i def numbers:\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 5,
+        "alias_map": {
+          "def": "class",
+          "if": "import",
+          "return": "try",
+          "for": "raise",
+          "in": "for"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for",
+              "python parse failed after normalization: expected '(' (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "class fib:\n    class __init__(self, n):\n        import n <= 1:\n            try n\n        else:\n            try self(n - 1) + self(n - 2)\n\nclass main:\n    raise i for range(7):\n        print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for",
+              "python parse failed after normalization: expected '(' (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "class Fib:\n    class fib:\n        class __init__(self, n):\n            self.n = n\n\n        class calculate(self):\n            import self.n <= 1:\n                try self.n\n            else:\n         "
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for",
+              "python parse failed after normalization: expected '(' (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "class fib:\n    class __init__(self, n):\n        self.n = n\n\n    class calculate(self):\n        import self.n <= 1:\n            try self.n\n        else:\n            try self.calculate(self.n - 1) + sel"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for",
+              "python parse failed after normalization: expected '(' (<unknown>, line 1)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "class fib:\n    class __init__(self, n):\n        import n <= 1:\n            try n\n        import:\n            try self(n - 1) + self(n - 2)\n\nraise i for range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "missing alias for in: for",
+              "original keyword used: in",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 7)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "class fib(n):\n    import n <= 1:\n        try n\n    else:\n        try fib(n-1) + fib(n-2)\n\nraise i in range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 6,
+        "alias_map": {
+          "def": "except",
+          "if": "class",
+          "return": "global",
+          "for": "assert",
+          "in": "global"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "except fib(n):\n    class n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nassert i global range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "except fib(n):\n    class n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nassert i global range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "except fib(n):\n    class n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nassert i global range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "except fib(n):\n    class n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nassert i global range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "python parse failed after normalization: invalid syntax (<unknown>, line 6)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "except fib(n):\n    class n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nassert i global range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 7,
+        "alias_map": {
+          "def": "except",
+          "if": "yield",
+          "return": "import",
+          "for": "with",
+          "in": "finally"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "except fib(n):\n    yield n <= 1:\n        import n\n    import fib(n-1) + fib(n-2)\n\nwith i finally range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "except fib(n):\n    yield n <= 1:\n        import n\n    import fib(n - 1) + fib(n - 2)\n\nwith i finally range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "except fib(n):\n    yield n <= 1:\n        import n\n    import fib(n-1) + fib(n-2)\n\nwith i finally range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "except fib(n):\n    yield n <= 1:\n        import n\n    import fib(n-1) + fib(n-2)\n\nwith i finally range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "except fib(n):\n    yield n <= 1:\n        import n\n    import fib(n-1) + fib(n-2)\n\nwith i finally range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 8,
+        "alias_map": {
+          "def": "from",
+          "if": "and",
+          "return": "True",
+          "for": "if",
+          "in": "not"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.16,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "missing alias for for: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "from fib(n):\n    and n <= 1:\n        True n\n    True fib(n-1) + fib(n-2)\n\nsequence = [0, 1, 2, 3, 4, 5, 6]\nand i not sequence:\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "from fib(n):\n    and n <= 1:\n        True n\n    True fib(n-1) + fib(n-2)\n\nif i not range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [
+              "missing alias for for: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "from fib(n):\n    and n <= 1:\n        True n\n    True fib(n-1) + fib(n-2)\n\nand i not range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "from fib(n):\n    and n <= 1:\n        True n\n    True fib(n-1) + fib(n-2)\n\nnumbers = range(0, 7)\nif i not numbers:\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.4,
+            "acr": 0.6,
+            "violations": [
+              "original keyword used: if",
+              "original keyword used: for",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 2)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "from fib(n):\n    and n <= 1:\n        True n\n    True fib(n-1) + fib(n-2)\n\nseq = []\nif i not range(7):\n    seq.append((i, fib(i)))\n\nfor item not seq:\n    print(item)"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 9,
+        "alias_map": {
+          "def": "and",
+          "if": "while",
+          "return": "global",
+          "for": "yield",
+          "in": "break"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "and fib(n):\n    while n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nand main():\n    yield i break range(0, 7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "and fib(n):\n    while n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nand main():\n    yield i break range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "and fib(n):\n    while n <= 1:\n        global n\n    global fib(n - 1) + fib(n - 2)\n\nand main():\n    yield i break range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "and fib(n):\n    while n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nand main():\n    yield i break range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "and fib(n):\n    while n <= 1:\n        global n\n    global fib(n-1) + fib(n-2)\n\nand main():\n    yield i break range(7):\n        print(i, fib(i))\n\nmain()"
+          }
+        ]
+      },
+      {
+        "type": "A_cross_keyword",
+        "config_idx": 10,
+        "alias_map": {
+          "def": "from",
+          "if": "else",
+          "return": "class",
+          "for": "not",
+          "in": "break"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "from fib(n):\n    else n <= 1:\n        class n\n    class fib(n-1) + fib(n-2)\n\nnot i break range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "from fib(n):\n    else n <= 1:\n        class n\n    class fib(n-1) + fib(n-2)\n\nnot i break range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "from fib(n):\n    else n <= 1:\n        class n\n    class fib(n - 1) + fib(n - 2)\n\nnot i break range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "from fib(n):\n    else n <= 1:\n        class n\n    class fib(n-1) + fib(n-2)\n\nnot i break range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "from fib(n):\n    else n <= 1:\n        class n\n    class fib(n-1) + fib(n-2)\n\nnot i break range(7):\n    print(i, fib(i))"
+          }
+        ]
+      }
+    ],
+    "type_B": [
+      {
+        "type": "B_long_phrase",
+        "config_idx": 1,
+        "alias_map": {
+          "def": "begin function block",
+          "if": "conditional execution starts here",
+          "return": "give back the value",
+          "for": "loop through all items",
+          "in": "selected from the set"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    conditional execution starts here n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\nloop through all items i selected from the set ran"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    conditional execution starts here n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\nloop through all items i selected from the set ran"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    conditional execution starts here n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\nloop through all items i selected from the set ran"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    conditional execution starts here n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\nloop through all items i selected from the set ran"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    conditional execution starts here n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\nloop through all items i selected from the set ran"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 2,
+        "alias_map": {
+          "def": "create new function with",
+          "if": "branch on condition that",
+          "return": "give back the value",
+          "for": "iterate over each element",
+          "in": "selected from the set"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "create new function with fib(n):\n    branch on condition that n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\niterate over each element i selected from the set range"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "create new function with fib(n):\n    branch on condition that n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\niterate over each element i selected from the set range"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "create new function with fib(n):\n    branch on condition that n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\niterate over each element i selected from the set range"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "create new function with fib(n):\n    branch on condition that n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\niterate over each element i selected from the set range"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "create new function with fib(n):\n    branch on condition that n <= 1:\n        give back the value n\n    give back the value fib(n-1) + fib(n-2)\n\niterate over each element i selected from the set range"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 3,
+        "alias_map": {
+          "def": "start function definition at",
+          "if": "run the following if",
+          "return": "output the computed answer",
+          "for": "iterate over each element",
+          "in": "pulled from the sequence"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i pulled from t"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i pulled from t"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        output the computed answer n\n    output the computed answer fib(n - 1) + fib(n - 2)\n\niterate over each element i pulled fr"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i pulled from t"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i pulled from t"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 4,
+        "alias_map": {
+          "def": "introduce a method called",
+          "if": "test guard clause for",
+          "return": "send back this value",
+          "for": "enumerate all elements of",
+          "in": "pulled from the sequence"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    test guard clause for n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nenumerate all elements of i pulled from the sequence ra"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    test guard clause for n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nenumerate all elements of i pulled from the sequence ra"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    test guard clause for n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nenumerate all elements of i pulled from the sequence ra"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    test guard clause for n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nenumerate all elements of i pulled from the sequence ra"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    test guard clause for n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nenumerate all elements of i pulled from the sequence ra"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 5,
+        "alias_map": {
+          "def": "introduce a method called",
+          "if": "run the following if",
+          "return": "produce output from function",
+          "for": "iterate over each element",
+          "in": "drawn from the collection"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i drawn from t"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i drawn from t"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i drawn from t"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i drawn from t"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "introduce a method called fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i drawn from t"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 6,
+        "alias_map": {
+          "def": "begin function block",
+          "if": "run the following if",
+          "return": "produce output from function",
+          "for": "iterate over each element",
+          "in": "taken from the given"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i taken from the gi"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i taken from the gi"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i taken from the gi"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i taken from the gi"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\niterate over each element i taken from the gi"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 7,
+        "alias_map": {
+          "def": "start function definition at",
+          "if": "run the following if",
+          "return": "produce output from function",
+          "for": "traverse the sequence from",
+          "in": "pulled from the sequence"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\nstart function definition at main():\n"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\nstart function definition at print_fi"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\ntraverse the sequence from i pulled f"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if",
+              "missing alias for in: pulled from the sequence",
+              "python parse failed after normalization: invalid syntax (<unknown>, line 7)"
+            ],
+            "parse_ok": false,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\nstart function definition at main():\n"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: if"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    run the following if n <= 1:\n        produce output from function n\n    produce output from function fib(n-1) + fib(n-2)\n\ntraverse the sequence from i pulled f"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 8,
+        "alias_map": {
+          "def": "start function definition at",
+          "if": "conditional execution starts here",
+          "return": "output the computed answer",
+          "for": "loop through all items",
+          "in": "selected from the set"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    conditional execution starts here n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\nloop through all items i sel"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    conditional execution starts here n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\nloop through all items i sel"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    conditional execution starts here n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\nstart function definition at"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    conditional execution starts here n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\nloop through all items i sel"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "start function definition at fib(n):\n    conditional execution starts here n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\nstart function definition at"
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 9,
+        "alias_map": {
+          "def": "begin function block",
+          "if": "check condition whether or",
+          "return": "output the computed answer",
+          "for": "iterate over each element",
+          "in": "taken from the given"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    check condition whether or n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i taken from the "
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    check condition whether or n <= 1:\n        output the computed answer n\n    output the computed answer fib(n - 1) + fib(n - 2)\n\niterate over each element i taken from "
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    check condition whether or n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i taken from the "
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    check condition whether or n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i taken from the "
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    check condition whether or n <= 1:\n        output the computed answer n\n    output the computed answer fib(n-1) + fib(n-2)\n\niterate over each element i taken from the "
+          }
+        ]
+      },
+      {
+        "type": "B_long_phrase",
+        "config_idx": 10,
+        "alias_map": {
+          "def": "begin function block",
+          "if": "evaluate this branch when",
+          "return": "send back this value",
+          "for": "repeat for each item",
+          "in": "drawn from the collection"
+        },
+        "n_trials": 5,
+        "n_pass": 0,
+        "pass_rate": 0.0,
+        "avg_klr": 0.2,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    evaluate this branch when n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nrepeat for each item i drawn from the collection range(7"
+          },
+          {
+            "trial": 2,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    evaluate this branch when n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nrepeat for each item i drawn from the collection range(7"
+          },
+          {
+            "trial": 3,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    evaluate this branch when n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nrepeat for each item i drawn from the collection range(7"
+          },
+          {
+            "trial": 4,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    evaluate this branch when n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nrepeat for each item i drawn from the collection range(7"
+          },
+          {
+            "trial": 5,
+            "pass": false,
+            "klr": 0.2,
+            "acr": 0.8,
+            "violations": [
+              "original keyword used: for"
+            ],
+            "parse_ok": true,
+            "answer_snippet": "begin function block fib(n):\n    evaluate this branch when n <= 1:\n        send back this value n\n    send back this value fib(n-1) + fib(n-2)\n\nrepeat for each item i drawn from the collection range(7"
+          }
+        ]
+      }
+    ],
+    "type_C": [
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 1,
+        "alias_map": {
+          "def": "sub",
+          "if": "bif",
+          "return": "res",
+          "for": "trv",
+          "in": "of"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    bif n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\ntrv i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    bif n <= 1:\n        res n\n    else:\n        res fib(n-1) + fib(n-2)\n\ntrv i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    bif n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\ntrv i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    bif n <= 1:\n        res n\n    else:\n        res fib(n-1) + fib(n-2)\n\ntrv i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    bif n <= 1:\n        res n\n    else:\n        res fib(n-1) + fib(n-2)\n\ntrv i of range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 2,
+        "alias_map": {
+          "def": "fc",
+          "if": "whn",
+          "return": "out",
+          "for": "iter",
+          "in": "of"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    whn n <= 1:\n        out n\n    out fib(n-1) + fib(n-2)\n\niter i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    whn n <= 1:\n        out n\n    out fib(n-1) + fib(n-2)\n\niter i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    whn n <= 1:\n        out n\n    out fib(n-1) + fib(n-2)\n\niter i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    whn n <= 1:\n        out n\n    out fib(n-1) + fib(n-2)\n\niter i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    whn n <= 1:\n        out n\n    out fib(n-1) + fib(n-2)\n\niter i of range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 3,
+        "alias_map": {
+          "def": "fc",
+          "if": "go",
+          "return": "res",
+          "for": "loop",
+          "in": "of"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    go n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\nloop i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    go n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\nloop i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    go n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\nloop i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    go n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\nloop i of range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    go n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\nloop i of range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 4,
+        "alias_map": {
+          "def": "fc",
+          "if": "bif",
+          "return": "ans",
+          "for": "iter",
+          "in": "within"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    bif n <= 1:\n        ans n\n    ans fib(n-1) + fib(n-2)\n\niter i within range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    bif n <= 1:\n        ans n\n    ans fib(n-1) + fib(n-2)\n\niter i within range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    bif n <= 1:\n        ans n\n    ans fib(n-1) + fib(n-2)\n\niter i within range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    bif n <= 1:\n        ans n\n    ans fib(n-1) + fib(n-2)\n\nfc main():\n    iter i within range(7):\n        print(i, fib(i))\n\nmain()"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fc fib(n):\n    bif n <= 1:\n        ans n\n    ans fib(n-1) + fib(n-2)\n\niter i within range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 5,
+        "alias_map": {
+          "def": "blk",
+          "if": "whn",
+          "return": "res",
+          "for": "rpt",
+          "in": "within"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    whn n <= 1:\n        res n\n    else:\n        res fib(n-1) + fib(n-2)\n\nrpt i within range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    whn n <= 1:\n        res n\n    else:\n        res fib(n-1) + fib(n-2)\n\nrpt i within range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    whn n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\nrpt i within range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    whn n <= 1:\n        res n\n    res fib(n-1) + fib(n-2)\n\nrpt i within range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    whn n <= 1:\n        res n\n    else:\n        res fib(n-1) + fib(n-2)\n\nrpt i within range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 6,
+        "alias_map": {
+          "def": "blk",
+          "if": "chk",
+          "return": "emit",
+          "for": "loop",
+          "in": "src"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    chk n <= 1:\n        emit n\n    emit fib(n-1) + fib(n-2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    chk n <= 1:\n        emit n\n    emit fib(n-1) + fib(n-2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    chk n <= 1:\n        emit n\n    emit fib(n-1) + fib(n-2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    chk n <= 1:\n        emit n\n    emit fib(n-1) + fib(n-2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "blk fib(n):\n    chk n <= 1:\n        emit n\n    emit fib(n-1) + fib(n-2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 7,
+        "alias_map": {
+          "def": "proc",
+          "if": "bif",
+          "return": "out",
+          "for": "loop",
+          "in": "thru"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "proc fib(n):\n    bif n <= 1:\n        out n\n    out fib(n - 1) + fib(n - 2)\n\nloop i thru range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "proc fib(n):\n    bif n <= 1:\n        out n\n    out fib(n-1) + fib(n-2)\n\nloop i thru range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "proc fib(n):\n    bif n <= 1:\n        out n\n    else:\n        out fib(n-1) + fib(n-2)\n\nloop i thru range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "proc fib(n):\n    bif n <= 1:\n        out n\n    out fib(n-1) + fib(n-2)\n\nloop i thru range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "proc fib(n):\n    bif n <= 1:\n        out n\n    else:\n        out fib(n-1) + fib(n-2)\n\nloop i thru range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 8,
+        "alias_map": {
+          "def": "fn",
+          "if": "bif",
+          "return": "ret",
+          "for": "iter",
+          "in": "src"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    bif n <= 1:\n        ret n\n    ret fib(n-1) + fib(n-2)\n\niter i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    bif n <= 1:\n        ret n\n    ret fib(n-1) + fib(n-2)\n\niter i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    bif n <= 1:\n        ret n\n    else:\n        ret fib(n-1) + fib(n-2)\n\niter i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    bif n <= 1:\n        ret n\n    ret fib(n-1) + fib(n-2)\n\niter i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    bif n <= 1:\n        ret n\n    else:\n        ret fib(n-1) + fib(n-2)\n\niter i src range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 9,
+        "alias_map": {
+          "def": "fn",
+          "if": "qry",
+          "return": "emit",
+          "for": "loop",
+          "in": "src"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    qry n <= 1:\n        emit n\n    emit fib(n - 1) + fib(n - 2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    qry n <= 1:\n        emit n\n    emit fib(n-1) + fib(n-2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    qry n <= 1:\n        emit n\n    emit fib(n-1) + fib(n-2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    qry n <= 1:\n        emit n\n    emit fib(n - 1) + fib(n - 2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "fn fib(n):\n    qry n <= 1:\n        emit n\n    emit fib(n - 1) + fib(n - 2)\n\nloop i src range(7):\n    print(i, fib(i))"
+          }
+        ]
+      },
+      {
+        "type": "C_short_nonkw",
+        "config_idx": 10,
+        "alias_map": {
+          "def": "sub",
+          "if": "go",
+          "return": "yld",
+          "for": "rpt",
+          "in": "frm"
+        },
+        "n_trials": 5,
+        "n_pass": 5,
+        "pass_rate": 1.0,
+        "avg_klr": 0.0,
+        "trials": [
+          {
+            "trial": 1,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    go n <= 1:\n        yld n\n    yld fib(n-1) + fib(n-2)\n\nrpt i frm range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 2,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    go n <= 1:\n        yld n\n    yld fib(n-1) + fib(n-2)\n\nrpt i frm range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 3,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    go n <= 1:\n        yld n\n    yld fib(n-1) + fib(n-2)\n\nrpt i frm range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 4,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    go n <= 1:\n        yld n\n    yld fib(n-1) + fib(n-2)\n\nrpt i frm range(7):\n    print(i, fib(i))"
+          },
+          {
+            "trial": 5,
+            "pass": true,
+            "klr": 0.0,
+            "acr": 1.0,
+            "violations": [],
+            "parse_ok": true,
+            "answer_snippet": "sub fib(n):\n    go n <= 1:\n        yld n\n    yld fib(n-1) + fib(n-2)\n\nrpt i frm range(7):\n    print(i, fib(i))"
+          }
+        ]
+      }
+    ]
+  }
+}
