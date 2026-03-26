@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 09:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 09:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1254,6 +1254,9 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) (./sections/01_introduction.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 27--28
 []\T1/ptm/b/n/10 (+20) L3 (se-man-tic in-ver-sion, ex-plicit): \T1/ptm/m/n/10 (
 +20) Capacity-
@@ -1270,15 +1273,13 @@ Underfull \hbox (badness 3158) in paragraph at lines 27--28
 e stronger mod-els suc-ceed
  []
 
-
-Underfull \vbox (badness 1019) has occurred while \output is active []
-
- [1{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/map/pdftex/upd
-map/pdftex.map}{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/en
-c/dvips/base/8r.enc}
+[1{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/map/pdftex/updm
+ap/pdftex.map}{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/enc
+/dvips/base/8r.enc}
 
 
-]) (./sections/02_related_work.tex [2]) (./sections/03_method.tex
+]) (./sections/02_related_work.tex [2])
+(./sections/03_method.tex
 LaTeX Font Info:    Trying to load font information for T1+phv on input line 44
 .
 
@@ -1455,17 +1456,17 @@ Underfull \hbox (badness 2020) in paragraph at lines 297--298
  []
 
 [9] [10]
-Overfull \hbox (81.42442pt too wide) in paragraph at lines 381--390
+Overfull \hbox (147.78357pt too wide) in paragraph at lines 381--392
  [][] 
  []
 
 [11]
-Overfull \hbox (26.54778pt too wide) in paragraph at lines 432--443
+Overfull \hbox (26.54778pt too wide) in paragraph at lines 434--445
  [][] 
  []
 
 [12]
-Underfull \hbox (badness 1178) in paragraph at lines 482--483
+Underfull \hbox (badness 1178) in paragraph at lines 484--485
 []\T1/ptm/m/n/10 (+20) A com-ple-men-tary ob-ser-va-tion re-in-forces this fram
 -ing:
  []
@@ -1476,10 +1477,11 @@ Underfull \hbox (badness 1521) in paragraph at lines 7--8
 des
  []
 
-[13]
-Underfull \vbox (badness 3449) has occurred while \output is active []
 
- [14]
+Underfull \vbox (badness 3701) has occurred while \output is active []
+
+ [13]
+[14]
 Underfull \hbox (badness 10000) in paragraph at lines 57--58
 []\T1/ptm/m/n/10 (+20) The high PPR vari-ance across vari-ants (e.g.,
  []
@@ -1523,7 +1525,7 @@ Underfull \hbox (badness 2065) in paragraph at lines 62--64
 \T1/ptm/m/n/10 (+20) 8/15 on T1 (partially-annotated prompt). This re-vi-sion
  []
 
-) (./sections/07_conclusion.tex [15])
+[15]) (./sections/07_conclusion.tex)
 (./sections/08_prompt_and_judge_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
@@ -1536,12 +1538,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
  []
 
 
+Overfull \vbox (25.14354pt too high) has occurred while \output is active []
+
+
+[16]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 1028) in paragraph at lines 167--168
 []\T1/ptm/b/n/10 (+20) L3-correct\T1/ptm/m/n/10 (+20) : model writes \T1/pcr/m/
 n/10 if n > 1: return n \T1/ptm/m/n/10 (+20) or
  []
 
-) (./sections/09_reproducibility_protocol.tex [16]
+) (./sections/09_reproducibility_protocol.tex
 Underfull \hbox (badness 1112) in paragraph at lines 10--13
 []\T1/ptm/b/n/10 (+20) E5: L1 context-pack ab-la-tion, $\OML/cmm/m/it/10 n \OT1
 /cmr/m/n/10 = 120$\T1/ptm/b/n/10 (+20) , gpt-4o-
@@ -1672,6 +1681,9 @@ Underfull \hbox (badness 2635) in paragraph at lines 86--93
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 2564) in paragraph at lines 94--101
 \T1/pcr/m/n/10 o4-mini\T1/ptm/m/n/10 (+20) : no-CoT 0/20 (PPR=0.95) vs. CoT 1/2
 0
@@ -1722,9 +1734,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 94--101
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 Underfull \hbox (badness 1325) in paragraph at lines 110--116
 \T1/ptm/m/n/10 (+20) (op-er-a-tional sub-sti-tu-tion): 4.3%. Type-I dom-i-nates
  in
@@ -1742,14 +1751,14 @@ Underfull \hbox (badness 1521) in paragraph at lines 117--124
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [18]
 Overfull \hbox (31.32996pt too wide) in paragraph at lines 125--132
 \T1/pcr/m/n/10 e26-qwen3-32b-l3-fibonacci.n5.2026-03-25.json
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [18]
 Underfull \hbox (badness 10000) in paragraph at lines 133--140
 \T1/ptm/m/it/10 (+20) par-tial instruction-following \T1/ptm/m/n/10 (+20) (in-t
 er-nally in-con-sis-tent
@@ -1770,7 +1779,11 @@ Overfull \hbox (37.32996pt too wide) in paragraph at lines 133--140
 \T1/pcr/m/n/10 e27-qwen3-32b-l3-fibonacci.n20.2026-03-25.json
  []
 
-) (./sections/10_appendix_experiment_details.tex
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+)
+(./sections/10_appendix_experiment_details.tex
 Underfull \hbox (badness 10000) in paragraph at lines 177--1
 [][]
  []
@@ -1780,10 +1793,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 177--1
 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [19]
+[19]
 Underfull \hbox (badness 1028) in paragraph at lines 116--117
 []|\T1/ptm/m/n/8 (+20) gpt-4o, gpt-4o-mini, gpt-4.1,
  []
@@ -1792,6 +1802,9 @@ Underfull \hbox (badness 1028) in paragraph at lines 116--117
 Underfull \hbox (badness 1983) in paragraph at lines 117--118
 []|\T1/ptm/m/n/8 (+20) v1--v120 (base-line); v1--v20
  []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Underfull \hbox (badness 3769) in paragraph at lines 125--127
@@ -1861,7 +1874,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--93
 .py\T1/ptm/m/n/10 (+20) ,
  []
 
-(./main.bbl [20])
+[20] (./main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1873,20 +1886,18 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[21
-
-] (./main.aux)
+[21] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37359 strings out of 467525
- 897078 string characters out of 5408440
- 1641730 words of memory out of 5000000
- 65015 multiletter control sequences out of 15000+600000
- 789856 words of font info for 581 fonts, out of 8000000 for 9000
+ 37366 strings out of 467525
+ 897140 string characters out of 5408440
+ 1645125 words of memory out of 5000000
+ 65016 multiletter control sequences out of 15000+600000
+ 790113 words of font info for 585 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,18n,108p,1611b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1925,7 +1936,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (21 pages, 427215 bytes).
+Output written on main.pdf (21 pages, 427904 bytes).
 PDF statistics:
  222 PDF objects out of 1000 (max. 8388607)
  139 compressed objects within 2 object streams

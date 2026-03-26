@@ -371,11 +371,11 @@ A secondary observation: \texttt{gpt-4o}'s low T3 PES (0.1606, \texttt{count\_vo
 \subsection{E32: Cross-Task Transfer Breaks L4 Resistance}
 \label{sec:e32_transfer}
 
-A critical question for assessment design: can a model crack L4 Fibonacci if it first sees inverted semantics demonstrated on \emph{other} tasks? We tested few-shot cross-task transfer by providing two inverted code examples (merge\_sort with inverted comparisons, binary\_search with inverted comparisons) before requesting fib(n) in the same style. \texttt{gpt-4.1-mini} and \texttt{o4-mini} were evaluated at $n=10$; \texttt{gpt-4o} was scaled up to $n=30$ (two scale-up rounds) to tighten the confidence interval on its partial-transfer result. Temperature=0.7 for all.
+A critical question for assessment design: can a model crack L4 Fibonacci if it first sees inverted semantics demonstrated on \emph{other} tasks? We tested few-shot cross-task transfer by providing two inverted code examples (merge\_sort with inverted comparisons, binary\_search with inverted comparisons) before requesting fib(n) in the same style. \texttt{gpt-4.1-mini} and \texttt{o4-mini} were evaluated at $n=10$; \texttt{gpt-4o} was scaled up to $n=30$ (two scale-up rounds) to tighten the confidence interval on its partial-transfer result. Temperature=0.7 for all. A \textbf{control condition} (E32-ctrl: ascending sort with \emph{normal}, non-inverted examples preceding fib, \texttt{gpt-4o}, $n=10$) was run to confirm that the transfer effect is specific to inversion semantics, not merely cross-task code exposure.
 
 \begin{table}[!t]
 \centering
-\caption{E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref{tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt{gpt-4o} scaled to $n=30$ (E32a); others at $n=10$.}
+\caption{E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref{tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt{gpt-4o} scaled to $n=30$ (E32a); others at $n=10$. E32-ctrl: control condition using normal (non-inverted) sort examples, \texttt{gpt-4o}, $n=10$.}
 \label{tab:e32_transfer}
 \footnotesize
 \begin{tabular}{@{}lcccl@{}}
@@ -385,18 +385,20 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 \texttt{gpt-4.1-mini} & 10/10 & \cellcolor{green!15}\textbf{100\%} & [72\%,100\%] & Perfect transfer \\
 \texttt{gpt-4o}       & 16/30 & \cellcolor{yellow!20}53\% & [36\%,70\%] & Partial transfer; vs.\ mini: $p{=}0.008^{**}$ \\
 \texttt{o4-mini}      & 1/10  & \cellcolor{red!10}10\% & [2\%,44\%] & Minimal transfer \\
+\midrule
+\textit{E32-ctrl} (\texttt{gpt-4o}, normal examples) & 0/10 & \cellcolor{gray!10}0\% & [0\%,31\%] & No transfer (control) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Cross-task contamination defeats L4.} The same models that achieve 0/50 under strict L4 example-only delivery (Table~\ref{tab:l4_ablation}) achieve 53--100\% pass when primed with inverted code from unrelated tasks. \texttt{gpt-4.1-mini} transfers perfectly (10/10; Wilson 95\% CI: [72\%,100\%]), consistent with its strong pattern extraction on T2 (20/20 in multi-task). \texttt{gpt-4o} achieves 16/30 at scale-up (Wilson 95\% CI: [36\%,70\%])---partial transfer confirmed; Fisher's exact vs.\ \texttt{gpt-4.1-mini}: $p=0.008$ ($p<0.01$), indicating a significant gap in transfer fidelity. \texttt{o4-mini}---which relies on reasoning chains rather than pattern mimicry---achieves only 1/10 (Wilson 95\% CI: [2\%,44\%]), suggesting that systematic reasoning about inverted semantics does not facilitate transfer in the way that code-example mimicry does.
+\textbf{Cross-task contamination defeats L4.} The same models that achieve 0/50 under strict L4 example-only delivery (Table~\ref{tab:l4_ablation}) achieve 53--100\% pass when primed with inverted code from unrelated tasks. \texttt{gpt-4.1-mini} transfers perfectly (10/10; Wilson 95\% CI: [72\%,100\%]), consistent with its strong pattern extraction on T2 (20/20 in multi-task). \texttt{gpt-4o} achieves 16/30 at scale-up (Wilson 95\% CI: [36\%,70\%])---partial transfer confirmed; Fisher's exact vs.\ \texttt{gpt-4.1-mini}: $p=0.008$ ($p<0.01$), indicating a significant gap in transfer fidelity. \texttt{o4-mini}---which relies on reasoning chains rather than pattern mimicry---achieves only 1/10 (Wilson 95\% CI: [2\%,44\%]), suggesting that systematic reasoning about inverted semantics does not facilitate transfer in the way that code-example mimicry does. The control condition (E32-ctrl: 0/10) confirms that the transfer effect is specific to \emph{inverted} semantics: exposure to non-inverted cross-task code leaves L4 resistance fully intact, ruling out mere cross-task priming as an explanation.
 
 \textbf{Assessment design implication.} L4 resistance depends on \emph{isolation}: if students include inverted code from other tasks in the same prompt (e.g., copying solved examples from a previous assignment), the model can transfer the inversion pattern cross-task. Instructors should ensure that L4 assignments do not provide cross-task inversion examples within the same prompt context. This finding also suggests that L4 resistance is a property of \emph{prompt-level pattern isolation}, not just task-level prior entrenchment.
 
 \subsection{E33: I/O Transparency --- Prior vs.\ Opaque Mapping}
 \label{sec:e33_io}
 
-We conducted two experiments to isolate I/O transparency from prior strength. The original E33 design was confounded: the IO-B (\texttt{opaque\_counter}) prompt disclosed explicit algorithmic steps (XOR, shift, conditional add/subtract), making both tasks procedurally transparent; all three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}) achieved 10/10 on both tasks. To properly test I/O opacity as an independent variable, we ran E35 (\textbf{redesigned}): IO-B prompts were replaced with pure input/output pairs ($n=8$ examples), with no algorithm disclosed. IO-A remained identical to E33 (explicit ``reverse Fibonacci'' semantics, Fibonacci prior).
+We conducted two experiments to isolate I/O transparency from prior strength. The original E33 design was confounded: the IO-B (\texttt{opaque\_counter}) prompt disclosed explicit algorithmic steps (XOR, shift, conditional add/subtract), making both tasks procedurally transparent; all three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}) achieved 10/10 on both tasks. A replication (E33v2) with a different model set (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}) confirmed this result: all models again achieved 10/10 on both IO-A and IO-B, indicating the confound is robust across model generations when algorithmic steps are disclosed. To properly test I/O opacity as an independent variable, we ran E35 (\textbf{redesigned}): IO-B prompts were replaced with pure input/output pairs ($n=8$ examples), with no algorithm disclosed. IO-A remained identical to E33 (explicit ``reverse Fibonacci'' semantics, Fibonacci prior).
 
 \begin{table}[!t]
 \centering

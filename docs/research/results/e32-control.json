@@ -1,0 +1,72 @@
+{
+  "experiment": "e32-control",
+  "date": "2026-03-26",
+  "description": "Control condition: ascending sort examples (normal Python) then fib. Expected ~0 pass rate.",
+  "model": "gpt-4o",
+  "n": 10,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "errors": 0,
+  "details": [
+    {
+      "trial": 1,
+      "code": "def fib(n):\n    if n <= 1:  # base case\n        return n\n    return fib(n - 1) + fib(n - 2)",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 2,
+      "code": "def fib(n):\n    if n <= 1:  # base case: n is 0 or 1\n        return n\n    return fib(n - 1) + fib(n - 2)",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 3,
+      "code": "def fib(n):\n    if n <= 1:  # base case: n is 0 or 1\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 4,
+      "code": "def fib(n):\n    if n <= 1:  # base case: n is 0 or 1\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 5,
+      "code": "def fib(n):\n    if n <= 1:  # base case: n is 0 or 1\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 6,
+      "code": "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 7,
+      "code": "def fib(n):\n    if n <= 1:  # base case: n == 0 or n == 1\n        return n\n    return fib(n - 1) + fib(n - 2)",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 8,
+      "code": "def fib(n):\n    if n <= 1:  # base case: n = 0 or n = 1\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 9,
+      "code": "def fib(n):\n    if n <= 1:  # base cases: n == 0 or n == 1\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    },
+    {
+      "trial": 10,
+      "code": "def fib(n):\n    if n <= 1:  # base case: n = 0 or n = 1\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+      "passed": false,
+      "reason": "Uses standard comparisons"
+    }
+  ]
+}
