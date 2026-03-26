@@ -317,7 +317,9 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 \end{tabular}}
 \end{table}
 
-\textbf{Cross-task contamination defeats L4.} Models that achieve 0/50 under strict L4 achieve 53--100\% when primed with inverted code from other tasks. \texttt{gpt-4.1-mini}: 10/10; \texttt{gpt-4o}: 16/30 (CI: [36\%,70\%]); \texttt{o4-mini}: 1/10. Control (non-inverted examples): 0/10---confirming the effect is inversion-specific. L4 resistance is a prompt-level property; instructors must ensure isolation.
+\textbf{Cross-task contamination defeats L4.} Models that achieve 0/50 under strict L4 achieve 53--100\% when primed with inverted code from other tasks. \texttt{gpt-4.1-mini}: 10/10; \texttt{gpt-4o}: 16/30 (CI: [36\%,70\%]); \texttt{o4-mini}: 1/10 (inconclusive at $n=10$; see below). Control (non-inverted examples): 0/10---confirming the effect is inversion-specific (Fisher's exact $p=0.0023$, one-tailed, \texttt{gpt-4o} treatment vs.\ control). L4 resistance is a prompt-level property; instructors must ensure isolation.
+
+\textbf{Note on o4-mini.} The 1/10 pass rate for \texttt{o4-mini} (Wilson CI: [0.2\%,44.5\%]) does not distinguish from the 0/10 control (Fisher's exact $p=0.50$); this result is inconclusive at current $n$ and should not be interpreted as evidence for or against transfer in \texttt{o4-mini}.
 
 \subsection{E35: I/O Transparency --- Prior vs.\ Opaque Mapping}
 \label{sec:e33_io}
@@ -340,13 +342,13 @@ E33 (original) was confounded by algorithmic disclosure; E35 (redesigned) uses p
 \end{tabular}
 \end{table}
 
-\textbf{Opaque I/O creates universal resistance.} All models fail IO-B (0/30 pooled; CI: [0\%,12\%]) while IO-A achieves 100\% for larger models. I/O opacity is sufficient for resistance independent of prior strength, providing a complementary pathway to L4-style prior exploitation.
+\textbf{Opaque I/O creates universal resistance.} All models fail IO-B (0/30 pooled; Wilson CI: [0\%,12\%]) while IO-A achieves 100\% for larger models. I/O opacity is sufficient for resistance independent of prior strength, providing a complementary pathway to L4-style prior exploitation. \textbf{Generalizability caveat:} All E35 trials used Fibonacci (T1), which carries extremely strong Python priors. Whether I/O opacity produces equivalent resistance for lower-prior tasks is untested; replication across task domains is recommended before drawing broader conclusions.
 
 \subsection{E34: Annotation Density Curve (Multi-Model)}
 \label{sec:e34_density}
 
 \label{sec:e28_results}
-E34 tests annotation density across three models and five levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci ($n{=}10$ per cell, 150 runs). The 0\% level includes an inverted \emph{code example} (mimicry baseline), qualitatively distinct from verbal annotation (25--100\%). Results are in Table~\ref{tab:e34_density}.
+E34 tests annotation density across three models and five levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci ($n{=}10$ per cell, 150 runs). The 0\% level includes an inverted \emph{code example} (mimicry baseline), qualitatively distinct from verbal annotation (25--100\%). Results are in Table~\ref{tab:e34_density}. \textbf{Note on statistical power:} $n{=}10$ per cell yields wide 95\% Wilson CIs (e.g., $[\text{24\%},\text{76\%}]$ for 5/10); density-level trends are directional but individual cell estimates are underpowered. Treat intermediate density comparisons as exploratory.
 
 \begin{table}[!t]
 \centering
