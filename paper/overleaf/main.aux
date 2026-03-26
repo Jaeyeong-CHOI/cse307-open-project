@@ -102,6 +102,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-P}}E34: Annotation Density Curve (Multi-Model, Full Replication)}{6}{}\protected@file@percent }
 \newlabel{sec:e34}{{\mbox  {IV-P}}{6}{}{subsection.4.16}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-Q}}Judge Validation}{6}{}\protected@file@percent }
+\newlabel{sec:judge_validation}{{\mbox  {IV-Q}}{6}{}{subsection.4.17}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-R}}Reproducibility}{6}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 evaluation: Keyword Leakage Rate (KLR) per model under ctx-pack delivery. Baseline rows use $n=120$ (pilot, researcher-designed aliases; see Appendix~\ref {sec:appendix_pilot_l1}); ctx-pack rows use $n=20$. Models sorted by KLR (ascending). Context-pack reduces KLR for paired models: \texttt  {gpt-4o-mini} ($-38\%$), \texttt  {gpt-4.1-mini} ($-51\%$). Open-weight models (marked $^\star $) via Groq API, ctx-pack only. \textbf  {Note:} KLR values here use the pilot alias set; factorial-design per-type KLR reported in Table~\ref {tab:l1_factorial}. PSS (heuristic diagnostic) reported in Appendix~\ref {sec:appendix_pss}.}}{6}{}\protected@file@percent }
 \newlabel{tab:l1_results}{{II}{6}{}{table.2}{}}
@@ -147,7 +148,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-L}}E34: Annotation Density Curve (Multi-Model)}{10}{}\protected@file@percent }
 \newlabel{sec:e34_density}{{\mbox  {V-L}}{10}{}{subsection.5.12}{}}
 \newlabel{sec:e28_results}{{\mbox  {V-L}}{10}{}{subsection.5.12}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces E34: Annotation density curve --- pass rate and Wilson 95\% CI at each density level ($n=10$ per cell, 150 total runs). Format: $k/n$ [CI\,lo--hi]. MAT = Minimum Annotation Threshold (lowest level where pass rate ${>}50\%$). The 0\% condition includes an inverted \emph  {code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation. Wide CIs reflect $n{=}10$; trends are directional only.}}{10}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces E34: Annotation density curve --- pass rate and Wilson 95\% CI at each density level ($n=10$ per cell, 150 total runs). Format: $k/n$ [CI\,lo--hi]. MAT = Minimum Annotation Threshold (lowest \emph  {verbal annotation} level 25--100\% where pass rate ${>}50\%$; mimicry baseline excluded). The 0\% condition includes an inverted \emph  {code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation. Wide CIs reflect $n{=}10$; trends are directional only.}}{10}{}\protected@file@percent }
 \newlabel{tab:e34_density}{{X}{10}{}{table.10}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces L4 hard-task results ($n=10$ per cell, 120 total runs). All tasks use example-only delivery with 2 worked I/O examples. Pass = output matches inverted specification. Models include \texttt  {gpt-5.4} and \texttt  {o3} (not tested in main L4 ablation). Wilson 95\% CIs at $n=10$: 10/10 $\to $ [72\%,100\%]; 0/10 $\to $ [0\%,28\%]; \texttt  {gpt-4o} H1 (4/10) $\to $ [17\%,69\%]---interpret with caution.}}{10}{}\protected@file@percent }
 \newlabel{tab:l4_hard}{{XI}{10}{}{table.11}{}}

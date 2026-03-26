@@ -376,7 +376,7 @@ E34 tests annotation density across three models and five levels (0\%, 25\%, 50\
 
 \begin{table}[!t]
 \centering
-\caption{E34: Annotation density curve --- pass rate and Wilson 95\% CI at each density level ($n=10$ per cell, 150 total runs). Format: $k/n$ [CI\,lo--hi]. MAT = Minimum Annotation Threshold (lowest level where pass rate ${>}50\%$). The 0\% condition includes an inverted \emph{code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation. Wide CIs reflect $n{=}10$; trends are directional only.}
+\caption{E34: Annotation density curve --- pass rate and Wilson 95\% CI at each density level ($n=10$ per cell, 150 total runs). Format: $k/n$ [CI\,lo--hi]. MAT = Minimum Annotation Threshold (lowest \emph{verbal annotation} level 25--100\% where pass rate ${>}50\%$; mimicry baseline excluded). The 0\% condition includes an inverted \emph{code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation. Wide CIs reflect $n{=}10$; trends are directional only.}
 \label{tab:e34_density}
 \footnotesize
 \resizebox{\columnwidth}{!}{%
@@ -397,16 +397,17 @@ E34 tests annotation density across three models and five levels (0\%, 25\%, 50\
   & 5/10 {\scriptsize[24\%,76\%]}
   & 4/10 {\scriptsize[17\%,69\%]}
   & 1/10 {\scriptsize[2\%,40\%]}
-  & 0\%$^{\dag}$ \\
+  & None$^{\ddag}$ \\
 \texttt{o4-mini}
   & \cellcolor{green!15}\textbf{7/10} {\scriptsize[40\%,89\%]}
   & 3/10 {\scriptsize[11\%,60\%]}
   & 6/10 {\scriptsize[31\%,83\%]}
   & 6/10 {\scriptsize[31\%,83\%]}
   & 1/10 {\scriptsize[2\%,40\%]}
-  & 0\%$^{\dag}$ \\
+  & None$^{\ddag}$ \\
 \midrule
 \multicolumn{7}{l}{\scriptsize $^{\dag}$Code-example (mimicry) baseline; qualitatively distinct from verbal annotation (25--100\%).} \\
+\multicolumn{7}{l}{\scriptsize $^{\ddag}$No verbal annotation level (25--100\%) exceeds 50\% pass rate; mimicry baseline (0\%$^{\dag}$) excluded from MAT.} \\
 \multicolumn{7}{l}{\scriptsize Wilson 95\% CIs: all intermediate cells overlap substantially; treat comparisons as exploratory.} \\
 \bottomrule
 \end{tabular}}
