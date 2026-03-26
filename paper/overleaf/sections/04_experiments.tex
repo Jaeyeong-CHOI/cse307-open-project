@@ -48,5 +48,25 @@ To directly address whether frontier models (\texttt{gpt-5.4}, \texttt{o3}) can 
 \label{sec:e28}
 To map the annotation sensitivity boundary for reasoning models---motivated by the dissociation between CoT ($1/20$ pass) and partial annotation ($8/15$ pass) for \texttt{o4-mini}---we ran a density gradient experiment varying the fraction of inline annotation comments across the 8 worked examples in a T1 Fibonacci L4 prompt. Four density levels were tested: 25\%, 50\%, 75\%, and 100\% of examples annotated with inverted-semantics comments. $n=10$ per density level (40 total runs, \texttt{o4-mini} only). This directly operationalizes the annotation-sensitivity hypothesis: does more annotation monotonically improve extraction, or is there an optimal density beyond which prior conflicts increase?
 
+\subsection{E25--E27: Diagnostic L3 for \texttt{gpt-4.1} and \texttt{Qwen3-32B}}
+\label{sec:e25e27}
+E25: To determine whether \texttt{gpt-4.1}'s L4 T2 failure (1/50) reflects incapacity for semantic inversion or purely pattern-extraction failure, we ran L3 T2 evaluations (\texttt{is\_sorted}, explicit rule) for \texttt{gpt-4.1} at $n=10$. E26/E27: To determine whether \texttt{Qwen3-32B}'s L4 failure is L4-specific or reflects a deeper L3 instruction-following deficit, we ran L3 Fibonacci evaluations at $n=5$ (E26 pilot) and $n=20$ full replication (E27). Results are in \S\ref{sec:nonmonotonic} and \S\ref{sec:open_weight_discussion}.
+
+\subsection{E31: Prior Entrenchment Score via Logprobs}
+\label{sec:e31}
+To directly quantify prior strength at the key generation decision point, we queried the logprobs API (\texttt{top\_logprobs=5}, \texttt{max\_tokens=1}, \texttt{temperature=0}) at the token immediately following \texttt{return} for four tasks (fib, merge\_sort, is\_sorted, count\_vowels) across two models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}). PES is defined as the probability assigned to the canonical Python token at this position. This directly measures the prior that L4 must overcome. Results are in \S\ref{sec:e31_pes}.
+
+\subsection{E32: Cross-Task Transfer}
+\label{sec:e32}
+To test whether L4 resistance survives cross-task contamination, we evaluated L4 Fibonacci pass rate after showing inverted-semantics code examples from two unrelated tasks (merge sort, binary search) in the same prompt. \texttt{gpt-4.1-mini} and \texttt{o4-mini}: $n=10$; \texttt{gpt-4o}: scaled to $n=30$. Control condition (E32-ctrl): normal (non-inverted) sort examples preceding fib, \texttt{gpt-4o}, $n=10$. Temperature=0.7 for all. Results are in \S\ref{sec:e32_transfer}.
+
+\subsection{E33 and E35: I/O Transparency Experiments}
+\label{sec:e33e35}
+E33 tested IO-A (transparent Fibonacci-adjacent mapping) vs.\ IO-B (opaque counter function with disclosed algorithm), revealing a confound: IO-B disclosed algorithmic steps, making both tasks procedurally transparent. Models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}) achieved 10/10 on both. E33v2 replicated with \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini} to confirm confound robustness. E35 (redesigned) replaced IO-B with pure I/O pairs (8 examples, no algorithm description) to cleanly isolate opacity as an independent variable. $n=10$ per cell, temperature=0.7. Results are in \S\ref{sec:e33_io}.
+
+\subsection{E34: Annotation Density Curve (Multi-Model)}
+\label{sec:e34}
+Extending E28 (\texttt{o4-mini} only, 4 density levels) to three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}) across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons. The 0\% condition includes an inverted \emph{code} example (not I/O-only), making it qualitatively distinct from verbal annotation levels (25--100\%). $n=10$ per cell (150 total runs). Results are in \S\ref{sec:e34_density}.
+
 \subsection{Reproducibility}
 All experimental artifacts, commands, and results are committed to the repository under \texttt{docs/research/results/}. See reproducibility protocol section for commands.
