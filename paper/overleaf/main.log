@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 19:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 22:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1316,78 +1316,68 @@ n/9 (+20) each (5 vari-ants $\OMS/cmsy/m/n/9 ^^B$ \T1/ptm/m/n/9 (+20) 10 runs);
  []
 
 
-Underfull \hbox (badness 4518) in paragraph at lines 164--166
+Underfull \hbox (badness 4518) in paragraph at lines 165--167
 \T1/ptm/b/n/10 (+20) Variant E domain-shift anomaly (\T1/pcr/b/n/10 gpt-4.1-min
 i\T1/ptm/b/n/10 (+20) ).
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 172--177
+Underfull \hbox (badness 10000) in paragraph at lines 173--178
 
  []
 
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
-86.
+87.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/psnfss/ts1ptm
 .fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 187--192
+Underfull \hbox (badness 10000) in paragraph at lines 188--193
 
  []
 
 
-Underfull \hbox (badness 2119) in paragraph at lines 206--207
+Underfull \hbox (badness 2119) in paragraph at lines 207--208
 []\T1/ptm/m/n/10 (+20) To as-sess whether pat-tern blind-ness ex-tends be-yond
  []
 
 
-Underfull \hbox (badness 6016) in paragraph at lines 206--207
+Underfull \hbox (badness 6016) in paragraph at lines 207--208
 \T1/ptm/m/n/10 (+20) Fi-bonacci, we eval-u-ated all seven mod-els on three
  []
 
 
-Underfull \hbox (badness 4634) in paragraph at lines 206--207
+Underfull \hbox (badness 4634) in paragraph at lines 207--208
 \T1/ptm/m/n/10 (+20) tasks: T1 (\T1/pcr/m/n/10 fibonacci\T1/ptm/m/n/10 (+20) ),
  T2 (\T1/pcr/m/n/10 is_sorted\T1/ptm/m/n/10 (+20) ), and T3
  []
 
 [7]
-Underfull \hbox (badness 2189) in paragraph at lines 232--238
+Underfull \hbox (badness 2189) in paragraph at lines 233--239
 \T1/ptm/m/n/10 (+20) par-tially suc-ceeds (8/15) un-der par-tial an-no-ta-tion 
 only.
  []
 
 
-Underfull \hbox (badness 1715) in paragraph at lines 232--238
+Underfull \hbox (badness 1715) in paragraph at lines 233--239
 \T1/ptm/m/n/10 (+20) (2) \T1/ptm/b/n/10 (+20) T2 ex-tractabil-ity is capacity-d
 ependent\T1/ptm/m/n/10 (+20) : \T1/pcr/m/n/10 gpt-4o
  []
 
 
-Overfull \hbox (1.48701pt too wide) in paragraph at lines 251--252
+Overfull \hbox (1.48701pt too wide) in paragraph at lines 252--253
 \T1/ptm/m/n/10 (-20) than CoT prompt-ing (1/20), sug-gest-ing that par-tial rul
 e content---
  []
 
 [8]
-Underfull \hbox (badness 7133) in paragraph at lines 268--268
+Underfull \hbox (badness 7133) in paragraph at lines 269--269
 [][]|\T1/ptm/m/n/9 (+20) E31: Prior En-trench-ment Score (PES). PES =
  []
 
-
-Overfull \hbox (147.78357pt too wide) in paragraph at lines 295--306
- [][] 
- []
-
-
-Overfull \hbox (26.54778pt too wide) in paragraph at lines 344--355
- [][] 
- []
-
 [9]
-Underfull \hbox (badness 1178) in paragraph at lines 392--393
+Underfull \hbox (badness 1178) in paragraph at lines 395--396
 []\T1/ptm/m/n/10 (+20) A com-ple-men-tary ob-ser-va-tion re-in-forces this fram
 -ing:
  []
@@ -1433,13 +1423,13 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37322 strings out of 467525
- 896703 string characters out of 5408440
- 1651439 words of memory out of 5000000
+ 37319 strings out of 467525
+ 896676 string characters out of 5408440
+ 1652439 words of memory out of 5000000
  65030 multiletter control sequences out of 15000+600000
- 787716 words of font info for 547 fonts, out of 8000000 for 9000
+ 787491 words of font info for 545 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,18n,108p,1196b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,13n,108p,1196b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20260301/s
@@ -1476,7 +1466,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (14 pages, 377663 bytes).
+Output written on main.pdf (14 pages, 377641 bytes).
 PDF statistics:
  200 PDF objects out of 1000 (max. 8388607)
  124 compressed objects within 2 object streams

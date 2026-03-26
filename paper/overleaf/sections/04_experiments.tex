@@ -26,7 +26,7 @@ Ablation (n=50): 5 prompt variants $\times$ 10 runs each, varying the number of 
 To assess whether pattern blindness generalizes across algorithmic domains, we extended the L4 evaluation to two additional tasks beyond Fibonacci:
 \textbf{T2 (is\_sorted)}: write a function returning True if a list is ascending, and
 \textbf{T3 (count\_vowels)}: count vowel characters in a string.
-Both use a shared prompt header with two worked examples demonstrating inverted semantics plus inline code comments that \emph{partially} annotate the inversion rule (e.g., \texttt{\# runs when condition is FALSE, i.e.,~...}). This is a \emph{partially-annotated L4} condition---more informative than the strict example-only Variant~A ablation (\S\ref{sec:l4_ablation}) and therefore \textbf{not directly comparable} to Table~\ref{tab:l4_ablation}.
+Both use a shared prompt header with two worked examples demonstrating inverted semantics plus inline code comments that \emph{partially} annotate the inversion rule (e.g., {\small\texttt{\# runs when FALSE}}). This is a \emph{partially-annotated L4} condition---more informative than the strict example-only Variant~A ablation (\S\ref{sec:l4_ablation}) and therefore \textbf{not directly comparable} to Table~\ref{tab:l4_ablation}.
 We ran $n=10$ per task for \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{gpt-5.4-mini}; $n=20$ for \texttt{gpt-4.1-mini}; and $n=15$ for \texttt{o4-mini} (255 initial runs). We then scaled \texttt{gpt-4o} T3 and \texttt{gpt-4.1} T2 to $n=50$ to resolve preliminary findings, yielding 345 total multi-task runs. Temperature=0 for all models except \texttt{o4-mini} (temperature=1, API requirement).
 Results are in Table~\ref{tab:l4_multitask}.
 

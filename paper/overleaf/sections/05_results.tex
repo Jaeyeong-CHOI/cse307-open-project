@@ -74,7 +74,7 @@
 \end{tikzpicture}
 \caption{L1 KLR per model (OpenAI models only). Ctx-pack condition shown for all models except \texttt{gpt-4o} and \texttt{gpt-5.4-mini} (baseline only; ctx-pack not evaluated). $n{\geq}20$ per bar. Open-weight models (\texttt{Llama-3.3-70B}, \texttt{Qwen3-32B}) appear in Table~\ref{tab:l1_results} only; bar chart shows OpenAI models for visual clarity.
   \textcolor{blue!65}{\rule{5pt}{5pt}}~\texttt{gpt-4o} fam.;
-  \textcolor{orange!60}{\rule{5pt}{5pt}}~\texttt{gpt-4.1} fam.;
+  \textcolor{orange!60}{\rule{5pt}{5pt}}~\texttt{gpt-4.1} fam.;\\
   \textcolor{green!55!black}{\rule{5pt}{5pt}}~\texttt{gpt-5.4-mini} (baseline);
   \textcolor{violet!60}{\rule{5pt}{5pt}}~\texttt{o4-mini}.}
 \label{fig:l1_klr_bar}
@@ -144,7 +144,7 @@ All seven models achieve 0\% pass rate across five prompt variants (Table~\ref{t
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}llccccccc@{}}
 \toprule
-\textbf{Var.} & \textbf{Description} & \makecell[c]{\small\texttt{gpt-}\\\small\texttt{4o}} & \makecell[c]{\small\texttt{gpt-4o-}\\\small\texttt{mini}} & \makecell[c]{\small\texttt{gpt-}\\\small\texttt{4.1}} & \makecell[c]{\small\texttt{gpt-4.1-}\\\small\texttt{mini}} & \makecell[c]{\small\texttt{gpt-4.1-}\\\small\texttt{nano}} & \makecell[c]{\small\texttt{gpt-5.4-}\\\small\texttt{mini}} & \makecell[c]{\small\texttt{o4-}\\\small\texttt{mini}} \\
+\textbf{Var.} & \textbf{Description} & \textbf{4o} & \textbf{4o-m} & \textbf{4.1} & \textbf{4.1-m} & \textbf{4.1-n} & \textbf{5.4-m} & \textbf{o4-m} \\
 \midrule
 A & 2ex-baseline     & 0.40 & \textbf{0.10} & 1.00 & \textbf{0.10} & 1.00 & 1.00 & 0.80 \\
 B & 3ex-extra        & 1.00 & 1.00 & 1.00 & \textbf{0.00} & 1.00 & 1.00 & 1.00 \\
@@ -158,6 +158,7 @@ E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \
 \multicolumn{9}{l}{\scriptsize $^\dagger$\texttt{gpt-5.4-mini} var-E: 8 HTTP errors; $n_\mathrm{eff}=2$; excluded from per-variant PPR.} \\
 \multicolumn{9}{l}{\scriptsize $^\ddagger$Overall PPR for \texttt{gpt-5.4-mini} computed over 4 valid variants (A--D); var-E excluded.} \\
 \multicolumn{9}{l}{\scriptsize $^\S$E24: \texttt{gpt-5.4} 0/10 (PPR=1.00), \texttt{o3} 0/10 (PPR=1.00) on Var.~A only; see text.} \\
+\multicolumn{9}{l}{\scriptsize Columns: 4o=gpt-4o, 4o-m=gpt-4o-mini, 4.1=gpt-4.1, 4.1-m=gpt-4.1-mini, 4.1-n=gpt-4.1-nano, 5.4-m=gpt-5.4-mini, o4-m=o4-mini.} \\
 \end{tabular}}
 \end{table}
 
@@ -292,17 +293,18 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 \caption{E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref{tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt{gpt-4o} scaled to $n=30$ (E32a); others at $n=10$. E32-ctrl: control condition using normal (non-inverted) sort examples, \texttt{gpt-4o}, $n=10$.}
 \label{tab:e32_transfer}
 \footnotesize
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}lcccl@{}}
 \toprule
-\textbf{Model} & \textbf{Pass} & \textbf{Pass rate} & \textbf{Wilson 95\% CI} & \textbf{Note} \\
+\textbf{Model} & \textbf{Pass} & \textbf{Rate} & \textbf{Wilson 95\% CI} & \textbf{Note} \\
 \midrule
 \texttt{gpt-4.1-mini} & 10/10 & \cellcolor{green!15}\textbf{100\%} & [72\%,100\%] & Perfect transfer \\
-\texttt{gpt-4o}       & 16/30 & \cellcolor{yellow!20}53\% & [36\%,70\%] & Partial transfer; vs.\ mini: $p{=}0.008^{**}$ \\
+\texttt{gpt-4o}       & 16/30 & \cellcolor{yellow!20}53\% & [36\%,70\%] & Partial; vs.\ mini: $p{=}0.008^{**}$ \\
 \texttt{o4-mini}      & 1/10  & \cellcolor{red!10}10\% & [2\%,44\%] & Minimal transfer \\
 \midrule
-\textit{E32-ctrl} (\texttt{gpt-4o}, normal examples) & 0/10 & \cellcolor{gray!10}0\% & [0\%,31\%] & No transfer (control) \\
+\textit{E32-ctrl} (\texttt{gpt-4o}, normal) & 0/10 & \cellcolor{gray!10}0\% & [0\%,31\%] & No transfer (control) \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \textbf{Cross-task contamination defeats L4.} Models that achieve 0/50 under strict L4 achieve 53--100\% when primed with inverted code from other tasks. \texttt{gpt-4.1-mini}: 10/10; \texttt{gpt-4o}: 16/30 (CI: [36\%,70\%]); \texttt{o4-mini}: 1/10. Control (non-inverted examples): 0/10---confirming the effect is inversion-specific. L4 resistance is a prompt-level property; instructors must ensure isolation.
@@ -341,6 +343,7 @@ E34 tests annotation density across three models and five levels (0\%, 25\%, 50\
 \caption{E34: Annotation density curve --- pass rate at each density level ($n=10$ per cell, 150 total runs). MAT = Minimum Annotation Threshold (lowest level where pass rate $>$50\%). The 0\% condition includes an inverted \emph{code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation.}
 \label{tab:e34_density}
 \footnotesize
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}lccccc|c@{}}
 \toprule
 \textbf{Model} & \textbf{0\%}$^{\dag}$ & \textbf{25\%} & \textbf{50\%} & \textbf{75\%} & \textbf{100\%} & \textbf{MAT} \\
@@ -351,7 +354,7 @@ E34 tests annotation density across three models and five levels (0\%, 25\%, 50\
 \midrule
 \multicolumn{7}{l}{\scriptsize $^{\dag}$Code-example (mimicry) baseline; qualitatively distinct from verbal annotation (25--100\%).} \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 \textbf{Key finding---pattern mimicry via code examples outperforms verbal annotation at all density levels.} All three models show highest pass rates at 0\% annotation density (which includes an inverted \emph{code} example, a qualitatively distinct condition from verbal annotation at 25--100\%), \emph{not} at 100\% (full explicit rule). This is the opposite of the naive expectation that more explicit instructions improve compliance. Within the verbal annotation range (25--100\%), pass rates are non-monotonic: (1)~sharp collapse at 25\% (single comment hint disrupts code-example mimicry without providing sufficient rule content), (2)~partial recovery at 50--75\%, and (3)~collapse at 100\% (full rule triggers prior conflict). The overall pattern distinguishes two qualitatively different mechanisms: code-example mimicry (effective at 0\%) and verbal rule induction (weak and non-monotonic across 25--100\%).
