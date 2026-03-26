@@ -334,6 +334,8 @@ count\_vowels (T3) & \texttt{s}  & 0.1606 & 1.0000 \\
 
 A secondary observation: \texttt{gpt-4o}'s low T3 PES (0.1606, \texttt{count\_vowels}) contrasts with its high operational substitution rate on T3 ($n=50$: 94\% OpSub). This suggests that a weaker prior (lower PES) does not simply yield L4 compliance; instead, the model explores alternative generation paths that still avoid semantic inversion, manifesting as arithmetic workarounds rather than canonical Python. The PES--operational-substitution relationship warrants future mechanistic study.
 
+\textbf{Scope note.} PES is measured for \texttt{gpt-4o} and \texttt{gpt-4.1-mini} only; \texttt{gpt-4o-mini} is excluded because it emits markdown formatting tokens rather than code tokens at the logprob query position. PES values for the remaining models (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, \texttt{o4-mini}) are unmeasured. The PES--resistance dissociation result (identical PES for fib and merge\_sort yet divergent L4 outcomes) should therefore be interpreted as a two-model finding, not a universal result; extending logprob probing to the full model set is a direct next step.
+
 \subsection{E32: Cross-Task Transfer Breaks L4 Resistance}
 \label{sec:e32_transfer}
 
