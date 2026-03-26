@@ -183,4 +183,8 @@ M.~Orenstrakh \emph{et~al.}, ``Detecting {LLM}-generated code assignments using
 L.~Ouyang \emph{et~al.}, ``Training language models to follow instructions with
   human feedback,'' NeurIPS 2022 (arXiv:2203.02155), 2022.
 
+\bibitem{krakovna2020specgaming}
+V.~Krakovna \emph{et~al.}, ``Specification gaming: The flip side of {AI}
+  ingenuity,'' DeepMind Blog, 2020.
+
 \end{thebibliography}

@@ -1,153 +1,25 @@
 \section{Complete Experiment Log}
 
-\subsection{All experiments (chronological)}
+All scripts, prompts, and result JSON files are committed to the repository under \texttt{docs/research/results/}. Language specifications are in \texttt{language-levels/}. See \texttt{README.md} for reproduction commands; each experiment can be replicated with a single script invocation and an API key.
 
-\begin{enumerate}
-  \item \textbf{E1--E4: L1 baseline, $n=120$, 4 models (2026-03-23).}
-    Models: gpt-4o-mini, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini.
-    Files: \texttt{batch-v1-120.\textit{model}.json}
-
-  \item \textbf{E5: L1 context-pack ablation, $n=120$, gpt-4o-mini (2026-03-23).}
-    Setting: CONTEXT\_PACK=1.
-    KLR: $0.423 \to 0.260$ (39\% reduction from E1).
-
-  \item \textbf{E6: L1 baseline, $n=120$, gpt-4o (2026-03-24).}
-    KLR=0.366, highest structural compliance.
-
-  \item \textbf{Partial judge applied (2026-03-24).}
-    Script: \texttt{partial\_judge.py} applied to all L1 batches.
-
-  \item \textbf{E7: L2 syntax inversion, $n=5$, gpt-4o-mini (2026-03-24).}
-    Explicit grammar rules provided in system prompt.
-    SIR=0.0; model adopted L2 syntax fully.
-
-  \item \textbf{E8: L3 semantic inversion, $n=5$, gpt-4o-mini (2026-03-24).}
-    Explicit inversion rule in system prompt.
-    PPR=1.0: prior dominance, complete failure.
-
-  \item \textbf{E9--E10: L3 semantic inversion, $n=10$, gpt-4o and gpt-4.1-mini (2026-03-24).}
-    Both models: PPR=0.0 (successfully followed rule).
-
-  \item \textbf{E11: L4 implicit semantic, $n=5$, gpt-4o (2026-03-24).}
-    No system prompt; only 2 worked examples shown.
-    Pattern blindness observed: model ignored inversion cue.
-
-  \item \textbf{E12: L1 context-pack, $n=20$, gpt-4.1 family + o4-mini (2026-03-25).}
-    Models: gpt-4.1 (KLR=0.295), gpt-4.1-mini (KLR=0.210), gpt-4.1-nano (KLR=0.378), o4-mini (KLR=0.265).
-    Files: \texttt{l1-gpt41-contextpack-2026-03-25.json}, etc.
-    Note: o4-mini requires \texttt{temperature=1} (API constraint).
-
-  \item \textbf{E13: L4 ablation, $n=50$, 5 models (2026-03-25).}
-    Models: gpt-4o, gpt-4o-mini, gpt-4.1-mini, gpt-5.4-mini; later gpt-4.1 and gpt-4.1-nano scaled to $n=50$.
-    Result: 0/50 pass for all five variants $\times$ all models.
-    File: \texttt{L4-ablation-n50.\textit{model}.2026-03-25.json}
-
-  \item \textbf{E14: L4 ablation, $n=50$, o4-mini (2026-03-25).}
-    Reasoning model; confirms 0/50 pass at scale (1/20 preliminary was a statistical artifact).
-    File: \texttt{L4-ablation-n50.o4mini.2026-03-25.json}
-
-  \item \textbf{E15: L4 multi-task, $n=10$--$20$ per task, 7 models (2026-03-25).}
-    Tasks: T1 (fibonacci), T2 (is\_sorted), T3 (count\_vowels).
-    Models: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini, o4-mini (255 total runs).
-    gpt-5.4-mini: 0/30 (T1 PPR=1.0, T2 PPR=1.0, T3 operational substitution).
-    Files: \texttt{L4-multitask.\textit{model}.2026-03-25.json}
-
-  \item \textbf{E16: L4 multi-task scale-up, $n=50$, gpt-4o T3 and gpt-4.1 T2 (2026-03-25).}
-    Rationale: preliminary $n=10$ results showed 1 pass each; scaled to $n=50$ to rule out statistical artifact.
-    gpt-4o T3 (\texttt{count\_vowels}): 0/50 pass; operational substitution in 47/50 runs (94\%, Wilson 95\% CI: [83\%, 99\%]). Confirms preliminary pass was artifact.
-    gpt-4.1 T2 (\texttt{is\_sorted}): 1/50 pass (Wilson 95\% CI: [0.0\%, 10.5\%]); Fisher's exact vs.\ gpt-4.1-mini 20/20: $p < 0.0001$.
-    Total multi-task runs (E15+E16+E19): 345 (255 initial + 80 scale-up \texttt{gpt-4o} T3 / \texttt{gpt-4.1} T2 + 10 \texttt{o4-mini} T2/T3 extension).
-    Files: \texttt{L4-scaleup-*.n50.json}.
-    Script: \texttt{run\_targeted\_scaleup.py}
-
-  \item \textbf{E17: L2/L3 expansion, $n=20$ each, 3 models (2026-03-25).}
-    Models: gpt-4o, gpt-4.1-mini, gpt-4.1-nano. Rationale: prior L2/L3 data was pilot-level ($n=5$--$10$).
-    L2 results: all three models 20/20 pass (SIR=0.0); confirms full syntax adoption at statistically meaningful $n$.
-    L3 results: all three models 20/20 pass (PPR=0.0); \texttt{gpt-4.1-nano} 20/20 is notable---even the smallest model fully follows explicit rule.
-    Key contrast: \texttt{gpt-4.1-nano} L3 20/20 vs.\ L4 0/50 (PPR=1.0); explicit vs.\ implicit delivery.
-    Files: \texttt{l\{2,3\}-*-n20-*.json} (6 files).
-    Scripts: \texttt{run\_l\{2,3\}\_eval.py}
-
-  \item \textbf{E18: Open-weight L1 + L4, $n=20$, Llama-3.3-70B and Qwen3-32B via Groq (2026-03-25).}
-    Models accessed via Groq API (User-Agent: ``OpenAI/Python'').
-    L1 ctx-pack: Llama-3.3-70B KLR=0.23 (comparable to best OpenAI); Qwen3-32B KLR=1.00 (worst overall).
-    L4 ablation Variant A pilot: both models 0/20 pass (Llama PPR=0.05, Qwen PPR=1.00); confirms cross-family pattern blindness.
-    Full 5-variant ablation ($n=50$ attempted): Qwen3-32B 50/50 valid, 0/50 pass, PPR=1.00; Llama-3.3-70B 25/50 valid (25 HTTP errors), 0/25 pass, per-variant PPR: A=0.00, B=0.00, C=0.60, D=1.00, E=1.00 (overall PPR=0.52).
-    L1 family variance (0.23--1.00) exceeds gpt-4.x intra-family variance (0.21--0.69).
-    Files: \texttt{l\{1,4\}-*-groq-*.json}, \texttt{\seqsplit{L4-ablation-n50.groq.llama3370bversatile.2026-03-25.json}}
-
-  \item \textbf{E19: o4-mini multi-task T2/T3 extension, $n=20$ each (2026-03-25).}
-    Rationale: E15 only ran T1 with corrected token budget; T2/T3 needed extension to $n=20$.
-    T2 (\texttt{is\_sorted}): 0/20 pass, PPR=0.30; T3 (\texttt{count\_vowels}): 0/20 pass, PPR=0.00.
-    Confirms reasoning advantage is annotation-contingent (T1 partial annotation) and does not generalize to T2/T3.
-    Total o4-mini multi-task runs after E15+E19: 15+20+20=55.
-    File: \texttt{l4-multitask-o4mini-T2T3-n20.json}
-
-  \item \textbf{E20: CoT ablation, $n=20$ per condition, 2 models (2026-03-25).}
-    Prompt variant: L4 Variant A + ``think step by step about the pattern first'' prefix.
-    gpt-4o: no-CoT 0/20 (PPR=1.00) vs.\ CoT 0/20 (PPR=0.15, \texttt{mentions\_inversion}=100\%).
-    gpt-4.1-mini: no-CoT 0/20 (PPR=0.40) vs.\ CoT 0/20 (PPR=0.00, \texttt{mentions\_inversion}=100\%).
-    Key finding: reasoning--generation dissociation; models articulate inversion rule in CoT but still generate standard Python prior.
-    Files: \texttt{l4-cot-ablation-*.json}.
-    Script: \texttt{run\_l4\_cot\_ablation.py}
-
-  \item \textbf{E22: CoT ablation extension, $n=20$ per condition, 2 additional models (2026-03-25).}
-    Extended E20 to \texttt{gpt-4.1-nano} and \texttt{o4-mini} (160 total CoT runs across 4 models).
-    \texttt{gpt-4.1-nano}: no-CoT 0/20 (PPR=1.00) vs.\ CoT 0/20 (PPR=0.20, \texttt{mentions\_inversion}=100\%).
-    \texttt{o4-mini}: no-CoT 0/20 (PPR=0.95) vs.\ CoT 1/20 (PPR=0.65, \texttt{mentions\_inversion}=35\%).
-    Key finding: reasoning--generation dissociation confirmed across all 4 model families (dense + reasoning). CoT PPR reduction is largest in nano (1.00$\to$0.20) but pass rate remains 0/20 for 3 of 4 models.
-    Files: \texttt{l4-cot-ablation-gpt41nano-*.json}, \texttt{l4-cot-ablation-o4mini-*.json}.
-    Script: \texttt{run\_l4\_cot\_ablation.py} (\texttt{EVAL\_MODEL=gpt-4.1-nano/o4-mini})
-
-  \item \textbf{E23: L4 hard-task battery, $n=10$ per cell, 4 models, 3 tasks (2026-03-25).}
-    Hypothesis: harder algorithmic tasks amplify pattern blindness.
-    Tasks: H1 (merge\_sort, descending), H2 (binary\_search, inverted return), H3 (BFS, reversed traversal).
-    Models: \texttt{gpt-4o}, \texttt{gpt-5.4}, \texttt{o3}, \texttt{o4-mini} (120 total runs).
-    Result: hypothesis REJECTED. \texttt{gpt-5.4}, \texttt{o3}, \texttt{o4-mini}: 30/30 (100\%); \texttt{gpt-4o}: 24/30 (80\%).
-    Key finding: hard tasks provide \emph{explicit I/O specifications} allowing direct behavioral compliance; simple L4 tasks embed an \emph{implicit semantic rule} that models cannot extract. Pattern blindness is specific to implicit rule extraction, not task complexity. Prior entrenchment depth (not algorithmic difficulty) is the key predictor of resistance.
-    Files: \texttt{l4-hard-tasks-*.2026-03-25.json}, \texttt{hard-vs-simple-summary-2026-03-25.md}.
-
-  \item \textbf{E21: Failure taxonomy, 419 failed L4 runs (2026-03-25).}
-    Classified all failed L4 ablation + multi-task T1 runs across ablation (342 valid runs, all failures; \texttt{gpt-5.4-mini} $n_\mathrm{eff}=42$) and multi-task T1 (77 failed runs; 8 \texttt{o4-mini} T1 passes excluded from taxonomy).
-    Type-I (exact Python prior): 83.1\%; Type-II (partial attempt): 12.6\%; Type-III (operational substitution): 4.3\%.
-    Type-I dominates in \texttt{gpt-4.1}/\texttt{gpt-4.1-nano} (100\%); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%).
-    File: \texttt{failure-taxonomy-2026-03-25.json}
-    Script: \texttt{scripts/categorize\_failures.py}
-
-  \item \textbf{E25: L3 T2 diagnostic for \texttt{gpt-4.1}, $n=10$ (2026-03-25).}
-    Motivation: \texttt{gpt-4.1} achieves only 1/50 on L4 T2 (\texttt{is\_sorted}), despite L3 T2 being solvable for other models. E25 tests whether this failure is (a) L4-specific pattern extraction failure, or (b) general inability to invert \texttt{is\_sorted} semantics.
-    Condition: explicit L3 rule (``if-block runs when condition is FALSE''), task \texttt{is\_sorted}, $n=10$.
-    Result: \texttt{gpt-4.1} passes 10/10 (PPR=0.0). Model correctly applies inverted conditional logic under explicit rule.
-    Interpretation: supports RLHF over-alignment hypothesis---\texttt{gpt-4.1}'s T2 failure is L4-specific (pattern extraction from examples), not a general \texttt{is\_sorted} inversion difficulty.
-    File: \texttt{e25-l3-t2-gpt41-n10-2026-03-25.json}
-    Script: \texttt{scripts/run\_e25\_l3\_t2\_gpt41.py}
-
-  \item \textbf{E26: L3 Fibonacci diagnostic for \texttt{Qwen3-32B}, $n=5$ pilot (2026-03-25).}
-    Motivation: \texttt{Qwen3-32B} fails L4 Fibonacci with PPR=1.00 across all variants. E26 tests whether this reflects (a) L4-specific pattern blindness (same as OpenAI models) or (b) general semantic meta-rule failure (fails explicit L3 rule too).
-    Condition: explicit L3 rule (``if-block runs when condition is FALSE''), Fibonacci task, $n=5$, via Groq API.
-    Result: 0/5 pass, PPR=0.80. Model fails even when the inversion rule is stated explicitly.
-    Interpretation: \texttt{Qwen3-32B} exhibits \emph{general semantic meta-rule failure}. Pilot result; see E27 for full replication.
-    File: \texttt{e26-qwen3-32b-l3-fibonacci.n5.2026-03-25.json}
-    Script: \texttt{scripts/run\_e26\_qwen\_l3.py}
-
-  \item \textbf{E27: L3 Fibonacci replication for \texttt{Qwen3-32B}, $n=20$ (2026-03-25).}
-    Motivation: E26 ($n=5$) was preliminary; E27 replicates at $n=20$ to confirm \emph{general semantic meta-rule failure} is systematic, not a small-$n$ artifact.
-    Condition: identical to E26 (explicit L3 rule, Fibonacci task), $n=20$ via Groq API. 5 HTTP 429 errors; $n_\mathrm{eff}=15$ for rate-limited subset; 20 total attempts.
-    Result: 0/20 pass, PPR=0.40 (8/20 exact Python prior; 12/20 FAIL-other). Wilson 95\% CI: [0\%, 17\%].
-    Interpretation: Confirmed \emph{general semantic meta-rule failure} is systematic at $n=20$. Lower PPR than E26 reflects \emph{confused partial instruction-following} (internally inconsistent outputs), not clean prior dominance. Architecture-level deficit, distinct from all OpenAI models.
-    File: \texttt{e27-qwen3-32b-l3-fibonacci.n20.2026-03-25.json}
-    Script: \texttt{scripts/run\_e27\_qwen\_l3\_n20.py}
-
-  \item \textbf{E24: Frontier model L4 Fibonacci ablation, $n=10$, \texttt{gpt-5.4} and \texttt{o3} (2026-03-25).}
-    Motivation: E23 only tested \texttt{gpt-5.4}/\texttt{o3} on hard tasks (I/O-transparent, shallow priors). C2 critique required testing same models on strict L4 Fibonacci to confirm core claim.
-    Condition: Variant~A (2ex-baseline), strict example-only, identical to Table~\ref{tab:l4_ablation}.
-    \texttt{gpt-5.4}: 0/10 pass, PPR=1.00 (complete prior dominance).
-    \texttt{o3}: 0/10 pass, PPR=1.00 (complete prior dominance).
-    Key finding: L4 pattern blindness on prior-entrenched Fibonacci holds for both frontier models as of 2026-03-25.
-    Files: \texttt{\seqsplit{e24-frontier-l4-fibonacci.gpt-54.n10.2026-03-25.json}},
-    \texttt{\seqsplit{e24-frontier-l4-fibonacci.o3.n10.2026-03-25.json}}.
-    Script: \texttt{scripts/run\_e24\_frontier\_l4.py}
-\end{enumerate}
+\begin{table}[h]
+\centering
+\caption{Key experiments summary. Full log (E1--E35) in repository.}
+\label{tab:exp_summary}
+\footnotesize
+\begin{tabular}{@{}llrl@{}}
+\toprule
+\textbf{Exp} & \textbf{Models} & \textbf{$n$} & \textbf{Key Finding} \\
+\midrule
+E1 (L1) & 4 OpenAI & 120 & KLR 0.21--0.69; partial prior leakage \\
+E13 (L4) & 7 OpenAI & 350 & 0/350 pass; universal pattern blindness \\
+E24 & gpt-5.4, o3 & 20 & 0/10 each on Fibonacci (PPR=1.0) \\
+E32 & 3 models & 50 & Cross-task transfer breaks isolation \\
+E34 & 3 models & 150 & Code mimicry $>$ verbal annotation \\
+E35 & 3 models & 60 & I/O opacity: 0/30 (complementary path) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{API and runtime settings}
 
@@ -160,36 +32,8 @@ Temperature & 0 (all); 1 (o4-mini) \\
 \texttt{max\_compl\_tokens} & default; 5000 (o4-mini) \\
 Base URL & OpenAI \texttt{/v1} \\
 Groq URL & Groq \texttt{openai/v1} \\
-Timeout & 120s \\
-Prompt delay & 0.4s \\
-API key & Env variable \\
-Retry & None \\
 Python & 3.12 \\
 \texttt{openai} pkg & 1.75.0 \\
-\texttt{groq} pkg & 0.22.0 \\
-\texttt{latexmk} & 4.87 \\
 \bottomrule
 \end{tabular}
 \normalsize
-
-\subsection{Repository structure for replication}
-
-\begin{tabular}{@{}lp{3.2cm}@{}}
-\toprule
-Script / Path & Purpose \\
-\midrule
-\texttt{run\_gpt54\_eval.py} & L1 batch runner \\
-\texttt{run\_l2\_eval.py} & L2 batch runner \\
-\texttt{run\_l3\_eval.py} & L3 batch runner \\
-\texttt{run\_l4\_ablation.py} & L4 ablation runner \\
-\texttt{run\_l4\_multitask.py} & L4 multi-task runner \\
-\texttt{run\_targeted\_scaleup.py} & L4 targeted scale-up ($n=50$) \\
-\texttt{run\_l4\_cot\_ablation.py} & CoT ablation runner \\
-\texttt{categorize\_failures.py} & Failure type taxonomy \\
-\texttt{partial\_judge.py} & Continuous metrics \\
-\texttt{compare\_eval\_runs.py} & Run comparison \\
-\texttt{docs/archive/*/} & Prompt banks (L1--L4) \\
-\texttt{docs/research/results/} & All output JSONs \\
-\texttt{language-levels/} & Level specs \\
-\bottomrule
-\end{tabular}

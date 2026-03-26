@@ -131,16 +131,10 @@ With an explicit semantic inversion rule, \texttt{gpt-4o-mini} fails completely 
 \label{sec:l4_ablation}
 Without explicit rule, \texttt{gpt-4o}---which succeeds at L3---fails at L4 (PPR=1.0), producing canonical Python and ignoring example-embedded inversion cues. Figure~\ref{fig:l4_failure} shows the contrast.
 
-\textbf{L4 ablation (n=50 per model).}
-We scaled the L4 evaluation across seven models, all at $n=50$ (\texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, \texttt{o4-mini}).
-Results are shown in Table~\ref{tab:l4_ablation}.
-All seven models achieve 0\% pass rate, confirming that pattern blindness is robust across model families and including the reasoning model \texttt{o4-mini}. (\texttt{gpt-5.4-mini}: 0/42 valid runs, $n_\mathrm{eff}=42$; see footnote.)
-PPR values range from 0.38 (\texttt{gpt-4.1-mini}) to 1.0 (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}); \texttt{o4-mini} shows PPR=0.92. (\texttt{gpt-4.1-mini}'s 0.38 overall PPR reflects variant heterogeneity, not a uniformly lower prior pull; variant-level PPR spans 0.00--1.00, with certain variants producing zero canonical-prior outputs (PPR=0.00 on Variants B and D; these are Type-II partial-attempt failures, not successful inversions) while others revert completely (PPR=1.00)---see Table~\ref{tab:l4_ablation} for per-variant values.)
-Notably, \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} show PPR=1.0 across \emph{all} 50 runs and all variants, indicating complete prior dominance with no evidence of inversion detection.
-The \texttt{o4-mini} result revises an earlier preliminary finding (1/20 at $n=20$): at the full scale of $n=50$, \texttt{o4-mini} also achieves 0/50, indicating that chain-of-thought reasoning does not provide a reliable pathway to overcoming pattern blindness at this scale.
+\textbf{L4 ablation ($n{=}50$ per model).}
+All seven models achieve 0\% pass rate across five prompt variants (Table~\ref{tab:l4_ablation}), confirming universal pattern blindness. PPR ranges from 0.38 (\texttt{gpt-4.1-mini}, variant-heterogeneous) to 1.0 (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}). \texttt{o4-mini} (PPR=0.92) revises an earlier 1/20 preliminary: at $n{=}50$, 0/50.
 
-\textbf{E24: Frontier models on L4 Fibonacci (strict example-only, $n=10$).}
-To close the gap identified in \S\ref{sec:l4_hard}---where \texttt{gpt-5.4} and \texttt{o3} were only tested on hard tasks---we ran both frontier models on the identical Variant~A condition used in Table~\ref{tab:l4_ablation} (strict example-only, Fibonacci, $n=10$). Result: \texttt{gpt-5.4} 0/10 (PPR=1.00) and \texttt{o3} 0/10 (PPR=1.00). Both frontier models show complete prior dominance on L4 Fibonacci, confirming that pattern blindness persists even in the latest dense and reasoning models when the task has a deeply entrenched Python prior. This result directly confirms the core claim: \emph{L4 pattern blindness on prior-entrenched tasks is not defeated by frontier models as of 2026-03-25}.
+\textbf{E24: Frontier models.} \texttt{gpt-5.4} and \texttt{o3} both achieve 0/10 (PPR=1.00) on strict L4 Fibonacci, confirming pattern blindness persists in frontier models on prior-entrenched tasks.
 
 \begin{table}[!t]
 \centering
@@ -168,7 +162,7 @@ E & 3ex-diff-domain  & 0.50 & 1.00 & 1.00 & 1.00 & 1.00 & N/A$^\dagger$ & 0.90 \
 \end{table}
 
 \noindent\textbf{Variant E domain-shift anomaly (\texttt{gpt-4.1-mini}).}
-The most striking per-variant result is \texttt{gpt-4.1-mini}'s complete inversion across variant E: PPR=0.00 on variants~B (3ex-extra) and~D (2ex-swapped)---meaning it never generates the Python prior---yet PPR=1.00 on variant~E (3ex-diff-domain, where examples use a \emph{different} semantic domain). The structural difference is that variants B and D use the same Fibonacci-adjacent domain for all examples, while variant E uses cross-domain examples (e.g., sorting or arithmetic comparisons). We hypothesize that \emph{domain shift in examples weakens the model's pattern extraction signal}: when examples share the same function context as the target task, the model's in-context pattern extractor can align examples to the task template; when examples are drawn from a different domain, the learned pattern loses its grounding in the target task structure, causing the model to revert to the Python prior. This remains a hypothesis; controlled cross-domain vs.\ in-domain replication at larger $n$ would be needed to confirm it. Notably, variant~A (2ex-baseline, in-domain) achieves PPR=0.10 while variant~B (3ex, in-domain) achieves PPR=0.00: example count and domain \emph{jointly} modulate extraction quality in this model---additional in-domain examples may partially suppress the Python prior without enabling full inversion, while domain shift reinvigorates it.
+\texttt{gpt-4.1-mini} shows PPR=0.00 on in-domain variants (B, D) but PPR=1.00 on variant~E (cross-domain examples), suggesting domain shift weakens pattern extraction. This remains a hypothesis requiring controlled replication at larger $n$.
 
 \begin{figure}[!t]
 \centering
@@ -235,30 +229,11 @@ To assess whether pattern blindness extends beyond Fibonacci, we evaluated all s
 \end{tabular}}
 \end{table}
 
-Seven findings emerge.
-
-\smallskip\noindent
-(1) \textbf{T2 is extractable only by mid-to-large models}: \texttt{gpt-4o} (10/10) and \texttt{gpt-4.1-mini} (20/20) pass T2 fully, while \texttt{gpt-4.1} (1/50, PPR=0.42), \texttt{gpt-4.1-nano} (0/10), \texttt{gpt-5.4-mini} (0/10), and \texttt{gpt-4o-mini} (0/10) fail. This reveals a non-monotonic capacity threshold: T2 extractability does not scale linearly within or across model families.
-
-\smallskip\noindent
-(2) \textbf{T1 (Fibonacci) is resistant for all non-reasoning models}: six of seven models fail T1, with high or full PPR (PPR=1.0 for \texttt{gpt-4o}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-5.4-mini}; PPR=0.2 for \texttt{gpt-4.1-nano}; template fragmentation for \texttt{gpt-4o-mini}). The reasoning model \texttt{o4-mini} provides a partial exception under the partially-annotated prompt (see Finding~5 for detail).
-
-\smallskip\noindent
-(3) \textbf{Operational substitution dominates T3}: the scale-up (\texttt{gpt-4o} T3, $n=50$) reveals operational substitution in 47/50 runs (94\%; Wilson 95\% CI: [83\%, 99\%])---the model applies arithmetic transformations (\texttt{count -= 1; return -count}) to achieve correct output without adopting the L4 semantic rule. The preliminary $n=10$ result (1 pass) was a statistical artifact; at $n=50$, \texttt{gpt-4o} achieves 0/50 pass (Wilson 95\% CI: [0\%, 7.1\%]). \texttt{gpt-5.4-mini} T3 also exhibits operational substitution (PPR=0.0, all 10 runs), confirming this as a structurally distinct, frequent failure mode.
-
-\smallskip\noindent
-(4) \textbf{Model capacity determines T2 extractability}: \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{gpt-5.4-mini} all fail T2, while \texttt{gpt-4o} and \texttt{gpt-4.1-mini} succeed---consistent with the capacity threshold observed at L3.
-
-\smallskip\noindent
-(5) \textbf{Reasoning partially mitigates pattern blindness under partial annotation}: \texttt{o4-mini} achieves 8/15 on T1 under the partially-annotated prompt (after token budget correction), but fails T2 and T3 (0/20 each at extended $n=20$; overall 8/55 across T1+T2+T3). Under the strict example-only ablation (§~\ref{sec:l4_ablation}), \texttt{o4-mini} achieves 0/50---chain-of-thought reasoning alone cannot overcome pure pattern blindness, but reasoning models can exploit partial annotation cues that dense models miss.
-
-\textbf{Methodological note on \texttt{o4-mini} (token budget correction).} An initial \texttt{o4-mini} T1 run used \texttt{max\_completion\_tokens}=400, which truncated the model's chain-of-thought before it could complete the inversion task; this yielded 0/15 pass (consistent with pattern blindness). Upon correcting the budget to \texttt{max\_completion\_tokens}=5000, \texttt{o4-mini} achieved 8/15 pass---representing a finding revision. This correction reveals that reasoning models can exploit partial annotation cues inaccessible to dense models, but only when given sufficient token budget to complete the reasoning chain. The original 0/50 result in the L4 ablation (strict example-only, corrected budget) confirms that this effect is annotation-contingent: token budget alone does not overcome pure pattern blindness.
-
-\smallskip\noindent
-(6) \textbf{Within-family inconsistency is confirmed}: \texttt{gpt-4.1} T2 scale-up ($n=50$) confirms the capacity gap is systematic---1/50 pass (Wilson 95\% CI: [0\%, 10.5\%]) vs.\ \texttt{gpt-4.1-mini} 20/20 (Fisher's exact $p < 0.0001$). Fine-tuning or RLHF choices appear to play a larger role than raw scale in determining L4 pattern extraction capability.
-
-\smallskip\noindent
-(7) \textbf{\texttt{gpt-5.4-mini} shows uniform prior dominance across all tasks}: 0/30 with T1 PPR=1.0, T2 PPR=1.0, and T3 operational substitution pattern, consistent with its L4 ablation PPR=1.0 on Fibonacci variants.
+Key findings:
+(1)~\textbf{T1 (Fibonacci) is universally resistant} for non-reasoning models (6/7 fail; PPR${\geq}0.2$). \texttt{o4-mini} partially succeeds (8/15) under partial annotation only.
+(2)~\textbf{T2 extractability is capacity-dependent}: \texttt{gpt-4o} (10/10) and \texttt{gpt-4.1-mini} (20/20) pass; \texttt{gpt-4.1} (1/50), \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, and \texttt{gpt-4o-mini} fail.
+(3)~\textbf{Operational substitution dominates T3}: \texttt{gpt-4o} at $n{=}50$ shows 47/50 arithmetic workarounds (94\%; Wilson CI: [83\%,99\%]) with 0/50 pass.
+(4)~\textbf{Within-family anomaly}: \texttt{gpt-4.1} T2 (1/50) vs.\ \texttt{gpt-4.1-mini} (20/20; Fisher's $p{<}0.0001$) suggests fine-tuning choices dominate raw scale.
 
 \subsection{Three Failure Modes}
 \begin{itemize}
@@ -266,54 +241,30 @@ Seven findings emerge.
   \item \textbf{Pattern Blindness} (L4-T1): model cannot extract the semantic rule from examples alone, even when the same model follows the rule when stated explicitly (L3). T1 (Fibonacci) shows universal pattern blindness across all models.
   \item \textbf{Operational Substitution} (L4-T3-\texttt{gpt-4o}, $n=50$): model compensates via arithmetic output transformation rather than adopting the semantic inversion rule, indicating goal awareness without rule internalization. Confirmed as dominant at 94\% of T3 \texttt{gpt-4o} runs (Wilson 95\% CI: [83\%, 99\%]).
 \end{itemize}
-We also observe \emph{template fragmentation} in \texttt{gpt-4o-mini} T1: the model partially disrupts its standard template but does not achieve semantic inversion, yielding an incorrect but structurally novel output. We treat this as a sub-variant of prior dominance rather than a distinct fourth mode, given the small sample ($n=10$); further study at larger $n$ may warrant reclassification.
-
-\smallskip
-Task difficulty interacts with model capacity to determine which failure mode dominates. T2 (is\_sorted) is extractable by mid-to-large models; T1 (Fibonacci) is universally resistant; T3 (count\_vowels) triggers operational substitution as the dominant escape strategy for capable models.
-
-\textbf{Failure taxonomy across 419 failed L4 runs} (ablation + multitask T1; 427 total pool including 8 \texttt{o4-mini} T1 passes): Type-I (exact Python prior) accounts for ${\approx}83.1\%$ of failures, Type-II (partial attempt) for ${\approx}12.6\%$, and Type-III (operational substitution) for ${\approx}4.3\%$. Type-I dominates in \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} (100\% of failures); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%); Type-III appears primarily in \texttt{gpt-4o} (25\% of its failures).
-
-\noindent\textit{Population note:} The 427 pooled runs consist of 342 valid strict example-only ablation runs (all failures; \texttt{gpt-5.4-mini} $n_\mathrm{eff}=42$ due to 8 HTTP errors, counted at 342 not 350) and 85 multitask T1 runs (8 passes by \texttt{o4-mini}, 77 failures). Total failures: 419. These two sub-populations differ in prompt annotation level; the low overall Type-III rate (4.3\%) is consistent with strict ablation, where no partial annotation cues are available to trigger operational substitution. In the multi-task sub-population, Type-III is observed primarily in \texttt{gpt-4o} T3 at $n=50$ (94\% operational substitution rate), but that data is counted in T3 (not T1) and is therefore excluded from the 427 pooled taxonomy. A full split analysis per prompt protocol is deferred to future work.
+Across 419 failed L4 runs (ablation + multitask T1): Type-I (exact Python prior) accounts for 83\%, Type-II (partial attempt) for 13\%, Type-III (operational substitution) for 4\%. Type-I dominates in \texttt{gpt-4.1}/\texttt{gpt-4.1-nano} (100\%); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%).
 
 \subsection{CoT Ablation: Reasoning About Inversion Is Not Sufficient}
 \label{sec:cot_ablation}
-We tested whether chain-of-thought (CoT) prompting overcomes pattern blindness by adding ``think step by step about the pattern first'' to the L4 Variant A prompt ($n=20$ per condition, four models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{o4-mini}).
+We tested whether CoT prompting overcomes pattern blindness ($n{=}20$ per condition, four models). CoT does not improve pass rate: 3/4 models achieve 0/20 in both conditions; \texttt{o4-mini} achieves 1/20 under CoT ($p{=}1.0$ vs.\ no-CoT). However, CoT consistently reduces PPR (\texttt{gpt-4o}: $1.00{\to}0.15$; \texttt{gpt-4.1-nano}: $1.00{\to}0.20$) and raises \emph{mentions\_inversion} to 100\% for all three dense models---revealing a \emph{reasoning--generation dissociation}: models articulate the inversion rule yet still generate standard Python.
 
-\noindent\textbf{Result}: CoT does not reliably improve pass rate. Three of four models achieve 0/20 in both CoT and no-CoT conditions (Wilson 95\% CI: [0\%,16\%]); \texttt{o4-mini} achieves 1/20 under CoT (5\%; Wilson CI: [0.9\%,24\%]; Fisher's exact vs.\ 0/20 no-CoT: $p=1.0$, not significant). However, CoT consistently changes \emph{reasoning behavior} across all models:
-\begin{itemize}
-  \item \texttt{gpt-4o}: CoT reduces PPR from 1.00 to 0.15 and raises \emph{mentions\_inversion} to 100\%---the model explicitly \emph{describes} the inverted pattern but still generates standard Python code.
-  \item \texttt{gpt-4.1-mini}: CoT reduces PPR from 0.40 to 0.00 with 100\% mentions\_inversion rate---same reasoning--generation dissociation.
-  \item \texttt{gpt-4.1-nano}: CoT reduces PPR from 1.00 to 0.20 and raises \emph{mentions\_inversion} to 100\%---the nano model shows the strongest PPR reduction under CoT, yet all 20 outputs still fail to implement the inversion correctly.
-  \item \texttt{o4-mini}: CoT reduces PPR from 0.95 to 0.65 and raises \emph{mentions\_inversion} to 35\%. This is the most notable reasoning-model CoT result: while dense models reach near-perfect \emph{mentions\_inversion} (100\%) yet still fail, o4-mini reaches only 35\% mentions at $n=20$, suggesting a dissociation between CoT-prompting and chain-of-thought use in the reasoning model. The no-CoT baseline (PPR=0.95 at Variant~A, $n=20$) is slightly higher than the overall L4 ablation PPR=0.92 for \texttt{o4-mini} (which averages all five variants); this is expected since different variants show different PPR values. The CoT comparison should be interpreted within Variant~A only.
-\end{itemize}
-This reveals a \emph{reasoning--generation dissociation} that generalizes across four model families: models can articulate the semantic inversion rule when prompted to reason, yet their code generation defaults to the Python prior regardless. Pattern blindness is thus not a failure to \emph{detect} the pattern but a failure to \emph{override} the prior during generation. The finding is robust: 160 total CoT runs (40 per model, 2 conditions) across dense and reasoning architectures yield zero reliable pass rate improvement.
-
-\textbf{CoT vs.\ partial annotation for \texttt{o4-mini}.} A notable dissociation emerges when comparing the CoT ablation result to the multi-task result for \texttt{o4-mini}: CoT instruction on strict Variant~A yields 1/20 (5\%), while partial annotation (inline comment hints) without CoT instruction yields 8/15 (53\%, Table~\ref{tab:l4_multitask}). This suggests that for reasoning models, partial rule disclosure is more effective than meta-cognitive prompting alone: CoT helps dense models articulate the inversion pattern but does not supply the rule content; partial annotation provides actual rule content that reasoning models can exploit. The implication for resistance design is that partial annotations---not just implicit example delivery---are the key vulnerability for reasoning models.
+This dissociation is robust across 160 total CoT runs. Pattern blindness is not a failure to \emph{detect} the pattern but a failure to \emph{override} the prior during generation. Notably, for \texttt{o4-mini}, partial annotation (8/15 pass) is far more effective than CoT prompting (1/20), suggesting that partial rule content---not meta-cognitive prompting---is the key vulnerability for reasoning models.
 
 \subsection{Open-Weight Models: Preliminary L1 and L4 Results}
 \label{sec:open_weight}
-To assess whether the failure modes generalize beyond the OpenAI model family, we conducted preliminary evaluations on two open-weight models via Groq API: \texttt{Llama-3.3-70B}-Versatile and \texttt{Qwen3-32B}.
+We evaluated two open-weight models via Groq API. \textbf{L1 (ctx-pack, $n{=}20$):} \texttt{Llama-3.3-70B} KLR=0.23 (near OpenAI best); \texttt{Qwen3-32B} KLR=1.00 (worst overall). The cross-family variance (0.23 vs.\ 1.00) exceeds the \texttt{gpt-4.x} spread, indicating fine-tuning governs alias compliance.
 
-\textbf{L1 (ctx-pack, $n=20$):} \texttt{Llama-3.3-70B} achieves KLR=0.23, nearly matching the OpenAI best (\texttt{gpt-4.1-mini} ctx-pack, 0.21). \texttt{Qwen3-32B} achieves KLR=1.00: all 20 outputs contained at least one native Python keyword with no valid code skeleton---the worst L1 result across all tested models. The inter-model gap (0.23 vs.\ 1.00) exceeds the intra-family spread of \texttt{gpt-4.x} models (0.21--0.69), indicating that instruction-following fine-tuning rather than parameter count governs alias compliance.
+\textbf{L4:} Both models fail (0/50 for Qwen, 0/25 for Llama at $n_\mathrm{eff}{=}25$). \texttt{Qwen3-32B} shows PPR=1.00 (complete prior dominance); \texttt{Llama-3.3-70B} shows variant-dependent PPR (0.00 in-domain, 1.00 cross-domain), suggesting \emph{context-sensitive prior reversion} as a distinct failure mode---though per-variant CIs are wide at $n_\mathrm{eff}{=}5$.
 
-\textbf{L4 Variant A ($n=20$):} Both open-weight models fail. \texttt{Llama-3.3-70B}: 0/20 pass, PPR=0.05 (1/20 strict Python prior; remaining 19 outputs applied standard control flow without inversion). \texttt{Qwen3-32B}: 0/18 pass ($n_\mathrm{eff}=18$; 2 HTTP errors), PPR=1.00 (complete prior dominance). Neither model triggered inversion detection (noticed\_inversion=0). These results extend the pattern blindness finding beyond OpenAI models.
-
-\emph{Limitations and extended runs:} Initial pilot ($n=20$, Variant~A only) confirmed pattern blindness for both open-weight models. Full 5-variant ablation ($n=50$ attempted) was subsequently run for both models. \texttt{Qwen3-32B} completed 50/50 valid runs (0 HTTP errors): 0/50 pass, PPR=1.00 across all variants---consistent with pilot results, confirming complete prior dominance. \texttt{Llama-3.3-70B} achieved 25/50 valid runs (25 HTTP errors due to Groq rate limiting; all five variants represented, $n_\mathrm{eff}=5$ per variant): 0/25 pass. Per-variant PPR values vary substantially: Var.~A=0.00, Var.~B=0.00, Var.~C=0.60, Var.~D=1.00, Var.~E=1.00 (overall PPR=0.52). At $n_\mathrm{eff}=5$ per variant, Wilson 95\% CIs are wide: PPR=0.00 has CI [0\%, 43\%]; PPR=0.60 has CI [17\%, 93\%]; PPR=1.00 has CI [57\%, 100\%]. These intervals overlap substantially---statistical claims about variant-level differences are not warranted at this sample size. This per-variant \emph{pattern} suggests a qualitatively different failure mode from both prior dominance (PPR$\approx$1.0) and Qwen's complete prior dominance: \texttt{Llama-3.3-70B} may apply standard control flow without semantic inversion (low PPR on Variants~A/B) but revert to strict Python prior on Variants~D/E (domain-shifted examples). This potentially represents a third open-weight failure mode---\emph{context-sensitive prior reversion}---but the per-variant pattern cannot be statistically confirmed at $n_\mathrm{eff}=5$; full replication is deferred to future work.
-
-\textbf{E26/E27: L3 diagnostic for \texttt{Qwen3-32B} ($n=5$ pilot, $n=20$ replication).}
-To disambiguate whether \texttt{Qwen3-32B}'s L4 failure (PPR=1.00) reflects (a) pattern extraction failure (\emph{L4-specific}, same as OpenAI models) or (b) general instruction-following failure for semantic meta-rules, we ran $n=5$ L3 evaluations (E26) and subsequently $n=20$ full replication (E27) on \texttt{Qwen3-32B} (explicit rule: ``if-blocks execute when the condition is FALSE,'' Fibonacci task).
-E26 result ($n=5$): 0/5 pass, PPR=0.80 (1/5 showed a structurally distinct non-pass failure).
-E27 result ($n=20$, 2026-03-25): 0/20 pass, PPR=0.40 (8/20 exact Python prior; 12/20 FAIL-other). No valid passes at $n_\mathrm{eff}=20$; Wilson 95\% CI: [0\%, 17\%]. The PPR=0.40 is \emph{lower} than the E26 pilot (0.80), reflecting that a substantial fraction of failures are structurally distinct from the pure Python prior---the model often produces internally inconsistent code that attempts partial rule application but fails, rather than simply returning the standard Fibonacci template. This is consistent with \emph{confused partial instruction-following}, not clean prior dominance.
-Unlike \texttt{gpt-4.1} (E25: 10/10 on L3 T2), \texttt{Qwen3-32B} fails to apply the semantic inversion rule even when stated explicitly across $n=20$ trials---confirming \emph{general semantic meta-rule failure} as a systematic property, not a small-$n$ artifact. This represents a qualitatively different failure mode from all tested OpenAI models: \texttt{Qwen3-32B} cannot reliably follow semantic inversions via prompt instructions alone, regardless of delivery (explicit vs.\ implicit).
+\textbf{L3 diagnostic (E26/E27):} \texttt{Qwen3-32B} also fails L3 (0/20 pass, PPR=0.40)---\emph{general semantic meta-rule failure}, distinct from all OpenAI models which pass L3 consistently. This architecture-dependent deficit means L4 resistance is vacuous for Qwen: the model is already blocked at L3.
 
 \subsection{E31: Prior Entrenchment Score via Logprobs}
 \label{sec:e31_pes}
 
-To directly measure prior strength, we queried the logprobs API at the key decision point of each task's base case (the token immediately after \texttt{return}). For each model, we recorded the top-5 token probabilities and the rank/probability of the canonical Python token. Table~\ref{tab:e31_pes} summarizes the results.
+We queried the logprobs API at the base-case decision point for four tasks across two models (Table~\ref{tab:e31_pes}).
 
 \begin{table}[!t]
 \centering
-\caption{E31: Prior Entrenchment Score (PES) --- probability of the canonical Python token at the base-case decision point. Models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}. \texttt{gpt-4o-mini} results excluded (model emits markdown formatting tokens rather than code tokens at this position). PES = $P(\text{canonical token} \mid \text{prompt prefix})$.}
+\caption{E31: Prior Entrenchment Score (PES). PES = $P(\text{canonical token} \mid \text{prompt prefix})$. \texttt{gpt-4o-mini} excluded (emits markdown tokens at this position).}
 \label{tab:e31_pes}
 \footnotesize
 \begin{tabular}{@{}llcc@{}}
@@ -328,13 +279,7 @@ count\_vowels (T3) & \texttt{s}  & 0.1606 & 1.0000 \\
 \end{tabular}
 \end{table}
 
-\textbf{Key finding---PES alone does not predict L4 resistance.} Both \texttt{fib} and \texttt{merge\_sort} show near-identical PES ($\geq$0.9996), yet their L4 outcomes diverge dramatically: fib is universally resistant (0/350 pass in ablation), while merge\_sort is solvable by all tested models in the hard-task condition (Table~\ref{tab:l4_hard}). This dissociation rules out a simple ``prior strength $\to$ resistance'' mapping and supports the hypothesis that I/O specification transparency---not prior magnitude alone---is the critical moderating variable (\S\ref{sec:l4_hard}). The PES metric quantifies the \emph{strength} of the prior that must be overridden, but the model's ability to override it depends on whether the task's I/O examples make the target behavior transparent.
-
-\texttt{is\_sorted} (T2) shows slightly lower PES (0.9736 for \texttt{gpt-4o}), which may partly explain its extractability by capable models---but PES=0.9736 is still very high, suggesting that the ${\sim}0.03$ PES gap is not the primary driver of the T1--T2 pass rate difference (0\% vs.\ 100\% for \texttt{gpt-4o}).
-
-A secondary observation: \texttt{gpt-4o}'s low T3 PES (0.1606, \texttt{count\_vowels}) contrasts with its high operational substitution rate on T3 ($n=50$: 94\% OpSub). This suggests that a weaker prior (lower PES) does not simply yield L4 compliance; instead, the model explores alternative generation paths that still avoid semantic inversion, manifesting as arithmetic workarounds rather than canonical Python. The PES--operational-substitution relationship warrants future mechanistic study.
-
-\textbf{Scope note.} PES is measured for \texttt{gpt-4o} and \texttt{gpt-4.1-mini} only; \texttt{gpt-4o-mini} is excluded because it emits markdown formatting tokens rather than code tokens at the logprob query position. PES values for the remaining models (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, \texttt{o4-mini}) are unmeasured. The PES--resistance dissociation result (identical PES for fib and merge\_sort yet divergent L4 outcomes) should therefore be interpreted as a two-model finding, not a universal result; extending logprob probing to the full model set is a direct next step.
+\textbf{PES alone does not predict L4 resistance.} Both fib and merge\_sort have PES${\geq}$0.9996, yet fib is universally resistant (0/350) while merge\_sort is solvable (Table~\ref{tab:l4_hard}). This supports I/O transparency---not prior magnitude---as the critical moderator. Low T3 PES (0.16 for \texttt{gpt-4o}) does not yield compliance; instead, the model uses operational substitution (94\%), suggesting weaker priors trigger alternative evasion strategies rather than rule adoption.
 
 \subsection{E32: Cross-Task Transfer Breaks L4 Resistance}
 \label{sec:e32_transfer}
@@ -359,42 +304,36 @@ A critical question for assessment design: can a model crack L4 Fibonacci if it 
 \end{tabular}
 \end{table}
 
-\textbf{Cross-task contamination defeats L4.} The same models that achieve 0/50 under strict L4 example-only delivery (Table~\ref{tab:l4_ablation}) achieve 53--100\% pass when primed with inverted code from unrelated tasks. \texttt{gpt-4.1-mini} transfers perfectly (10/10; Wilson 95\% CI: [72\%,100\%]), consistent with its strong pattern extraction on T2 (20/20 in multi-task). \texttt{gpt-4o} achieves 16/30 at scale-up (Wilson 95\% CI: [36\%,70\%])---partial transfer confirmed; Fisher's exact vs.\ \texttt{gpt-4.1-mini}: $p=0.008$ ($p<0.01$), indicating a significant gap in transfer fidelity. \texttt{o4-mini}---which relies on reasoning chains rather than pattern mimicry---achieves only 1/10 (Wilson 95\% CI: [2\%,44\%]), suggesting that systematic reasoning about inverted semantics does not facilitate transfer in the way that code-example mimicry does. The control condition (E32-ctrl: 0/10) confirms that the transfer effect is specific to \emph{inverted} semantics: exposure to non-inverted cross-task code leaves L4 resistance fully intact, ruling out mere cross-task priming as an explanation.
+\textbf{Cross-task contamination defeats L4.} Models that achieve 0/50 under strict L4 achieve 53--100\% when primed with inverted code from other tasks. \texttt{gpt-4.1-mini}: 10/10; \texttt{gpt-4o}: 16/30 (CI: [36\%,70\%]); \texttt{o4-mini}: 1/10. Control (non-inverted examples): 0/10---confirming the effect is inversion-specific. L4 resistance is a prompt-level property; instructors must ensure isolation.
 
-\textbf{Assessment design implication.} L4 resistance depends on \emph{isolation}: if students include inverted code from other tasks in the same prompt (e.g., copying solved examples from a previous assignment), the model can transfer the inversion pattern cross-task. Instructors should ensure that L4 assignments do not provide cross-task inversion examples within the same prompt context. This finding also suggests that L4 resistance is a property of \emph{prompt-level pattern isolation}, not just task-level prior entrenchment.
-
-\subsection{E33: I/O Transparency --- Prior vs.\ Opaque Mapping}
+\subsection{E35: I/O Transparency --- Prior vs.\ Opaque Mapping}
 \label{sec:e33_io}
 
-We conducted two experiments to isolate I/O transparency from prior strength. The original E33 design was confounded: the IO-B (\texttt{opaque\_counter}) prompt disclosed explicit algorithmic steps (XOR, shift, conditional add/subtract), making both tasks procedurally transparent; all three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}) achieved 10/10 on both tasks. A replication (E33v2) with a different model set (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}) confirmed this result: all models again achieved 10/10 on both IO-A and IO-B, indicating the confound is robust across model generations when algorithmic steps are disclosed. To properly test I/O opacity as an independent variable, we ran E35 (\textbf{redesigned}): IO-B prompts were replaced with pure input/output pairs ($n=8$ examples), with no algorithm disclosed. IO-A remained identical to E33 (explicit ``reverse Fibonacci'' semantics, Fibonacci prior).
+E33 (original) was confounded by algorithmic disclosure; E35 (redesigned) uses pure I/O pairs with no algorithm. IO-A retains transparent ``reverse Fibonacci'' semantics.
 
 \begin{table}[!t]
 \centering
-\caption{E35 (Redesigned I/O transparency): pass rate on IO-A (strong Fibonacci prior, transparent mapping) vs.\ IO-B (weak prior, opaque I/O only --- no algorithm description). $n=10$ per cell, temperature=0.7.}
+\caption{E35: IO-A (transparent) vs.\ IO-B (opaque I/O only). $n{=}10$ per cell, $t{=}0.7$.}
 \label{tab:e35_io}
-\resizebox{\columnwidth}{!}{%
+\footnotesize
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Model} & \textbf{IO-A Pass} & \textbf{IO-A Rate} & \textbf{IO-B Pass} & \textbf{IO-B Rate} \\
+\textbf{Model} & \textbf{IO-A} & \textbf{Rate} & \textbf{IO-B} & \textbf{Rate} \\
 \midrule
 \texttt{gpt-4o}       & 10/10 & \cellcolor{green!15}\textbf{100\%} & 0/10 & \cellcolor{red!10}\textbf{0\%} \\
 \texttt{gpt-4.1-mini} & 10/10 & \cellcolor{green!15}\textbf{100\%} & 0/10 & \cellcolor{red!10}\textbf{0\%} \\
 \texttt{gpt-4o-mini}  & 5/10  & \cellcolor{yellow!20}50\%           & 0/10 & \cellcolor{red!10}\textbf{0\%} \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table}
 
-\textbf{Opaque I/O creates universal resistance.} When models receive only input/output pairs with no algorithmic description, all three models fail completely on IO-B (0/30 pooled; Wilson 95\% CI: [0\%,12\%]). By contrast, IO-A---which provides explicit naming cues (``reverse Fibonacci'') that activate a well-known prior---achieves 100\% for both larger models. The IO-A/IO-B contrast (100\% vs.\ 0\% for \texttt{gpt-4o}/\texttt{gpt-4.1-mini}) demonstrates that I/O opacity alone is sufficient to induce resistance, independent of prior strength: the \texttt{opaque\_counter} function has no deep training prior, yet models cannot infer or generalize the underlying bijection from 8 examples to held-out inputs. The \texttt{gpt-4o-mini} IO-A result (5/10) reveals an additional confound: even a transparent I/O mapping fails 50\% when the \emph{Fibonacci prior} interferes with the reversed sequence ordering, demonstrating bidirectional prior effects.
-
-\textbf{Design implication.} L4 resistance is not purely prior-strength-driven; it can also be induced by I/O-opaque task designs for which no training distribution provides a shortcut. This suggests a complementary pathway to NTP-resistant assignment design: rather than requiring the model to violate a known prior (L4), instructors can use opaque I/O specifications that prevent prior activation entirely.
+\textbf{Opaque I/O creates universal resistance.} All models fail IO-B (0/30 pooled; CI: [0\%,12\%]) while IO-A achieves 100\% for larger models. I/O opacity is sufficient for resistance independent of prior strength, providing a complementary pathway to L4-style prior exploitation.
 
 \subsection{E34: Annotation Density Curve (Multi-Model)}
 \label{sec:e34_density}
 
-\textbf{E28 pilot (single model).}\label{sec:e28_results} Prior to the multi-model replication, E28 mapped the annotation sensitivity boundary for \texttt{o4-mini} alone across four verbal annotation density levels (25\%, 50\%, 75\%, 100\%; $n=10$ per level, 40 total runs). Pass rate peaked non-monotonically at 50\% density (6/10, PPR=0.10), collapsed at 75\% (2/10, PPR=0.50) as dense annotation activated prior conflict, and was lowest at 100\% (1/9$^\dagger$). This pilot directly operationalized the annotation-sensitivity hypothesis and motivated E34. $^\dagger n_\mathrm{eff}=9$ at 100\% (1 HTTP error).
-
-E34 extends the E28 pilot (\S\ref{sec:e28_results}) to three models across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons ($n=10$ per level per model, 150 total runs). \textbf{Important:} the 0\% level is a \emph{code-example (mimicry) baseline}---it includes an inverted code example rather than I/O-only delivery as in the strict L4 ablation, making it qualitatively distinct from the verbal annotation range (25--100\%); 100\% provides the full explicit rule (L3-equivalent). Results are in Table~\ref{tab:e34_density}.
+\label{sec:e28_results}
+E34 tests annotation density across three models and five levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci ($n{=}10$ per cell, 150 runs). The 0\% level includes an inverted \emph{code example} (mimicry baseline), qualitatively distinct from verbal annotation (25--100\%). Results are in Table~\ref{tab:e34_density}.
 
 \begin{table}[!t]
 \centering
@@ -416,11 +355,11 @@ E34 extends the E28 pilot (\S\ref{sec:e28_results}) to three models across five 
 
 \textbf{Key finding---pattern mimicry via code examples outperforms verbal annotation at all density levels.} All three models show highest pass rates at 0\% annotation density (which includes an inverted \emph{code} example, a qualitatively distinct condition from verbal annotation at 25--100\%), \emph{not} at 100\% (full explicit rule). This is the opposite of the naive expectation that more explicit instructions improve compliance. Within the verbal annotation range (25--100\%), pass rates are non-monotonic: (1)~sharp collapse at 25\% (single comment hint disrupts code-example mimicry without providing sufficient rule content), (2)~partial recovery at 50--75\%, and (3)~collapse at 100\% (full rule triggers prior conflict). The overall pattern distinguishes two qualitatively different mechanisms: code-example mimicry (effective at 0\%) and verbal rule induction (weak and non-monotonic across 25--100\%).
 
-\textbf{Pattern mimicry $>$ rule following.} The 0\% condition succeeds because the inverted code example provides a direct structural template for mimicry---the model copies the comparison operator pattern without needing to understand the underlying rule. Adding explicit annotations paradoxically \emph{hurts} because it shifts the model from pattern mimicry mode to rule-following mode, where the Python prior creates stronger interference. This is consistent with E32's cross-task transfer finding: code examples are more effective than verbal rules for inducing inverted behavior.
+Results are exploratory given $n{=}10$ per condition; non-monotonic patterns may reflect sampling variance.
 
-\textbf{Contrast with strict L4 ablation.} The 0\% pass rates here (50--80\%) contrast with the strict L4 ablation's 0/350. The critical difference: E34's 0\% prompt shows an inverted \emph{code} example (\texttt{if n >= 0}), while the strict L4 ablation shows only I/O examples and worked solutions without explicitly inverted comparison operators in the prompt code. This confirms that L4 resistance depends on \emph{what} examples show, not just whether a rule is stated.
+\textbf{Note:} E34 Level~0 includes worked code examples that partially signal the inversion (raising pass rate vs.\ strict Variant~A which uses zero annotation signal). This design difference explains the apparent contradiction with Variant~A results.
 
-\textbf{Convergence with E28 (\texttt{o4-mini}).} E34's \texttt{o4-mini} results are directionally consistent with E28: both experiments agree at 50\% annotation density (E28: 6/10; E34: 6/10). The apparent ``peak at 0\%'' in E34 is due to the qualitatively distinct code-example baseline---E28 did not include a 0\% code-example condition, so the two experiments are directly comparable only in the 25--100\% verbal annotation range, where E34 shows the same non-monotonic pattern (50\%/75\% local peak, collapse at 100\%) consistent with E28. Both experiments confirm that annotation saturation hurts reasoning models on prior-entrenched tasks.
+\textbf{Pattern mimicry $>$ rule following.} The 0\% condition succeeds because the inverted code example provides a direct structural template for mimicry. Adding annotations paradoxically \emph{hurts} by shifting the model to rule-following mode where the Python prior creates stronger interference. The 0\% pass rates (50--80\%) contrast with the strict L4 ablation's 0/350: the critical difference is that E34's 0\% prompt shows explicitly inverted comparison operators, while the strict ablation does not.
 
 \subsection{L4 Hard-Task Extension: Task Complexity vs.\ Prior Entrenchment}
 \label{sec:l4_hard}
@@ -442,9 +381,7 @@ E34 extends the E28 pilot (\S\ref{sec:e28_results}) to three models across five 
 \end{tabular}
 \end{table}
 
-To test whether more complex algorithms amplify or defeat pattern blindness, we evaluated three hard tasks (H1: descending merge sort, H2: inverted binary search, H3: reversed BFS) across four models including two not previously tested: \texttt{gpt-5.4} and \texttt{o3}. Results are in Table~\ref{tab:l4_hard}.
-
-The results reveal that \textbf{L4 resistance is inversely correlated with task complexity}. Three of four models achieve 100\% pass rate (30/30); \texttt{gpt-4o} achieves 80\% (24/30, with H1 at 4/10). This contrasts sharply with the original L4 results, where \emph{all} models achieve 0\% pass rate on the simple Fibonacci task (T1) under example-only implicit delivery.
+\textbf{L4 resistance is inversely correlated with task complexity.} Three of four models achieve 100\% on hard tasks; \texttt{gpt-4o} achieves 80\%. This contrasts with 0\% on Fibonacci under example-only delivery, confirming that prior entrenchment depth---not algorithmic difficulty---drives resistance.
 
 \textbf{Methodological note on comparability.} This experiment differs from the strict L4 ablation (\S\ref{sec:l4_ablation}) in two respects, not one: (1)~\emph{prior entrenchment depth}---hard tasks have more varied implementations; and (2)~\emph{I/O specification transparency}---hard-task examples expose the behavioral target unambiguously via input/output pairs (e.g., [3,1,4,2]$\to$[4,3,2,1] makes ``descending order'' self-evident), while the original L4 embeds the inversion as an implicit semantic rule in code structure. These two confounds co-vary: the harder tasks that have shallower priors \emph{also} have more behaviorally transparent I/O specifications. We cannot cleanly separate prior-depth effects from I/O-transparency effects in the current design. Readers should interpret the hard-task results as evidence for \emph{at least one} of these explanatory factors, not necessarily prior depth alone.
 

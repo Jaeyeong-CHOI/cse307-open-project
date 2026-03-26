@@ -20,15 +20,10 @@ We decompose this into three sub-questions:
   \item Does inverting semantic behavior (L3/L4) create deeper resistance?
 \end{enumerate}
 
-Our key empirical findings are:
-\begin{itemize}
-  \item \textbf{L1 (token substitution):} Partially effective---keyword leakage rate (KLR) ranges from 0.26 to 0.69 across models. Models revert to Python priors at measurable rates.
-  \item \textbf{L2 (syntax inversion):} Not effective---models adopt new syntax completely (SIR=0.0) when given explicit rules.
-  \item \textbf{L3 (semantic inversion, explicit):} Capacity-dependent---weaker models fail completely (PPR=1.0 for \texttt{gpt-4o-mini}), while stronger models succeed (PPR=0.0 for \texttt{gpt-4o} and \texttt{gpt-4.1-mini}).
-  \item \textbf{L4 (semantic inversion, implicit):} Effective against all tested models on prior-entrenched tasks (e.g., Fibonacci)---even strong models exhibit \emph{pattern blindness}. However, capable models (gpt-5.4, o3) succeed on complex algorithmic tasks (merge sort, BFS) where prior entrenchment is shallow.
-\end{itemize}
-A key boundary condition: L4 resistance requires tasks with deep, uniform Python priors. We identify \emph{prior entrenchment depth} as a third design axis beyond perturbation level and rule delivery mode.
-
-We also identify three distinct LLM failure modes: \emph{prior dominance}, where the prior overrides stated rules; \emph{pattern blindness}, where the model fails to extract semantic rules from examples; and \emph{operational substitution}, where the model achieves correct output via arithmetic workaround rather than adopting the semantic rule.\footnote{Operational substitution was observed on \texttt{count\_vowels} for \texttt{gpt-4o} at $n=50$.}
-
-This framework provides both a theoretical taxonomy for LLM-resistant language design and practical tools for constructing programming assessments that remain meaningful in the LLM era.
+Our contributions are:
+\begin{enumerate}
+  \item \textbf{L4 Pattern Blindness as a universal LLM failure mode.} L4 (implicit semantic inversion) defeats \emph{all} eleven tested models---including frontier models \texttt{gpt-5.4} and \texttt{o3}---on prior-entrenched tasks (0/350 pass on Fibonacci under strict example-only delivery). Models cannot extract inverted semantics from worked examples, even when chain-of-thought reasoning correctly articulates the rule.
+  \item \textbf{An L1--L4 resistance taxonomy with three failure mechanisms.} We identify \emph{prior dominance} (prior overrides rules), \emph{pattern blindness} (model fails to extract semantic rules from examples), and \emph{operational substitution} (correct output via arithmetic workaround). Token-level (L1) and syntactic (L2) perturbations are insufficient; semantic inversion (L3/L4) is required for robust resistance, modulated by prior entrenchment depth and I/O transparency.
+  \item \textbf{Two complementary resistance pathways.} Beyond L4 prior exploitation, I/O opacity (E35) provides a second, independent resistance source: opaque I/O pairs alone produce complete resistance (0/30, 0\%) regardless of prior strength.
+  \item \textbf{Empirical characterization across 1,140+ evaluations.} Eleven models (9 OpenAI + 2 open-weight), 35 experiments, three tasks, and ablations on annotation density, cross-task transfer, and chain-of-thought---providing the first systematic map of where and why NTP-prior-based resistance succeeds or fails.
+\end{enumerate}

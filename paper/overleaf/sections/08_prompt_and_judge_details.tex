@@ -1,118 +1,13 @@
 \section{Prompt and Evaluation Protocol}
 
 \subsection{L1: Token Alias Substitution}
-
-\begin{figure}[!t]
-\small
-\begin{tcolorbox}[colback=blue!3, colframe=blue!45,
-  title=\textbf{S0 --- Baseline system prompt (L1)},
-  fonttitle=\small\bfseries, boxrule=0.6pt]
-\textit{``Solve the given prompt exactly. Return ONLY code (no explanation, no markdown). Follow alias mapping strictly.''}
-\end{tcolorbox}
-\vspace{3pt}
-\begin{tcolorbox}[colback=blue!8, colframe=blue!60,
-  title=\textbf{S1 --- Context-pack system prompt (L1, ablation)},
-  fonttitle=\small\bfseries, boxrule=0.6pt]
-\textit{``Solve the given prompt exactly. Return ONLY code. Follow alias mapping strictly.''}\\[4pt]
-\textbf{[Transformed language contract]}\\
-Use transformed aliases as listed in the prompt.
-Do NOT output original Python keywords for transformed entries.\\
-Output only executable code in the transformed language.
-\end{tcolorbox}
-\caption{L1 system prompts. S0 is the compact baseline; S1 adds an explicit alias contract to test whether contextual reinforcement reduces prior dominance.}
-\label{fig:l1_system_prompts}
-\end{figure}
-
-\begin{figure}[!t]
-\small
-\begin{tcolorbox}[colback=gray!4, colframe=gray!50,
-  title=\textbf{L1 user prompt template},
-  fonttitle=\small\bfseries, boxrule=0.6pt]
-\textbf{[Language Description]}\\
-Python grammar remains unchanged.\\
-Keyword aliases are user-configurable strings.\\
-At runtime, detected aliases are normalized back to Python.\\[4pt]
-\textbf{Current mapping summary:}\\
-\texttt{if} $\rightarrow$ \{alias\}\quad
-\texttt{in} $\rightarrow$ \{alias\}\quad
-\texttt{def} $\rightarrow$ \{alias\}\\
-\texttt{for} $\rightarrow$ \{alias\}\quad
-\texttt{return} $\rightarrow$ \{alias\}\quad
-\texttt{print} $\rightarrow$ \{alias\}\\[4pt]
-\textbf{[Task]}\\
-1) Define function \texttt{fib(n)}.\\
-2) If \texttt{n <= 1}, return \texttt{n}.\\
-3) Otherwise return \texttt{fib(n-1) + fib(n-2)}.\\
-4) Loop \texttt{i = 0..6}, print \texttt{(i, fib(i))}.
-\end{tcolorbox}
-\caption{L1 user prompt template. Alias values are varied across v1--v120, using tokens of differing length, semantic distance, and collision potential. The task is fixed as Fibonacci to control task difficulty.}
-\label{fig:l1_user_prompt}
-\end{figure}
-
-\noindent\textbf{Alias sampling strategy.} Representative mappings from three prompt versions:
-
-\begin{center}\footnotesize
-\begin{tabular}{@{}llll@{}}
-\toprule
-Token & v1 alias & v35 alias & v90 alias \\
-\midrule
-\texttt{if}     & \texttt{return}       & anti-prior phrase & long natural phrase \\
-\texttt{def}    & \texttt{if}           & \texttt{def}      & \texttt{return} \\
-\texttt{for}    & long phrase           & \texttt{xk}       & long phrase \\
-\texttt{return} & long phrase           & long phrase       & \texttt{out} \\
-\texttt{print}  & \texttt{do}           & ---               & \texttt{qn} \\
-\bottomrule
-\end{tabular}
-\end{center}
+L1 system prompts instruct the model to follow alias mappings strictly and return only code. The context-pack variant adds an explicit alias contract. User prompts specify 6 keyword aliases (if, def, for, in, return, print) with varied mappings across v1--v120.
 
 \subsection{L2: Syntax Inversion}
-
-\begin{figure}[!t]
-\small
-\begin{tcolorbox}[colback=orange!4, colframe=orange!60,
-  title=\textbf{L2 grammar specification (complete)},
-  fonttitle=\small\bfseries, boxrule=0.6pt]
-\textbf{This is NOT Python.} All Python keywords are FORBIDDEN.\\[4pt]
-\texttt{:define name [args] ->}\quad (replaces \texttt{def name(args):})\\
-\texttt{<= value}\quad (replaces \texttt{return value})\\
-\texttt{value ?cond: res ;else: alt ;end}\quad (replaces \texttt{if})\\
-\texttt{loop var over iterable \{body\}}\enspace (replaces \texttt{for})\\
-\texttt{;;}\quad closes function block
-\end{tcolorbox}
-\caption{L2 grammar specification as given to the model. Models must produce code using exclusively these constructs. Result: all models fully adopted the syntax (SIR=0.0), showing LLMs readily follow explicit structural rules.}
-\label{fig:l2_prompt}
-\end{figure}
+The model receives a complete grammar specification replacing Python constructs with novel syntax (\texttt{:define name [args] ->}, \texttt{<= value}, ternary \texttt{?cond:}, \texttt{loop var over}). All Python keywords are explicitly forbidden.
 
 \subsection{L3: Semantic Inversion (Explicit)}
-
-\begin{figure}[!t]
-\small
-\begin{tcolorbox}[colback=red!3, colframe=red!50,
-  title=\textbf{L3 system prompt --- explicit semantic rule},
-  fonttitle=\small\bfseries, boxrule=0.6pt]
-\textit{``Follow the L3 language rules exactly. If-blocks run when condition is \textbf{FALSE}.''}
-\end{tcolorbox}
-\vspace{3pt}
-\begin{tcolorbox}[colback=red!5, colframe=red!60,
-  title=\textbf{L3 user prompt (complete)},
-  fonttitle=\small\bfseries, boxrule=0.6pt]
-\textbf{L3 rule:} Syntax is identical to Python, but:\\
-RULE: Indented block executes when condition is \textbf{FALSE}.\\
-RULE: Else-block executes when condition is \textbf{TRUE}.\\[4pt]
-\textit{Example:}
-\begin{verbatim}
-if x > 5:
-    print("small")  # runs when NOT x > 5
-else:
-    print("large")  # runs when x > 5
-\end{verbatim}
-\vspace{2pt}
-\textbf{Task:} Write \texttt{fib(n)} in L3. Intended logic: if $n \le 1$ return $n$; else return \texttt{fib(n-1)+fib(n-2)}.\\
-Think carefully: your if-block runs when condition is FALSE.
-\end{tcolorbox}
-\caption{L3 prompts. The rule is stated explicitly in the system message. Weaker models (gpt-4o-mini) still fail (PPR=1.0), while stronger models succeed---revealing a capability threshold for semantic meta-rule following.}
-\label{fig:l3_prompts}
-\end{figure}
+System prompt states: ``if-blocks run when condition is FALSE.'' User prompt provides one worked example and the Fibonacci task.
 
 \subsection{L4: Semantic Inversion (Implicit)}
 
@@ -142,27 +37,11 @@ Output: \texttt{is\_even(4)=False},\ \texttt{is\_even(3)=True}\\[4pt]
 Target: \texttt{fib(0)=0}, \texttt{fib(1)=1}, \texttt{fib(n)=fib(n-1)+fib(n-2)}.\\
 Print \texttt{fib(0)} through \texttt{fib(6)}.
 \end{tcolorbox}
-\caption{L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python fib---exhibiting \emph{pattern blindness}.}
+\caption{L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python---exhibiting \emph{pattern blindness}.}
 \label{fig:l4_prompt}
 \end{figure}
 
-\subsection{Evaluation Metrics}
-\begin{itemize}
-  \item \textbf{KLR} (Keyword Leakage Rate): fraction of alias slots where original Python keyword was used. ACR $= 1 - \text{KLR}$ is a derived quantity.
-  \item \textbf{PSS} (Partial Structural Score): weighted sub-component credit (alias: 0.4, parse: 0.25, skeleton: 0.25, format: 0.1).
-  \item \textbf{PPR} (Python Prior Rate, L3/L4): fraction of outputs using Python-style condition without inversion.
-\end{itemize}
+\subsection{Judge Protocols}
+\textbf{L1:} (1)~Check alias present, original token absent; (2)~normalize aliases to Python via regex; (3)~\texttt{ast.parse()} on normalized code; (4)~verify fib skeleton.
 
-\subsection{Judge Protocol (L1)}
-\begin{enumerate}
-  \item Alias compliance: check that alias is present and original token is absent.
-  \item Normalization: replace aliases $\to$ Python keywords via word-boundary regex.
-  \item Parse check: \texttt{ast.parse()} on normalized code.
-  \item Skeleton check: verify \texttt{fib}, base case, recursion, and print loop.
-\end{enumerate}
-
-\subsection{Judge Protocol (L3/L4)}
-\begin{itemize}
-  \item \textbf{Python-prior}: model writes \texttt{if n <= 1: return n} (non-inverted) $\Rightarrow$ PPR=1 (fail).
-  \item \textbf{L3-correct}: model writes \texttt{if n > 1: return n} or equivalent $\Rightarrow$ PPR=0 (pass).
-\end{itemize}
+\textbf{L3/L4:} Check whether model uses inverted comparison (\texttt{if n > 1}) vs.\ standard Python (\texttt{if n <= 1}). PPR=1 if standard; PPR=0 if inverted.

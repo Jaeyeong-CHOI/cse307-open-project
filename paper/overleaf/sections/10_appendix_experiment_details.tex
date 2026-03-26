@@ -1,80 +1,46 @@
-\section{Appendix: Prompt Samples, Taxonomy, and Config Snapshot}
-\subsection{Prompt samples (readable form)}
-Representative prompt-map blocks from the versioned bank:
+\section{Appendix: Metric Definitions and Prompt Sample}
 
-\textbf{Sample A (v1)}
-\begin{itemize}
-  \item if \(\rightarrow\) return
-  \item def \(\rightarrow\) if
-  \item for \(\rightarrow\) long natural phrase (renamed symbol)
-  \item in \(\rightarrow\) long natural phrase (strict compilation token)
-  \item return \(\rightarrow\) long natural phrase (keyword mapping token)
-  \item print \(\rightarrow\) do
-\end{itemize}
-
-\textbf{Sample B (v35)}
-\begin{itemize}
-  \item in \(\rightarrow\) mapped token phrase
-  \item def \(\rightarrow\) def
-  \item for \(\rightarrow\) xk
-  \item return \(\rightarrow\) long phrase preserving grammar
-  \item if \(\rightarrow\) anti-prior phrase
-\end{itemize}
-
-\textbf{Sample C (v90)}
-\begin{itemize}
-  \item def \(\rightarrow\) return
-  \item for \(\rightarrow\) phrase mapped back to reserved token
-  \item in \(\rightarrow\) exact mapping phrase
-  \item return \(\rightarrow\) out
-  \item if \(\rightarrow\) long natural phrase
-  \item print \(\rightarrow\) qn
-\end{itemize}
-
-\subsection{Violation taxonomy summary (gpt-4o-mini, v1--v120)}
-From the context-pack comparison artifact, dominant violation categories are:
-\begin{itemize}
-  \item Original keyword leakage (e.g., \texttt{for}, \texttt{if}, \texttt{return}, \texttt{in}, \texttt{def})
-  \item Parse failure after normalization (line-specific syntax failure)
-  \item Missing alias emissions for required transformed tokens
-\end{itemize}
-
-Top counts in context-pack run include:
-\begin{itemize}
-  \item \texttt{for} leaked: 52
-  \item parse failed (line 1): 35
-  \item \texttt{if} leaked: 33
-\end{itemize}
-
-\subsection{PSS (Partial Structural Score) Supplementary Data}
+\subsection{Metric Definitions}
 \label{sec:appendix_pss}
-PSS is a heuristic composite metric (alias compliance 0.4, parse 0.25, skeleton 0.25, format 0.1) reported as a secondary diagnostic only. Weights are not validated; PSS is not used as a primary result. The table below provides reference values alongside KLR for L1 evaluation.
+\begin{itemize}
+  \item \textbf{KLR} (Keyword Leakage Rate, L1): fraction of outputs containing original Python keywords despite alias instructions. Lower = better compliance.
+  \item \textbf{SIR} (Syntax Inversion Rate, L2): fraction of outputs retaining Python syntax instead of adopting the specified alternative syntax. 0.0 = full adoption.
+  \item \textbf{PPR} (Python Prior Rate, L3/L4): fraction of outputs using standard Python conditional semantics (non-inverted). 1.0 = complete prior dominance; 0.0 = full inversion compliance.
+  \item \textbf{PSS} (Partial Structural Score, L1): heuristic composite (alias 0.4, parse 0.25, skeleton 0.25, format 0.1). Exploratory only; not a primary metric.
+  \item \textbf{PES} (Prior Entrenchment Score, E31): logprob probability of the canonical Python token at the base-case decision point.
+\end{itemize}
 
-\begin{table}[h]
-\centering
-\caption{L1 KLR and PSS (supplementary). PSS is exploratory; KLR is the validated primary metric.}
-\label{tab:l1_pss}
-\footnotesize
-\begin{tabular}{@{}llcc@{}}
-\toprule
-\textbf{Model} & \textbf{Delivery} & \textbf{KLR}$\downarrow$ & \textbf{PSS}$\uparrow$ \\
-\midrule
-\texttt{gpt-4.1-mini} & ctx-pack & 0.21 & 0.37 \\
-\texttt{Llama-3.3-70B}$^\star$ & ctx-pack & 0.23 & 0.34 \\
-\texttt{gpt-4o-mini}  & ctx-pack & 0.26 & 0.32 \\
-\texttt{o4-mini}      & ctx-pack & 0.27 & 0.41 \\
-\texttt{gpt-4.1}      & ctx-pack & 0.30 & \textbf{0.43} \\
-\texttt{gpt-4o}       & baseline & 0.37 & 0.40 \\
-\texttt{gpt-4.1-nano} & ctx-pack & 0.38 & 0.30 \\
-\texttt{gpt-4o-mini}  & baseline & 0.42 & 0.27 \\
-\texttt{gpt-4.1-mini} & baseline & 0.43 & 0.33 \\
-\texttt{gpt-5.4-mini} & baseline & 0.67 & 0.25 \\
-\texttt{gpt-4.1-nano} & baseline & 0.69 & 0.16 \\
-\texttt{Qwen3-32B}$^\star$ & ctx-pack & 1.00 & 0.00 \\
-\bottomrule
-\multicolumn{4}{l}{\scriptsize $^\star$Open-weight via Groq API; $n=20$, ctx-pack only.} \\
-\end{tabular}
-\end{table}
+\subsection{L4 Variant A Prompt Example (Fibonacci)}
+The strict L4 prompt provides two worked examples with inverted conditional semantics and no explicit rule statement:
+
+\begin{lstlisting}
+System: You are a helpful coding assistant.
+
+User: Here are two examples in our language:
+
+Example 1:
+def is_positive(n):
+    if n < 0:
+        return True
+    return False
+
+# is_positive(5) -> True
+# is_positive(-3) -> False
+
+Example 2:
+def is_even(n):
+    if n % 2 != 0:
+        return True
+    return False
+
+# is_even(4) -> True
+# is_even(7) -> False
+
+Now write a fibonacci function in this
+language.
+\end{lstlisting}
+
+The judge checks whether the model's output uses inverted comparison operators (\texttt{>}, \texttt{>=}) in the base case rather than the standard Python \texttt{<=}.
 
 \subsection{L4 Multi-Task Full PPR Values}
 \label{sec:appendix_l4_multitask_ppr}
@@ -102,36 +68,3 @@ Full Python Prior Rate (PPR) values for Table~\ref{tab:l4_multitask}. PPR = frac
 \bottomrule
 \end{tabular}}
 \end{table}
-
-\subsection{Execution config snapshot (non-secret)}
-\begin{table}[h]
-\caption{Key runtime settings}
-\label{tab:config_snapshot}
-\footnotesize
-\centering
-\begin{tabular}{@{}lp{3.5cm}@{}}
-\toprule
-Setting & Value \\
-\midrule
-Models & gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-5.4-mini, o4-mini \\
-L1 range & v1--v120 (baseline); v1--v20 (ctx-pack for 4.1/o4-mini) \\
-CONTEXT\_PACK & 0/1 \\
-Temperature & 0 (all models except o4-mini); 1 (o4-mini, API requirement) \\
-Judge & deterministic \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Secret-bearing values (API keys) are excluded and loaded via runtime environment.
-Language specs are in \texttt{language-levels/} (repository).
-
-\subsection{Experiment Log: E31--E34 (2026-03-25)}
-\label{sec:appendix_e31_e34}
-
-\textbf{E31 (Prior Entrenchment Score).} Logprobs API query at base-case decision point (\texttt{max\_tokens=1}, \texttt{top\_logprobs=5}, \texttt{temperature=0}). Models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}. Tasks: fib, merge\_sort, is\_sorted, count\_vowels. 12 API calls total. \texttt{gpt-4o-mini} excluded from analysis (emits markdown backtick tokens rather than code tokens at this position). Results: \texttt{docs/research/results/e31-prior-entrenchment-score.json}.
-
-\textbf{E32 (Cross-Task Transfer).} Few-shot prompts with inverted merge\_sort and binary\_search code, then fib request. Models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}. $n=10$ per model (initial), temperature=0.7. Judge: regex check for inverted comparison operators ($>$, $\geq$) in base case. Initial \texttt{o4-mini} run yielded HTTP 400 (missing \texttt{max\_completion\_tokens}); re-run with corrected parameters yielded 1/10. \texttt{gpt-4o} subsequently scaled to $n=30$ (two additional 10-run rounds, E32a/E32b) to tighten the confidence interval; combined result: 16/30 (Wilson 95\% CI: [36\%,70\%]). Results: \texttt{docs/research/results/e32-cross-task-transfer.json}, \texttt{e32-gpt4o-scaleup.json}, \texttt{e32-gpt4o-scaleup2.json}.
-
-\textbf{E33 (I/O Transparency).} Two tasks: IO-A (reverse\_fib, transparent) and IO-B (opaque\_counter, opaque). Models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{gpt-4o-mini}. $n=10$ per task per model, temperature=0.7. Null result: 10/10 on both tasks for all models. Design flaw: IO-B prompt included explicit algorithm, making it procedurally transparent. Results: \texttt{docs/research/results/e33-io-transparency.json}.
-
-\textbf{E34 (Annotation Density Curve).} Five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons. Models: \texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}. $n=10$ per level per model (150 total). Temperature=0.7. Judge: regex check for inverted comparison in base case. Results: \texttt{docs/research/results/e34-annotation-density.json}.

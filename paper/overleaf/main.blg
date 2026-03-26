@@ -15,45 +15,45 @@ Warning--empty journal in fried2022incoder
 Warning--empty journal in jimenez2024swebench
 
 Done.
-You've used 40 entries,
+You've used 41 entries,
             4087 wiz_defined-function locations,
-            987 strings with 12433 characters,
-and the built_in function-call counts, 16137 in all, are:
-= -- 1264
-> -- 331
+            991 strings with 12550 characters,
+and the built_in function-call counts, 16536 in all, are:
+= -- 1296
+> -- 339
 < -- 0
-+ -- 164
-- -- 82
-* -- 596
-:= -- 2794
-add.period$ -- 80
-call.type$ -- 40
-change.case$ -- 41
++ -- 168
+- -- 84
+* -- 610
+:= -- 2863
+add.period$ -- 82
+call.type$ -- 41
+change.case$ -- 42
 chr.to.int$ -- 0
-cite$ -- 42
-duplicate$ -- 1416
-empty$ -- 1582
-format.name$ -- 122
-if$ -- 3621
+cite$ -- 43
+duplicate$ -- 1451
+empty$ -- 1621
+format.name$ -- 125
+if$ -- 3711
 int.to.chr$ -- 0
-int.to.str$ -- 40
-missing$ -- 315
-newline$ -- 143
-num.names$ -- 40
-pop$ -- 874
+int.to.str$ -- 41
+missing$ -- 323
+newline$ -- 146
+num.names$ -- 41
+pop$ -- 896
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1244
+skip$ -- 1275
 stack$ -- 0
-substring$ -- 42
-swap$ -- 793
+substring$ -- 43
+swap$ -- 813
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 40
+type$ -- 41
 warning$ -- 2
-while$ -- 40
-width$ -- 42
-write$ -- 339
+while$ -- 41
+width$ -- 43
+write$ -- 347
 (There were 2 warnings)

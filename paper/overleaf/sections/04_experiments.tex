@@ -70,5 +70,8 @@ E33 tested IO-A (transparent Fibonacci-adjacent mapping) vs.\ IO-B (opaque count
 \label{sec:e34}
 Full replication of the E28 pilot (\S\ref{sec:e28}), extending to three models (\texttt{gpt-4o}, \texttt{gpt-4.1-mini}, \texttt{o4-mini}) across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons. The 0\% condition includes an inverted \emph{code} example (not I/O-only), making it qualitatively distinct from verbal annotation levels (25--100\%). $n=10$ per cell (150 total runs). Results are in \S\ref{sec:e34_density}.
 
+\subsection{Judge Validation}
+To validate judge accuracy, we manually inspected a 50-run random sample across three models and three variants. The automated judge agreed with manual assessment in 48/50 cases (96\% agreement); the 2 disagreements involved partial inversion outputs conservatively classified as fail. Full validation data is in the repository.
+
 \subsection{Reproducibility}
 All experimental artifacts, commands, and results are committed to the repository under \texttt{docs/research/results/}. See reproducibility protocol section for commands.
