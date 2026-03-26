@@ -211,4 +211,14 @@ Fisher p: 0.500 — not significant at n=10
 
 ---
 
-*Last updated: 2026-03-27 01:37 KST by cron job (cse307-open-project research agent) — E34 Wilson CIs added to paper table*
+*Last updated: 2026-03-27 02:10 KST by cron job (cse307-open-project research agent) — L2 prompt-bank caveat + L3 judge unvalidated note added to §5; commit 9a60e67*
+
+### Status of MEDIUM/LOW items (2026-03-27 02:10 KST)
+| Item | Status |
+|---|---|
+| L3 judge FP/FN: note in paper | ✅ DONE — §5 L3 note added (commit 9a60e67) |
+| L2 prompt-level variance: caveat in paper | ✅ DONE — §5 L2 caveat added (commit 9a60e67) |
+| o4-mini E32 Fisher p=0.50: inconclusive label | ✅ DONE — already in §5.6 E32 (prior commit) |
+| E35 generalizability caveat | ✅ DONE — already in §5 E35 (prior commit) |
+| L4 ablation variant design selection bias note | ⚠️ LOW — not explicitly stated in paper; acceptable as-is |
+| Judge 96% claim manual validation file | ⚠️ HUMAN NEEDED — no log file found; labeled "claimed, pending log" in rigor audit |
