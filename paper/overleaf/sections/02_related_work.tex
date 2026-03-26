@@ -46,8 +46,5 @@ Prior adversarial code work (PromptBench~\cite{zhu2023promptrobust}, Pan et al.~
 \subsection{Connection to Prompt Injection and Jailbreaking}
 L3/L4 share structural similarity with prompt injection~\cite{chen2024instructhierarchy}: both present in-context instructions that conflict with the model's default behavior. However, the goal is inverted---in jailbreaking, the attacker wants the model to \emph{override} its safety prior; in our framework, we want the NTP prior to \emph{win}, producing standard Python despite the inverted-semantics instruction. L4 pattern blindness thus provides evidence that prior override is asymmetric: safety alignment can be bypassed by sufficiently crafted prompts, but code-generation priors resist override even when the user \emph{wants} compliance.
 
-\subsection{Terminology Note}
-We use \emph{confusion language} to denote a programming language intentionally designed to conflict with LLM NTP priors while remaining fully human-interpretable. This differs from the term as used in second-language acquisition research and is distinct from esoteric languages (esolangs), which target human uninterpretability. Our usage is restricted to the computational adversarial context defined in \S\ref{sec:method}.
-
 \subsection{Research Gap}
 Prior adversarial work degrades generation quality without principled language design. Prior DSL work measures performance without explaining failure mechanisms. Prior knowledge-conflict work focuses on factual knowledge, not programming-language semantics. Our contribution closes these gaps: a theory-grounded L1--L4 taxonomy that characterizes LLM failure by mechanism (prior dominance vs.\ pattern blindness) and guides principled LLM-resistant language design.
