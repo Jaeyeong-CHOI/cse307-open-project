@@ -165,7 +165,7 @@ odds_ratio, p = fisher_exact([[16, 14], [0, 10]], alternative='greater')
 3. **Judge validation evidence:** ⚠️ **HUMAN INTERVENTION NEEDED** — 50-run manual check data file not found in repository. Either locate/publish the validation log or perform the check and save as `docs/research/results/judge-manual-validation-50runs.json`. Until then, label the 96% claim as "claimed, pending log" in paper.
 
 ### MEDIUM (should fix for rigor)
-4. **E34 Wilson CIs:** Add per-cell Wilson 95% CIs to E34 annotation density table.
+4. **E34 Wilson CIs:** ✅ **DONE** — Per-cell Wilson 95% CIs added to E34 table in §5 (all 15 cells). Caption notes wide CIs and exploratory nature. (2026-03-27)
 5. **L3 judge FP/FN:** Add note that L3 judge validation is absent (separate from L4 validation). Low risk since results are near-ceiling.
 6. **o4-mini E32:** Add Fisher p=0.50 for o4-mini vs. control; label result "inconclusive at n=10."
 
@@ -211,4 +211,4 @@ Fisher p: 0.500 — not significant at n=10
 
 ---
 
-*Last updated: 2026-03-27 by automated cron job (cse307-open-project research agent)*
+*Last updated: 2026-03-27 01:37 KST by cron job (cse307-open-project research agent) — E34 Wilson CIs added to paper table*
