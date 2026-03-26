@@ -91,6 +91,16 @@ All OpenAI models show non-zero KLR (0.21--0.69), confirming prior dominance. Th
 
 \noindent\textit{Note:} \texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, and \texttt{o4-mini} were only evaluated under ctx-pack ($n=20$, v1--v20); baseline comparison for these models is not available and should be interpreted with caution given the smaller and non-overlapping prompt subset.
 
+\textbf{Alias type sub-analysis.}
+We classify the 120 prompt versions (v1--v120) into three alias strategies based on the type of alias used for Python keywords:
+\textbf{Type~A} (\emph{cross-keyword}): aliases are drawn from other Python keywords (e.g., \texttt{def}$\to$\texttt{return}, \texttt{if}$\to$\texttt{for}); 21 prompts.
+\textbf{Type~B} (\emph{long natural-language phrase}): aliases are multi-word descriptive phrases (e.g., \texttt{if}$\to$\texttt{"apply this mapped token before generating code"}); 84 prompts.
+\textbf{Type~C} (\emph{short non-keyword}): aliases are single short tokens not in Python (e.g., \texttt{return}$\to$\texttt{go}, \texttt{def}$\to$\texttt{fn}); 15 prompts.
+Additionally, 46 of 120 prompts contain \emph{alias collisions}: multiple distinct Python keywords mapped to the same alias (e.g., \texttt{in} and \texttt{while} both mapped to \texttt{ret}; or \texttt{def} and \texttt{in} both mapped to \texttt{for} in v40/v80). These collisions make the alias system formally ambiguous.
+
+Under ctx-pack delivery (\texttt{gpt-4o}, $n=120$), KLR by alias type is: Type~A = 1.00, Type~B = 0.96, Type~C = 1.00. KLR for collision vs.\ non-collision prompts is 1.00 vs.\ 0.96. Results are consistent across \texttt{gpt-4o-mini}, \texttt{gpt-4.1-mini}, and \texttt{gpt-5.4-mini}.
+These near-ceiling KLR values across all alias types indicate that the design of the alias mapping (cross-keyword, natural-language, or short token) does not meaningfully affect leakage rate at the L1 level: prior dominance is robust to alias strategy. The slight KLR reduction in Type~B (long phrase) is consistent with reduced prior activation for rare token sequences, but the effect is small and not statistically distinguished at $n=21$--$84$ per type.
+
 \textbf{Open-weight preliminary:} \texttt{Llama-3.3-70B} (KLR=0.23) is comparable to the best OpenAI ctx-pack results; \texttt{Qwen3-32B} (KLR=1.00) is the worst result across all tested models. This cross-family variance (0.23 vs.\ 1.00) exceeds the spread within the \texttt{gpt-4.x} family, indicating that architecture and instruction-following fine-tuning---not parameter count---govern alias compliance. See \S\ref{sec:open_weight} for full details and limitations.
 
 \begin{table}[!t]
