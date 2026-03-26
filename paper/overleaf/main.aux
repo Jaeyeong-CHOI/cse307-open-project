@@ -58,9 +58,8 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-J}}LLM in Programming Education}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-K}}Academic Integrity and LLM-Resistant Assessment}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-L}}Specification Gaming and Reward Hacking}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-M}}Adversarial Robustness in Code Generation}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-N}}Connection to Prompt Injection and Jailbreaking}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-O}}Research Gap}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-M}}Adversarial Code, Prompt Injection, and Jailbreaking}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-N}}Research Gap}{3}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Four-level confusion language taxonomy. Each level targets a distinct linguistic dimension and delivery modality. L4 is the only level where all tested models fail regardless of capacity.}}{3}{}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{tab:levels}{{I}{3}{}{table.1}{}}
@@ -68,15 +67,15 @@
 \newlabel{sec:method}{{III}{3}{}{section.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Research Questions and Hypotheses}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Language Level Taxonomy}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}L1: Token Alias Substitution}{3}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Two-axis confusion language design space. Perturbation depth (token/syntax/semantic) and rule delivery (explicit/implicit) together determine LLM failure mode. L4 (green = most resistant) occupies the hardest cell: semantic perturbation without explicit rule---the only condition where all tested models fail.}}{4}{}\protected@file@percent }
 \newlabel{fig:taxonomy}{{1}{4}{}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}L1: Token Alias Substitution}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Semantic inversion in L3. Surface syntax is identical to Python, but if-block semantics are inverted. The correct L3 solution (right) looks counter-intuitive to Python-trained models, which generate the left version regardless of the stated rule.}}{4}{}\protected@file@percent }
+\newlabel{fig:semantic_inversion}{{2}{4}{}{figure.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}L2: Syntax Structure Inversion}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}L3: Semantic Inversion (Explicit Rules)}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}L4: Semantic Inversion (Implicit, Example-Only)}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-G}}Evaluation Metrics}{4}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Semantic inversion in L3. Surface syntax is identical to Python, but if-block semantics are inverted. The correct L3 solution (right) looks counter-intuitive to Python-trained models, which generate the left version regardless of the stated rule.}}{4}{}\protected@file@percent }
-\newlabel{fig:semantic_inversion}{{2}{4}{}{figure.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-H}}Threats to Validity}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Experiments}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Overview}{4}{}\protected@file@percent }
@@ -103,11 +102,11 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-P}}E34: Annotation Density Curve (Multi-Model, Full Replication)}{6}{}\protected@file@percent }
 \newlabel{sec:e34}{{\mbox  {IV-P}}{6}{}{subsection.4.16}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-Q}}Judge Validation}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-R}}Reproducibility}{6}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces L1 evaluation: Keyword Leakage Rate (KLR) per model. Baseline rows use $n=120$; ctx-pack rows use $n=20$. Models sorted by KLR (ascending). Context-pack reduces KLR for paired models: \texttt  {gpt-4o-mini} ($-38\%$), \texttt  {gpt-4.1-mini} ($-51\%$). Open-weight models (marked $^\star $) via Groq API, ctx-pack only. PSS (heuristic diagnostic) reported in Appendix~\ref {sec:appendix_pss}.}}{6}{}\protected@file@percent }
 \newlabel{tab:l1_results}{{II}{6}{}{table.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces L1 KLR per model (OpenAI models only). Ctx-pack condition shown for all models except \texttt  {gpt-4o} and \texttt  {gpt-5.4-mini} (baseline only; ctx-pack not evaluated). $n{\geq }20$ per bar. Open-weight models (\texttt  {Llama-3.3-70B}, \texttt  {Qwen3-32B}) appear in Table~\ref {tab:l1_results} only; bar chart shows OpenAI models for visual clarity. \textcolor {blue!65}{\rule  {5pt}{5pt}}~\texttt  {gpt-4o} fam.; \textcolor {orange!60}{\rule  {5pt}{5pt}}~\texttt  {gpt-4.1} fam.; \textcolor {green!55!black}{\rule  {5pt}{5pt}}~\texttt  {gpt-5.4-mini} (baseline); \textcolor {violet!60}{\rule  {5pt}{5pt}}~\texttt  {o4-mini}.}}{6}{}\protected@file@percent }
 \newlabel{fig:l1_klr_bar}{{3}{6}{}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-R}}Reproducibility}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Results}{6}{}\protected@file@percent }
 \newlabel{sec:results}{{V}{6}{}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}L1: Partial resistance; model-family compliance patterns}{6}{}\protected@file@percent }
@@ -132,12 +131,12 @@
 \newlabel{sec:open_weight}{{\mbox  {V-H}}{8}{}{subsection.5.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces E31: Prior Entrenchment Score (PES). PES = $P(\text  {canonical token} \mid \text  {prompt prefix})$. \texttt  {gpt-4o-mini} excluded (emits markdown tokens at this position).}}{9}{}\protected@file@percent }
 \newlabel{tab:e31_pes}{{VI}{9}{}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref {tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt  {gpt-4o} scaled to $n=30$ (E32a); others at $n=10$. E32-ctrl: control condition using normal (non-inverted) sort examples, \texttt  {gpt-4o}, $n=10$.}}{9}{}\protected@file@percent }
+\newlabel{tab:e32_transfer}{{VII}{9}{}{table.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-I}}E31: Prior Entrenchment Score via Logprobs}{9}{}\protected@file@percent }
 \newlabel{sec:e31_pes}{{\mbox  {V-I}}{9}{}{subsection.5.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-J}}E32: Cross-Task Transfer Breaks L4 Resistance}{9}{}\protected@file@percent }
 \newlabel{sec:e32_transfer}{{\mbox  {V-J}}{9}{}{subsection.5.10}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref {tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt  {gpt-4o} scaled to $n=30$ (E32a); others at $n=10$. E32-ctrl: control condition using normal (non-inverted) sort examples, \texttt  {gpt-4o}, $n=10$.}}{9}{}\protected@file@percent }
-\newlabel{tab:e32_transfer}{{VII}{9}{}{table.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces E35: IO-A (transparent) vs.\ IO-B (opaque I/O only). $n{=}10$ per cell, $t{=}0.7$.}}{9}{}\protected@file@percent }
 \newlabel{tab:e35_io}{{VIII}{9}{}{table.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces E34: Annotation density curve --- pass rate at each density level ($n=10$ per cell, 150 total runs). MAT = Minimum Annotation Threshold (lowest level where pass rate $>$50\%). The 0\% condition includes an inverted \emph  {code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation.}}{9}{}\protected@file@percent }
@@ -180,6 +179,9 @@
 \bibcite{fried2022incoder}{7}
 \bibcite{luo2023wizardcoder}{8}
 \bibcite{guo2024deepseek}{9}
+\bibcite{codeif2025}{10}
+\bibcite{multicode2025}{11}
+\bibcite{chen2024instructhierarchy}{12}
 \@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{13}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces Key experiments summary. Full log (E1--E35) in repository.}}{13}{}\protected@file@percent }
 \newlabel{tab:exp_summary}{{XI}{13}{}{table.11}{}}
@@ -194,9 +196,6 @@
 \newlabel{tab:appendix_l4_ppr}{{XII}{13}{}{table.12}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{13}{}\protected@file@percent }
-\bibcite{codeif2025}{10}
-\bibcite{multicode2025}{11}
-\bibcite{chen2024instructhierarchy}{12}
 \bibcite{xie2024conflict}{13}
 \bibcite{wu2024contextparametric}{14}
 \bibcite{zhang2024conflict}{15}
