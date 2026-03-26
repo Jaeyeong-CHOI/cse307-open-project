@@ -160,9 +160,9 @@ odds_ratio, p = fisher_exact([[16, 14], [0, 10]], alternative='greater')
 ## Summary: Required Actions (Priority Order)
 
 ### HIGH (must fix before submission)
-1. **E32 Fisher p-value:** Add explicit Fisher p ≈ 0.003 for treatment vs. control comparison to paper §5.6 or E32 section.
-2. **L1 factorial design:** ✅ Complete and integrated — n=300/type, Table updated 2026-03-27.
-3. **Judge validation evidence:** Either (a) locate and publish the 50-run manual check data file, or (b) perform the check and log it.
+1. **E32 Fisher p-value:** ✅ **DONE** — Fisher's exact p=0.0023 (one-tailed) and o4-mini p=0.50 (inconclusive) are both explicit in §5.6 E32 section of paper. (2026-03-27)
+2. **L1 factorial design:** ✅ **COMPLETE** — n=300/type, Table updated 2026-03-27. Results committed to git.
+3. **Judge validation evidence:** ⚠️ **HUMAN INTERVENTION NEEDED** — 50-run manual check data file not found in repository. Either locate/publish the validation log or perform the check and save as `docs/research/results/judge-manual-validation-50runs.json`. Until then, label the 96% claim as "claimed, pending log" in paper.
 
 ### MEDIUM (should fix for rigor)
 4. **E34 Wilson CIs:** Add per-cell Wilson 95% CIs to E34 annotation density table.
