@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 14:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  26 MAR 2026 14:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1310,12 +1310,12 @@ Underfull \hbox (badness 3547) in paragraph at lines 59--60
 0 gpt-4o\T1/ptm/m/n/10 (+20) ,
  []
 
-
+[5]
 Underfull \hbox (badness 1546) in paragraph at lines 63--64
 \T1/ptm/m/n/10 (+20) tasks (merge sort, bi-nary search) in the same prompt.
  []
 
-[5]) (./sections/05_results.tex
+) (./sections/05_results.tex
 Underfull \hbox (badness 5388) in paragraph at lines 94--95
 \T1/ptm/m/n/10 (+20) is com-pa-ra-ble to the best Ope-nAI ctx-pack re-sults;
  []
@@ -1326,7 +1326,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 123--124
  , \T1/pcr/m/n/10 gpt-4.1-mini\T1/ptm/m/n/10 (+20) ,
  []
 
-[6]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6]
 Underfull \hbox (badness 6047) in paragraph at lines 134--141
 []\T1/ptm/b/n/10 (+20) L4 ab-la-tion (n=50 per model). \T1/ptm/m/n/10 (+20) We 
 scaled the
@@ -1420,7 +1423,7 @@ Underfull \hbox (badness 2913) in paragraph at lines 249--251
 ca-pac-ity
  []
 
-
+[8]
 Underfull \hbox (badness 2884) in paragraph at lines 255--256
 []\T1/ptm/b/n/10 (+20) Methodological note on \T1/pcr/b/n/10 o4-mini \T1/ptm/b/
 n/10 (+20) (to-ken bud-get
@@ -1461,7 +1464,7 @@ Underfull \hbox (badness 7133) in paragraph at lines 255--256
 o4-mini \T1/ptm/m/n/10 (+20) achieved
  []
 
-[8] [9]
+[9]
 Underfull \hbox (badness 10000) in paragraph at lines 297--298
 []\T1/ptm/b/n/10 (+20) L1 (ctx-pack, $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 = 20$\
 T1/ptm/b/n/10 (+20) ): \T1/pcr/m/n/10 Llama-3.3-70B
@@ -1538,11 +1541,8 @@ Underfull \hbox (badness 2065) in paragraph at lines 62--64
 \T1/ptm/m/n/10 (+20) 8/15 on T1 (partially-annotated prompt). This re-vi-sion
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [15])
-(./sections/07_conclusion.tex) (./sections/08_prompt_and_judge_details.tex
+[15]) (./sections/07_conclusion.tex)
+(./sections/08_prompt_and_judge_details.tex [16]
 Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 :define name [args] -> \T1/ptm/m/n/9 (+20) (re-places \T1/pcr/m/n
 /9 def
@@ -1553,7 +1553,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--81
 \T1/pcr/m/n/9 value ?cond: res ;else: alt ;end \T1/ptm/m/n/9 (+20) (re-places
  []
 
-[16]
+
 Underfull \hbox (badness 1028) in paragraph at lines 167--168
 []\T1/ptm/b/n/10 (+20) L3-correct\T1/ptm/m/n/10 (+20) : model writes \T1/pcr/m/
 n/10 if n > 1: return n \T1/ptm/m/n/10 (+20) or
@@ -1802,14 +1802,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 177--1
 
  []
 
-[19]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
+ [19]
 Underfull \hbox (badness 1028) in paragraph at lines 116--117
 []|\T1/ptm/m/n/8 (+20) gpt-4o, gpt-4o-mini, gpt-4.1,
  []
@@ -1818,9 +1814,6 @@ Underfull \hbox (badness 1028) in paragraph at lines 116--117
 Underfull \hbox (badness 1983) in paragraph at lines 117--118
 []|\T1/ptm/m/n/8 (+20) v1--v120 (base-line); v1--v20
  []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Underfull \hbox (badness 3769) in paragraph at lines 125--127
@@ -1850,7 +1843,7 @@ Overfull \hbox (78.7pt too wide) in paragraph at lines 131--132
 /n/10 (-20) . 
  []
 
-
+[20]
 Underfull \hbox (badness 2443) in paragraph at lines 133--134
 \T1/ptm/m/n/10 (+20) rounds, E32a/E32b) to tighten the con-fi-dence in-ter-val;
 
@@ -1884,7 +1877,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 137--86
 
  []
 
-[20]
+
 Underfull \hbox (badness 10000) in paragraph at lines 92--93
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
@@ -1911,7 +1904,7 @@ L3 programming layer <2026-01-19>
 Here is how much of TeX's memory you used:
  37358 strings out of 467525
  897075 string characters out of 5408440
- 1639276 words of memory out of 5000000
+ 1642276 words of memory out of 5000000
  65020 multiletter control sequences out of 15000+600000
  789403 words of font info for 577 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1952,7 +1945,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (21 pages, 431066 bytes).
+Output written on main.pdf (21 pages, 430971 bytes).
 PDF statistics:
  222 PDF objects out of 1000 (max. 8388607)
  139 compressed objects within 2 object streams
