@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  27 MAR 2026 04:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  27 MAR 2026 05:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1253,15 +1253,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/microtype/mt-
 msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) (./sections/01_introduction.tex) (./sections/02_related_work.tex
-Underfull \vbox (badness 4699) has occurred while \output is active []
-
- [1{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/map/pdftex/upd
-map/pdftex.map}{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/en
-c/dvips/base/8r.enc}
+) (./sections/01_introduction.tex [1{/opt/homebrew/Cellar/texlive/20260301/shar
+e/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/2
+0260301/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
-] [2]) (./sections/03_method.tex
+])
+(./sections/02_related_work.tex [2]) (./sections/03_method.tex
 LaTeX Font Info:    Trying to load font information for T1+phv on input line 45
 .
 
@@ -1442,11 +1440,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37340 strings out of 467525
- 896932 string characters out of 5408440
+ 37343 strings out of 467525
+ 896962 string characters out of 5408440
  1650572 words of memory out of 5000000
  65036 multiletter control sequences out of 15000+600000
- 788328 words of font info for 555 fonts, out of 8000000 for 9000
+ 788553 words of font info for 557 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,13n,108p,1196b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1485,7 +1483,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (15 pages, 385970 bytes).
+Output written on main.pdf (15 pages, 386018 bytes).
 PDF statistics:
  203 PDF objects out of 1000 (max. 8388607)
  126 compressed objects within 2 object streams
