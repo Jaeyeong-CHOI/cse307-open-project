@@ -258,3 +258,20 @@ Fisher p: 0.500 — not significant at n=10
 
 **Explanation:** §3 defines KLR as fraction of alias *slots* where original keyword leaked (per-slot rate). The factorial table uses KLR = 1 − pass rate (trial-level binary: fail if ANY slot leaks). These are not equivalent; trial-level KLR is a conservative upper bound. Average per-slot KLR from the JSON (`avg_klr`) is ~0.13 for Type A vs 0.637 trial-level KLR. Caption now clarifies this distinction explicitly.
 
+
+---
+
+### 2026-03-27 08:31 KST — Per-slot avg-KLR nuance 추가
+
+| Item | Status |
+|---|---|
+| Trial-level KLR vs per-slot avg-KLR discrepancy | ✅ FIXED — §5.1 Interpretation paragraph에 per-slot avg-KLR 수치 추가 (commit 287086a) |
+
+**수치:** Type A trial-level KLR=0.637 vs avg-slot KLR=0.126; Type B trial-level KLR=0.403 vs avg-slot KLR=0.087; Type C=0.000 (일치).
+**의미:** strict binary grading에서는 KLR이 과대평가됨; 실제 per-slot leakage는 훨씬 낮음. 논문에서 이 nuance를 명시.
+PDF: 0 errors, pushed to GitHub.
+
+**현재 pending open items:**
+- ⚠️ Judge manual validation 50-run log file — 인간 개입 필요 (파일 없음; 논문에서 "available on request"로 표시됨)
+- ⚠️ Human pilot study (C3) — IRB/참가자 모집 필요
+- ℹ️ Cross-model L1 factorial replication (gpt-4o 외 모델) — future work
