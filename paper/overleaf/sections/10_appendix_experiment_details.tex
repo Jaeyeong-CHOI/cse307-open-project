@@ -68,3 +68,13 @@ Full Python Prior Rate (PPR) values for Table~\ref{tab:l4_multitask}. PPR = frac
 \bottomrule
 \end{tabular}}
 \end{table}
+
+
+\subsection{L1 Pilot Exploration: v1--v120 Researcher-Designed Aliases}
+\label{sec:appendix_pilot_l1}
+
+\textbf{Caution: selection bias possible.} The 120 alias prompts (v1--v120) were designed by the researcher without random sampling. The type distribution (21~Type~A, 84~Type~B, 15~Type~C) reflects incidental design choices rather than a controlled experiment. This pilot data is presented for historical context only; the primary L1 finding is the factorial experiment reported in \S\ref{sec:l1_factorial}.
+
+Under ctx-pack delivery (\texttt{gpt-4o}, $n=120$), KLR by alias type in the pilot set is: Type~A = 1.00, Type~B = 0.96, Type~C = 1.00. KLR for collision vs.\ non-collision prompts is 1.00 vs.\ 0.96. These near-ceiling values contrast sharply with the factorial result (Type~C KLR = 0.00), confirming that the pilot's apparent uniformity was an artifact of researcher-selected alias vocabulary.
+
+The 46 collision cases (multiple Python keywords $\to$ same alias, e.g., \texttt{in}/\texttt{while} $\to$ \texttt{ret}) arose incidentally and are not comparable to a controlled collision design. The pilot collision vs.\ non-collision comparison is therefore uninterpretable.
