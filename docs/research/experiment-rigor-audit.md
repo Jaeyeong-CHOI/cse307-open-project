@@ -220,7 +220,7 @@ Fisher p: 0.500 — not significant at n=10
 | L2 prompt-level variance: caveat in paper | ✅ DONE — §5 L2 caveat added (commit 9a60e67) |
 | o4-mini E32 Fisher p=0.50: inconclusive label | ✅ DONE — already in §5.6 E32 (prior commit) |
 | E35 generalizability caveat | ✅ DONE — already in §5 E35 (prior commit) |
-| L4 ablation variant design selection bias note | ⚠️ LOW — not explicitly stated in paper; acceptable as-is |
+| L4 ablation variant design selection bias note | ✅ DONE — note added to §4 L4 ablation section (commit 63b7344, 2026-03-27 04:20 KST) |
 | Judge 96% claim manual validation file | ⚠️ HUMAN NEEDED — no log file found; labeled "claimed, pending log" in rigor audit |
 
 ---

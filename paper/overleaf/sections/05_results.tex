@@ -166,7 +166,7 @@ With an explicit semantic inversion rule, \texttt{gpt-4o-mini} fails completely 
 Without explicit rule, \texttt{gpt-4o}---which succeeds at L3---fails at L4 (PPR=1.0), producing canonical Python and ignoring example-embedded inversion cues. Figure~\ref{fig:l4_failure} shows the contrast.
 
 \textbf{L4 ablation ($n{=}50$ per model).}
-All seven models achieve 0\% pass rate across five prompt variants (Table~\ref{tab:l4_ablation}), confirming universal pattern blindness. PPR ranges from 0.38 (\texttt{gpt-4.1-mini}, variant-heterogeneous) to 1.0 (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}). \texttt{o4-mini} (PPR=0.92) revises an earlier 1/20 preliminary: at $n{=}50$, 0/50.
+All seven models achieve 0\% pass rate across five prompt variants (Table~\ref{tab:l4_ablation}), confirming universal pattern blindness within the tested researcher-designed variant set (\textit{note: the 5 variants were researcher-designed; generalization to unseen variant types is not established}). PPR ranges from 0.38 (\texttt{gpt-4.1-mini}, variant-heterogeneous) to 1.0 (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}). \texttt{o4-mini} (PPR=0.92) revises an earlier 1/20 preliminary: at $n{=}50$, 0/50.
 
 \textbf{E24: Frontier models.} \texttt{gpt-5.4} and \texttt{o3} both achieve 0/10 (PPR=1.00) on strict L4 Fibonacci, confirming pattern blindness persists in frontier models on prior-entrenched tasks.
 

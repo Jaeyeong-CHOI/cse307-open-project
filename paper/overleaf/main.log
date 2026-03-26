@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  27 MAR 2026 04:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  27 MAR 2026 04:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1319,6 +1319,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 157--158
  []
 
 [7]
+Underfull \hbox (badness 1609) in paragraph at lines 168--170
+[]\T1/ptm/b/n/10 (+20) L4 ab-la-tion ($\OML/cmm/m/it/10 n[]\OT1/cmr/m/n/10 50$ 
+\T1/ptm/b/n/10 (+20) per model). \T1/ptm/m/n/10 (+20) All seven mod-els
+ []
+
+
+Underfull \hbox (badness 1102) in paragraph at lines 168--170
+\T1/ptm/m/n/10 (+20) con-firm-ing uni-ver-sal pat-tern blind-ness within the te
+sted
+ []
+
+
 Underfull \hbox (badness 4518) in paragraph at lines 199--201
 \T1/ptm/b/n/10 (+20) Variant E domain-shift anomaly (\T1/pcr/b/n/10 gpt-4.1-min
 i\T1/ptm/b/n/10 (+20) ).
@@ -1396,10 +1408,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 36--37
 []\T1/ptm/m/n/10 (+20) Two dis-tinct fail-ure modes emerge (see Ÿ[][]).
  []
 
-) (./sections/07_conclusion.tex [12])
+[12]) (./sections/07_conclusion.tex)
 (./sections/08_prompt_and_judge_details.tex)
 (./sections/09_reproducibility_protocol.tex)
-(./sections/10_appendix_experiment_details.tex [13])
+(./sections/10_appendix_experiment_details.tex [13]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+)
 Underfull \hbox (badness 10000) in paragraph at lines 92--93
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
@@ -1426,11 +1442,11 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 37337 strings out of 467525
- 896905 string characters out of 5408440
- 1649572 words of memory out of 5000000
+ 37340 strings out of 467525
+ 896932 string characters out of 5408440
+ 1650572 words of memory out of 5000000
  65036 multiletter control sequences out of 15000+600000
- 788103 words of font info for 553 fonts, out of 8000000 for 9000
+ 788328 words of font info for 555 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,13n,108p,1196b,1625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1469,7 +1485,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (15 pages, 385927 bytes).
+Output written on main.pdf (15 pages, 385970 bytes).
 PDF statistics:
  203 PDF objects out of 1000 (max. 8388607)
  126 compressed objects within 2 object streams
