@@ -108,7 +108,7 @@
     Files: \texttt{l4-hard-tasks-*.2026-03-25.json}, \texttt{hard-vs-simple-summary-2026-03-25.md}.
 
   \item \textbf{E21: Failure taxonomy, 419 failed L4 runs (2026-03-25).}
-    Classified all failed L4 ablation + multi-task T1 runs across ablation (350) and multi-task (69 failed T1 runs).
+    Classified all failed L4 ablation + multi-task T1 runs across ablation (342 valid runs, all failures; \texttt{gpt-5.4-mini} $n_\mathrm{eff}=42$) and multi-task T1 (77 failed runs; 8 \texttt{o4-mini} T1 passes excluded from taxonomy).
     Type-I (exact Python prior): 83.1\%; Type-II (partial attempt): 12.6\%; Type-III (operational substitution): 4.3\%.
     Type-I dominates in \texttt{gpt-4.1}/\texttt{gpt-4.1-nano} (100\%); Type-II concentrates in \texttt{gpt-4.1-mini} (44\%) and \texttt{gpt-4o-mini} (32\%).
     File: \texttt{failure-taxonomy-2026-03-25.json}
