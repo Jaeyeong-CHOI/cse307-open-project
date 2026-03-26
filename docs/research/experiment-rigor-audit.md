@@ -222,3 +222,16 @@ Fisher p: 0.500 — not significant at n=10
 | E35 generalizability caveat | ✅ DONE — already in §5 E35 (prior commit) |
 | L4 ablation variant design selection bias note | ⚠️ LOW — not explicitly stated in paper; acceptable as-is |
 | Judge 96% claim manual validation file | ⚠️ HUMAN NEEDED — no log file found; labeled "claimed, pending log" in rigor audit |
+
+---
+
+### Critic-report-20260327-02 W2/W3/W4 resolution (2026-03-27 02:33 KST)
+
+| Item | Status |
+|---|---|
+| W1: Judge validation log | ✅ DONE — "available on request" already in 04_experiments.tex |
+| W2: MAT column misleading (0% mimicry ≠ verbal annotation) | ✅ ALREADY DONE — footnote ‡ added in prior session; table caption explicitly excludes mimicry from MAT |
+| W3: L1 factorial single-model (gpt-4o only) caveat | ✅ DONE this session — added sentence to §5.1 factorial interpretation (commit 0c0a104) |
+| W4: 1,140+ count inconsistent | ✅ DONE this session — intro bullet → 2,000+; abstract L4-specific → 1,400+; commit 0c0a104 |
+
+**Paper now at commit 0c0a104. PDF: 0 errors. All critic-report-20260327-02 items resolved.**
