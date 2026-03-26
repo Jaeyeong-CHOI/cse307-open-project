@@ -134,21 +134,21 @@
 \newlabel{sec:open_weight}{{\mbox  {V-H}}{9}{}{subsection.5.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces E31: Prior Entrenchment Score (PES). PES = $P(\text  {canonical token} \mid \text  {prompt prefix})$. \texttt  {gpt-4o-mini} excluded (emits markdown tokens at this position).}}{9}{}\protected@file@percent }
 \newlabel{tab:e31_pes}{{VII}{9}{}{table.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref {tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt  {gpt-4o} scaled to $n=30$ (E32a); others at $n=10$. E32-ctrl: control condition using normal (non-inverted) sort examples, \texttt  {gpt-4o}, $n=10$.}}{9}{}\protected@file@percent }
-\newlabel{tab:e32_transfer}{{VIII}{9}{}{table.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-I}}E31: Prior Entrenchment Score via Logprobs}{9}{}\protected@file@percent }
 \newlabel{sec:e31_pes}{{\mbox  {V-I}}{9}{}{subsection.5.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-J}}E32: Cross-Task Transfer Breaks L4 Resistance}{9}{}\protected@file@percent }
 \newlabel{sec:e32_transfer}{{\mbox  {V-J}}{9}{}{subsection.5.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref {tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt  {gpt-4o} scaled to $n=30$ (E32a); others at $n=10$. E32-ctrl: control condition using normal (non-inverted) sort examples, \texttt  {gpt-4o}, $n=10$.}}{10}{}\protected@file@percent }
+\newlabel{tab:e32_transfer}{{VIII}{10}{}{table.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces E35: IO-A (transparent) vs.\ IO-B (opaque I/O only). $n{=}10$ per cell, $t{=}0.7$.}}{10}{}\protected@file@percent }
 \newlabel{tab:e35_io}{{IX}{10}{}{table.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces E34: Annotation density curve --- pass rate and Wilson 95\% CI at each density level ($n=10$ per cell, 150 total runs). Format: $k/n$ [CI\,lo--hi]. MAT = Minimum Annotation Threshold (lowest level where pass rate ${>}50\%$). The 0\% condition includes an inverted \emph  {code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation. Wide CIs reflect $n{=}10$; trends are directional only.}}{10}{}\protected@file@percent }
-\newlabel{tab:e34_density}{{X}{10}{}{table.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-K}}E35: I/O Transparency --- Prior vs.\ Opaque Mapping}{10}{}\protected@file@percent }
 \newlabel{sec:e33_io}{{\mbox  {V-K}}{10}{}{subsection.5.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-L}}E34: Annotation Density Curve (Multi-Model)}{10}{}\protected@file@percent }
 \newlabel{sec:e34_density}{{\mbox  {V-L}}{10}{}{subsection.5.12}{}}
 \newlabel{sec:e28_results}{{\mbox  {V-L}}{10}{}{subsection.5.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces E34: Annotation density curve --- pass rate and Wilson 95\% CI at each density level ($n=10$ per cell, 150 total runs). Format: $k/n$ [CI\,lo--hi]. MAT = Minimum Annotation Threshold (lowest level where pass rate ${>}50\%$). The 0\% condition includes an inverted \emph  {code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation. Wide CIs reflect $n{=}10$; trends are directional only.}}{10}{}\protected@file@percent }
+\newlabel{tab:e34_density}{{X}{10}{}{table.10}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {XI}{\ignorespaces L4 hard-task results ($n=10$ per cell, 120 total runs). All tasks use example-only delivery with 2 worked I/O examples. Pass = output matches inverted specification. Models include \texttt  {gpt-5.4} and \texttt  {o3} (not tested in main L4 ablation). Wilson 95\% CIs at $n=10$: 10/10 $\to $ [72\%,100\%]; 0/10 $\to $ [0\%,28\%]; \texttt  {gpt-4o} H1 (4/10) $\to $ [17\%,69\%]---interpret with caution.}}{10}{}\protected@file@percent }
 \newlabel{tab:l4_hard}{{XI}{10}{}{table.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-M}}L4 Hard-Task Extension: Task Complexity vs.\ Prior Entrenchment}{10}{}\protected@file@percent }
@@ -170,15 +170,14 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}L4: Semantic Inversion (Implicit)}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-E}}Judge Protocols}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IX}Complete Experiment Log}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}API and runtime settings}{13}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L4 prompt (no system message). The semantic inversion rule is not stated; models must infer it from worked examples. Even gpt-4o, which succeeds at L3, defaults to canonical Python---exhibiting \emph  {pattern blindness}.}}{13}{}\protected@file@percent }
 \newlabel{fig:l4_prompt}{{5}{13}{}{figure.5}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {XII}{\ignorespaces Key experiments summary. Full log (E1--E35) in repository.}}{13}{}\protected@file@percent }
 \newlabel{tab:exp_summary}{{XII}{13}{}{table.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}API and runtime settings}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {X}Appendix: Metric Definitions and Prompt Sample}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-A}}Metric Definitions}{13}{}\protected@file@percent }
 \newlabel{sec:appendix_pss}{{\mbox  {X-A}}{13}{}{subsection.10.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}L4 Variant A Prompt Example (Fibonacci)}{13}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{chen2021codex}{1}
@@ -203,12 +202,7 @@
 \bibcite{anotb2024}{20}
 \bibcite{counterfact2024}{21}
 \bibcite{semanticinvar2024}{22}
-\bibcite{reasoningrigidity2024}{23}
-\bibcite{zhu2023promptrobust}{24}
-\bibcite{pan2024adversarial}{25}
-\bibcite{coderobbery2024}{26}
-\bibcite{khan2024cheatingllm}{27}
-\bibcite{wu2024lowresource}{28}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-B}}L4 Variant A Prompt Example (Fibonacci)}{14}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {X-C}}L4 Multi-Task Full PPR Values}{14}{}\protected@file@percent }
 \newlabel{sec:appendix_l4_multitask_ppr}{{\mbox  {X-C}}{14}{}{subsection.10.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {XIII}{\ignorespaces L4 multi-task full PPR. $\dagger $~Partially-annotated prompts (not comparable to Table~\ref {tab:l4_ablation}).}}{14}{}\protected@file@percent }
@@ -217,6 +211,12 @@
 \newlabel{sec:appendix_pilot_l1}{{\mbox  {X-D}}{14}{}{subsection.10.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {XI}Reproducibility and Artifact Availability}{14}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{14}{}\protected@file@percent }
+\bibcite{reasoningrigidity2024}{23}
+\bibcite{zhu2023promptrobust}{24}
+\bibcite{pan2024adversarial}{25}
+\bibcite{coderobbery2024}{26}
+\bibcite{khan2024cheatingllm}{27}
+\bibcite{wu2024lowresource}{28}
 \bibcite{concode2024}{29}
 \bibcite{l2ceval2024}{30}
 \bibcite{dong2024xgrammar}{31}

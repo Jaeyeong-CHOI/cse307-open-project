@@ -22,10 +22,13 @@ if not API_KEY:
     sys.exit(1)
 
 MODELS = ["gpt-4o", "gpt-4.1-mini", "o4-mini"]
-N_SAMPLES = 10
+N_SAMPLES = int(os.environ.get("E34_N_SAMPLES", "30"))
 TEMPERATURE = 0.7
 TIMEOUT = 30
-OUTPUT_PATH = "/Users/jaeyeong_openclaw/.openclaw/workspace/cse307-open-project/docs/research/results/e34-annotation-density.json"
+OUTPUT_PATH = os.environ.get(
+    "E34_OUTPUT",
+    "/Users/jaeyeong_openclaw/.openclaw/workspace/cse307-open-project/docs/research/results/e34-annotation-density-n30-2026-03-27.json",
+)
 
 # ---------------------------------------------------------------------------
 # Prompt definitions for each annotation density level
@@ -307,7 +310,7 @@ def main():
     # Build final output
     output = {
         "experiment": "e34-annotation-density",
-        "date": "2026-03-25",
+        "date": "2026-03-27",
         "task": "L4 Fibonacci with inverted comparisons",
         "annotation_levels": {
             "0": "Zero annotation - examples + style hint only, no explanation of inversion",
