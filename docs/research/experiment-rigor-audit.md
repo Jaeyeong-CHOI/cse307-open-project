@@ -235,3 +235,14 @@ Fisher p: 0.500 — not significant at n=10
 | W4: 1,140+ count inconsistent | ✅ DONE this session — intro bullet → 2,000+; abstract L4-specific → 1,400+; commit 0c0a104 |
 
 **Paper now at commit 0c0a104. PDF: 0 errors. All critic-report-20260327-02 items resolved.**
+
+---
+
+### Critic-report-20260327-04 W2 final resolution (2026-03-27 05:00 KST)
+
+| Item | Status |
+|---|---|
+| W2: §1 "universal" contribution title → soften | ✅ DONE — §1 L4 contribution title changed to "robust, near-universal LLM failure mode (across tested models and researcher-designed variants)" (commit 76238c5) |
+| PDF after fix | ✅ 0 errors, 0 undefined refs |
+
+**All critic-report-20260327-04 items resolved. Paper at 94%+ readiness. Commit 76238c5.**
