@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  27 MAR 2026 00:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  27 MAR 2026 01:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1297,40 +1297,15 @@ Underfull \hbox (badness 1546) in paragraph at lines 63--64
 \T1/ptm/m/n/10 (+20) tasks (merge sort, bi-nary search) in the same prompt.
  []
 
-) (./sections/05_results.tex
-
-LaTeX Warning: Reference `sec:appendix_pilot_l1' on page 6 undefined on input l
-ine 6.
-
-
-LaTeX Warning: Reference `tab:l1_factorial' on page 6 undefined on input line 6
-.
-
-
-LaTeX Warning: Reference `sec:appendix_pilot_l1' on page 6 undefined on input l
-ine 6.
-
-
-LaTeX Warning: Reference `tab:l1_factorial' on page 6 undefined on input line 6
-.
-
-[6]
+) (./sections/05_results.tex [6]
 Overfull \hbox (8.01112pt too wide) in paragraph at lines 109--120
  [][] 
  []
 
 
-LaTeX Warning: Reference `tab:l1_factorial' on page 7 undefined on input line 1
-22.
-
-
 Underfull \hbox (badness 2205) in paragraph at lines 122--123
 \T1/ptm/m/n/10 (+20) models com-ply per-fectly when aliases are short, non-
  []
-
-
-LaTeX Warning: Reference `sec:appendix_pilot_l1' on page 7 undefined on input l
-ine 126.
 
 
 Underfull \hbox (badness 5388) in paragraph at lines 128--129
@@ -1427,12 +1402,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 36--37
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-) (./sections/10_appendix_experiment_details.tex [13]
-
-LaTeX Warning: Reference `sec:l1_factorial' on page 14 undefined on input line 
-76.
-
-)
+) (./sections/10_appendix_experiment_details.tex [13])
 Underfull \hbox (badness 10000) in paragraph at lines 92--93
 []\T1/ptm/m/n/10 (+20) Evaluation scripts: \T1/pcr/m/n/10 scripts/partial_judge
 .py\T1/ptm/m/n/10 (+20) ,
@@ -1457,18 +1427,11 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
  37332 strings out of 467525
  896846 string characters out of 5408440
- 1651441 words of memory out of 5000000
+ 1651536 words of memory out of 5000000
  65034 multiletter control sequences out of 15000+600000
  787973 words of font info for 551 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1509,7 +1472,7 @@ hare/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/
 ar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/hom
 ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on main.pdf (15 pages, 384242 bytes).
+Output written on main.pdf (15 pages, 383997 bytes).
 PDF statistics:
  203 PDF objects out of 1000 (max. 8388607)
  126 compressed objects within 2 object streams

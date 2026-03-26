@@ -30,8 +30,11 @@
   - False positive scenario: model writes correct transformed code but uses alias in a non-keyword position → judge may count as "pass" incorrectly
   - False negative scenario: model writes alias but in wrong syntactic role → judge passes but execution would fail
   - **Manual validation status:** 50-run spot check (48/50 agreement, 96%) partially addresses this but sample is not stratified by alias type.
-- **Recommended fix:** ✅ **IN PROGRESS** — L1 factorial design (Type A/B/C, seed=42/43/44, n=30 per type, n=10 per prompt) running as of 2026-03-27. Results to be saved as `l1-factorial-typeABC-2026-03-27.json`.
-- **Paper action required:** After factorial results arrive, move v1–v120 to §5.1 as "pilot exploration (n=120, researcher-designed aliases)" and promote factorial results as main finding.
+- **Recommended fix:** ✅ **COMPLETE** — L1 factorial design (Type A/B/C, seed=42/43/44, n=30 per type, n=10 per prompt) completed 2026-03-27. Results in `l1-factorial-typeABC-2026-03-27.json` (n=300 trials per type).
+  - Type A: pass=0.363 [0.311,0.419], KLR=0.637
+  - Type B: pass=0.597 [0.540,0.651], KLR=0.403
+  - Type C: pass=1.000 [0.987,1.000], KLR=0.000
+- **Paper update:** ✅ **DONE** — Table `tab:l1_factorial` updated with correct values; v1–v120 treated as "pilot exploration" in Appendix; factorial results are primary L1 finding. (2026-03-27)
 
 ---
 
@@ -158,7 +161,7 @@ odds_ratio, p = fisher_exact([[16, 14], [0, 10]], alternative='greater')
 
 ### HIGH (must fix before submission)
 1. **E32 Fisher p-value:** Add explicit Fisher p ≈ 0.003 for treatment vs. control comparison to paper §5.6 or E32 section.
-2. **L1 factorial design:** Complete and integrate factorial results (in progress — experiment running as of 2026-03-27).
+2. **L1 factorial design:** ✅ Complete and integrated — n=300/type, Table updated 2026-03-27.
 3. **Judge validation evidence:** Either (a) locate and publish the 50-run manual check data file, or (b) perform the check and log it.
 
 ### MEDIUM (should fix for rigor)
