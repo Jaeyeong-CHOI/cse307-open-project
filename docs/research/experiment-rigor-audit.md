@@ -246,3 +246,15 @@ Fisher p: 0.500 — not significant at n=10
 | PDF after fix | ✅ 0 errors, 0 undefined refs |
 
 **All critic-report-20260327-04 items resolved. Paper at 94%+ readiness. Commit 76238c5.**
+
+---
+
+### 2026-03-27 08:10 KST — KLR definition consistency fix
+
+| Item | Status |
+|---|---|
+| KLR in Table tab:l1_factorial vs §3 definition mismatch | ✅ FIXED — Table caption now explicitly states "KLR = 1 − pass rate (trial-level binary), conservative upper bound on per-slot leakage rate defined in §3" (commit 55c90ec) |
+| PDF after fix | ✅ 0 errors, pushed to GitHub |
+
+**Explanation:** §3 defines KLR as fraction of alias *slots* where original keyword leaked (per-slot rate). The factorial table uses KLR = 1 − pass rate (trial-level binary: fail if ANY slot leaks). These are not equivalent; trial-level KLR is a conservative upper bound. Average per-slot KLR from the JSON (`avg_klr`) is ~0.13 for Type A vs 0.637 trial-level KLR. Caption now clarifies this distinction explicitly.
+
