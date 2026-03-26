@@ -306,40 +306,6 @@ E26 result ($n=5$): 0/5 pass, PPR=0.80 (1/5 showed a structurally distinct non-p
 E27 result ($n=20$, 2026-03-25): 0/20 pass, PPR=0.40 (8/20 exact Python prior; 12/20 FAIL-other). No valid passes at $n_\mathrm{eff}=20$; Wilson 95\% CI: [0\%, 17\%]. The PPR=0.40 is \emph{lower} than the E26 pilot (0.80), reflecting that a substantial fraction of failures are structurally distinct from the pure Python prior---the model often produces internally inconsistent code that attempts partial rule application but fails, rather than simply returning the standard Fibonacci template. This is consistent with \emph{confused partial instruction-following}, not clean prior dominance.
 Unlike \texttt{gpt-4.1} (E25: 10/10 on L3 T2), \texttt{Qwen3-32B} fails to apply the semantic inversion rule even when stated explicitly across $n=20$ trials---confirming \emph{general semantic meta-rule failure} as a systematic property, not a small-$n$ artifact. This represents a qualitatively different failure mode from all tested OpenAI models: \texttt{Qwen3-32B} cannot reliably follow semantic inversions via prompt instructions alone, regardless of delivery (explicit vs.\ implicit).
 
-\subsection{E28: Annotation Density Gradient for \texttt{o4-mini} (Pilot)}
-\label{sec:e28_results}
-
-\begin{table}[!t]
-\centering
-\caption{E28: Annotation density gradient for \texttt{o4-mini} on T1 Fibonacci ($n=10$ per level, 40 total runs; $n_\mathrm{eff}=9$ at 100\% due to 1 HTTP error). PPR = prior-pull rate (fraction of \texttt{fail\_prior} among all non-pass runs). Pass rate and PPR are both reported.}
-\label{tab:e28_density}
-\footnotesize
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{@{}lcccccc@{}}
-\toprule
-\textbf{Density} & \textbf{Annotated/Total} & \textbf{Pass} & \textbf{Fail-Prior} & \textbf{Fail-Other} & \textbf{Pass Rate} & \textbf{PPR} \\
-\midrule
-25\%  & 2/8 & 3  & 1 & 6 & 0.30 & 0.10 \\
-50\%  & 4/8 & 6  & 1 & 3 & \textbf{0.60} & 0.10 \\
-75\%  & 6/8 & 2  & 5 & 3 & 0.20 & 0.50 \\
-100\%$^\dagger$ & 8/8 & 1  & 2 & 6 & 0.11 & 0.22 \\
-\midrule
-\multicolumn{7}{l}{\scriptsize $^\dagger$$n_\mathrm{eff}=9$ (1 HTTP error); pass rate = 1/9.} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-\emph{This section reports the single-model pilot; the full three-model replication (E34) is in \S\ref{sec:e34_density}.} The E28 experiment reveals that annotation density has a \textbf{non-monotonic} effect on \texttt{o4-mini}'s ability to extract the L4 inversion pattern. Results are in Table~\ref{tab:e28_density}.
-
-\textbf{Key finding---optimal density at 50\%}: Pass rate peaks at 50\% annotation density (6/10, PPR=0.10). Below this, at 25\% density, pass rate drops to 3/10---insufficient annotation signal for the reasoning model's chain-of-thought. Above 50\%, at 75\% annotation, pass rate collapses to 2/10 and PPR \emph{rises} sharply to 0.50---a paradoxical result where more annotation triggers stronger prior conflict. At 100\% density, pass rate is lowest (1/9 valid runs; 1 HTTP error), though PPR partially recovers to 0.22.
-
-\textbf{Interpretation---annotation saturation induces prior conflict}: The non-monotonic curve is consistent with a two-competing-signal model. At low density (25\%), the reasoning model has insufficient annotation cues to construct the inversion rule: it either succeeds via independent pattern recognition (30\%) or fails via non-prior confusion (60\%). At 50\% density, annotation signal is sufficient for reasoning chain completion without overwhelming the Fibonacci prior. At 75\%+, the dense annotation makes the inversion semantics \emph{salient} to the model's representation, which simultaneously activates the conflicting Python prior---triggering more frequent prior-dominant failures (PPR=0.50). This suggests a retrieval-interference mechanism: annotation cues strong enough to activate the task schema also activate the competing prior schema.
-
-\textbf{Design implication}: For prior-entrenched tasks, resistance via annotation density is robust in a narrow band. Over-annotated prompts are \emph{not} strictly harder; they may in fact partially self-defeat by activating the prior they target. Optimal confusion language design should calibrate annotation density to remain below the prior-activation threshold---approximately 50\% of examples for reasoning models on Fibonacci-class tasks.
-
-\textbf{Connection to CoT--annotation dissociation}: The E28 results reinforce Finding~5's CoT--annotation gap. The prior multi-task result (8/15 pass at partial annotation) used a fixed partial-annotation regime that approximates the 50\% optimal; the CoT ablation (1/20 pass) added meta-cognitive instruction without annotation content. E28 maps the mechanism: annotation works by supplying inversion-rule content at a density that clears the reasoning threshold without triggering prior conflict. CoT alone cannot cross this boundary because it adds reasoning scaffolding but no new rule content.
-
 \subsection{E31: Prior Entrenchment Score via Logprobs}
 \label{sec:e31_pes}
 
@@ -424,7 +390,9 @@ We conducted two experiments to isolate I/O transparency from prior strength. Th
 \subsection{E34: Annotation Density Curve (Multi-Model)}
 \label{sec:e34_density}
 
-E28 established a non-monotonic annotation density curve for \texttt{o4-mini} alone. E34 extends this to three models across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons ($n=10$ per level per model, 150 total runs). \textbf{Important:} the 0\% level is a \emph{code-example (mimicry) baseline}---it includes an inverted code example rather than I/O-only delivery as in the strict L4 ablation, making it qualitatively distinct from the verbal annotation range (25--100\%); 100\% provides the full explicit rule (L3-equivalent). Results are in Table~\ref{tab:e34_density}.
+\textbf{E28 pilot (single model).}\label{sec:e28_results} Prior to the multi-model replication, E28 mapped the annotation sensitivity boundary for \texttt{o4-mini} alone across four verbal annotation density levels (25\%, 50\%, 75\%, 100\%; $n=10$ per level, 40 total runs). Pass rate peaked non-monotonically at 50\% density (6/10, PPR=0.10), collapsed at 75\% (2/10, PPR=0.50) as dense annotation activated prior conflict, and was lowest at 100\% (1/9$^\dagger$). This pilot directly operationalized the annotation-sensitivity hypothesis and motivated E34. $^\dagger n_\mathrm{eff}=9$ at 100\% (1 HTTP error).
+
+E34 extends the E28 pilot (\S\ref{sec:e28_results}) to three models across five density levels (0\%, 25\%, 50\%, 75\%, 100\%) on L4 Fibonacci with inverted comparisons ($n=10$ per level per model, 150 total runs). \textbf{Important:} the 0\% level is a \emph{code-example (mimicry) baseline}---it includes an inverted code example rather than I/O-only delivery as in the strict L4 ablation, making it qualitatively distinct from the verbal annotation range (25--100\%); 100\% provides the full explicit rule (L3-equivalent). Results are in Table~\ref{tab:e34_density}.
 
 \begin{table}[!t]
 \centering
