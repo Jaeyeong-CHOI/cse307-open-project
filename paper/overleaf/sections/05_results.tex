@@ -135,7 +135,7 @@ Without explicit rule, \texttt{gpt-4o}---which succeeds at L3---fails at L4 (PPR
 We scaled the L4 evaluation across seven models, all at $n=50$ (\texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, \texttt{o4-mini}).
 Results are shown in Table~\ref{tab:l4_ablation}.
 All seven models achieve 0\% pass rate, confirming that pattern blindness is robust across model families and including the reasoning model \texttt{o4-mini}. (\texttt{gpt-5.4-mini}: 0/42 valid runs, $n_\mathrm{eff}=42$; see footnote.)
-PPR values range from 0.38 (\texttt{gpt-4.1-mini}) to 1.0 (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}); \texttt{o4-mini} shows PPR=0.92.
+PPR values range from 0.38 (\texttt{gpt-4.1-mini}) to 1.0 (\texttt{gpt-4.1}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}); \texttt{o4-mini} shows PPR=0.92. (\texttt{gpt-4.1-mini}'s 0.38 overall PPR reflects variant heterogeneity, not a uniformly lower prior pull; variant-level PPR spans 0.00--1.00, with certain variants achieving full inversion while others revert completely---see Table~\ref{tab:l4_ablation} for per-variant values.)
 Notably, \texttt{gpt-4.1} and \texttt{gpt-4.1-nano} show PPR=1.0 across \emph{all} 50 runs and all variants, indicating complete prior dominance with no evidence of inversion detection.
 The \texttt{o4-mini} result revises an earlier preliminary finding (1/20 at $n=20$): at the full scale of $n=50$, \texttt{o4-mini} also achieves 0/50, indicating that chain-of-thought reasoning does not provide a reliable pathway to overcoming pattern blindness at this scale.
 

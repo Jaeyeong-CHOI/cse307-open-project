@@ -4,7 +4,9 @@ We ran experiments at each language level for available model families. All runs
 
 \subsection{Models Evaluated}
 \begin{itemize}
-  \item \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, \texttt{o4-mini}
+  \item \textbf{Core OpenAI} (seven models): \texttt{gpt-4o}, \texttt{gpt-4o-mini}, \texttt{gpt-4.1}, \texttt{gpt-4.1-mini}, \texttt{gpt-4.1-nano}, \texttt{gpt-5.4-mini}, \texttt{o4-mini}
+  \item \textbf{Frontier extension}: \texttt{gpt-5.4}, \texttt{o3} (hard-task extension §\ref{sec:l4_hard} and E24 Fibonacci ablation §\ref{sec:l4_ablation})
+  \item \textbf{Open-weight via Groq}: \llamaseventy{} ($n_\mathrm{eff}=25$, per-variant underpowered), \qwenthirtytwo{} ($n=50$, full replication)
 \end{itemize}
 
 \subsection{L1 Experiment: Token Alias Substitution}
