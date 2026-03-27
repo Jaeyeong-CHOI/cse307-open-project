@@ -1,11 +1,11 @@
 \relax 
 \providecommand\zref@newlabel[2]{}
 \citation{chen2021codex,austin2021program}
-\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
 \citation{chen2021codex}
 \citation{austin2021program}
 \citation{bigcodebench2024}
 \citation{livecodebench2024}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
 \citation{feng2020codebert}
 \citation{wang2021codet5}
 \citation{fried2022incoder}
@@ -114,37 +114,37 @@
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces L1 factorial alias design: pass rate and KLR by alias type (\texttt  {gpt-4o}, ctx-pack; $n{=}300$ trials per type, 10 per config). In this table, KLR is reported as $1 - \text  {pass rate}$ (trial-level binary), a conservative upper bound on the per-slot leakage rate defined in \S  \ref {sec:method}. Wilson 95\% CIs on pass rate shown. Aliases generated with fixed random seeds; no researcher selection.}}{7}{}\protected@file@percent }
 \newlabel{tab:l1_factorial}{{III}{7}{}{table.3}{}}
 \newlabel{sec:l1_factorial}{{\mbox  {V-A}}{7}{}{subsection.5.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted by all models (three at $n=20$; \texttt  {gpt-4o-mini} pilot $n=5$); L3 reveals a model-capability threshold (\texttt  {gpt-4o-mini} fails, others succeed); L4 (example-only) defeats all models despite L3 success. Rows with $n=5$ are pilot results; Wilson 95\% CIs shown.}}{7}{}\protected@file@percent }
-\newlabel{tab:l234_results}{{IV}{7}{}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}L2: Syntax inversion not resistant}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}L3: Capability threshold at semantic rule-following}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces L2--L4 outcomes by model and condition. L2 is trivially adopted by all models (three at $n=20$; \texttt  {gpt-4o-mini} pilot $n=5$); L3 reveals a model-capability threshold (\texttt  {gpt-4o-mini} fails, others succeed); L4 (example-only) defeats all models despite L3 success. Rows with $n=5$ are pilot results; Wilson 95\% CIs shown.}}{8}{}\protected@file@percent }
+\newlabel{tab:l234_results}{{IV}{8}{}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}L4: Pattern blindness across all tested models}{8}{}\protected@file@percent }
 \newlabel{sec:l4_ablation}{{\mbox  {V-D}}{8}{}{subsection.5.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}L4 Multi-task Generalization}{8}{}\protected@file@percent }
-\newlabel{sec:l4_multitask}{{\mbox  {V-E}}{8}{}{subsection.5.5}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces L4 ablation (PPR = Python Prior Rate). Seven core models: $n=50$ each (5 variants $\times $ 10 runs); \texttt  {gpt-5.4-mini} $n_\mathrm  {eff}=42$ (8 HTTP errors in Var.~E, excluded). Pass rate = 0 for all models. \texttt  {o4-mini} revises $n=20$ preliminary (1/20). $^\S  $E24 frontier extension: \texttt  {gpt-5.4} and \texttt  {o3} also tested at Var.~A, $n=10$: both 0/10 pass, PPR=1.00.}}{8}{}\protected@file@percent }
 \newlabel{tab:l4_ablation}{{V}{8}{}{table.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Prior dominance vs.\ pattern blindness isolated on the same model (\texttt  {gpt-4o}). \textbf  {A}: \texttt  {gpt-4o} correctly inverts logic with explicit rule (L3). \textbf  {B}: The same model reverts to Python prior when the rule is embedded only in examples (L4). This contrast isolates pattern blindness as a failure mode distinct from prior dominance.}}{8}{}\protected@file@percent }
 \newlabel{fig:l4_failure}{{4}{8}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}L4 Multi-task Generalization}{8}{}\protected@file@percent }
+\newlabel{sec:l4_multitask}{{\mbox  {V-E}}{8}{}{subsection.5.5}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces L4 multi-task summary (\textbf  {345 runs total}). $\dagger $~Partially-annotated prompts; \textbf  {NOT directly comparable to Table~\ref {tab:l4_ablation}}~(strict example-only). Green = pass, red = fail. Dominant failure mode per row in rightmost column. Full PPR values in Appendix~\ref {sec:appendix_l4_multitask_ppr}.}}{9}{}\protected@file@percent }
 \newlabel{tab:l4_multitask}{{VI}{9}{}{table.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Three Failure Modes}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-G}}CoT Ablation: Reasoning About Inversion Is Not Sufficient}{9}{}\protected@file@percent }
-\newlabel{sec:cot_ablation}{{\mbox  {V-G}}{9}{}{subsection.5.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces E31: Prior Entrenchment Score (PES). PES = $P(\text  {canonical token} \mid \text  {prompt prefix})$. \texttt  {gpt-4o-mini} excluded (emits markdown tokens at this position).}}{9}{}\protected@file@percent }
 \newlabel{tab:e31_pes}{{VII}{9}{}{table.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-G}}CoT Ablation: Reasoning About Inversion Is Not Sufficient}{9}{}\protected@file@percent }
+\newlabel{sec:cot_ablation}{{\mbox  {V-G}}{9}{}{subsection.5.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-H}}Open-Weight Models: Preliminary L1 and L4 Results}{9}{}\protected@file@percent }
 \newlabel{sec:open_weight}{{\mbox  {V-H}}{9}{}{subsection.5.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-I}}E31: Prior Entrenchment Score via Logprobs}{9}{}\protected@file@percent }
 \newlabel{sec:e31_pes}{{\mbox  {V-I}}{9}{}{subsection.5.9}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces E32: Cross-task transfer --- pass rate on L4 Fibonacci after exposure to inverted code from other tasks. Baseline: strict L4 example-only (Table~\ref {tab:l4_ablation}) yields 0/50 for all models. Wilson 95\% CIs shown. \texttt  {gpt-4o} scaled to $n=30$ (E32a); others at $n=10$. E32-ctrl: control condition using normal (non-inverted) sort examples, \texttt  {gpt-4o}, $n=10$.}}{10}{}\protected@file@percent }
 \newlabel{tab:e32_transfer}{{VIII}{10}{}{table.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces E35: IO-A (transparent) vs.\ IO-B (opaque I/O only). $n{=}10$ per cell, $t{=}0.7$.}}{10}{}\protected@file@percent }
-\newlabel{tab:e35_io}{{IX}{10}{}{table.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-J}}E32: Cross-Task Transfer Breaks L4 Resistance}{10}{}\protected@file@percent }
 \newlabel{sec:e32_transfer}{{\mbox  {V-J}}{10}{}{subsection.5.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-K}}E35: I/O Transparency --- Prior vs.\ Opaque Mapping}{10}{}\protected@file@percent }
 \newlabel{sec:e33_io}{{\mbox  {V-K}}{10}{}{subsection.5.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces E35: IO-A (transparent) vs.\ IO-B (opaque I/O only). $n{=}10$ per cell, $t{=}0.7$.}}{10}{}\protected@file@percent }
+\newlabel{tab:e35_io}{{IX}{10}{}{table.9}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces E34: Annotation density curve --- pass rate and Wilson 95\% CI at each density level ($n=10$ per cell, 150 total runs). Format: $k/n$ [CI\,lo--hi]. MAT = Minimum Annotation Threshold (lowest \emph  {verbal annotation} level 25--100\% where pass rate ${>}50\%$; mimicry baseline excluded). The 0\% condition includes an inverted \emph  {code example} (not I/O-only); it is therefore not comparable to the strict L4 ablation. Wide CIs reflect $n{=}10$; trends are directional only.}}{10}{}\protected@file@percent }
 \newlabel{tab:e34_density}{{X}{10}{}{table.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-L}}E34: Annotation Density Curve (Multi-Model)}{10}{}\protected@file@percent }

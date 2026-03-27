@@ -1,11 +1,8 @@
 \section{Conclusion}
 We presented a four-level taxonomy (L1--L4) for designing LLM-resistant programming languages, grounded in the NTP prior structure of language models.
 
-Our central finding is that resistance does not come from surface-level token changes or structural novelty---both of which LLMs can adapt to with explicit instruction.
-Robust resistance requires semantic inversion: the same Python-like surface, but inverted conditional semantics.
-When semantic inversion is delivered implicitly (via examples only), all tested models exhibit pattern blindness and default to Python priors.
+Our two strongest findings are: (1)~\emph{L4 pattern blindness defeats all tested frontier models}---implicit semantic inversion on prior-entrenched tasks yields 0/350 pass across eleven models including \texttt{gpt-5.4} and \texttt{o3}; and (2)~\emph{chain-of-thought does not help}---models articulate the correct inversion rule yet still generate standard Python, confirming a generative failure rather than a comprehension deficit.
 
-We identify three distinct failure mechanisms: \emph{prior dominance}, where the prior overrides the stated rule; \emph{pattern blindness}, where the model fails to extract the semantic rule from examples; and \emph{operational substitution}, where the model achieves correct output via arithmetic workaround rather than adopting the semantic inversion rule.
-These mechanisms have different implications for language design: prior dominance can be partially mitigated by explicit context packs; pattern blindness requires implicit delivery; operational substitution may require execution-based evaluation to detect.
+I/O opacity provides a practical second resistance pathway: opaque input--output pairs alone yield complete resistance (0/30) independent of prior strength, and can be combined with L4 semantic inversion for layered assessment design.
 
-These findings provide a principled basis for designing programming course assessments that remain meaningful in the LLM era, where LLMs will fail on L4-style problems even as they trivially solve standard Python assignments.
+We identify three distinct failure mechanisms---\emph{prior dominance}, \emph{pattern blindness}, and \emph{operational substitution}---each with different implications for language design. These findings provide a principled basis for designing programming assessments that remain meaningful in the LLM era.

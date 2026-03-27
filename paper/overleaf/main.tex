@@ -60,12 +60,10 @@ DGIST EECS\\
 LLMs now solve standard programming tasks well enough to undermine their value as student assessments.
 We investigate whether a human-interpretable language can defeat LLM next-token-prediction (NTP) priors.
 We propose a four-level taxonomy---L1 (token alias), L2 (syntax inversion), L3 (explicit semantic inversion), L4 (implicit semantic inversion)---and evaluate eleven models (seven OpenAI core, two frontier, two open-weight).
-L4 defeats \emph{all} tested models on prior-entrenched tasks through \emph{pattern blindness}---including \texttt{gpt-5.4} and \texttt{o3} (0/10 each on Fibonacci).
-A multi-task extension (345 runs) reveals task-dependent resistance and a third failure mode, \emph{operational substitution}.
-An annotation density experiment (E34, 150 runs; preliminary, $n{=}10$ per condition) finds that code-example mimicry outperforms verbal rule annotation, though non-monotonic patterns may partly reflect sampling variance.
-I/O opacity (E35, 60 runs) provides a complementary resistance pathway: opaque I/O pairs alone yield complete resistance (0/30).
-A chain-of-thought ablation (160 runs) reveals \emph{reasoning--generation dissociation}: models articulate the inversion rule yet still generate standard Python.
-Across 1,400+ L4 evaluations we identify three failure mechanisms: \emph{prior dominance}, \emph{pattern blindness}, and \emph{operational substitution}.
+Our central finding is \emph{L4 pattern blindness}: when semantic inversion is delivered implicitly via worked examples, \emph{all} eleven models fail on prior-entrenched tasks---including frontier models \texttt{gpt-5.4} and \texttt{o3} (0/350 across 350 strict example-only runs on Fibonacci).
+A chain-of-thought ablation (160 runs) reveals \emph{reasoning--generation dissociation}: models articulate the inversion rule yet still generate standard Python, confirming that the failure is generative, not comprehension-based.
+I/O opacity (E35, 60 runs) provides a complementary resistance pathway: opaque I/O pairs alone yield complete resistance (0/30), independent of prior strength.
+Across 2,000+ evaluations we identify three failure mechanisms---\emph{prior dominance}, \emph{pattern blindness}, and \emph{operational substitution}---and map the conditions under which each dominates.
 All evaluations and artifacts are publicly available at \url{https://github.com/Jaeyeong-CHOI/cse307-open-project}.
 \end{abstract}
 
