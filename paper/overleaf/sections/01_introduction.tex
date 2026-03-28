@@ -11,7 +11,7 @@ This paper studies a complementary but understudied question:
 The key insight is that humans and LLMs fail in fundamentally different ways when given an unfamiliar language rule.
 A human student who reads the rule \emph{``if-blocks execute when the condition is \textbf{false}''} can immediately apply it---the rule is explicit, verifiable, and overrides prior habit.
 An LLM given the identical rule in its prompt instead produces standard Python: its next-token prediction (NTP) prior, built from billions of Python training tokens, systematically overrides the stated instruction.
-This asymmetry---\emph{humans follow novel rules; LLMs revert to training priors}---is the foundation of our resistance framework and requires no additional experiment to accept: it follows directly from the mechanics of NTP-based generation.
+This asymmetry---\emph{humans follow novel rules; LLMs revert to training priors}---motivates our resistance framework as a testable hypothesis rather than a settled premise. If NTP priors dominate generation, then implicit semantic inversions should fail more often than explicit rule statements; our L3/L4 experiments are designed to evaluate exactly this prediction.
 
 We decompose this into three sub-questions:
 \begin{enumerate}
