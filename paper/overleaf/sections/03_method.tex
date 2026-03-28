@@ -2,18 +2,19 @@
 \label{sec:method}
 \subsection{Research Questions and Hypotheses}
 \textbf{RQ1}: At what language design level does LLM resistance become robust?
-\textbf{RQ2}: What failure mechanism is active at each level---prior dominance or pattern blindness?
+\textbf{RQ2}: What failure mechanism dominates each condition---prior dominance, pattern blindness, or operational substitution?
 
 \textbf{H1}: Token-level alias substitution (L1) creates partial but not complete resistance.
 \textbf{H2}: Syntactic inversion (L2) is insufficient---models adopt new syntax when given explicit rules.
-\textbf{H3}: Semantic inversion (L3/L4) provides robust resistance, but differs in mechanism by model capacity.
+\textbf{H3}: Semantic inversion (L3/L4) can provide robust resistance on prior-entrenched tasks, with delivery mode (explicit vs. implicit) changing the dominant failure mechanism.
+\textbf{H4} (exploratory): When tasks permit output-level shortcuts, failures may manifest as operational substitution rather than direct prior replay.
 
 \subsection{Language Level Taxonomy}
 We design a structured family of programming language variants with properties engineered to conflict with LLM next-token prediction priors---which we term a \emph{confusion language} (our proposed terminology).\footnote{A confusion language does not require a new grammar or syntax. L1--L3 reuse Python surface syntax entirely, with behavioral differences arising from redefined semantic mappings delivered via prompt context. The only syntactic deviation tested is the L2 extension (\texttt{:define~f~[args]~->} block delimiters), which is given to the model as explicit grammar rules. L4 uses standard Python syntax with no syntactic modifications.} We distinguish confusion languages from esoteric languages (e.g., Brainfuck), which aim for human uninterpretability; confusion languages retain full human interpretability while selectively targeting LLM NTP priors. Each confusion language variant defines rules along two axes: (1) \emph{perturbation depth} (token, syntax, semantic) and (2) \emph{rule delivery} (explicit vs.\ implicit). Table~\ref{tab:levels} summarizes the resulting four-level taxonomy.
 
 \begin{table}[!t]
 \centering
-\caption{Four-level confusion language taxonomy. Each level targets a distinct linguistic dimension and delivery modality. L4 is the only level where all tested models fail regardless of capacity.}
+\caption{Four-level confusion language taxonomy. Each level targets a distinct linguistic dimension and delivery modality. Under strict example-only, prior-entrenched tasks (e.g., Fibonacci), L4 is the only level where all tested models fail regardless of capacity.}
 \label{tab:levels}
 \footnotesize
 \begin{tabular}{@{}clp{1.5cm}p{2.8cm}@{}}
